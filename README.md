@@ -1,2 +1,4 @@
-# nflpredictor
-Essentially a fork of DjangoSite01, tweaked
+# Django Site 01
+- Advancing Django
+
+Converting initial Djag blog into full featured NFL Prediction game
