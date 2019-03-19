@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.urls import reverse
 
 class Post(models.Model):
@@ -22,3 +23,13 @@ class Team(models.Model):
     
     def __str__(self):
         return('{} {}'.format(self.Town, self.Nickname))
+
+class Results(models.Model):
+    Week = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(17)])
+    HomeTeam = models.ForeignKey(Team, related_name='HomeTeam_Results_Set', on_delete=models.CASCADE)
+    AwayTeam = models.ForeignKey(Team, related_name='AwayTeam_Results_Set', on_delete=models.CASCADE)
+    HomeScore = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(150)])
+    AwayScore = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(150)])
+
+    def __str__(self):
+        return('{} @ {}, week {}'.format(self.AwayTeam.Nickname, self.HomeTeam.Nickname, self.Week))

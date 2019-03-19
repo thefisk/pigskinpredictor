@@ -1,0 +1,10 @@
+{% extends "predictor/base.html" %}
+{% block content %}
+
+{% for result in results %}
+{{ result.HomeTeam.Nickname }} {{ result.HomeScore }} @ {{ result.AwayScore }} {{ result.AwayTeam.Nickname }}<BR>
+{% endfor %}
+
+{% endblock content %}
+
+<!--instances of post. changed to object. to comply with what DetailView expects to see by default-->
