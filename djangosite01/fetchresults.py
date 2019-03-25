@@ -14,6 +14,7 @@ for row in tree.getiterator('gms'):
     resultset = (row.attrib)
 #outfile.write(str(resultset))
 week = resultset['w']
+season = resultset['y']
 
 outfile = open("resultsimport.json", "w")
 
@@ -34,7 +35,7 @@ for i in resultsdiclist:
         winner = 'Home'
     else:
         winner = 'Away'
-    innerdict = {'Winner': winner,'Week':int(week),'HomeTeam':resultsdiclist[count]['h'],'AwayTeam':resultsdiclist[count]['v'],'HomeScore':homescore,'AwayScore':awayscore}
+    innerdict = {'Winner': winner,'Week':int(week),'Season':int(season),'HomeTeam':resultsdiclist[count]['h'],'AwayTeam':resultsdiclist[count]['v'],'HomeScore':homescore,'AwayScore':awayscore}
     mydict = {"model":'predictor.results', 'pk':int(resultsdiclist[count]['eid']), 'fields':innerdict}
     tidyresults.append(mydict)
     count+=1

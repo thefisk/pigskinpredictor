@@ -1,0 +1,1 @@
+[{"model": "predictor.match", "pk": 2019010101, "fields": {"Season": 2019, "Week": 1, "HomeTeam": "ATL", "AwayTeam": "IND", "DateTime": "2019-03-25T12:41:22Z"}}, {"model": "predictor.match", "pk": 2019010102, "fields": {"Season": 2019, "Week": 1, "HomeTeam": "IND", "AwayTeam": "KC", "DateTime": "2019-03-25T12:41:38Z"}}]

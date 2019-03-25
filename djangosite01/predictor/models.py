@@ -24,7 +24,22 @@ class Team(models.Model):
     def __str__(self):
         return('{} {}'.format(self.Town, self.Nickname))
 
+class Match(models.Model):
+    Season = models.IntegerField(validators=[MinValueValidator(2012), MaxValueValidator(2050)])
+    Week = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(17)])
+    GameID = models.IntegerField(primary_key=True,validators=[MinValueValidator(2010010101)])
+    HomeTeam = models.ForeignKey(Team, related_name='HomeTeam_Schedule_Set', on_delete=models.CASCADE)
+    AwayTeam = models.ForeignKey(Team, related_name='AwayTeam_Schedule_Set', on_delete=models.CASCADE)
+    DateTime = models.DateTimeField()
+
+    def __str__(self):
+        return('{} @ {}, Week {}, {}'.format(self.AwayTeam.Nickname, self.HomeTeam.Nickname, self.Week, self.Season))
+    
+    class Meta:
+        verbose_name_plural = "Matches"
+
 class Results(models.Model):
+    Season = models.IntegerField(validators=[MinValueValidator(2012), MaxValueValidator(2050)])
     Week = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(17)])
     GameID = models.IntegerField(primary_key=True,validators=[MinValueValidator(2010010101)])
     HomeTeam = models.ForeignKey(Team, related_name='HomeTeam_Results_Set', on_delete=models.CASCADE)
@@ -47,7 +62,7 @@ class Results(models.Model):
         super(Results, self).save(*args, **kwargs)
 
     def __str__(self):
-        return('{} @ {}, week {}'.format(self.AwayTeam.Nickname, self.HomeTeam.Nickname, self.Week))
+        return('{} @ {}, Week {}, {}'.format(self.AwayTeam.Nickname, self.HomeTeam.Nickname, self.Week, self.Season))
     
     class Meta:
         verbose_name_plural = "Results"
