@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-from .models import Post, Results
+from .models import Post, Results, Match
 from django.views.generic import (
     ListView,
     DetailView,
@@ -22,6 +22,10 @@ class ResultsView(ListView):
     context_object_name = 'results'
     template_name = 'predictor/results.html' # <app>/<model>_viewtype>.html
 
+class ScheduleView(ListView):
+    model = Match
+    context_object_name = 'matches'
+    template_name = 'predictor/schedule.html' # <app>/<model>_viewtype>.html
 
 class PostListView(ListView):
     model = Post

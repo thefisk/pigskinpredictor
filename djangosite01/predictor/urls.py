@@ -6,7 +6,8 @@ from .views import (
     PostUpdateView,
     PostDeleteView,
     UserPostListView,
-    ResultsView
+    ResultsView,
+    ScheduleView
 )
 from . import views
 
@@ -18,6 +19,7 @@ urlpatterns = [
     path('post/<int:pk>/update/', PostUpdateView.as_view(), name='post-update'),
     path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),
     path('post/new/', PostCreateView.as_view(), name='post-create'),
-    path('results/', ResultsView.as_view(), name='results-view')
+    path('results/', ResultsView.as_view(), name='results-view'),
+    path('schedule/', ScheduleView.as_view(), name='schedule-view')
 ]
 

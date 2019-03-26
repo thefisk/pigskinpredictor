@@ -1,0 +1,12 @@
+{% extends "predictor/base.html" %}
+{% block content %}
+
+{% for match in matches %}
+    {% if match.Week == 17 %}
+    {{ match.HomeTeam.Nickname }} @ {{ match.AwayTeam.Nickname }}, {{ match.DateTime }}<BR>
+    {% endif %}
+{% endfor %}
+
+{% endblock content %}
+
+<!--instances of post. changed to object. to comply with what DetailView expects to see by default-->
