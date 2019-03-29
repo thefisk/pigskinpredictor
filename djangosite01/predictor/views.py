@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-from .models import Post, Results, Match
+from .models import Post, Results, Match, Prediction
 from django.views.generic import (
     ListView,
     DetailView,
@@ -21,6 +21,15 @@ class ResultsView(ListView):
     model = Results
     context_object_name = 'results'
     template_name = 'predictor/results.html' # <app>/<model>_viewtype>.html
+
+class ScoresView(ListView):
+    model = Prediction
+    context_object_name = 'predictions'
+    template_name = 'predictor/scores.html' # <app>/<model>_viewtype>.html
+    
+    def get_queryset(self):
+        user = get_object_or_404(User, username=self.kwargs.get('username'))
+        return Prediction.objects.filter(User=user).order_by('Game')
 
 class ScheduleView(ListView):
     model = Match

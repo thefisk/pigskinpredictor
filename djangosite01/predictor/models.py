@@ -38,6 +38,18 @@ class Match(models.Model):
     class Meta:
         verbose_name_plural = "Matches"
 
+class Prediction(models.Model):
+    User = models.ForeignKey(User, on_delete=models.CASCADE)
+    Game = models.ForeignKey(Match, related_name='Match_Prediction_Set', on_delete=models.CASCADE)
+    winner_choices = (('Home','Home'), ('Away','Away'))
+    Winner = models.CharField(max_length=4, choices=winner_choices)
+
+    class Meta:
+        unique_together = ("User", "Game")
+    
+    def __str__(self):
+        return('{}, {}, {}'.format(self.User, self.Game, self.Winner))
+
 class Results(models.Model):
     Season = models.IntegerField(validators=[MinValueValidator(2012), MaxValueValidator(2050)])
     Week = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(17)])
