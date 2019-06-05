@@ -4,13 +4,14 @@
 from datetime import datetime
 import requests, json
 
-outfile = open("matchesimport.json", "w")
-
 # Below pulls xml content and stores it in 
 rawschedule = requests.get('https://feeds.nfl.com/feeds-rs/schedules.json').json()
 
 season = rawschedule['season']
 schedulelist = rawschedule['gameSchedules']
+
+filename = "matchesimport_" + str(season) + ".json"
+outfile = open(filename, "w")
 
 tidyschedule = []
 count = 0

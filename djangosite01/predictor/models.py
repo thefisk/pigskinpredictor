@@ -43,12 +43,45 @@ class Prediction(models.Model):
     Game = models.ForeignKey(Match, related_name='Match_Prediction_Set', on_delete=models.CASCADE)
     winner_choices = (('Home','Home'), ('Away','Away'))
     Winner = models.CharField(max_length=4, choices=winner_choices)
+    Points = models.IntegerField(blank=True, null=True)
 
     class Meta:
         unique_together = ("User", "Game")
     
     def __str__(self):
         return('{}, {}, {}'.format(self.User, self.Game, self.Winner))
+    
+    def save(self, *args, **kwargs):
+        if self.Points == None:
+            super(Prediction, self).save(*args, **kwargs)
+        else:
+            # below code will add the points for individual
+            # predictions to user's weekly score tracker
+            try:
+                Scores.objects.get(User=self.User, Week=self.Game.Week)
+            except Scores.DoesNotExist:
+                # create new weekly score entry if none already exists
+                addweekscore = Scores(User=self.User, Week=self.Game.Week, Weekscore=self.Points, Season=self.Game.Season)
+                addweekscore.save()
+            else:
+                # if a weekly score object exists, add the points to it
+                weekscore = Scores.objects.get(User=self.User, Week=self.Game.Week)
+                weekscore.Weekscore += self.Points
+                weekscore.save()
+            super(Prediction, self).save(*args, **kwargs)
+
+class Scores(models.Model):
+    User = models.ForeignKey(User, on_delete=models.CASCADE)
+    Week = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(17)])
+    Weekscore = models.IntegerField()
+    Season = models.IntegerField(validators=[MinValueValidator(2012), MaxValueValidator(2050)])
+
+    def __str__(self):
+        return('{}, Week {}, {}: {}'.format(self.User, self.Week, self.Season, self.Weekscore))
+
+    class Meta:
+        verbose_name_plural = "Scores"
+        unique_together = ("User", "Week")
 
 class Results(models.Model):
     Season = models.IntegerField(validators=[MinValueValidator(2012), MaxValueValidator(2050)])
@@ -64,13 +97,37 @@ class Results(models.Model):
     # But manage.py loaddata ignores this as it's
     # A straight database dump
     # Logic kept but duplicated to fetchresults.py
+    # def save(self, *args, **kwargs):
+    #    if self.HomeScore == self.AwayScore:
+    #        self.Winner = 'Tie'
+    #    elif self.HomeScore > self.AwayScore:
+    #        self.Winner = 'Home'
+    #    else:
+    #        self.Winner = 'Away'
+    #    super(Results, self).save(*args, **kwargs)
+
+
+    # Below logic will iterate over corresponding predictions
+    # And update the points on each prediction
+    # TODO: Add banker logic
+    
     def save(self, *args, **kwargs):
-        if self.HomeScore == self.AwayScore:
-            self.Winner = 'Tie'
-        elif self.HomeScore > self.AwayScore:
-            self.Winner = 'Home'
+        if self.Winner == 'Home':
+            scored = self.HomeScore
+        elif self.Winner == 'Away':
+            scored = self.AwayScore
         else:
-            self.Winner = 'Away'
+            scored = 0
+
+        thisgamepreds = Prediction.objects.filter(Game=self.GameID)
+
+        for pred in thisgamepreds:
+            if pred.Winner == self.Winner:
+                pred.Points = scored
+                pred.save()
+            else:
+                pred.Points = 0
+                pred.save()
         super(Results, self).save(*args, **kwargs)
 
     def __str__(self):

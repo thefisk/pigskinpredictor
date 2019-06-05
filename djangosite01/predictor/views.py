@@ -23,10 +23,16 @@ class ResultsView(ListView):
     template_name = 'predictor/results.html' # <app>/<model>_viewtype>.html
 
 class ScoresView(ListView):
-    model = Prediction
-    context_object_name = 'predictions'
+    #model = Prediction
+    #context_object_name = 'predictions'
     template_name = 'predictor/scores.html' # <app>/<model>_viewtype>.html
     
+    def get_context_data(self, **kwargs):
+        context = super(ScoresView, self).get_context_data(**kwargs)
+        context['predictions'] = Prediction.objects.all()
+        context['results'] = Results.objects.all()
+        return context
+        
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
         return Prediction.objects.filter(User=user).order_by('Game')

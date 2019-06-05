@@ -1,8 +1,12 @@
 {% extends "predictor/base.html" %}
 {% block content %}
 
+<div name="Week Header">
+    <h2 class="article-title">Results | Week 17</h2>
+</div>
+
 {% for result in results %}
-{{ result.HomeTeam.Nickname }} {{ result.HomeScore }} @ {{ result.AwayScore }} {{ result.AwayTeam.Nickname }}<BR>
+    <p class="article-content">{{ result.HomeTeam.Nickname }} {{ result.HomeScore }} @ {{ result.AwayScore }} {{ result.AwayTeam.Nickname }}</p>
 {% endfor %}
 
 {% endblock content %}

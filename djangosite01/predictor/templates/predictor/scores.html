@@ -2,7 +2,12 @@
 {% block content %}
 
 {% for prediction in predictions %}
-{{ prediction.User }}, {{ prediction.Game }} @ {{ prediction.Winner }}<BR>
+<!--the below logic won't work thanks to django constraints.  Need to figure out a way around this -->
+    {% if prediction.Winner == results.objects.get(GameID=2018123000).Winner %}
+        {{ prediction.Game }} <strong>WINNER</strong>
+    {% endif %}
+    STATIC CONTENT<BR>
+    {{ prediction.User }} | {{ prediction.Game }} | <strong>{{ prediction.Winner }}</strong><BR>
 {% endfor %}
 
 {% endblock content %}

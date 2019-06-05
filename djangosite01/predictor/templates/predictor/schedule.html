@@ -1,9 +1,12 @@
 {% extends "predictor/base.html" %}
 {% block content %}
 
+<div name="Week Header">
+    <h2 class="article-title">Schedule | Week 17</h2>
+</div>
 {% for match in matches %}
     {% if match.Week == 17 %}
-    {{ match.HomeTeam.Nickname }} @ {{ match.AwayTeam.Nickname }}, {{ match.DateTime }}<BR>
+    <p class="article-content">{{ match.HomeTeam.Nickname }} @ {{ match.AwayTeam.Nickname }}, {{ match.DateTime }}</p>
     {% endif %}
 {% endfor %}
 
