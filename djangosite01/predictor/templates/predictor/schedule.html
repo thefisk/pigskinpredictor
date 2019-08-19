@@ -6,7 +6,9 @@
 </div>
 {% for match in matches %}
     {% if match.Week == 17 %}
+        {% if match.Season == 2018 %}
     <p class="article-content">{{ match.HomeTeam.Nickname }} @ {{ match.AwayTeam.Nickname }}, {{ match.DateTime }}</p>
+        {% endif %}
     {% endif %}
 {% endfor %}
 

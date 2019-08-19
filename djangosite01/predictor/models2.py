@@ -141,7 +141,6 @@ class ScoresAllTime(models.Model):
         verbose_name_plural = "All Time Scores"
         ordering = ['-AllTimeScore', 'User']
 
-
 class Results(models.Model):
     Season = models.IntegerField(validators=[MinValueValidator(2012), MaxValueValidator(2050)])
     Week = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(17)])

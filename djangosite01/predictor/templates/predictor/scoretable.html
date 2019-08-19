@@ -1,0 +1,31 @@
+{% extends "predictor/base.html" %}
+
+{% block content %}
+<div class="container">
+<h3 class="mb-3">
+    Latest Score Table for season 2019
+</h3>
+    <div id="scoretable" class="">
+        <table class="striped">
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    <th>Week Score</th>
+                    <th>Total Score</th>
+                </tr>
+            </thead>
+            <tbody>
+        {% for seasonscore in seasonscores %}
+                <tr>
+                    <td>{{ seasonscore.User }}</td>
+                    <td>{{ weekscore.Weekscore }}</td>
+                    <td>{{ seasonscore.SeasonScore }}</td>
+                </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+    </div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
+{% load static %}
+<script src="{% static "predictor/scripts/pigskin.js" %}"></script>
+{% endblock content %}

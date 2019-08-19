@@ -1,0 +1,31 @@
+{% extends "predictor/base.html" %}
+
+{% block content %}
+    <div class="container">
+    <h3 class="mb-3 hideme">
+        New Predictions for {{ request.user }} for week {{ view.kwargs.week }}, {{ view.kwargs.season }}
+    </h3>
+        <div id="predictioncards" class="row hideme">
+            {% for match in matches %}
+                <div class="col s12 m6 l4">
+                    <div class="card grey lighten-5">
+                        <div class="card-content white-text" id="{{ match.GameID }}">
+                            <span class="card-title red-text darken-4 center-align game-card">
+                                {{ match.AwayTeam.Nickname }} @ {{ match.HomeTeam.Nickname }}
+                            </span>
+                            <div class="center-align" id="{{ match.Week }}">
+                                <img class="responsive-img hoverable team" src="{{ match.AwayTeam.Logo.url }}" id="Away" alt="{{ match.AwayTeam }}">  <img class="responsive-img hoverable team" src="{{ match.HomeTeam.Logo.url }}" id="Home" alt="{{ match.HomeTeam }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div id="submitted">
+        </div>
+    <button id="predict-submit" class="waves-effect waves-light btn hideme" type="submit">Submit</button>
+    <!-- load jquery before pigskin.js -->
+    <!--script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script-->
+    {% load static %}
+    <!--script src="{% static "predictor/scripts/pigskin.js" %}"></script-->
+{% endblock content %}

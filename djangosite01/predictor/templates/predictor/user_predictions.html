@@ -1,0 +1,22 @@
+{% extends "predictor/base.html" %}
+
+{% block content %}
+<div class="container">
+<h3 class="mb-3">Predictions by {{ view.kwargs.username }} for week {{ view.kwargs.week }}, {{ view.kwargs.season }}</h1>
+    <div class="row">
+        {% for pred in predictions %}
+            <div class="col s12 m6 l4">
+                <div class="card grey lighten-5">
+                    <div class="card-content white-text">
+                        <span class="card-title blue-text">{{ pred.Game.AwayTeam.Nickname }} @ {{ pred.Game.HomeTeam.Nickname }}</span>
+                            <div style="margin: 0 auto">
+                                <img class="responsive-img" src="{{ pred.Game.AwayTeam.Logo.url }}"> | <img class="responsive-img" src="{{ pred.Game.HomeTeam.Logo.url }}">
+                            </div>
+                    </div>
+                    <!---div class="card-action"-->
+                    <!--/div-->
+                </div>
+            </div>
+    {% endfor %}
+</div>
+{% endblock content %}

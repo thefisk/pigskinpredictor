@@ -1,0 +1,16 @@
+{% extends "predictor/base.html" %}
+{% comment "template_location" %}
+'predictor/ajax_form.html'
+{% endcomment %}
+{% block content %}
+    <form method="post" >
+        {% csrf_token %}
+        {{form}}
+       
+        <button type="submit" class="btn btn-default"></button>Submit</button>
+    </form>
+{% endblock content %}
+
+{% block javascript %}
+
+{% endblock javascript %}

@@ -8,7 +8,11 @@ from .views import (
     UserPostListView,
     ResultsView,
     ScheduleView,
-    ScoresView
+    ScoresView,
+    UserPredictions,
+    CreatePredictionsViewfunc,
+    AddPredictionView,
+    ScoreTableView,
 )
 from . import views
 
@@ -22,6 +26,9 @@ urlpatterns = [
     path('post/new/', PostCreateView.as_view(), name='post-create'),
     path('results/', ResultsView.as_view(), name='results-view'),
     path('scores/<str:username>', ScoresView.as_view(), name='scores-view'),
-    path('schedule/', ScheduleView.as_view(), name='schedule-view')
+    path('schedule/', ScheduleView.as_view(), name='schedule-view'),
+    path('predictions/<str:username>/<str:season>/<str:week>', UserPredictions.as_view(), name='user-predictions'), #Still needed?????
+    path('predict/', CreatePredictionsViewfunc, name='new-prediction-view'),
+    path('addprediction/',AddPredictionView, name='add-prediction'),
+    path('scoretable/',ScoreTableView, name='scoretable'),
 ]
-
