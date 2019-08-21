@@ -9,14 +9,45 @@ $(function() {
     var predarray = [];
     var predindex = 0;
 
-    // Add selected teams to array
-    $('.team').on('click', function(){
-        $(this).toggleClass('chosenwinner');
-        predarray[predindex] = {};
-        predarray[predindex]['pred_game'] = $(this).parent().parent().attr('id');
-        predarray[predindex]['pred_winner'] = $(this).attr('id');
-        predindex += 1;
-        console.dir(predarray);
+    // Add selected teams to array if array is empty
+    $('.team').on('click', function(event){
+        event.stopPropagation();
+        if (predarray.length == 0){
+              // Add logic
+              $(this).toggleClass('chosenwinner');
+              predarray[predindex] = {};
+              predarray[predindex]['pred_game'] = $(this).parent().parent().attr('id');
+              predarray[predindex]['pred_winner'] = $(this).attr('id');
+              predindex += 1;
+              console.dir(predarray);
+              console.dir(typeof(predarray)); 
+        }
+        // If array is not empty, check for Game ID
+        else {
+
+            // Initial loop to identify if Game ID exists
+            for (var i = 0; i < predarray.length; i++) {
+                var gamecount = 0;
+                if (predarray[i].pred_game == $(this).parent().parent().attr('id')){
+                    gamecount += 1;
+                }
+            }
+            // If Game ID not found, add prediction
+            if (gamecount == 0){
+                // Add logic
+                $(this).toggleClass('chosenwinner');
+                predarray[predindex] = {};
+                predarray[predindex]['pred_game'] = $(this).parent().parent().attr('id');
+                predarray[predindex]['pred_winner'] = $(this).attr('id');
+                predindex += 1;
+                console.dir(predarray);
+                console.dir(typeof(predarray));
+                }
+            // If Game ID is found...
+            else{
+                console.log("already exists!");
+                }
+            }
     });
 
 
