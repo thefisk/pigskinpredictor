@@ -24,12 +24,12 @@ $(function() {
         }
         // If array is not empty, check for Game ID
         else {
-
+            var gamecount = 0;
             // Initial loop to identify if Game ID exists
             for (var i = 0; i < predarray.length; i++) {
-                var gamecount = 0;
                 if (predarray[i].pred_game == $(this).parent().parent().attr('id')){
                     gamecount += 1;
+                    var duplicategame = i;
                 }
             }
             // If Game ID not found, add prediction
@@ -45,7 +45,31 @@ $(function() {
                 }
             // If Game ID is found...
             else{
-                console.log("already exists!");
+                console.log("already exists! "+duplicategame);
+                // If same team is selected again
+                if(predarray[duplicategame].pred_winner == $(this).attr('id')){
+                    $(this).toggleClass('chosenwinner');
+                    predarray.splice(duplicategame,1);
+                    predindex -= 1;
+                    console.log($(this).attr('id'));
+                    console.dir(predarray)
+                    }
+                // Else, if different winner is chosen
+                else{
+                    // Remove existing entry
+                    predarray.splice(duplicategame,1);
+                    predindex -=1;
+                    // Add this entry to array
+                    $(this).toggleClass('chosenwinner');
+                    predarray[predindex] = {};
+                    predarray[predindex]['pred_game'] = $(this).parent().parent().attr('id');
+                    predarray[predindex]['pred_winner'] = $(this).attr('id');
+                    predindex += 1;
+                    console.dir(predarray);
+                    console.dir(typeof(predarray));    
+                    // Toggle previous entry off
+                    $(this).siblings().toggleClass('chosenwinner');
+                    }
                 }
             }
     });
