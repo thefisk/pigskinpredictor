@@ -79,11 +79,16 @@ $(function() {
     $('#predict-submit').on('click', function(event){
         event.preventDefault();
         console.log("Submit button pressed");  // sanity check
+        if(predarray.length == 16){
         $('.hideme').hide();
         $('#submitted').html('<h2>Prediction Submitted, Good Luck!</h2>');
         var jsonstring = JSON.stringify(predarray);
         var predjson = JSON.parse(jsonstring);
         loop_predictions(predjson);
+        }
+        else{
+            window.alert("Please fill in all predictions");
+        }
     });
 
     // Loop through JSON Array and submit each entry

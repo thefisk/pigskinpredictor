@@ -6,9 +6,14 @@
 
 .game-card {
     font-size: 20px !important;
-    color: saddlebrown !important;
+    color: #01579b !important;
 }
 
 .logoimg {
     max-height: 100%;
+}
+
+.team {
+    height: 75px;
+    width: 75px;
 }
