@@ -13,13 +13,13 @@ from .views import (
     CreatePredictionsViewfunc,
     AddPredictionView,
     ScoreTableView,
+    AboutView,
 )
 from . import views
 
 urlpatterns = [
     path('', PostListView.as_view(), name='blog-home'),
     path('user/<str:username>', UserPostListView.as_view(), name='user-posts'),
-    path('about/', views.about, name='blog-about'),
     path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
     path('post/<int:pk>/update/', PostUpdateView.as_view(), name='post-update'),
     path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),
@@ -31,4 +31,5 @@ urlpatterns = [
     path('predict/', CreatePredictionsViewfunc, name='new-prediction-view'),
     path('addprediction/',AddPredictionView, name='add-prediction'),
     path('scoretable/',ScoreTableView, name='scoretable'),
+    path('about/',AboutView, name='about'),
 ]

@@ -9,6 +9,9 @@ $(function() {
     var predarray = [];
     var predindex = 0;
 
+    // Count number of games for pre-submission verification
+    var numberOfGames = $('.card').length;
+
     // Add selected teams to array if array is empty
     $('.team').on('click', function(event){
         event.stopPropagation();
@@ -79,7 +82,7 @@ $(function() {
     $('#predict-submit').on('click', function(event){
         event.preventDefault();
         console.log("Submit button pressed");  // sanity check
-        if(predarray.length == 16){
+        if(predarray.length == numberOfGames){
         $('.hideme').hide();
         $('#submitted').html('<h2>Prediction Submitted, Good Luck!</h2>');
         var jsonstring = JSON.stringify(predarray);

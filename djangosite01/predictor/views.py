@@ -144,7 +144,7 @@ class PostDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
             return True
         return False
 
-def about(request):
+def AboutView(request):
     return render(request, 'predictor/about.html', {'title':'About'})
 
 
