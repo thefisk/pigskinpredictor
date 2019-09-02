@@ -7,4 +7,4 @@ The aim is to produce a predictions game whereby people simply pick weekly game 
 
 The site uses python scripts to pull schedule and result information from NFL XML feeds, turn them into application-compatible JSON, and import the data into the back-end database via Django imports.
 
-Scoring is all automated and the tables are updated weekly, based on the real-life results.
+Scoring is all automated via model relationships and save method overrides.  The scoretables will be updated weekly, based on the real-life results.
