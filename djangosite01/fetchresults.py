@@ -12,11 +12,16 @@ tree = ET.fromstring(xml.content)
 # Below makes a dictionary to define following list by
 for row in tree.getiterator('gms'):
     resultset = (row.attrib)
-#outfile.write(str(resultset))
 week = resultset['w']
 season = resultset['y']
 
-outfile = open("resultsimport.json", "w")
+# Set Filename to include week number
+if int(week) < 10:
+    filename = "resultsimport_"+season+"_0"+week+".json"
+else:
+    filename = "resultsimport_"+season+"_"+week+".json"
+
+outfile = open(filename, "w")
 
 # Below makes a list of dictionaries for each game
 resultsdiclist = []
