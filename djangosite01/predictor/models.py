@@ -25,6 +25,23 @@ class Team(models.Model):
     def __str__(self):
         return('{} {}'.format(self.Town, self.Nickname))
 
+class Banker(models.Model):
+    UserSeasonKey = models.CharField(max_length=10, null=True, blank=True)
+    BankerTeam = models.ForeignKey(Team, related_name="BankerTeam_Banker_Set",on_delete=models.CASCADE)
+    User = models.ForeignKey(User, on_delete=models.CASCADE)
+    BankWeek = models.IntegerField()
+    BankSeason = models.IntegerField()
+
+    class Meta:
+        unique_together = ("UserSeasonKey","BankerTeam")
+
+    def __str__(self):
+        return('{}, Week {}, {}, {}'.format(self.User, self.BankWeek, self.BankSeason, self.BankerTeam))
+
+    def save(self, *args, **kwargs):
+        self.UserSeasonKey = str(self.User.id)+"_"+str(self.BankSeason)
+        super(Banker, self).save(*args, **kwargs)
+
 class Match(models.Model):
     Season = models.IntegerField(validators=[MinValueValidator(2012), MaxValueValidator(2050)])
     Week = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(17)])
@@ -115,6 +132,7 @@ class ScoresWeek(models.Model):
     class Meta:
         verbose_name_plural = "Weekly Scores"
         ordering = ['-WeekScore', 'User']
+
 
 
 class ScoresSeason(models.Model):
