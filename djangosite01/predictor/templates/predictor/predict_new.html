@@ -23,6 +23,12 @@
                 </div>
             {% endfor %}
         </div>
+        <div id="bankers">
+            <h6>Used Bankers</h6>
+            {% for banker in bankers %}
+            <ul>Week {{ banker.BankWeek}} | {{ banker.BankerTeam }}</ul>
+            {% endfor %}
+        </div>
         <div id="submitted">
         </div>
     <button id="predict-submit" class="waves-effect waves-light btn hideme" type="submit">Submit</button>

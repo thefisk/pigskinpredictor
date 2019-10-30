@@ -25,23 +25,6 @@ class Team(models.Model):
     def __str__(self):
         return('{} {}'.format(self.Town, self.Nickname))
 
-class Banker(models.Model):
-    UserSeasonKey = models.CharField(max_length=10, null=True, blank=True)
-    BankerTeam = models.ForeignKey(Team, related_name="BankerTeam_Banker_Set",on_delete=models.CASCADE)
-    User = models.ForeignKey(User, on_delete=models.CASCADE)
-    BankWeek = models.IntegerField()
-    BankSeason = models.IntegerField()
-
-    class Meta:
-        unique_together = ("UserSeasonKey","BankerTeam")
-
-    def __str__(self):
-        return('{}, Week {}, {}, {}'.format(self.User, self.BankWeek, self.BankSeason, self.BankerTeam))
-
-    def save(self, *args, **kwargs):
-        self.UserSeasonKey = str(self.User.id)+"_"+str(self.BankSeason)
-        super(Banker, self).save(*args, **kwargs)
-
 class Match(models.Model):
     Season = models.IntegerField(validators=[MinValueValidator(2012), MaxValueValidator(2050)])
     Week = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(17)])
@@ -55,6 +38,26 @@ class Match(models.Model):
     
     class Meta:
         verbose_name_plural = "Matches"
+
+class Banker(models.Model):
+    UserSeasonKey = models.CharField(max_length=10, null=True, blank=True)
+    BankerTeam = models.ForeignKey(Team, related_name="BankerTeam_Banker_Set",on_delete=models.CASCADE)
+    User = models.ForeignKey(User, on_delete=models.CASCADE)
+    BankWeek = models.IntegerField(null=True, blank=True)
+    BankSeason = models.IntegerField(null=True, blank=True)
+    BankGame = models.ForeignKey(Match, related_name="Match_Banker_Set", on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ("UserSeasonKey","BankerTeam")
+
+    def __str__(self):
+        return('{}, Week {}, {}, {}'.format(self.User, self.BankWeek, self.BankSeason, self.BankerTeam))
+
+    def save(self, *args, **kwargs):
+        self.UserSeasonKey = str(self.User.id)+"_"+str(self.BankGame.Season)
+        self.BankSeason = self.BankGame.Season
+        self.BankWeek = self.BankGame.Week
+        super(Banker, self).save(*args, **kwargs)
 
 class Prediction(models.Model):
     User = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -89,7 +92,7 @@ class Prediction(models.Model):
             else:
                 # if a weekly score object exists, add the points to it
                 weekscore = ScoresWeek.objects.get(User=self.User, Week=self.Game.Week)
-                weekscore.Weekscore += self.Points
+                weekscore.WeekScore += self.Points
                 weekscore.save()
 
             ### Add Points to Season Scores ###
@@ -119,7 +122,6 @@ class Prediction(models.Model):
                 alltimescore.save()
             super(Prediction, self).save(*args, **kwargs)
 
-
 class ScoresWeek(models.Model):
     User = models.ForeignKey(User, on_delete=models.CASCADE)
     Week = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(17)])
@@ -133,8 +135,6 @@ class ScoresWeek(models.Model):
         verbose_name_plural = "Weekly Scores"
         ordering = ['-WeekScore', 'User']
 
-
-
 class ScoresSeason(models.Model):
     User = models.ForeignKey(User, on_delete=models.CASCADE)
     SeasonScore = models.IntegerField()
@@ -147,7 +147,6 @@ class ScoresSeason(models.Model):
         verbose_name_plural = "Season Scores"
         ordering = ['-SeasonScore', 'User']
 
-
 class ScoresAllTime(models.Model):
     User = models.ForeignKey(User, on_delete=models.CASCADE)
     AllTimeScore = models.IntegerField()
@@ -158,7 +157,6 @@ class ScoresAllTime(models.Model):
     class Meta:
         verbose_name_plural = "All Time Scores"
         ordering = ['-AllTimeScore', 'User']
-
 
 class Results(models.Model):
     Season = models.IntegerField(validators=[MinValueValidator(2012), MaxValueValidator(2050)])
@@ -199,12 +197,25 @@ class Results(models.Model):
         thisgamepreds = Prediction.objects.filter(Game=self.GameID)
 
         for pred in thisgamepreds:
-            if pred.Winner == self.Winner:
-                pred.Points = scored
-                pred.save()
+            # Look for matching banker record
+            try:
+                Banker.objects.get(BankGame=pred.Game, User=pred.User)
+            # If no matching banker record found
+            except:
+                if pred.Winner == self.Winner:
+                    pred.Points = scored
+                    pred.save()
+                else:
+                    pred.Points = 0
+                    pred.save()
+            # If Banker record does exist, score it
             else:
-                pred.Points = 0
-                pred.save()
+                if pred.Winner == self.Winner:
+                    pred.Points = scored*2
+                    pred.save()
+                else:
+                    pred.Points = 0-(scored*2)
+                    pred.save()
         super(Results, self).save(*args, **kwargs)
 
     def __str__(self):

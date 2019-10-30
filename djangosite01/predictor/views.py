@@ -11,7 +11,8 @@ from .models import (
     Prediction,
     ScoresWeek,
     ScoresSeason,
-    ScoresAllTime
+    ScoresAllTime,
+    Banker
 )
 from .mixins import AjaxFormMixin
 #from .forms import testpredictionform
@@ -70,6 +71,7 @@ def CreatePredictionsViewfunc(request):
     else:
         template = 'predictor/predict_alreadydone.html'
     context = {
+        'bankers':Banker.objects.filter(User=request.user, BankSeason=2019),  # <- REPLACE WITH ENV VAR FOR CURRENT SEASON
         'predictions':Prediction.objects.all(),
         'matches':Match.objects.filter(Week=17, Season=2018)  # <-  NEED TO REPLACE WITH FILTER
     }
