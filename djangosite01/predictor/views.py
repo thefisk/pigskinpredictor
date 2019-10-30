@@ -1,4 +1,4 @@
-import json
+import json, os
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -66,14 +66,16 @@ class CreatePredictionsView(LoginRequiredMixin,CreateView):
 
 ### View to Display "Add Predictions" Screen
 def CreatePredictionsViewfunc(request):
-    if len(Prediction.objects.filter(Game__Week=17, User=request.user)) == 0:  # <-  MAKE "CURRENT WEEK"
+    if len(Prediction.objects.filter(Game__Week=17, User=request.user)) == 0:
         template = 'predictor/predict_new.html'
     else:
         template = 'predictor/predict_alreadydone.html'
     context = {
-        'bankers':Banker.objects.filter(User=request.user, BankSeason=2019),  # <- REPLACE WITH ENV VAR FOR CURRENT SEASON
+        'bankers':Banker.objects.filter(User=request.user, BankSeason=os.environ['PREDICTSEASON']),
         'predictions':Prediction.objects.all(),
-        'matches':Match.objects.filter(Week=17, Season=2018)  # <-  NEED TO REPLACE WITH FILTER
+        'matches':Match.objects.filter(Week=os.environ['PREDICTWEEK'], Season=os.environ['PREDICTSEASON']),
+        'week':os.environ['PREDICTWEEK'],
+        'season':os.environ['PREDICTSEASON']
     }
 
     return render(request, template, context)
@@ -177,9 +179,15 @@ def AddPredictionView(request):
 
 ### View to display latest scoretable for all users
 def ScoreTableView(request):
+    # Below sets score week to 1 below current prediction week
+    # IE - to pull scores from last completed week
+    scoreweek = int(os.environ['PREDICTWEEK']) - 
+    
     context = {
-        'seasonscores': ScoresSeason.objects.filter(Season=2018),   # <-  Static Filter in place for testing!!!
-        'weekscores': ScoresWeek.objects.filter(Week=17,Season=2018)  # <-  Static Filter in place for testing!!!
+        'seasonscores': ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']),
+        'weekscores': ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON']),
+        'week':scoreweek,
+        'season':os.environ['PREDICTSEASON']
     }
 
     return render(request, 'predictor/scoretable.html', context)
