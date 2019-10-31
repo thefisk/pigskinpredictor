@@ -18,7 +18,11 @@
         {% for seasonscore in seasonscores %}
                 <tr>
                     <td>{{ seasonscore.User }}</td>
-                    <td>{{ weekscore.Weekscore }}</td>
+                    {% for weekscore in weekscores %}
+                        {% if seasonscore.User == weekscore.User %}
+                        <td>{{ weekscore.WeekScore }}</td>
+                        {% endif %}
+                    {% endfor %}
                     <td>{{ seasonscore.SeasonScore }}</td>
                 </tr>
         {% endfor %}

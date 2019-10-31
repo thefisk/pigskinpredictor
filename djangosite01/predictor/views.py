@@ -181,7 +181,7 @@ def AddPredictionView(request):
 def ScoreTableView(request):
     # Below sets score week to 1 below current prediction week
     # IE - to pull scores from last completed week
-    scoreweek = int(os.environ['PREDICTWEEK']) - 
+    scoreweek = int(os.environ['PREDICTWEEK']) - 1
     
     context = {
         'seasonscores': ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']),
