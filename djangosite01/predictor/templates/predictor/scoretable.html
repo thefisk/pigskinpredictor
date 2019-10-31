@@ -1,3 +1,16 @@
+<style>
+        body {
+          /* Set "my-sec-counter" to 0 */
+          counter-reset: my-sec-counter;
+        }
+        
+        .count::after {
+          /* Increment "my-sec-counter" by 1 */
+          counter-increment: my-sec-counter;
+          content: counter(my-sec-counter) ". ";
+        }
+        </style>
+        
 {% extends "predictor/base.html" %}
 
 {% block content %}
@@ -9,6 +22,7 @@
         <table class="striped">
             <thead>
                 <tr>
+                    <th>Pos.</th>
                     <th>Player</th>
                     <th>Week Score</th>
                     <th>Total Score</th>
@@ -17,7 +31,8 @@
             <tbody>
         {% for seasonscore in seasonscores %}
                 <tr>
-                    <td>{{ seasonscore.User }}</td>
+                    <td class="count"></td>
+                    <td>{{ seasonscore.User.first_name }} {{ seasonscore.User.last_name }}</td>
                     {% for weekscore in weekscores %}
                         {% if seasonscore.User == weekscore.User %}
                         <td>{{ weekscore.WeekScore }}</td>
