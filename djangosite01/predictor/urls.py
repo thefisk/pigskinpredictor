@@ -12,6 +12,7 @@ from .views import (
     UserPredictions,
     CreatePredictionsViewfunc,
     AddPredictionView,
+    AddBankerView,
     ScoreTableView,
     AboutView,
 )
@@ -30,6 +31,7 @@ urlpatterns = [
     path('predictions/<str:username>/<str:season>/<str:week>', UserPredictions.as_view(), name='user-predictions'), #Still needed?????
     path('predict/', CreatePredictionsViewfunc, name='new-prediction-view'),
     path('addprediction/',AddPredictionView, name='add-prediction'),
+    path('addbanker/',AddBankerView, name='add-banker'),
     path('scoretable/',ScoreTableView, name='scoretable'),
     path('about/',AboutView, name='about'),
 ]

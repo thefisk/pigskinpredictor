@@ -31,20 +31,37 @@
           <a href="#!" class="brand-logo center">Pigskin Predictor</a>
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
           <ul class="right hide-on-med-and-down">
+            {% if user.is_authenticated %}
             <li><a href="{% url 'new-prediction-view' %}">Predict</a></li>
             <li><a href="{% url 'scoretable' %}">Leaderboard</a></li>
             <li><a href="{% url 'new-prediction-view' %}">Scoring</a></li>
-            <li><a href="{% url 'about' %}">About</a></li>  
+            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+            <li><a href="{% url 'scoretable' %}">Leaderboard</a></li>
+            <li><a href="{% url 'new-prediction-view' %}">Scoring</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'register' %}">Register</a></li>
+            {% endif %}
           </ul>
         </div>
       </nav>
     
       <ul class="sidenav" id="mobile-demo">
-        <li><a href="sass.html">Predict</a></li>
-        <li><a href="{% url 'new-prediction-view' %}">Predict</a></li>
-        <li><a href="{% url 'scoretable' %}">Leaderboard</a></li>
-        <li><a href="{% url 'new-prediction-view' %}">Scoring</a></li>
-        <li><a href="{% url 'about' %}">About</a></li>
+          {% if user.is_authenticated %}
+          <li><a href="{% url 'new-prediction-view' %}">Predict</a></li>
+          <li><a href="{% url 'scoretable' %}">Leaderboard</a></li>
+          <li><a href="{% url 'new-prediction-view' %}">Scoring</a></li>
+          <li><a href="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'logout' %}">Logout</a></li>
+          {% else %}
+          <li><a href="{% url 'scoretable' %}">Leaderboard</a></li>
+          <li><a href="{% url 'new-prediction-view' %}">Scoring</a></li>
+          <li><a href="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'login' %}">Login</a></li>
+          <li><a href="{% url 'register' %}">Register</a></li>
+          {% endif %}
       </ul>
       </header>
     <!--/div-->
@@ -66,7 +83,6 @@
         <div class="footer-copyright">
           <div class="container">
           A <a href="http://nathanfisk.co.uk">Nathan Fisk</a> project
-          <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
           </div>
         </div>
       </footer>

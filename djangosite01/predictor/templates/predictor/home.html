@@ -1,37 +1,37 @@
 {% extends "predictor/base.html" %}
 {% block content %}
-    {% for post in posts %}
-        <article class="media content-section">
-            <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}"> <!--displays profile pic next to post-->
-            <div class="media-body">
-              <div class="article-metadata">
-                <a class="mr-2" href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a>
-                <small class="text-muted">{{ post.date_posted | date:"d F Y" }}</small>
-              </div>
-              <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
-              <p class="article-content">{{ post.content }}</p>
+<div class='container'>
+    <div class="row">
+        <div class="col s12 m4 l4"><p>
+            <div class="card">
+                <span class="card-title">
+                    Quick to Play
+                </span>
+                <div class="card-content grey lighten-5">
+                    <p>Pigskin Predictor is a weekly prediction game that takes less than the time it takes to make a decent cuppa!</p>
+                </div>
             </div>
-        </article>
-    {% endfor %}
-    {% if is_paginated %}
-
-        {% if page_obj.has_previous %}
-          <A class="btn btn-outline-info mb-4" href="?page=1">First</A>
-          <A class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</A>
-        {% endif %}
-
-        {% for num in page_obj.paginator.page_range %}
-          {% if page_obj.number == num %}
-            <A class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</A>
-          {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-            <A class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</A>
-          {% endif %}
-        {% endfor %}
-
-        {% if page_obj.has_next %}
-         <A class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</A>
-         <A class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</A>
-        {% endif %}
-
-    {% endif %}
+        </div>
+        <div class="col s12 m4 l4"><p>
+            <div class="card">
+                <span class="card-title">
+                    Difficult to Master
+                </span>
+                <div class="card-content grey lighten-5">
+                    <p>Choose a different away team banker each week to win (or lose) double points!</p>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m4 l4"><p>
+            <div class="card">
+                <span class="card-title">
+                    Compete Against Friends
+                </span>
+                <div class="card-content grey lighten-5">
+                    <p>Put your prediction skills to the test by going up against friends. Who will win out over a long 17 week season?</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}

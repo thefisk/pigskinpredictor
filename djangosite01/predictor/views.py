@@ -177,6 +177,32 @@ def AddPredictionView(request):
         else:
             return JsonResponse({"nothing to see": "this isn't happening"})
 
+### View called by Ajax to add Banker to database.  Returns JSON response.
+def AddBankerView(request):
+        if request.method == 'POST':
+            banker_user = request.user
+            json_data = json.loads(request.body.decode('utf-8'))
+            jsongame = json_data['bank_game']
+            bankgame = Match.objects.get(GameID=jsongame)
+            bankerteam = (Match.objects.get(GameID=jsongame)).AwayTeam
+            response_data = {}
+            bankseason = os.environ['PREDICTSEASON']
+            bankweek = os.environ['PREDICTWEEK']
+
+        
+            bankerentry = Banker(User=banker_user, BankWeek=bankweek, BankSeason=bankseason, BankGame=bankgame, BankerTeam=bankerteam)
+            bankerentry.save()
+
+            response_data['result'] = 'Banker entry successful!'
+            response_data['game'] = str(bankerentry.BankGame)
+            response_data['user'] = str(bankerentry.User)
+            response_data['winner'] = str(bankerentry.BankerTeam)
+
+            return JsonResponse(response_data)
+
+        else:
+            return JsonResponse({"nothing to see": "this isn't happening"})
+
 ### View to display latest scoretable for all users
 def ScoreTableView(request):
     # Below sets score week to 1 below current prediction week
