@@ -7,6 +7,7 @@ $(function() {
 
     // Initialise chosenbanker variable
     var chosenbanker;
+    console.log("initial chosenbanker is "+chosenbanker);
 
     // Read in used bankers
     var usedbankers = [];
@@ -181,27 +182,32 @@ $(function() {
     $('#predict-submit').on('click', function(event){
         event.preventDefault();
         console.log("Submit button pressed");  // sanity check
-        if(usedbankers.includes(chosenbanker)){
-            window.alert("Banker already used - please choose another")
-        }
+        if(chosenbanker == null){
+            window.alert("Please choose a banker");
+            }
         else{
-            // Initiate Banker Object
-            var bankerobj = [];
-            bankerobj[0]= {};
-            bankerobj[0]['bank_game']=chosenbanker;
-            var jsonbanker = JSON.stringify(bankerobj[0]);
-            if(predarray.length == numberOfGames){
-                $('.hideme').hide();
-                $('#submitted').html('<h2>Prediction Submitted, Good Luck!</h2>');
-                var jsonstring = JSON.stringify(predarray);
-                var predjson = JSON.parse(jsonstring);
-                loop_predictions(predjson);
+            if(usedbankers.includes(chosenbanker)){
+                window.alert("Banker already used - please choose another")
                 }
             else{
-                window.alert("Please fill in all predictions");
-            }
-            // Post banker
-            add_banker(jsonbanker);
+                // Initiate Banker Object
+                var bankerobj = [];
+                bankerobj[0]= {};
+                bankerobj[0]['bank_game']=chosenbanker;
+                var jsonbanker = JSON.stringify(bankerobj[0]);
+                if(predarray.length == numberOfGames){
+                    $('.hideme').hide();
+                    $('#submitted').html('<h2>Prediction Submitted, Good Luck!</h2>');
+                    var jsonstring = JSON.stringify(predarray);
+                    var predjson = JSON.parse(jsonstring);
+                    loop_predictions(predjson);
+                    // Post banker
+                    add_banker(jsonbanker);
+                    }
+                else{
+                    window.alert("Please fill in all predictions");
+                    }
+                }
             }
         });
 
