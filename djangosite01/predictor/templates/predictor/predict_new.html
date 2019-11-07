@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="container">
-        <h5>
+        <h5 class="hideme">
         New Predictions for week {{ week }}, {{ season }}
         </h5>
         <div id="predictioncards" class="row hideme">
@@ -21,8 +21,8 @@
                 </div>
             {% endfor %}
         </div>
-        <div class="divider"></div>
-        <div class = "section" id="bankers">
+        <div class="divider hideme"></div>
+        <div class = "section hideme" id="bankers">
             <h5>Unavailable Bankers</h5>
             <h6><em>Excludes used bankers on byes this week</em></h6>
             <ul>

@@ -7,6 +7,8 @@ from xml.etree import ElementTree as ET
 
 # Below pulls xml content and stores it in an XML Tree
 xml = requests.get('http://www.nfl.com/liveupdate/scorestrip/ss.xml')
+# Belw line for testing to retrieve a particular week
+# xml = requests.get('http://www.nfl.com/ajax/scorestrip?season=2019&seasonType=REG&week=9')
 tree = ET.fromstring(xml.content)
 
 # Below makes a dictionary to define following list by
