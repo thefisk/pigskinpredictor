@@ -34,12 +34,12 @@
             {% if user.is_authenticated %}
             <li><a href="{% url 'new-prediction-view' %}">Predict</a></li>
             <li><a href="{% url 'scoretable' %}">Leaderboard</a></li>
-            <li><a href="{% url 'new-prediction-view' %}">Scoring</a></li>
+            <li><a href="{% url 'scoring' %}">Scoring</a></li>
             <li><a href="{% url 'about' %}">About</a></li>
             <li><a href="{% url 'logout' %}">Logout</a></li>
             {% else %}
             <li><a href="{% url 'scoretable' %}">Leaderboard</a></li>
-            <li><a href="{% url 'new-prediction-view' %}">Scoring</a></li>
+            <li><a href="{% url 'scoring' %}">Scoring</a></li>
             <li><a href="{% url 'about' %}">About</a></li>
             <li><a href="{% url 'login' %}">Login</a></li>
             <li><a href="{% url 'register' %}">Register</a></li>

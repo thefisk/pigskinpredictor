@@ -25,47 +25,16 @@ from django.views.generic import (
     FormView
 )
 
-def home(request):
-    context = {
-        'posts':Post.objects.all()
-    }
-    return render(request, 'predictor/home.html', context)
+def HomeView(request):
+    return render(request, 'predictor/home.html')
 
 class ResultsView(ListView):
     model = Results
     context_object_name = 'results'
     template_name = 'predictor/results.html' # <app>/<model>_viewtype>.html
 
-class ScoresView(ListView):
-    #model = Prediction
-    #context_object_name = 'predictions'
-    template_name = 'predictor/scores.html' # <app>/<model>_viewtype>.html
-    
-    def get_context_data(self, **kwargs):
-        context = super(ScoresView, self).get_context_data(**kwargs)
-        context['predictions'] = Prediction.objects.all()
-        context['results'] = Results.objects.all()
-        return context
-        
-    def get_queryset(self):
-        user = get_object_or_404(User, username=self.kwargs.get('username'))
-        return Prediction.objects.filter(User=user).order_by('Game')
-
-class CreatePredictionsView(LoginRequiredMixin,CreateView):
-    template_name = 'predictor/predict.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(CreatePredictionsView, self).get_context_data(**kwargs)
-        context['predictions'] = Prediction.objects.all()
-        context['matches'] = Match.objects.filter(Week=17,Season=2018)
-        return context
-
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
-
 ### View to Display "Add Predictions" Screen
-def CreatePredictionsViewfunc(request):
+def CreatePredictionsView(request):
     if len(Prediction.objects.filter(Game__Week=17, User=request.user)) == 0:
         template = 'predictor/predict_new.html'
     else:
@@ -75,7 +44,8 @@ def CreatePredictionsViewfunc(request):
         'predictions':Prediction.objects.all(),
         'matches':Match.objects.filter(Week=os.environ['PREDICTWEEK'], Season=os.environ['PREDICTSEASON']),
         'week':os.environ['PREDICTWEEK'],
-        'season':os.environ['PREDICTSEASON']
+        'season':os.environ['PREDICTSEASON'],
+        'title':'New Prediction'
     }
 
     return render(request, template, context)
@@ -151,6 +121,8 @@ class PostDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
 def AboutView(request):
     return render(request, 'predictor/about.html', {'title':'About'})
 
+def ScoringView(request):
+    return render(request, 'predictor/scoring.html', {'title':'Scoring'})
 
 ### View called by Ajax to add predictions to database.  Returns JSON response.
 def AddPredictionView(request):
@@ -213,7 +185,8 @@ def ScoreTableView(request):
         'seasonscores': ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']),
         'weekscores': ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON']),
         'week':scoreweek,
-        'season':os.environ['PREDICTSEASON']
+        'season':os.environ['PREDICTSEASON'],
+        'title':'Leaderboard'
     }
 
     return render(request, 'predictor/scoretable.html', context)
