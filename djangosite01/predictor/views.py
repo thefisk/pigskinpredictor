@@ -5,7 +5,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
 from .models import (
-    Post,
     Results,
     Match,
     Prediction,
@@ -55,23 +54,6 @@ class ScheduleView(ListView):
     context_object_name = 'matches'
     template_name = 'predictor/schedule.html' # <app>/<model>_viewtype>.html
 
-class PostListView(ListView):
-    model = Post
-    template_name = 'predictor/home.html' # <app>/<model>_viewtype>.html
-    context_object_name = 'posts'
-    ordering = ['-date_posted']
-    paginate_by = 5 # no need to import Paginator with class based views, this property takes care of it for you
-
-class UserPostListView(ListView):
-    model = Post
-    template_name = 'predictor/user_posts.html' # <app>/<model>_viewtype>.html
-    context_object_name = 'posts'
-    paginate_by = 5 # no need to import Paginator with class based views, this property takes care of it for you
-
-    def get_queryset(self):
-        user = get_object_or_404(User, username=self.kwargs.get('username'))
-        return Post.objects.filter(author=user).order_by('-date_posted')
-
 class UserPredictions(ListView):
     model = Prediction
     template_name = 'predictor/user_predictions.html'
@@ -82,41 +64,6 @@ class UserPredictions(ListView):
         week = self.kwargs.get('week')
         season = self.kwargs.get('season')
         return Prediction.objects.filter(User=user,Game__Week=week,Game__Season=season)
-
-class PostDetailView(DetailView):
-    model = Post
-
-class PostCreateView(LoginRequiredMixin,CreateView): #can't use decorators (for login required etc) on class based views
-    model = Post
-    fields = ['title', 'content']
-
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
-
-class PostUpdateView(LoginRequiredMixin,UserPassesTestMixin,UpdateView): #can't use decorators (for login required etc) on class based views
-    model = Post
-    fields = ['title', 'content']
-
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
-
-    def test_func(self): #function to stop others updating your blog posts - user test
-        post = self.get_object()
-        if self.request.user == post.author:
-            return True
-        return False
-
-class PostDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
-    model = Post
-    success_url = '/'
-
-    def test_func(self): #function to stop others updating your blog posts - user test
-        post = self.get_object()
-        if self.request.user == post.author:
-            return True
-        return False
 
 def AboutView(request):
     return render(request, 'predictor/about.html', {'title':'About'})
