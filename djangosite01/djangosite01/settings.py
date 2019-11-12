@@ -32,7 +32,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'predictor.apps.PredictorConfig',
-    'users.apps.UsersConfig',
     'accounts.apps.AccountsConfig',
     'crispy_forms',
     'django.contrib.admin',
