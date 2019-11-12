@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'predictor.apps.PredictorConfig',
     'users.apps.UsersConfig',
+    'accounts.apps.AccountsConfig',
     'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -153,6 +154,9 @@ AWS_DEFAULT_ACL = None
 
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
-#django-dbbackup settings
+# Django-dbbackup settings
 DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
 DBBACKUP_STORAGE_OPTIONS = {'location': '~/djangodbbackup'}
+
+# New Email-based user auth
+# AUTH_USER_MODEL = 'accounts.User'
