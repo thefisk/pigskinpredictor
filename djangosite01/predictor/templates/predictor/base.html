@@ -41,8 +41,8 @@
             <li><a href="{% url 'scoretable' %}">Leaderboard</a></li>
             <li><a href="{% url 'scoring' %}">Scoring</a></li>
             <li><a href="{% url 'about' %}">About</a></li>
-            <li><a href="{% url 'login' %}">Login</a></li>
-            <li><a href="{% url 'register' %}">Register</a></li>
+            <li><a href="/accounts/login">Login</a></li>
+            <li><a href="/accounts/signup">Register</a></li>
             {% endif %}
           </ul>
         </div>
@@ -59,8 +59,8 @@
           <li><a href="{% url 'scoretable' %}">Leaderboard</a></li>
           <li><a href="{% url 'new-prediction-view' %}">Scoring</a></li>
           <li><a href="{% url 'about' %}">About</a></li>
-          <li><a href="{% url 'login' %}">Login</a></li>
-          <li><a href="{% url 'register' %}">Register</a></li>
+          <li><a href="/accounts/login">Login</a></li>
+          <li><a href="/accounts/signup">Register</a></li>
           {% endif %}
       </ul>
       </header>
