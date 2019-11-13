@@ -19,10 +19,10 @@ class CustomUserChangeForm(UserChangeForm):
 class CustomSignupForm(SignupForm):
     first_name = forms.CharField(max_length=30, label='First Name')
     last_name = forms.CharField(max_length=30, label='Last Name')
-    fav_team = forms.ModelChoiceField(queryset=Team.objects.all(), label='Favourite Team')
+    fav_team = forms.ModelChoiceField(queryset=Team.objects.all(), empty_label=None, label='Favourite Team')
     def signup(self, request, user):
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
-        user.FavouriteTeam = self.fav_team
+        user.FavouriteTeam = self.cleaned_data['fav_team']
         user.save()
         return user
