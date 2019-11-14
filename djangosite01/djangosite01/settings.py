@@ -127,7 +127,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_URL = '/static/'
+#STATIC_URL = '/static/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -136,8 +136,8 @@ LOGOUT_REDIRECT_URL = 'home'
 
 LOGIN_URL= '/accounts/login'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+#MEDIA_URL = '/media/'
 
 EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -156,7 +156,14 @@ AWS_S3_REGION_NAME = 'eu-west-2'
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 
-DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+STATIC_LOCATION = 'static'
+STATIC_URL = 'https://{}.s3.{}.amazonaws.com/{}/'.format(AWS_STORAGE_BUCKET_NAME,AWS_S3_REGION_NAME,STATIC_LOCATION)
+STATICFILES_STORAGE = 'predictor.storage_backends.StaticStorage'
+
+MEDIA_LOCATION = 'media'
+MEDIA_URL = 'https://{}.s3.{}.amazonaws.com/media/'.format(AWS_STORAGE_BUCKET_NAME,AWS_S3_REGION_NAME)
+
+DEFAULT_FILE_STORAGE = 'predictor.storage_backends.MediaStorage'
 
 # Django-dbbackup settings
 DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
