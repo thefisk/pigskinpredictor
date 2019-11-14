@@ -132,6 +132,7 @@ STATIC_URL = '/static/'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
 
 LOGIN_URL= 'login'
 
@@ -184,6 +185,7 @@ ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_ADAPTER = "accounts.adapters.AccountAdapter"
 
 ACCOUNT_FORMS = {
 'signup': 'accounts.forms.CustomSignupForm',
