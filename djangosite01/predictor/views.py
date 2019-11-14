@@ -33,17 +33,20 @@ class ResultsView(ListView):
     template_name = 'predictor/results.html' # <app>/<model>_viewtype>.html
 
 ### View to Display "Add Predictions" Screen
+@login_required
 def CreatePredictionsView(request):
-    if len(Prediction.objects.filter(Game__Week=17, User=request.user)) == 0:
+    week = Week=os.environ['PREDICTWEEK']
+    season = os.environ['PREDICTSEASON']
+    if len(Prediction.objects.filter(Game__Week=week, Game__Season=season, User=request.user)) == 0:
         template = 'predictor/predict_new.html'
     else:
         template = 'predictor/predict_alreadydone.html'
     context = {
-        'bankers':Banker.objects.filter(User=request.user, BankSeason=os.environ['PREDICTSEASON']),
+        'bankers':Banker.objects.filter(User=request.user, BankSeason=season),
         'predictions':Prediction.objects.all(),
-        'matches':Match.objects.filter(Week=os.environ['PREDICTWEEK'], Season=os.environ['PREDICTSEASON']),
-        'week':os.environ['PREDICTWEEK'],
-        'season':os.environ['PREDICTSEASON'],
+        'matches':Match.objects.filter(Week=week, Season=season),
+        'week':week,
+        'season':season,
         'title':'New Prediction'
     }
 
