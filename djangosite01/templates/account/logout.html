@@ -1,9 +1,13 @@
 {% extends "predictor/base.html" %}
 {% block content %}
+<div class="container">
+<div class = col s3">
 <h5>Are you sure you want to log out?</h5>
 <form method="post">
   {% csrf_token %}
   {{ form.as_p }}
   <button type="submit">Log Out</button>
 </form>
+</div>
+</div>
 {% endblock content %}
