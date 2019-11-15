@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
+from accounts.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.urls import reverse
 
@@ -8,10 +8,20 @@ class Team(models.Model):
     ShortName = models.CharField(max_length=4, primary_key=True)
     Town = models.CharField(max_length=20)
     Nickname = models.CharField(max_length=20)
+    Conference = models.CharField(max_length=3, null=True, blank=True)
+    Division  = models.CharField(max_length=5, null=True, blank=True)
+    ConfDiv = models.CharField(max_length=9, null=True, blank=True)
     Logo = models.ImageField(default='football.png', upload_to='logos')
     
+
     def __str__(self):
         return('{} {}'.format(self.Town, self.Nickname))
+
+    def save(self, *args, **kwargs):
+        self.ConfDiv = str(self.Conference)+" "+str(self.Division)
+        super(Team, self).save(*args, **kwargs)
+    
+
 
 class Match(models.Model):
     Season = models.IntegerField(validators=[MinValueValidator(2012), MaxValueValidator(2050)])
