@@ -1,13 +1,16 @@
-import os, json
+import os, json, boto3
 from predictor.models import Team, Results
 
 def run():
    fileweek = os.environ['PREDICTWEEK']
    fileseason = os.environ['PREDICTSEASON']
-   filename = 'resultsimport_'+fileseason+'_'+fileweek+'.json'
+   filename = 'data/resultsimport_'+fileseason+'_'+fileweek+'.json'
+   bucket = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 
-   with open(filename) as results_json:
-      data = json.load(results_json)
+   s3 = boto3.resource('s3')
+   obj = s3.Object(bucket,filename)
+   body = obj.get()['Body'].read().decode('utf-8')
+   data = json.loads(body)
 
    for result in data:
       dataHome = result.get('fields').get('HomeTeam')
