@@ -130,7 +130,7 @@ def AddBankerView(request):
 def ScoreTableView(request):
     # Below sets score week to 1 below current prediction week
     # IE - to pull scores from last completed week
-    scoreweek = int(os.environ['PREDICTWEEK']) - 1
+    scoreweek = int(os.environ['RESULTSWEEK'])
     
     context = {
         'seasonscores': ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']),

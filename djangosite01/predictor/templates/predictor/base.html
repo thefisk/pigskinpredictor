@@ -33,8 +33,8 @@
     <!---div class="navbar-fixed"-->
     <nav>
         <div class="nav-wrapper">
-          <img class="logoimg" src="{% static "predictor/img/piglogo.png" %}" alt="logo">
-          <a href="#!" class="brand-logo center">Pigskin Predictor</a>
+          <a href="{% url 'home' %}"><img class="logoimg" src="{% static "predictor/img/piglogo.png" %}" alt="logo"></a>
+          <a href="{% url 'home' %}" class="brand-logo center">Pigskin Predictor</a>
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
           <ul class="right hide-on-med-and-down">
             {% if user.is_authenticated %}

@@ -8,7 +8,7 @@ from xml.etree import ElementTree as ET
 def run():
 
     # Pull results xml for current week
-    predweek = os.environ.get('PREDICTWEEK')
+    resultsweek = os.environ.get('RESULTSWEEK')
     predseason = os.environ.get('PREDICTSEASON')
     uri = 'http://www.nfl.com/ajax/scorestrip?season={}&seasonType=REG&week={}'.format(predseason, predweek)
     xml = requests.get(uri)

@@ -29,7 +29,7 @@
             {% for banker in bankers %}
                 {% for match in matches %}
                     {% if match.AwayTeam == banker.BankerTeam %}
-                        <li id="{{ match.GameID }}">Week {{ banker.BankWeek}} | {{ banker.BankerTeam }}</li>
+                        <li id="{{ match.GameID }}"><img src="{{ banker.BankerTeam.Logo.url }}" alt="{{ banker.BankerTeam.Nickname }}" class="team_small"> {{ banker.BankerTeam }}</li>
                     {% endif %}
                 {% endfor %}
             {% endfor %}

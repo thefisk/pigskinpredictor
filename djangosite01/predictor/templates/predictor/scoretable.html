@@ -34,7 +34,7 @@
         {% for seasonscore in seasonscores %}
                 <tr>
                     <td class="count"></td>
-                    <td><img src="{{ seasonscore.User.FavouriteTeam.Logo.url }}" class="score_small"> &nbsp; {{ seasonscore.User.first_name }} {{ seasonscore.User.last_name }}</td>
+                    <td><img src="{{ seasonscore.User.FavouriteTeam.Logo.url }}" class="team_small"> &nbsp; {{ seasonscore.User.first_name }} {{ seasonscore.User.last_name }}</td>
                     {% for weekscore in weekscores %}
                         {% if seasonscore.User == weekscore.User %}
                         <td>{{ weekscore.WeekScore }}</td>
