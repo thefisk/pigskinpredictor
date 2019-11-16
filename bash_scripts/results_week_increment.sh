@@ -6,5 +6,5 @@ curl -X PATCH https://api.heroku.com/apps/pigskinpredictor/config-vars \
   "RESULTSWEEK": '"\"$newweek\""'
 }' \
   -H "Content-Type: application/json" \
-  -H "Accept: application/vnd.heroku+json; version=3"
+  -H "Accept: application/vnd.heroku+json; version=3" \
   -H "Authorization: Bearer $OAUTH"
