@@ -1,7 +1,7 @@
 #! /bin/sh
 # A script to increment the RESULTSWEEK variable on a weekly basis
 newweek="$(($RESULTSWEEK + 1))"
-curl -n -X PATCH https://api.heroku.com/apps/pigskinpredictor/config-vars \
+curl -X PATCH https://api.heroku.com/apps/pigskinpredictor/config-vars \
   -d '{
   "RESULTSWEEK": '"\"$newweek\""'
 }' \
