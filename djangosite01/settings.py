@@ -199,4 +199,5 @@ ACCOUNT_FORMS = {
 'signup': 'accounts.forms.CustomSignupForm',
 }
 
-django_heroku.settings(locals())
+# staticfiles=False added so Heroku will use S3.  Without, it uses local!
+django_heroku.settings(locals(), staticfiles=False)
