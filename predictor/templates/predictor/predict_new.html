@@ -2,9 +2,12 @@
 
 {% block content %}
     <div class="container">
-        <h5 class="hideme">
+        
+        <h5 class="center-align">
         New Predictions for week {{ week }}, {{ season }}
         </h5>
+        <p><h6 class="center-align"><em>Double click for away bankers, single click for all others</em></h6></p>
+        
         <div id="predictioncards" class="row hideme">
             {% for match in matches %}
                 <div class="col s12 m8 l3">
