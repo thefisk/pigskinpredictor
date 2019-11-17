@@ -36,7 +36,7 @@ class ResultsView(ListView):
 ### View to Display "Add Predictions" Screen
 @login_required
 def CreatePredictionsView(request):
-    week = Week=os.environ['PREDICTWEEK']
+    week = os.environ['PREDICTWEEK']
     season = os.environ['PREDICTSEASON']
     if len(Prediction.objects.filter(Game__Week=week, Game__Season=season, User=request.user)) == 0:
         template = 'predictor/predict_new.html'
@@ -128,9 +128,9 @@ def AddBankerView(request):
 
 ### View to display latest scoretable for all users
 def ScoreTableView(request):
-    # Below sets score week to 1 below current prediction week
-    # IE - to pull scores from last completed week
-    scoreweek = int(os.environ['RESULTSWEEK'])
+    # Below sets score week to 1 below current results week
+    # IE - to pull scores from last completed week 
+    scoreweek = int(os.environ['RESULTSWEEK']) - 1
     
     context = {
         'seasonscores': ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']),

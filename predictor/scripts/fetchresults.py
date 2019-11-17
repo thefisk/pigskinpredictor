@@ -10,7 +10,7 @@ def run():
     # Pull results xml for current week
     resultsweek = os.environ.get('RESULTSWEEK')
     predseason = os.environ.get('PREDICTSEASON')
-    uri = 'http://www.nfl.com/ajax/scorestrip?season={}&seasonType=REG&week={}'.format(predseason, predweek)
+    uri = 'http://www.nfl.com/ajax/scorestrip?season={}&seasonType=REG&week={}'.format(predseason, resultsweek)
     xml = requests.get(uri)
     tree = ET.fromstring(xml.content)
 
@@ -32,8 +32,6 @@ def run():
     resultsdiclist = []
     for row in tree.getiterator('g'):
         resultsdiclist.append(row.attrib)
-    #outfile.write(str(resultsdiclist))
-    #outfile.close()
     tidyresults = []
     count = 0
     for i in resultsdiclist:
