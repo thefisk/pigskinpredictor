@@ -1,10 +1,31 @@
 # Pigskin Predictor
-- A weekly NFL predictions game
+### *A weekly NFL predictions game*
 
-My first foray at making an actual functional web application, the site is chiefly a small project for personal development.
+#### Intro
 
-The aim is to produce a predictions game whereby people simply pick weekly game winners, including a weekly road team banker, and score points based on the outcomes of the games.
+This project is my first foray at making an actual functional web application, the site is chiefly a small project for personal development.
 
-The site uses python scripts to pull schedule and result information from NFL XML feeds, turn them into application-compatible JSON, and import the data into the back-end database via custom scripts.
+The site is a simple predictions game whereby people pick weekly match winners, including one road team banker, and score points based on the outcomes of the games.
 
-Scoring is all automated via model relationships and save method overrides.  The scoretables will be updated weekly, based on the real-life results.
+It is based on the Django web framework and uses Javascript to select and post users' predictions via AJAX. The site is hosted on Heroku and makes use of Heroku scheduler tasks in conjunction with RunScript, part of django-extensions.
+
+#### Application Flow
+
+* The site uses three environment variables to track the season and weeks, RESULTSWEEK & PREDICTWEEK being independent from each other.
+
+* Users' select weekly winners, including their banker choice. Those selections are posted via AJAX to the Prediction and Banker models.
+
+* On a Tuesday morning three scripts are run via the Heroku scheduler: -
+  * The first pulls the results from an NFL XML feed based on the current RESULTSWEEK env var and writes those to a JSON file with fields relevant to the Results model.
+  * The second scripts reads that JSON file and imports the results into the Results database table
+  * The third script increments the RESULTSWEEK env var
+ 
+ * During the second script, as results are written to the Results table, a Django save method override runs to find matching predictions in the Prediction table, and update those with relevant scores.
+ 
+ * As Prediction scores are saved, a further save override methods adds the points to Weekly, Season, and All-Time Score tables.
+ 
+ * Every Thursday evening a further script is run to increment the PREDICTWEEK env var to make the next week's predictions available for selection.
+ 
+ * The Leaderboard page pulls in season scores for each user, plus their score from the last week (based on RESULTSWEEK -1).
+ 
+ * The Javascript for the predictions page has been written in a way to only allow road teams to be set as bankers, and to not allow previous bankers to be used.
