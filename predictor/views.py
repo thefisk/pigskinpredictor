@@ -53,7 +53,7 @@ def CreatePredictionsView(request):
 
     return render(request, template, context)
 
-### View to Display "Add Predictions" Screen
+### View to Display "Amend Predictions" Screen
 @login_required
 def AmendPredictionsView(request):
     week = os.environ['PREDICTWEEK']
@@ -104,7 +104,7 @@ def ScoringView(request):
     return render(request, 'predictor/scoring.html', {'title':'Scoring'})
 
 ### View called by Ajax to add predictions to database.  Returns JSON response.
-def AddPredictionView(request):
+def AjaxAddPredictionView(request):
         if request.method == 'POST':
             pred_user = request.user
             json_data = json.loads(request.body.decode('utf-8'))
@@ -129,7 +129,7 @@ def AddPredictionView(request):
             return JsonResponse({"nothing to see": "this isn't happening"})
 
 ### View called by Ajax to add Banker to database.  Returns JSON response.
-def AddBankerView(request):
+def AjaxAddBankerView(request):
         if request.method == 'POST':
             banker_user = request.user
             json_data = json.loads(request.body.decode('utf-8'))
@@ -169,3 +169,59 @@ def ScoreTableView(request):
     }
 
     return render(request, 'predictor/scoretable.html', context)
+
+### View called by Ajax to amend predictions in database.  Returns JSON response.
+def AjaxAmendPredictionView(request):
+        if request.method == 'POST':
+            pred_user = request.user
+            json_data = json.loads(request.body.decode('utf-8'))
+            pred_winner = json_data['pred_winner']
+            pred_game_str = json_data['pred_game']
+            print(pred_game_str)
+            print(type(pred_game_str))
+            pred_game = Match.objects.get(GameID=pred_game_str)
+            response_data = {}
+
+            oldprediction = Prediction.objects.get(User=pred_user, Game=pred_game)
+            oldprediction.delete()
+        
+            predictionentry = Prediction(User=pred_user, Game=pred_game, Winner=pred_winner)
+            predictionentry.save()
+
+            response_data['result'] = 'Prediction entry successful!'
+            response_data['game'] = str(predictionentry.Game)
+            response_data['user'] = str(predictionentry.User)
+            response_data['winner'] = str(predictionentry.Winner)
+
+            return JsonResponse(response_data)
+
+        else:
+            return JsonResponse({"nothing to see": "this isn't happening"})
+
+### View called by Ajax to amend Banker to database.  Returns JSON response.
+def AjaxAmendBankerView(request):
+        if request.method == 'POST':
+            banker_user = request.user
+            json_data = json.loads(request.body.decode('utf-8'))
+            jsongame = json_data['bank_game']
+            bankgame = Match.objects.get(GameID=jsongame)
+            bankerteam = (Match.objects.get(GameID=jsongame)).AwayTeam
+            response_data = {}
+            bankseason = os.environ['PREDICTSEASON']
+            bankweek = os.environ['PREDICTWEEK']
+
+            oldbanker = Banker.objects.get(User=banker_user, BankWeek=bankweek, BankSeason=bankseason)
+            oldbanker.delete()
+        
+            bankerentry = Banker(User=banker_user, BankWeek=bankweek, BankSeason=bankseason, BankGame=bankgame, BankerTeam=bankerteam)
+            bankerentry.save()
+
+            response_data['result'] = 'Banker entry successful!'
+            response_data['game'] = str(bankerentry.BankGame)
+            response_data['user'] = str(bankerentry.User)
+            response_data['winner'] = str(bankerentry.BankerTeam)
+
+            return JsonResponse(response_data)
+
+        else:
+            return JsonResponse({"nothing to see": "this isn't happening"})

@@ -244,7 +244,7 @@ $(function() {
     function add_prediction(pred_string) {
         console.log("add_predictions is called!") // sanity check
         $.ajax({
-            url : "../addprediction/",
+            url : "../ajaxamendprediction/",
             type : "POST",
             headers: {
                 "X-CSRFToken": csrftoken,
@@ -273,7 +273,7 @@ $(function() {
         function add_banker(bank_string) {
             console.log("add_banker is called!") // sanity check
             $.ajax({
-                url : "../addbanker/",
+                url : "../ajaxamendbanker/",
                 type : "POST",
                 headers: {
                     "X-CSRFToken": csrftoken,
