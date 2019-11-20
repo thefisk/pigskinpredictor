@@ -31,6 +31,8 @@ ALLOWED_HOSTS = ['pigskinpredictor.herokuapp.com','pigskinpredictor.com']
 # Application definition
 
 INSTALLED_APPS = [
+    'material',
+    'material.theme.blue',
     'predictor.apps.PredictorConfig',
     'accounts.apps.AccountsConfig',
     'crispy_forms',
