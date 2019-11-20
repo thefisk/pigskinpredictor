@@ -53,6 +53,34 @@ def CreatePredictionsView(request):
 
     return render(request, template, context)
 
+### View to Display "Add Predictions" Screen
+@login_required
+def AmendPredictionsView(request):
+    week = os.environ['PREDICTWEEK']
+    season = os.environ['PREDICTSEASON']
+    UserPreds = Prediction.objects.filter(Game__Week=week, Game__Season=season, User=request.user)
+    UserBankers = Banker.objects.filter(User=request.user, BankSeason=season)
+    UserBankersAmend = UserBankers.exclude(BankWeek=week)
+    ClassDict = {}
+    for preds in UserPreds:
+        ClassDict[preds.Game.GameID] = preds.Winner
+    if len(Prediction.objects.filter(Game__Week=week, Game__Season=season, User=request.user)) == 0:
+        template = 'predictor/predict_new.html'
+    else:
+        template = 'predictor/predict_amend.html'
+    context = {
+        'classdict':ClassDict,
+        'bankers':UserBankersAmend,
+        'predictions':Prediction.objects.all(),
+        'originalbanker':Banker.objects.get(BankWeek=week, BankSeason=season, User=request.user),
+        'matches':Match.objects.filter(Week=week, Season=season),
+        'week':week,
+        'season':season,
+        'title':'New Prediction'
+    }
+
+    return render(request, template, context)
+
 class ScheduleView(ListView):
     model = Match
     context_object_name = 'matches'
