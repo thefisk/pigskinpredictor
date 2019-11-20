@@ -23,9 +23,9 @@ def run():
 
         # Set Filename to include week number
         if int(week) < 10:
-            filename = "dufftestresultsimport_"+season+"_0"+week+".json"
+            filename = "resultsimport_"+season+"_0"+week+".json"
         else:
-            filename = "dufftestresultsimport_"+season+"_"+week+".json"
+            filename = "resultsimport_"+season+"_"+week+".json"
 
         outfile = open(filename, "w")
 
