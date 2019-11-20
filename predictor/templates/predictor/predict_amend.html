@@ -12,6 +12,7 @@
             {% for match in matches %}
                 <div class="col s12 m8 l3">
                     <div class="card grey lighten-5">
+
                         <div class="card-content white-text" id="{{ match.GameID }}">
                             <span class="card-title red-text darken-4 center-align game-card">
                                 {{ match.AwayTeam.ShortName }} @ {{ match.HomeTeam.ShortName }}
@@ -54,8 +55,6 @@
         <div id="submitted">
         </div>
     <button id="predict-submit" class="waves-effect waves-light btn hideme" type="submit">Submit</button>
-    <!-- load jquery before pigskin.js -->
-    <!--script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script-->
     {% load static %}
-    <!--script src="{% static "predictor/scripts/pigskin.js" %}"></script-->
+    <script src="{% static "predictor/scripts/pigskinamend.js" %}"></script>
 {% endblock content %}
