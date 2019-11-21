@@ -94,6 +94,26 @@ $(function() {
     // Count number of games for pre-submission verification
     var numberOfGames = $('.card').length;
 
+    // PigskinAmendSpecific
+    // Read in already chosen teams by class
+    $('.chosenwinner').each(function(){
+        predarray[predindex] = {};
+        predarray[predindex]['pred_game'] = $(this).parent().parent().attr('id');
+        predarray[predindex]['pred_winner'] = $(this).attr('id');
+        predindex += 1;
+        console.dir(predarray);
+    });
+    // Also read in chosen banker
+    $('.chosenbanker').each(function(){
+        chosenbanker = $(this).parent().parent().attr('id');
+        console.dir('banker was set to '+chosenbanker);
+        predarray[predindex] = {};
+        predarray[predindex]['pred_game'] = $(this).parent().parent().attr('id');
+        predarray[predindex]['pred_winner'] = $(this).attr('id');
+        predindex += 1;
+        console.dir(predarray);
+    });
+
     // Single click action
     $('.team').on('click', function(event){
         event.stopPropagation();
@@ -205,7 +225,7 @@ $(function() {
                 var jsonbanker = JSON.stringify(bankerobj[0]);
                 if(predarray.length == numberOfGames){
                     $('.hideme').hide();
-                    $('#submitted').html('<h3>Predictions Submitted, Good Luck!</h3>');
+                    $('#submitted').html('<h3>Predictions Amended, Good Luck!</h3>');
                     var jsonstring = JSON.stringify(predarray);
                     var predjson = JSON.parse(jsonstring);
                     loop_predictions(predjson);
@@ -232,7 +252,7 @@ $(function() {
     function add_prediction(pred_string) {
         console.log("add_predictions is called!") // sanity check
         $.ajax({
-            url : "../ajaxaddprediction/",
+            url : "../ajaxamendprediction/",
             type : "POST",
             headers: {
                 "X-CSRFToken": csrftoken,
@@ -261,7 +281,7 @@ $(function() {
         function add_banker(bank_string) {
             console.log("add_banker is called!") // sanity check
             $.ajax({
-                url : "../ajaxaddbanker/",
+                url : "../ajaxamendbanker/",
                 type : "POST",
                 headers: {
                     "X-CSRFToken": csrftoken,
