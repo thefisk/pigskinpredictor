@@ -41,7 +41,8 @@ def CreatePredictionsView(request):
     if len(Prediction.objects.filter(Game__Week=week, Game__Season=season, User=request.user)) == 0:
         template = 'predictor/predict_new.html'
     else:
-        template = 'predictor/predict_alreadydone.html'
+        response = redirect('amend-prediction-view')
+        return response
     context = {
         'bankers':Banker.objects.filter(User=request.user, BankSeason=season),
         'predictions':Prediction.objects.all(),

@@ -28,6 +28,10 @@ $(function() {
                     event.stopPropagation();
                     console.log("double clicked");
                     $(this).toggleClass('chosenbanker');
+                    // Turn off chosenwinnerclass if present
+                    if($(this).hasClass('chosenwinner')){
+                        $(this).removeClass('chosenwinner')
+                    }
                     chosenbanker = $(this).parent().parent().attr('id');
                     // Add to array if not already in there
                     var gamecount = 0;
@@ -58,6 +62,10 @@ $(function() {
                     chosenbanker = $(this).parent().parent().attr('id');
                     // Change new Banker to orange class
                     $(this).toggleClass('chosenbanker');
+                    // Turn off chosenwinnerclass if present
+                    if($(this).hasClass('chosenwinner')){
+                        $(this).removeClass('chosenwinner')
+                    }
                     // Add to array if not already in there
                     var gamecount = 0;
                     // Initial loop to identify if Game ID exists
@@ -197,7 +205,7 @@ $(function() {
                 var jsonbanker = JSON.stringify(bankerobj[0]);
                 if(predarray.length == numberOfGames){
                     $('.hideme').hide();
-                    $('#submitted').html('<h3>Prediction Submitted, Good Luck!</h3>');
+                    $('#submitted').html('<h3>Predictions Submitted, Good Luck!</h3>');
                     var jsonstring = JSON.stringify(predarray);
                     var predjson = JSON.parse(jsonstring);
                     loop_predictions(predjson);
