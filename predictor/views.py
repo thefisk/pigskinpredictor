@@ -77,7 +77,7 @@ def AmendPredictionsView(request):
         'matches':Match.objects.filter(Week=week, Season=season),
         'week':week,
         'season':season,
-        'title':'New Prediction'
+        'title':'Amend Predictions'
     }
 
     return render(request, template, context)
