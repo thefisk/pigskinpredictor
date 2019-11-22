@@ -137,10 +137,9 @@ def AjaxAddBankerView(request):
             jsongame = json_data['bank_game']
             bankgame = Match.objects.get(GameID=jsongame)
             bankerteam = (Match.objects.get(GameID=jsongame)).AwayTeam
+            bankweek = (Match.objects.get(GameID=jsongame)).Week
             response_data = {}
             bankseason = os.environ['PREDICTSEASON']
-            bankweek = os.environ['PREDICTWEEK']
-
         
             bankerentry = Banker(User=banker_user, BankWeek=bankweek, BankSeason=bankseason, BankGame=bankgame, BankerTeam=bankerteam)
             bankerentry.save()
@@ -207,9 +206,9 @@ def AjaxAmendBankerView(request):
             jsongame = json_data['bank_game']
             bankgame = Match.objects.get(GameID=jsongame)
             bankerteam = (Match.objects.get(GameID=jsongame)).AwayTeam
+            bankweek = (Match.objects.get(GameID=jsongame)).Week
             response_data = {}
             bankseason = os.environ['PREDICTSEASON']
-            bankweek = os.environ['PREDICTWEEK']
 
             oldbanker = Banker.objects.get(User=banker_user, BankWeek=bankweek, BankSeason=bankseason)
             oldbanker.delete()
