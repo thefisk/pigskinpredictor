@@ -1,5 +1,6 @@
 ### Script to read saved results json file
 ### and store in backend database in Results table
+### _Adhoc version for manual use only
 
 import os, json, boto3
 from predictor.models import Team, Results

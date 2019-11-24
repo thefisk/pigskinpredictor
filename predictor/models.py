@@ -166,23 +166,8 @@ class Results(models.Model):
     AwayScore = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(150)])
     Winner = models.CharField(max_length=4)
 
-    # Below save override works for manual entry
-    # But manage.py loaddata ignores this as it's
-    # A straight database dump
-    # Logic kept but duplicated to fetchresults.py
-    # def save(self, *args, **kwargs):
-    #    if self.HomeScore == self.AwayScore:
-    #        self.Winner = 'Tie'
-    #    elif self.HomeScore > self.AwayScore:
-    #        self.Winner = 'Home'
-    #    else:
-    #        self.Winner = 'Away'
-    #    super(Results, self).save(*args, **kwargs)
-
-
     # Below logic will iterate over corresponding predictions
     # And update the points on each prediction
-    # TODO: Add banker logic
     
     def save(self, *args, **kwargs):
         if self.Winner == 'Home':
