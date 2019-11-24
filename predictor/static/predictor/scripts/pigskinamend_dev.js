@@ -7,6 +7,7 @@ $(function() {
 
     // Initialise chosenbanker variable
     var chosenbanker;
+    console.log("initial chosenbanker is "+chosenbanker);
 
     // Read in used bankers
     var usedbankers = [];
@@ -25,7 +26,7 @@ $(function() {
                 // If No Banker set
                 if (chosenbanker == null){
                     event.stopPropagation();
-                    
+                    console.log("double clicked");
                     $(this).toggleClass('chosenbanker');
                     // Turn off chosenwinnerclass if present
                     if($(this).hasClass('chosenwinner')){
@@ -46,17 +47,17 @@ $(function() {
                     predindex += 1;
                     }
                     else {
-                    
+                    console.log("not added on dbl click");
                     }
-                    
-                    
+                    console.dir(predarray)
+                    console.log("set initial banker to "+chosenbanker);
                 }
                 /// If other Banker exists
                 else {
                     // Turn previous banker Green
                     $('#'+chosenbanker).find('#Away').toggleClass("chosenbanker");
                     $('#'+chosenbanker).find('#Away').addClass("chosenwinner");
-                    
+                    console.log("hello "+$("#chosenbanker").children().children());
                     // Change chosenbanker variable
                     chosenbanker = $(this).parent().parent().attr('id');
                     // Change new Banker to orange class
@@ -79,8 +80,8 @@ $(function() {
                     predarray[predindex]['pred_winner'] = $(this).attr('id');
                     predindex += 1;
                     }
-                    
-                    
+                    console.dir(predarray);
+                    console.log("changed banker to "+chosenbanker);
                 }
             }   
         }   
@@ -100,17 +101,17 @@ $(function() {
         predarray[predindex]['pred_game'] = $(this).parent().parent().attr('id');
         predarray[predindex]['pred_winner'] = $(this).attr('id');
         predindex += 1;
-        
+        console.dir(predarray);
     });
     // Also read in chosen banker
     $('.chosenbanker').each(function(){
         chosenbanker = $(this).parent().parent().attr('id');
-        
+        console.dir('banker was set to '+chosenbanker);
         predarray[predindex] = {};
         predarray[predindex]['pred_game'] = $(this).parent().parent().attr('id');
         predarray[predindex]['pred_winner'] = $(this).attr('id');
         predindex += 1;
-        
+        console.dir(predarray);
     });
 
     // Single click action
@@ -129,8 +130,8 @@ $(function() {
                   predarray[predindex]['pred_game'] = $(this).parent().parent().attr('id');
                   predarray[predindex]['pred_winner'] = $(this).attr('id');
                   predindex += 1;
-                  
-                   
+                  console.dir(predarray);
+                  console.dir(typeof(predarray)); 
             }
             // If array is not empty, check for Game ID
             else {
@@ -150,19 +151,19 @@ $(function() {
                     predarray[predindex]['pred_game'] = $(this).parent().parent().attr('id');
                     predarray[predindex]['pred_winner'] = $(this).attr('id');
                     predindex += 1;
-                    
-                    
+                    console.dir(predarray);
+                    console.dir(typeof(predarray));
                     }
                 // If Game ID is found...
                 else{
-                    
+                    console.log("single click, already exists at index "+duplicategame);
                     // If same team is selected again
                     if(predarray[duplicategame].pred_winner == $(this).attr('id')){
                         $(this).toggleClass('chosenwinner');
                         predarray.splice(duplicategame,1);
                         predindex -= 1;
-                        
-                        
+                        console.log("taking out duplicate - same winner:" + $(this).attr('id'));
+                        console.dir(predarray)
                         }
                     // Else, if different winner is chosen
                     else{
@@ -180,7 +181,7 @@ $(function() {
                             predarray[predindex]['pred_game'] = $(this).parent().parent().attr('id');
                             predarray[predindex]['pred_winner'] = $(this).attr('id');
                             predindex += 1;
-                            
+                            console.dir(predarray);
                         }
                         // If other team is NOT Banker
                         else{
@@ -193,8 +194,8 @@ $(function() {
                             predarray[predindex]['pred_game'] = $(this).parent().parent().attr('id');
                             predarray[predindex]['pred_winner'] = $(this).attr('id');
                             predindex += 1;
-                            
-                                
+                            console.dir(predarray);
+                            console.dir(typeof(predarray));    
                             // Toggle previous entry off
                             $(this).siblings().toggleClass('chosenwinner');
                             }
@@ -208,6 +209,7 @@ $(function() {
     // Submit predictions when Submit button clicked
     $('#predict-submit').on('click', function(event){
         event.preventDefault();
+        console.log("Submit button pressed");  // sanity check
         if(chosenbanker == null){
             window.alert("Please choose a banker");
             }
@@ -239,6 +241,7 @@ $(function() {
 
     // Loop through JSON Array and submit each entry
     function loop_predictions(jsonobject) {
+        console.log("loop_predictions is called") // sanity check
         for(var i = 0; i < jsonobject.length; i++) {
             var loop_string = JSON.stringify(jsonobject[i]);
             add_prediction(loop_string);
@@ -247,6 +250,7 @@ $(function() {
 
     // AJAX for posting each prediction as JSON
     function add_prediction(pred_string) {
+        console.log("add_predictions is called!") // sanity check
         $.ajax({
             url : "../ajaxamendprediction/",
             type : "POST",
@@ -259,21 +263,23 @@ $(function() {
             // handle a successful response
             success : function(json) {
                 $('#post-text').val(''); // remove the value from the input
-                 // log the returned json to the console
+                console.log(json); // log the returned json to the console
                 $("#talk").prepend("<li><strong>"+json.text+"</strong> - <em> "+json.author+"</em> - <span> "+json.created+
                     "</span> - <a id='delete-post-"+json.postpk+"'>delete me</a></li>");
+                console.log("success"); // another sanity check
             },
             // handle a non-successful response
             error : function(xhr,errmsg,err) {
                 $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
                     " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-                 // provide a bit more info about the error to the console
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
             }
         });
     };
 
         // AJAX for the individual Banker as JSON
         function add_banker(bank_string) {
+            console.log("add_banker is called!") // sanity check
             $.ajax({
                 url : "../ajaxamendbanker/",
                 type : "POST",
@@ -286,15 +292,16 @@ $(function() {
                 // handle a successful response
                 success : function(json) {
                     $('#post-text').val(''); // remove the value from the input
-                     // log the returned json to the console
+                    console.log(json); // log the returned json to the console
                     $("#talk").prepend("<li><strong>"+json.text+"</strong> - <em> "+json.author+"</em> - <span> "+json.created+
                         "</span> - <a id='delete-post-"+json.postpk+"'>delete me</a></li>");
+                    console.log("success"); // another sanity check
                 },
                 // handle a non-successful response
                 error : function(xhr,errmsg,err) {
                     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
                         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-                     // provide a bit more info about the error to the console
+                    console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
                 }
             });
         };

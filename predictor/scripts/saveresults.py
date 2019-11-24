@@ -1,5 +1,7 @@
 ### Script to read saved results json file
 ### and store in backend database in Results table
+### This version is called daily by Heroku
+### but will only execute on a Tuesday
 
 import os, json, boto3, datetime
 from predictor.models import Team, Results

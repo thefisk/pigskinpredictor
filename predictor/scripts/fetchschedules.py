@@ -1,6 +1,7 @@
 ### Pulls Results From NFL XML Feed
 ### Then Produces an Importable JSON
 ### File that matches the predictor.Results model
+
 from datetime import datetime
 import requests, json, boto3, os
 
