@@ -28,3 +28,10 @@
     height: 20px;
     width: 20px;
 }
+
+.error{
+    font-family: roboto;
+    color: red;
+    font-size: 90% ;
+    font-weight: 700;
+}

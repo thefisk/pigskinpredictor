@@ -21,6 +21,9 @@ class Team(models.Model):
         self.ConfDiv = str(self.Conference)+" "+str(self.Division)
         super(Team, self).save(*args, **kwargs)
     
+    class Meta:
+        ordering = ['Town', 'Nickname']
+    
 
 
 class Match(models.Model):
