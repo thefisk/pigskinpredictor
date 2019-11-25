@@ -100,15 +100,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-<<<<<<< HEAD
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.1/howto/static-files/
-
-STATIC_URL = '/static/'
-
-=======
->>>>>>> origin/master
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = 'home'
@@ -138,10 +129,6 @@ AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 
 STATIC_LOCATION = 'static'
-<<<<<<< HEAD
-#STATIC_URL = 'https://{}.s3.{}.amazonaws.com/{}/'.format(AWS_STORAGE_BUCKET_NAME,AWS_S3_REGION_NAME,STATIC_LOCATION)
-#STATICFILES_STORAGE = 'predictor.storage_backends.StaticStorage'
-=======
 
 if DEBUG == True:
     # Use local static files
@@ -150,7 +137,6 @@ else:
 # Use S3 static files
     STATIC_URL = 'https://{}.s3.{}.amazonaws.com/{}/'.format(AWS_STORAGE_BUCKET_NAME,AWS_S3_REGION_NAME,STATIC_LOCATION)
     STATICFILES_STORAGE = 'predictor.storage_backends.StaticStorage'
->>>>>>> origin/master
 
 MEDIA_LOCATION = 'media'
 MEDIA_URL = 'https://{}.s3.{}.amazonaws.com/media/'.format(AWS_STORAGE_BUCKET_NAME,AWS_S3_REGION_NAME)
