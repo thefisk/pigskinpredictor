@@ -22,12 +22,9 @@ class CustomSignupForm(SignupForm):
     first_name = forms.CharField(max_length=30, label='First Name')
     last_name = forms.CharField(max_length=30, label='Last Name')
     fav_team = forms.ModelChoiceField(queryset=Team.objects.all(), empty_label=None, label='Favourite Team')
-    layout = Layout(Fieldset('Stuff so you can login',
-                    'email',
-                    Row('password1', 'password2')),
-                    Fieldset('Stuff so we can personalise the game',
-                             Row('first_name', 'last_name'),
-                             'fav_team'))
+    layout = Layout('email',
+                    Row('password1', 'password2'),Row('first_name', 'last_name'),
+                             'fav_team')
     
     class Meta:
         model = get_user_model()
