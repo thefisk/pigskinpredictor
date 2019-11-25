@@ -4,7 +4,7 @@
     <div class="container">
         
         <h5 class="center-align" class="hideme">
-        New Predictions for week {{ week }}, {{ season }}
+        Amend  Predictions for week {{ week }}, {{ season }}
         </h5>
         <p><h6 class="center-align hideme"><em>Double click for away bankers, single click for all others</em></h6></p>
         
@@ -12,12 +12,26 @@
             {% for match in matches %}
                 <div class="col s12 m8 l3">
                     <div class="card grey lighten-5">
+
                         <div class="card-content white-text" id="{{ match.GameID }}">
                             <span class="card-title red-text darken-4 center-align game-card">
                                 {{ match.AwayTeam.ShortName }} @ {{ match.HomeTeam.ShortName }}
                             </span>
                             <div class="center-align" id="{{ match.Week }}">
-                                <img class="responsive-img hoverable team" src="{{ match.AwayTeam.Logo.url }}" id="Away" alt="{{ match.AwayTeam }}">  <img class="responsive-img hoverable team" src="{{ match.HomeTeam.Logo.url }}" id="Home" alt="{{ match.HomeTeam }}">
+                                {% for game, winner in classdict.items %}
+                                    {% if match.GameID == game %}
+                                        {% if winner == 'Away'%}
+                                            {% if match.GameID == originalbanker.BankGame.GameID %}
+                                                <img class="responsive-img hoverable team chosenbanker" src="{{ match.AwayTeam.Logo.url }}" id="Away" alt="{{ match.AwayTeam }}">  <img class="responsive-img hoverable team" src="{{ match.HomeTeam.Logo.url }}" id="Home" alt="{{ match.HomeTeam }}">
+                                            {% else %}
+                                                <img class="responsive-img hoverable team chosenwinner" src="{{ match.AwayTeam.Logo.url }}" id="Away" alt="{{ match.AwayTeam }}">  <img class="responsive-img hoverable team" src="{{ match.HomeTeam.Logo.url }}" id="Home" alt="{{ match.HomeTeam }}">
+                                            {% endif %}
+                                        {% elif winner == 'Home' %}
+                                            <img class="responsive-img hoverable team" src="{{ match.AwayTeam.Logo.url }}" id="Away" alt="{{ match.AwayTeam }}">  <img class="responsive-img hoverable team chosenwinner" src="{{ match.HomeTeam.Logo.url }}" id="Home" alt="{{ match.HomeTeam }}">
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+
                             </div>
                         </div>
                     </div>
@@ -42,5 +56,5 @@
         </div>
     <button id="predict-submit" class="waves-effect waves-light btn hideme" type="submit">Submit</button>
     {% load static %}
-    <script src="{% static "predictor/scripts/pigskin.js" %}"></script>
+    <script src="{% static "predictor/scripts/pigskinamend.js" %}"></script>
 {% endblock content %}

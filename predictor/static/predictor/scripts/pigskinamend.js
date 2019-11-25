@@ -93,6 +93,26 @@ $(function() {
     // Count number of games for pre-submission verification
     var numberOfGames = $('.card').length;
 
+    // PigskinAmendSpecific
+    // Read in already chosen teams by class
+    $('.chosenwinner').each(function(){
+        predarray[predindex] = {};
+        predarray[predindex]['pred_game'] = $(this).parent().parent().attr('id');
+        predarray[predindex]['pred_winner'] = $(this).attr('id');
+        predindex += 1;
+        
+    });
+    // Also read in chosen banker
+    $('.chosenbanker').each(function(){
+        chosenbanker = $(this).parent().parent().attr('id');
+        
+        predarray[predindex] = {};
+        predarray[predindex]['pred_game'] = $(this).parent().parent().attr('id');
+        predarray[predindex]['pred_winner'] = $(this).attr('id');
+        predindex += 1;
+        
+    });
+
     // Single click action
     $('.team').on('click', function(event){
         event.stopPropagation();
@@ -203,7 +223,7 @@ $(function() {
                 var jsonbanker = JSON.stringify(bankerobj[0]);
                 if(predarray.length == numberOfGames){
                     $('.hideme').hide();
-                    $('#submitted').html('<h3>Predictions Submitted, Good Luck!</h3>');
+                    $('#submitted').html('<h3>Predictions Amended, Good Luck!</h3>');
                     var jsonstring = JSON.stringify(predarray);
                     var predjson = JSON.parse(jsonstring);
                     loop_predictions(predjson);
@@ -228,7 +248,7 @@ $(function() {
     // AJAX for posting each prediction as JSON
     function add_prediction(pred_string) {
         $.ajax({
-            url : "../ajaxaddprediction/",
+            url : "../ajaxamendprediction/",
             type : "POST",
             headers: {
                 "X-CSRFToken": csrftoken,
@@ -255,7 +275,7 @@ $(function() {
         // AJAX for the individual Banker as JSON
         function add_banker(bank_string) {
             $.ajax({
-                url : "../ajaxaddbanker/",
+                url : "../ajaxamendbanker/",
                 type : "POST",
                 headers: {
                     "X-CSRFToken": csrftoken,
