@@ -12,6 +12,7 @@ from .views import (
     ScoreTableView, #Leaderboard
     AboutView, #About
     ScoringView, #Scoring
+    ReportsView, #Reports
 )
 from . import views
 
@@ -28,4 +29,5 @@ urlpatterns = [
     path('scoretable/',ScoreTableView, name='scoretable'), #Leaderboard
     path('about/',AboutView, name='about'), #About
     path('scoring/',ScoringView, name='scoring'), #Scoring
+    path('report/',ReportsView, name='report'), #Reports
 ]

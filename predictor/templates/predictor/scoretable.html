@@ -10,10 +10,15 @@
           content: counter(my-sec-counter) ". ";
         }
         </style>
-        
+
 {% extends "predictor/base.html" %}
 
 {% block content %}
+<script>
+        $('#leaderboard').each(function(){
+               $(this).toggleClass('active');
+           });
+       </script>
 <div class="container">
 <h4 class="mb-3">
     Live Score Table</h4>

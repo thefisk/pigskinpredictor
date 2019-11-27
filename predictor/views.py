@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import (
     Results,
     Match,
@@ -24,6 +24,25 @@ from django.views.generic import (
     DeleteView,
     FormView
 )
+
+def is_reportviewer(user):
+    return user.groups.filter(name='ReportViewers').exists()
+
+@user_passes_test(is_reportviewer)
+@login_required
+def ReportsView(request):
+    reportweek = int(os.environ['RESULTSWEEK'])+1
+    season = os.environ['PREDICTSEASON']
+    reportweekseason = season+str(reportweek)
+
+    context = {
+        'bankers':Banker.objects.filter(BankSeason=season, BankWeek=reportweek),
+        'predictions': Prediction.objects.filter(PredWeek=reportweekseason),
+        'matches': Match.objects.filter(Week=reportweek, Season=season)
+    }
+
+    template='predictor/report.html'
+    return render(request,template,context)
 
 def HomeView(request):
     return render(request, 'predictor/home.html')

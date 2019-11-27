@@ -1,5 +1,10 @@
 {% extends "predictor/base.html" %}
 {% block content %}
+<script>
+ $('#scoring').each(function(){
+        $(this).toggleClass('active');
+    });
+</script>
 <div class='container'>
     <h4>Pigskin Predictor | Scoring</h4>
     <P class="flow-text">

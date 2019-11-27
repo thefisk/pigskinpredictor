@@ -35,3 +35,15 @@
     font-size: 90% ;
     font-weight: 700;
 }
+
+.reportheader{
+    color: firebrick;
+    font-size: 120%;
+    font-weight: 400;
+}
+
+.navlink{
+    font-family: roboto;
+    color: white;
+    font-size: 110%;
+}
