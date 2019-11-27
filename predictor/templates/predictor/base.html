@@ -1,4 +1,5 @@
 {% load static %}
+{% load predictor_custom_tags %}
 {% include 'material/includes/material_css.html' %}
 {% include 'material/includes/material_js.html' %}
 <!DOCTYPE html>
@@ -22,6 +23,12 @@
             var elems = document.querySelectorAll('select');
             var instances = M.FormSelect.init(elems);
         });
+        </script>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.sidenav');
+        var instances = M.Sidenav.init(elems);
+        });
       </script>
     {% if title %}
     <title>Pigskin Predictor - {{ title }}</title>
@@ -35,22 +42,26 @@
     <!---div class="navbar-fixed"-->
     <nav>
         <div class="nav-wrapper">
-          <a href="{% url 'home' %}"><img class="logoimg" src="{% static "predictor/img/piglogo.png" %}" alt="logo"></a>
-          <a href="{% url 'home' %}" class="brand-logo center">Pigskin Predictor</a>
+          <a href="{% url 'home' %}" class="brand-logo hide-on-med-and-down">Pigskin Predictor</a>
+          <a href="{% url 'home' %}"><img class="logoimg brand-logo center" src="{% static "predictor/img/piglogo.png" %}" alt="logo"></a>
+          
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
           <ul class="right hide-on-med-and-down">
             {% if user.is_authenticated %}
-            <li><a href="{% url 'new-prediction-view' %}">Predict</a></li>
-            <li><a href="{% url 'scoretable' %}">Leaderboard</a></li>
-            <li><a href="{% url 'scoring' %}">Scoring</a></li>
-            <li><a href="{% url 'about' %}">About</a></li>
-            <li><a href="/accounts/logout">Logout</a></li>
+            {% if request.user|has_group:"ReportViewers" %}
+            <li id="report"><a class="navlink" href="{% url 'report' %}">Report</a></li>
+            {% endif %}
+            <li id="predict"><a class="navlink" href="{% url 'new-prediction-view' %}">Predict</a></li>
+            <li id="leaderboard"><a class="navlink" href="{% url 'scoretable' %}">Leaderboard</a></li>
+            <li id="scoring"><a class="navlink" href="{% url 'scoring' %}">Scoring</a></li>
+            <li id="about"><a class="navlink" href="{% url 'about' %}">About</a></li>
+            <li id="logout"><a class="navlink" href="/accounts/logout">Logout</a></li>
             {% else %}
-            <li><a href="{% url 'scoretable' %}">Leaderboard</a></li>
-            <li><a href="{% url 'scoring' %}">Scoring</a></li>
-            <li><a href="{% url 'about' %}">About</a></li>
-            <li><a href="/accounts/login">Login</a></li>
-            <li><a href="/accounts/signup">Register</a></li>
+            <li id="leaderboard"><a class="navlink" href="{% url 'scoretable' %}">Leaderboard</a></li>
+            <li id ="scoring"><a class="navlink" href="{% url 'scoring' %}">Scoring</a></li>
+            <li id="about"><a class="navlink" href="{% url 'about' %}">About</a></li>
+            <li id="login"><a class="navlink" href="/accounts/login">Login</a></li>
+            <li id="register"><a class="navlink" href="/accounts/signup">Register</a></li>
             {% endif %}
           </ul>
         </div>
@@ -58,14 +69,17 @@
     
       <ul class="sidenav" id="mobile-demo">
           {% if user.is_authenticated %}
+          {% if request.user|has_group:"ReportViewers" %}
+          <li id="report"><a class="navlink" href="{% url 'report' %}">Report</a></li>
+          {% endif %}
           <li><a href="{% url 'new-prediction-view' %}">Predict</a></li>
           <li><a href="{% url 'scoretable' %}">Leaderboard</a></li>
-          <li><a href="{% url 'new-prediction-view' %}">Scoring</a></li>
+          <li><a href="{% url 'scoring' %}">Scoring</a></li>
           <li><a href="{% url 'about' %}">About</a></li>
           <li><a href="/accounts/logout">Logout</a></li>
           {% else %}
           <li><a href="{% url 'scoretable' %}">Leaderboard</a></li>
-          <li><a href="{% url 'new-prediction-view' %}">Scoring</a></li>
+          <li><a href="{% url 'scoring' %}">Scoring</a></li>
           <li><a href="{% url 'about' %}">About</a></li>
           <li><a href="/accounts/login">Login</a></li>
           <li><a href="/accounts/signup">Register</a></li>

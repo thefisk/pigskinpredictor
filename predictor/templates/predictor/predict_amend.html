@@ -1,6 +1,11 @@
 {% extends "predictor/base.html" %}
 
 {% block content %}
+<script>
+        $('#predict').each(function(){
+               $(this).toggleClass('active');
+           });
+       </script>
     <div class="container">
         
         <h5 class="center-align" class="hideme">

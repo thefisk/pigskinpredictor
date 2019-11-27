@@ -1,0 +1,64 @@
+{% extends "predictor/base.html" %}
+
+{% block content %}
+<script>
+        $('#report').each(function(){
+               $(this).toggleClass('active');
+           });
+       </script>
+    <div class="container">
+        {% for match in matches %}
+        <div class="row">
+            <div class="col s1"></div>
+        <div class="col s10">
+            <div class="card grey lighten-5 center-align">
+                    <div class="card-content" id="{{ match.GameID }}">
+                        <span class="card-title red-text darken-4 center-align game-card">
+            <h5>{{ match.AwayTeam.Nickname }} @ {{ match.HomeTeam.Nickname }}</h5></span>
+            <div class="divider"></div>
+            
+            <div class="row">
+            <div class="col s4">
+                <h6 class="reportheader">Bankers</h6>
+                <ul>
+            {% for banker in bankers %}
+                {% if banker.BankGame == match %}
+                    <li>{{ banker.User }}</li>
+                {% endif %}
+            {% endfor %}
+                </ul>
+            </div>
+            <div class="col s4">
+                    <h6 class="reportheader">Home</h6>
+                    <ul>
+            {% for prediction in predictions %}
+                {% if prediction.Game == match %}
+                    {% if prediction.Winner == 'Home' %}
+                        <li>{{ prediction.User }}</li>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+                    </ul>
+            </div>
+            <div class="col s4">
+                <h6 class="reportheader">Away</h6>
+                    <ul>
+            {% for prediction in predictions %}
+                {% if prediction.Game == match %}
+                    {% if prediction.Winner == 'Away' %}
+                       <li>{{ prediction.User }}</li>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            </div>
+        </div>
+            </div>
+            <div class="col s1"></div>  
+        </div>
+        {% endfor %}
+    </div>
+    {% load static %}
+{% endblock content %}
