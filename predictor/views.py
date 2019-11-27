@@ -31,7 +31,7 @@ def is_reportviewer(user):
 @user_passes_test(is_reportviewer)
 @login_required
 def ReportsView(request):
-    reportweek = int(os.environ['RESULTSWEEK'])+1
+    reportweek = os.environ['PREDICTWEEK']
     season = os.environ['PREDICTSEASON']
     reportweekseason = season+str(reportweek)
 
