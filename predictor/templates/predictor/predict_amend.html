@@ -1,5 +1,5 @@
 {% extends "predictor/base.html" %}
-
+{% load predictor_custom_tags %}
 {% block content %}
 <script>
         $('#predict').each(function(){
@@ -45,16 +45,11 @@
         </div>
         <div class="divider hideme"></div>
         <div class = "section hideme" id="bankers">
-            <h5>Unavailable Bankers</h5>
-            <h6><em>(List excludes used bankers either on byes this week, or at home)</em></h6>
+            <h5>Used Bankers</h5>
             <ul>
-            {% for banker in bankers %}
-                {% for match in matches %}
-                    {% if match.AwayTeam == banker.BankerTeam %}
-                        <li id="{{ match.GameID }}"><img src="{{ banker.BankerTeam.Logo.url }}" alt="{{ banker.BankerTeam.Nickname }}" class="team_small"> {{ banker.BankerTeam }}</li>
-                    {% endif %}
+                {% for banker in bankers %}
+                    <li id="{{ banker.BankerTeam|corresponding_match }}"><img src="{{ banker.BankerTeam.Logo.url }}" alt="{{ banker.BankerTeam.Nickname }}" class="team_small"> {{ banker.BankerTeam }}</li>
                 {% endfor %}
-            {% endfor %}
             </ul>
         </div>
         <div id="submitted">
