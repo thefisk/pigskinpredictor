@@ -1,0 +1,65 @@
+<style>
+        body {
+          /* Set "my-sec-counter" to 0 */
+          counter-reset: my-sec-counter;
+        }
+        
+        .count::after {
+          /* Increment "my-sec-counter" by 1 */
+          counter-increment: my-sec-counter;
+          content: counter(my-sec-counter) ". ";
+        }
+        </style>
+
+{% extends "predictor/base.html" %}
+{% load predictor_custom_tags %}
+{% block content %}
+<script>
+        $('#leaderboard').each(function(){
+               $(this).toggleClass('active');
+           });
+       </script>
+<div class="container">
+<h4 class="mb-3">
+    Live Score Table</h4>
+    <h5>Season {{ season }}<BR>
+    Including week {{ week }} games
+</h5>
+    <div id="scoretable" class="">
+        <table class="striped">
+            <thead>
+                <tr>
+                    <th>Pos.</th>
+                    <th>Player</th>
+                    <th>Week Score</th>
+                    <th>Season High</th>
+                    <th>Total Score</th>
+                    <th>Season Avg</th>
+                </tr>
+            </thead>
+            <tbody>
+        {% for seasonscore in seasonscores %}
+                <tr>
+                    <td class="count"></td>
+                    <td><img src="{{ seasonscore.User.FavouriteTeam.Logo.url }}" class="team_small"> &nbsp; {{ seasonscore.User.first_name }} {{ seasonscore.User.last_name }}</td>
+                    {% for weekscore in weekscores %}
+                        {% if seasonscore.User == weekscore.User %}
+                            <td>{{ weekscore.WeekScore }}</td>
+                                {% if seasonscore.User|seasonhigh == bestweekeveryone %}
+                                    <td class="scoretablehigh"><mark>{{ seasonscore.User|seasonhigh }}</mark></td>
+                                {% else %}
+                                    <td>{{ seasonscore.User|seasonhigh }}</td>
+                                {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    <td>{{ seasonscore.SeasonScore }}</td>
+                    <td>{{ seasonscore.SeasonAverage }}</td>
+                </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+    </div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
+{% load static %}
+<script src="{% static "predictor/scripts/pigskin.js" %}"></script>
+{% endblock content %}
