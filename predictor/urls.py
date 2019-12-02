@@ -10,6 +10,7 @@ from .views import (
     AjaxAmendPredictionView, #AJAX
     AjaxAmendBankerView, #AJAX
     ScoreTableView, #Leaderboard
+    ScoreTableEnhancedView, #Leaderboard
     AboutView, #About
     ScoringView, #Scoring
     ReportsView, #Reports
@@ -27,6 +28,7 @@ urlpatterns = [
     path('ajaxamendprediction/',AjaxAmendPredictionView, name='ajax-amend-prediction'), #AJAX
     path('ajaxamendbanker/',AjaxAmendBankerView, name='ajax-amend-banker'), #AJAX
     path('scoretable/',ScoreTableView, name='scoretable'), #Leaderboard
+    path('scoretableenhanced/',ScoreTableEnhancedView, name='scoretableenhanced'), #Leaderboard
     path('about/',AboutView, name='about'), #About
     path('scoring/',ScoringView, name='scoring'), #Scoring
     path('report/',ReportsView, name='report'), #Reports

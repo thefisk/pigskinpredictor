@@ -68,6 +68,7 @@ class Prediction(models.Model):
     Points = models.IntegerField(blank=True, null=True)
     Banker = models.BooleanField(default=False)
     PredWeek = models.IntegerField(blank=True, null=True)
+    PredSeason = models.IntegerField(blank=True, null=True)
 
     class Meta:
         unique_together = ("User", "Game"),
@@ -77,6 +78,7 @@ class Prediction(models.Model):
     
     def save(self, *args, **kwargs):
         self.PredWeek = int(str(self.Game.Season)+str(self.Game.Week))
+        self.PredSeason = self.Game.Season
 
         # If new predicion (no points) just save
         if self.Points == None:
@@ -101,11 +103,34 @@ class Prediction(models.Model):
                 ScoresSeason.objects.get(User=self.User, Season=self.Game.Season)
             except ScoresSeason.DoesNotExist:
                 # create new Season score entry if none already exists
-                addseasonscore = ScoresSeason(User=self.User, SeasonScore=self.Points, Season=self.Game.Season)
+                if self.Points > 0:
+                    addseasonscore = ScoresSeason(User=self.User, SeasonScore=self.Points, Season=self.Game.Season, SeasonBest=self.Points, SeasonWorst=self.Points, SeasonCorrect=1, SeasonAverage=self.Points)
+                else:
+                    addseasonscore = ScoresSeason(User=self.User, SeasonScore=self.Points, Season=self.Game.Season, SeasonBest=self.Points, SeasonWorst=self.Points, SeasonCorrect=0, SeasonAverage=self.Points)                   
                 addseasonscore.save()
             else:
-                # if a Season score object exists, add the points to it
+                # if a Season score object exists, grab the record and update the below
                 seasonscore = ScoresSeason.objects.get(User=self.User, Season=self.Game.Season)
+                # Update Best/Worst Weeks if necessary
+                if self.Points > seasonscore.SeasonBest:
+                    seasonscore.SeasonBest = self.Points
+                if self.Points < seasonscore.SeasonWorst:
+                    seasonscore.SeasonWorst = self.Points
+                # Update Season Average
+                predcount = Prediction.objects.filter(PredSeason=self.Game.Season, User=self.User).count()
+                average = (seasonscore.SeasonScore + self.Points)/predcount
+                seasonscore.SeasonAverage = average
+                # Update Banker Average (only doing so on Banker flag will reduce number of calls)
+                if self.Banker == True:
+                    userbankers = Prediction.objects.filter(User=self.User, PredSeason = self.Game.Season, Banker=True)
+                    banktotal = 0
+                    for banker in userbankers:
+                        banktotal += banker.Points
+                    bankaverage = banktotal/userbankers.count()
+                    seasonscore.BankerAverage = bankaverage
+                # Increment SeasonCorrect if pts scored
+                if self.Points > 0:
+                    seasonscore.SeasonCorrect += 1
                 seasonscore.SeasonScore += self.Points
                 seasonscore.save()
 
@@ -139,6 +164,12 @@ class ScoresWeek(models.Model):
 class ScoresSeason(models.Model):
     User = models.ForeignKey(User, on_delete=models.CASCADE)
     SeasonScore = models.IntegerField()
+    SeasonWorst = models.IntegerField(null=True, blank=True)#
+    SeasonBest = models.IntegerField(null=True, blank=True)#
+    SeasonCorrect = models.IntegerField(null=True, blank=True)#
+    SeasonPercentage = models.DecimalField(max_digits=4, decimal_places=1,null=True, blank=True)#
+    SeasonAverage = models.DecimalField(max_digits=5, decimal_places=1,null=True, blank=True)#
+    BankerAverage = models.DecimalField(max_digits=4, decimal_places=1,null=True, blank=True)#
     Season = models.IntegerField(validators=[MinValueValidator(2012), MaxValueValidator(2050)])
 
     def __str__(self):
