@@ -20,11 +20,11 @@
            });
        </script>
 <div class="container">
-<h4 class="mb-3">
-    Live Score Table</h4>
-    <h5>Season {{ season }}<BR>
+<h5 class="mb-3">
+    Live Score Table</h5>
+    <h6>Season {{ season }}<BR>
     Including week {{ week }} games
-</h5>
+</h6>
     <div id="scoretable" class="">
         <table class="striped">
             <thead>
@@ -39,7 +39,7 @@
         {% for seasonscore in seasonscores %}
                 <tr>
                     <td class="count"></td>
-                    <td><img src="{{ seasonscore.User.FavouriteTeam.Logo.url }}" class="team_small"> &nbsp; {{ seasonscore.User.first_name }} {{ seasonscore.User.last_name }}</td>
+                    <td><img src="{{ seasonscore.User.FavouriteTeam.Logo.url }}" class="team_small" alt="{{ seasonscore.User.FavouriteTeam }}"> &nbsp; {{ seasonscore.User.first_name }} {{ seasonscore.User.last_name }}</td>
                     {% for weekscore in weekscores %}
                         {% if seasonscore.User == weekscore.User %}
                         <td>{{ weekscore.WeekScore }}</td>
