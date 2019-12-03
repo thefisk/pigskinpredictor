@@ -203,9 +203,27 @@ def ScoreTableEnhancedView(request):
         if weekscore.WeekScore > high:
             high = weekscore.WeekScore
 
+    low = 999
+    for weekscore in ScoresWeek.objects.filter(Season=os.environ['PREDICTSEASON']):
+        if weekscore.WeekScore < low:
+            low = weekscore.WeekScore
+
+    bestbanker = 0
+    for seasonscore in ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']):
+        if seasonscore.BankerAverage > bestbanker:
+            bestbanker = seasonscore.BankerAverage
+
+    worstbanker = 999
+    for seasonscore in ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']):
+        if seasonscore.BankerAverage < worstbanker:
+            worstbanker = seasonscore.BankerAverage
+
     scoreweek = int(os.environ['RESULTSWEEK']) - 1
     
     context = {
+        'bestbanker': bestbanker,
+        'worstbanker': worstbanker,
+        'worstweekeveryone': low,
         'bestweekeveryone': high,
         'seasonscores': ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']),
         'weekscores': ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON']),

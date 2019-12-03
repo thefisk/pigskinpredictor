@@ -47,3 +47,32 @@
     color: white;
     font-size: 110%;
 }
+
+.thodd{
+   color: dimgrey; 
+} 
+
+.tdodd{
+    color: dimgrey;
+}
+
+.theven{
+    color: darkslategrey;
+}
+
+.tdeven{
+    color: darkslategrey;
+}
+
+.enhanced{
+    font-size:90% !important;
+}
+
+.scoretablelow{
+    background-color: firebrick;
+    color: white;
+}
+
+.scoretablehigh{
+    background-color: yellow;
+}
