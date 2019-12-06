@@ -130,8 +130,6 @@ def AjaxAddPredictionView(request):
             json_data = json.loads(request.body.decode('utf-8'))
             pred_winner = json_data['pred_winner']
             pred_game_str = json_data['pred_game']
-            print(pred_game_str)
-            print(type(pred_game_str))
             pred_game = Match.objects.get(GameID=pred_game_str)
             response_data = {}
         
@@ -198,7 +196,7 @@ def ScoreTableView(request):
 def ScoreTableEnhancedView(request):
     # Below sets score week to 1 below current results week
     # IE - to pull scores from last completed week
-    high = 0
+    high = -999
     for weekscore in ScoresWeek.objects.filter(Season=os.environ['PREDICTSEASON']):
         if weekscore.WeekScore > high:
             high = weekscore.WeekScore
@@ -208,7 +206,17 @@ def ScoreTableEnhancedView(request):
         if weekscore.WeekScore < low:
             low = weekscore.WeekScore
 
-    bestbanker = 0
+    worstbest = 999
+    for score in ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']):
+        if score.SeasonBest < worstbest:
+            worstbest = score.SeasonBest
+
+    bestworst = -999
+    for score in ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']):
+        if score.SeasonWorst > bestworst:
+            bestworst = score.SeasonWorst   
+
+    bestbanker = -999
     for seasonscore in ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']):
         if seasonscore.BankerAverage > bestbanker:
             bestbanker = seasonscore.BankerAverage
@@ -225,6 +233,8 @@ def ScoreTableEnhancedView(request):
         'worstbanker': worstbanker,
         'worstweekeveryone': low,
         'bestweekeveryone': high,
+        'worstbest': worstbest,
+        'bestworst': bestworst,
         'seasonscores': ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']),
         'weekscores': ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON']),
         'week':scoreweek,
@@ -241,8 +251,6 @@ def AjaxAmendPredictionView(request):
             json_data = json.loads(request.body.decode('utf-8'))
             pred_winner = json_data['pred_winner']
             pred_game_str = json_data['pred_game']
-            print(pred_game_str)
-            print(type(pred_game_str))
             pred_game = Match.objects.get(GameID=pred_game_str)
             response_data = {}
 
