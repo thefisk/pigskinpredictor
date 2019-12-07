@@ -15,13 +15,8 @@ def corresponding_match(bankerteam):
     week = os.environ['PREDICTWEEK']
     season = os.environ['PREDICTSEASON']
     try:
-        matched_game = Match.objects.get(Season=season, Week=week, HomeTeam=bankerteam)
+        matched_game = Match.objects.get(Season=season, Week=week, AwayTeam=bankerteam)
     except Match.DoesNotExist:
-        try:
-            matched_game = Match.objects.get(Season=season, Week=week, AwayTeam=bankerteam)
-        except Match.DoesNotExist:
-            return 0
-        else:
-            return matched_game.GameID
+        return 0
     else:
         return matched_game.GameID
