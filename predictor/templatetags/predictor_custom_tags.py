@@ -21,12 +21,12 @@ def corresponding_match(bankerteam):
     else:
         return matched_game.GameID
 
-@register.filter(name='seasonhigh')
-def seasonhigh(user):
-    high = 0
-    for weekscore in ScoresWeek.objects.filter(User=user, Season=os.environ['PREDICTSEASON']):
-        if weekscore.WeekScore > high:
-            high = weekscore.WeekScore
-        else:
-            pass
-    return high
+#@register.filter(name='seasonhigh')
+#def seasonhigh(user):
+#    high = 0
+#    for weekscore in ScoresWeek.objects.filter(User=user, Season=os.environ['PREDICTSEASON']):
+#        if weekscore.WeekScore > high:
+#            high = weekscore.WeekScore
+#        else:
+#            pass
+#    return high
