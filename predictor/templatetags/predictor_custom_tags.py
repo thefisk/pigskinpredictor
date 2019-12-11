@@ -29,4 +29,4 @@ def corresponding_match(bankerteam):
 #            high = weekscore.WeekScore
 #        else:
 #            pass
-#    return highv
+#    return high
