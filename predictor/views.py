@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
+from accounts.models import User as CustomUser
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import (
     Results,
@@ -178,10 +179,13 @@ def ScoreTableView(request):
     # Below sets score week to 1 below current results week
     # IE - to pull scores from last completed week 
     scoreweek = int(os.environ['RESULTSWEEK']) - 1
-    
+    weekscores = ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON'])   
+    nopreds = CustomUser.objects.all().exclude(id__in=weekscores.values('User'))
+
     context = {
+        'nopreds': nopreds,
         'seasonscores': ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']),
-        'weekscores': ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON']),
+        'weekscores': weekscores,
         'week':scoreweek,
         'season':os.environ['PREDICTSEASON'],
         'title':'Leaderboard'
