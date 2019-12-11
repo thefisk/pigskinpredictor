@@ -39,12 +39,16 @@
         {% for seasonscore in seasonscores %}
                 <tr>
                     <td class="count"></td>
-                    <td><img src="{{ seasonscore.User.FavouriteTeam.Logo.url }}" class="team_small" alt="{{ seasonscore.User.FavouriteTeam }}"> &nbsp; {{ seasonscore.User.first_name }} {{ seasonscore.User.last_name }}</td>
-                    {% for weekscore in weekscores %}
-                        {% if seasonscore.User == weekscore.User %}
-                        <td>{{ weekscore.WeekScore }}</td>
-                        {% endif %}
-                    {% endfor %}
+                    <td><img src="{{ seasonscore.User.FavouriteTeam.Logo.url }}" class="team_small"> &nbsp; {{ seasonscore.User.first_name }} {{ seasonscore.User.last_name }}</td>
+                    {% if seasonscore.User in nopreds %}
+                        <td>Did Not Play</td>
+                    {% else %}
+                        {% for weekscore in weekscores %}
+                            {% if seasonscore.User == weekscore.User %}
+                            <td>{{ weekscore.WeekScore }}</td>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
                     <td>{{ seasonscore.SeasonScore }}</td>
                 </tr>
         {% endfor %}
