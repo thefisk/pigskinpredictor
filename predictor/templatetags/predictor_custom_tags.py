@@ -1,6 +1,6 @@
 from django import template
 from django.contrib.auth.models import Group
-from predictor.models import Match
+from predictor.models import Match, ScoresWeek
 import os
 
 register = template.Library()
@@ -20,3 +20,13 @@ def corresponding_match(bankerteam):
         return 0
     else:
         return matched_game.GameID
+
+#@register.filter(name='seasonhigh')
+#def seasonhigh(user):
+#    high = 0
+#    for weekscore in ScoresWeek.objects.filter(User=user, Season=os.environ['PREDICTSEASON']):
+#        if weekscore.WeekScore > high:
+#            high = weekscore.WeekScore
+#        else:
+#            pass
+#    return high

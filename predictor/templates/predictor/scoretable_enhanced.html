@@ -1,0 +1,92 @@
+<style>
+        body {
+          /* Set "my-sec-counter" to 0 */
+          counter-reset: my-sec-counter;
+        }
+        
+        .count::after {
+          /* Increment "my-sec-counter" by 1 */
+          counter-increment: my-sec-counter;
+          content: counter(my-sec-counter) ". ";
+        }
+        </style>
+
+{% extends "predictor/base.html" %}
+{% load predictor_custom_tags %}
+{% block content %}
+<script>
+        $('#leaderboard').each(function(){
+               $(this).toggleClass('active');
+           });
+       </script>
+<div class="container">
+<h5 class="mb-3">
+    Enhanced Score Table</h5>
+    <a href="{% url 'scoretable' %}" class="smalllink">Basic Score Table</a>
+    <h6>Season {{ season }}<BR>
+    Including week {{ week }} games
+</h6>
+    <div id="scoretable" class="">
+        <table class="striped">
+            <thead>
+                <tr>
+                    <th class="enhanced">Pos.</th>
+                    <th class="enhanced">Player</th>
+                    <th class="thodd enhanced">Last Week</th>
+                    <th class="theven enhanced">No. Correct</th>
+                    <th class="thodd enhanced">% Correct</th>
+                    <th class="theven enhanced">Best Week</th>
+                    <th class="thodd enhanced">Avg Week</th>
+                    <th class="theven enhanced">Worst Week</th>
+                    <th class="thodd enhanced">Avg Banker</th>
+                    <th class="theven enhanced">Total Score</th>
+                </tr>
+            </thead>
+            <tbody>
+        {% for seasonscore in seasonscores %}
+                <tr>
+                    <td class="count enhanced"></td>
+                    <td class="enhanced"><img src="{{ seasonscore.User.FavouriteTeam.Logo.url }}" class="team_small" alt="{{ seasonscore.User.FavouriteTeam }}"> &nbsp; {{ seasonscore.User.first_name }} {{ seasonscore.User.last_name }}</td>
+                    {% if seasonscore.User in nopreds %}
+                        <td class="tdodd enhanced">DNP</td>
+                    {% else %}
+                        {% for weekscore in weekscores %}
+                            {% if seasonscore.User == weekscore.User %}
+                                <td class="tdodd enhanced">{{ weekscore.WeekScore }}</td>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    <td class="tdeven enhanced">{{ seasonscore.SeasonCorrect }}</td>
+                    <td class="tdodd enhanced">{{ seasonscore.SeasonPercentage }}</td>
+                    {% if seasonscore.SeasonBest == bestweekeveryone %}
+                        <td class="tdeven enhanced"><span class="scoretablehigh">{{ seasonscore.SeasonBest }}</span></td>        
+                    {% elif seasonscore.SeasonBest == worstbest %}
+                        <td class="tdeven enhanced"><span class="scoretablelow">{{ seasonscore.SeasonBest }}</span></td>        
+                    {% else %}
+                        <td class="tdeven enhanced">{{ seasonscore.SeasonBest }}</td>
+                    {% endif %}
+                        <td class="tdodd enhanced">{{ seasonscore.SeasonAverage }}</td>
+                    {% if seasonscore.SeasonWorst == worstweekeveryone %}
+                        <td class="enhanced"><span class="scoretablelow">{{ seasonscore.SeasonWorst }}</span></td>
+                    {% elif seasonscore.SeasonWorst == bestworst %}
+                        <td class="enhanced"><span class="scoretablehigh">{{ seasonscore.SeasonWorst }}</span></td>
+                    {% else %}
+                        <td class="tdeven enhanced">{{ seasonscore.SeasonWorst }}</td>
+                    {% endif %}
+                    {% if seasonscore.BankerAverage == worstbanker %}
+                        <td class="tdodd enhanced"><span class="scoretablelow">{{ seasonscore.BankerAverage }}</span></td>
+                    {% elif seasonscore.BankerAverage == bestbanker %}
+                        <td class="tdodd enhanced"><span class="scoretablehigh">{{ seasonscore.BankerAverage }}</span></td>
+                    {% else %}
+                        <td class="tdodd enhanced">{{ seasonscore.BankerAverage }}</td>
+                    {% endif %}
+                    <td class="tdeven enhanced">{{ seasonscore.SeasonScore }}</td>
+                </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+    </div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
+{% load static %}
+<script src="{% static "predictor/scripts/pigskin.js" %}"></script>
+{% endblock content %}

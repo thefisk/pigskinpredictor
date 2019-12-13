@@ -20,18 +20,19 @@
            });
        </script>
 <div class="container">
-<h4 class="mb-3">
-    Live Score Table</h4>
-    <h5>Season {{ season }}<BR>
+<h5 class="mb-3">
+    Live Score Table</h5>
+    <a href="{% url 'scoretableenhanced' %}" class="smalllink">Enhanced Score Table</a>
+    <h6>Season {{ season }}<BR>
     Including week {{ week }} games
-</h5>
+</h6>
     <div id="scoretable" class="">
         <table class="striped">
             <thead>
                 <tr>
                     <th>Pos.</th>
                     <th>Player</th>
-                    <th>Week Score</th>
+                    <th>Last Week</th>
                     <th>Total Score</th>
                 </tr>
             </thead>

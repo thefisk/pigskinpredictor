@@ -131,8 +131,6 @@ def AjaxAddPredictionView(request):
             json_data = json.loads(request.body.decode('utf-8'))
             pred_winner = json_data['pred_winner']
             pred_game_str = json_data['pred_game']
-            print(pred_game_str)
-            print(type(pred_game_str))
             pred_game = Match.objects.get(GameID=pred_game_str)
             response_data = {}
         
@@ -164,6 +162,11 @@ def AjaxAddBankerView(request):
             bankerentry = Banker(User=banker_user, BankWeek=bankweek, BankSeason=bankseason, BankGame=bankgame, BankerTeam=bankerteam)
             bankerentry.save()
 
+            # Set Banker flag to corresponding Prediction
+            prediction = Prediction.objects.get(User=banker_user, Game=bankgame)
+            prediction.Banker = True
+            prediction.save()
+
             response_data['result'] = 'Banker entry successful!'
             response_data['game'] = str(bankerentry.BankGame)
             response_data['user'] = str(bankerentry.User)
@@ -193,6 +196,61 @@ def ScoreTableView(request):
 
     return render(request, 'predictor/scoretable.html', context)
 
+### View to display enhanced scoretable for all users
+def ScoreTableEnhancedView(request):
+    # Below sets score week to 1 below current results week
+    # IE - to pull scores from last completed week
+    high = -999
+    for weekscore in ScoresWeek.objects.filter(Season=os.environ['PREDICTSEASON']):
+        if weekscore.WeekScore > high:
+            high = weekscore.WeekScore
+
+    low = 999
+    for weekscore in ScoresWeek.objects.filter(Season=os.environ['PREDICTSEASON']):
+        if weekscore.WeekScore < low:
+            low = weekscore.WeekScore
+
+    worstbest = 999
+    for score in ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']):
+        if score.SeasonBest < worstbest:
+            worstbest = score.SeasonBest
+
+    bestworst = -999
+    for score in ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']):
+        if score.SeasonWorst > bestworst:
+            bestworst = score.SeasonWorst   
+
+    bestbanker = -999
+    for seasonscore in ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']):
+        if seasonscore.BankerAverage > bestbanker:
+            bestbanker = seasonscore.BankerAverage
+
+    worstbanker = 999
+    for seasonscore in ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']):
+        if seasonscore.BankerAverage < worstbanker:
+            worstbanker = seasonscore.BankerAverage
+
+    scoreweek = int(os.environ['RESULTSWEEK']) - 1
+    weekscores = ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON'])   
+    nopreds = CustomUser.objects.all().exclude(id__in=weekscores.values('User'))
+    
+    context = {
+        'nopreds': nopreds,
+        'bestbanker': bestbanker,
+        'worstbanker': worstbanker,
+        'worstweekeveryone': low,
+        'bestweekeveryone': high,
+        'worstbest': worstbest,
+        'bestworst': bestworst,
+        'seasonscores': ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']),
+        'weekscores': ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON']),
+        'week':scoreweek,
+        'season':os.environ['PREDICTSEASON'],
+        'title':'Leaderboard'
+    }
+
+    return render(request, 'predictor/scoretable_enhanced.html', context)
+
 ### View called by Ajax to amend predictions in database.  Returns JSON response.
 def AjaxAmendPredictionView(request):
         if request.method == 'POST':
@@ -200,8 +258,6 @@ def AjaxAmendPredictionView(request):
             json_data = json.loads(request.body.decode('utf-8'))
             pred_winner = json_data['pred_winner']
             pred_game_str = json_data['pred_game']
-            print(pred_game_str)
-            print(type(pred_game_str))
             pred_game = Match.objects.get(GameID=pred_game_str)
             response_data = {}
 
@@ -234,10 +290,20 @@ def AjaxAmendBankerView(request):
             bankseason = os.environ['PREDICTSEASON']
 
             oldbanker = Banker.objects.get(User=banker_user, BankWeek=bankweek, BankSeason=bankseason)
+            # Remove Banker flag in corresponding Prediction
+            oldprediction = Prediction.objects.get(User=banker_user, Game=oldbanker.BankGame)
+            oldprediction.Banker = False
+            oldprediction.save()
+            
             oldbanker.delete()
         
             bankerentry = Banker(User=banker_user, BankWeek=bankweek, BankSeason=bankseason, BankGame=bankgame, BankerTeam=bankerteam)
             bankerentry.save()
+
+            # Set Banker flag to corresponding Prediction
+            prediction = Prediction.objects.get(User=banker_user, Game=bankgame)
+            prediction.Banker = True
+            prediction.save()
 
             response_data['result'] = 'Banker entry successful!'
             response_data['game'] = str(bankerentry.BankGame)
