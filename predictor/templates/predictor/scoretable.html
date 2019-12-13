@@ -22,6 +22,7 @@
 <div class="container">
 <h5 class="mb-3">
     Live Score Table</h5>
+    <a href="{% url 'scoretableenhanced' %}" class="smalllink">Enhanced Score Table</a>
     <h6>Season {{ season }}<BR>
     Including week {{ week }} games
 </h6>
@@ -31,7 +32,7 @@
                 <tr>
                     <th>Pos.</th>
                     <th>Player</th>
-                    <th>Week Score</th>
+                    <th>Last Week</th>
                     <th>Total Score</th>
                 </tr>
             </thead>

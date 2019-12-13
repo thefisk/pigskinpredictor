@@ -231,8 +231,11 @@ def ScoreTableEnhancedView(request):
             worstbanker = seasonscore.BankerAverage
 
     scoreweek = int(os.environ['RESULTSWEEK']) - 1
+    weekscores = ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON'])   
+    nopreds = CustomUser.objects.all().exclude(id__in=weekscores.values('User'))
     
     context = {
+        'nopreds': nopreds,
         'bestbanker': bestbanker,
         'worstbanker': worstbanker,
         'worstweekeveryone': low,
