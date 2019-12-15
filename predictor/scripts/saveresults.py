@@ -37,7 +37,7 @@ def run():
       
       # Update Season extended stats 
       for score in ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']):
-         weekscore = ScoresWeek.objects.filter(Season=os.environ['PREDICTSEASON'], User=score.User, Week=os.environ['RESULTSWEEK'])
+         weekscore = ScoresWeek.objects.get(Season=os.environ['PREDICTSEASON'], User=score.User, Week=os.environ['RESULTSWEEK'])
          # Update WorstWeek if needed
          if weekscore.WeekScore < score.SeasonWorst:
             score.SeasonWorst = weekscore.WeekScore
@@ -59,7 +59,7 @@ def run():
 
       # Update AllTime extended stats 
       for alltime in ScoresAllTime.objects.all():
-         weekscore = ScoresWeek.objects.filter(Season=os.environ['PREDICTSEASON'], User=alltime.User, Week=os.environ['RESULTSWEEK'])
+         weekscore = ScoresWeek.objects.get(Season=os.environ['PREDICTSEASON'], User=alltime.User, Week=os.environ['RESULTSWEEK'])
          # Update WorstWeek if needed
          if weekscore.WeekScore < alltime.AllTimeWorst:
             alltime.AllTimeWorst = weekscore.WeekScore
