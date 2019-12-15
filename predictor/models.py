@@ -114,17 +114,6 @@ class Prediction(models.Model):
             else:
                 # If a Season score object exists, grab the record and update the below
                 seasonscore = ScoresSeason.objects.get(User=self.User, Season=self.Game.Season)
-                # Update Banker Average (only doing so on Banker flag will reduce number of calls)
-                if self.Banker == True:
-                    userbankers = Prediction.objects.filter(User=self.User, PredSeason = self.Game.Season, Banker=True)
-                    banktotal = 0
-                    for banker in userbankers:
-                        if banker.Game == self.Game:
-                            banktotal += self.Points
-                        else:
-                            banktotal += banker.Points
-                    bankaverage = banktotal/userbankers.count()
-                    seasonscore.BankerAverage = bankaverage
                 # Increment SeasonCorrect if pts scored
                 if self.Points > 0:
                     seasonscore.SeasonCorrect += 1
@@ -147,54 +136,12 @@ class Prediction(models.Model):
             else:
                 # if an all time score object exists, add the points to it
                 alltimescore = ScoresAllTime.objects.get(User=self.User)
-                # Update Banker Average (only doing so on Banker flag will reduce number of calls)
-                if self.Banker == True:
-                    alltimebankers = Prediction.objects.filter(User=self.User, Banker=True)
-                    alltimebanktotal = 0
-                    for alltimebanker in alltimebankers:
-                        if alltimebanker.Game == self.Game:
-                            alltimebanktotal += self.Points
-                        else:
-                            alltimebanktotal += alltimebanker.Points
-                    alltimebankaverage = alltimebanktotal/alltimebankers.count()
-                    alltimescore.AllTimeBankerAverage = alltimebankaverage
                 # Increment AllTimeCorrect if pts scored
                 if self.Points > 0:
                     alltimescore.AllTimeCorrect += 1
                 alltimescore.AllTimeScore += self.Points
                 alltimescore.save()
             super(Prediction, self).save(*args, **kwargs)
-            # Update Season & All Time High/Low/Percentage/Avg
-            weeksscoredpreds = Prediction.objects.filter(PredWeek=self.PredWeek, User=self.User, Points__isnull=False)
-            # Only process Best/Worst/Percentage logic if all predictions for user have scored for the week to save compute time
-            if weeksscoredpreds.count() == Match.objects.filter(Season=self.PredSeason, Week=self.Game.Week).count():
-                season = ScoresSeason.objects.get(User=self.User, Season=self.Game.Season)
-                alltime = ScoresAllTime.objects.get(User=self.User)
-                weekscore = ScoresWeek.objects.get(User=self.User, Week=self.Game.Week).WeekScore
-                seasonpredcount = Prediction.objects.filter(PredSeason=self.Game.Season, User=self.User).count()
-                alltimepredcount = Prediction.objects.filter(User=self.User).count()
-                seasoncorrect = Prediction.objects.filter(PredSeason=self.Game.Season, User=self.User, Points__gt=0).count()
-                alltimecorrect = Prediction.objects.filter(User=self.User, Points__gt=0).count()
-                if weekscore >= season.SeasonBest:
-                    season.SeasonBest = weekscore
-                    season.SeasonPercentage = (seasoncorrect/seasonpredcount)*100
-                    season.SeasonAverage = season.SeasonScore/ScoresWeek.objects.filter(Season=self.Game.Season, User=self.User).count()
-                    season.save()
-                    if weekscore >= alltime.AllTimeBest:
-                        alltime.AllTimeBest = weekscore
-                        alltime.AllTimePercentage = (alltimecorrect/alltimepredcount)*100
-                        alltime.AllTimeAverage = alltime.AllTimeScore/ScoresWeek.objects.filter(User=self.User).count()
-                        alltime.save()
-                if weekscore <= season.SeasonWorst:
-                    season.SeasonWorst = weekscore
-                    season.SeasonPercentage = (seasoncorrect/seasonpredcount)*100
-                    season.SeasonAverage = season.SeasonScore/ScoresWeek.objects.filter(Season=self.Game.Season, User=self.User).count()
-                    season.save()
-                    if weekscore <= alltime.AllTimeWorst:
-                        alltime.AllTimeWorst = weekscore
-                        alltime.AllTimePercentage = (alltimecorrect/alltimepredcount)*100
-                        alltime.AllTimeAverage = alltime.AllTimeScore/ScoresWeek.objects.filter(User=self.User).count()
-                        alltime.save()
 
 class ScoresWeek(models.Model):
     User = models.ForeignKey(User, on_delete=models.CASCADE)
