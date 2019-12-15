@@ -4,7 +4,7 @@
 ### but will only execute on a Tuesday
 
 import os, json, boto3, datetime
-from predictor.models import Team, Results
+from predictor.models import Team, Results, ScoresSeason, ScoresAllTime, ScoresWeek, Prediction
 
 def run():
    # Loop to ensure script only executes on a Tuesday!
