@@ -35,46 +35,56 @@ def run():
 
    # Update Season extended stats 
    for score in ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']):
-      weekscore = ScoresWeek.objects.get(Season=os.environ['PREDICTSEASON'], User=score.User, Week=os.environ['RESULTSWEEK'])
-      # Update WorstWeek if needed
-      if weekscore.WeekScore < score.SeasonWorst:
-         score.SeasonWorst = weekscore.WeekScore
-      # Update BestWeek if needed
-      if weekscore.WeekScore > score.SeasonBest:
-         score.SeasonBest = weekscore.WeekScore
-      # Recalculate Season Percentage
-      seasoncorrect = Prediction.objects.filter(PredSeason=os.environ['PREDICTSEASON'], User=score.User, Points__gt=0).count()
-      seasonpredcount = Prediction.objects.filter(PredSeason=os.environ['PREDICTSEASON'], User=score.User).count()
-      score.SeasonPercentage = (seasoncorrect/seasonpredcount)*100
-      # Recalculate Season Average
-      score.SeasonAverage = score.SeasonScore/ScoresWeek.objects.filter(Season=os.environ['PREDICTSEASON'], User=score.User).count()
-      # Recalculate Banker Average
-      banktotal = 0
-      for banker in Prediction.objects.filter(PredSeason=os.environ['PREDICTSEASON'], User=score.User, Banker=True):
-         if isinstance(banker.Points, int):
-            banktotal += banker.Points
-      score.BankerAverage=banktotal/Prediction.objects.filter(PredSeason=os.environ['PREDICTSEASON'], User=score.User, Banker=True).count()
-      score.save()
+      # Try / Except needed if a user misses a week
+      try:
+         weekscore = ScoresWeek.objects.get(Season=os.environ['PREDICTSEASON'], User=score.User, Week=os.environ['RESULTSWEEK'])
+      except ScoresWeek.DoesNotExist:
+         pass
+      else:
+         # Update WorstWeek if needed
+         if weekscore.WeekScore < score.SeasonWorst:
+            score.SeasonWorst = weekscore.WeekScore
+         # Update BestWeek if needed
+         if weekscore.WeekScore > score.SeasonBest:
+            score.SeasonBest = weekscore.WeekScore
+         # Recalculate Season Percentage
+         seasoncorrect = Prediction.objects.filter(PredSeason=os.environ['PREDICTSEASON'], User=score.User, Points__gt=0).count()
+         seasonpredcount = Prediction.objects.filter(PredSeason=os.environ['PREDICTSEASON'], User=score.User).count()
+         score.SeasonPercentage = (seasoncorrect/seasonpredcount)*100
+         # Recalculate Season Average
+         score.SeasonAverage = score.SeasonScore/ScoresWeek.objects.filter(Season=os.environ['PREDICTSEASON'], User=score.User).count()
+         # Recalculate Banker Average
+         banktotal = 0
+         for banker in Prediction.objects.filter(PredSeason=os.environ['PREDICTSEASON'], User=score.User, Banker=True):
+            if isinstance(banker.Points, int):
+               banktotal += banker.Points
+         score.BankerAverage=banktotal/Prediction.objects.filter(PredSeason=os.environ['PREDICTSEASON'], User=score.User, Banker=True).count()
+         score.save()
 
    # Update AllTime extended stats 
    for alltime in ScoresAllTime.objects.all():
-      weekscore = ScoresWeek.objects.get(Season=os.environ['PREDICTSEASON'], User=alltime.User, Week=os.environ['RESULTSWEEK'])
-      # Update WorstWeek if needed
-      if weekscore.WeekScore < alltime.AllTimeWorst:
-         alltime.AllTimeWorst = weekscore.WeekScore
-      # Update BestWeek if needed
-      if weekscore.WeekScore > alltime.AllTimeBest:
-         alltime.AllTimeBest = weekscore.WeekScore
-      # Recalculate Season Percentage
-      alltimecorrect = Prediction.objects.filter(User=alltime.User, Points__gt=0).count()
-      alltimepredcount = Prediction.objects.filter(User=alltime.User).count()
-      alltime.AllTimePercentage = (alltimecorrect/alltimepredcount)*100
-      # Recalculate Season Average
-      alltime.AllTimeAverage = alltime.AllTimeScore/ScoresWeek.objects.filter(User=alltime.User).count()
-      # Recalculate Banker Average
-      alltimebanktotal = 0
-      for alltimebanker in Prediction.objects.filter(User=alltime.User, Banker=True):
-         if isinstance(alltimebanker.Points, int):
-            alltimebanktotal += alltimebanker.Points
-      alltime.AllTimeBankerAverage=alltimebanktotal/Prediction.objects.filter(User=alltime.User, Banker=True).count()
-      alltime.save()
+      # Try / Except needed if a user misses a week
+      try:
+         weekscore = ScoresWeek.objects.get(Season=os.environ['PREDICTSEASON'], User=alltime.User, Week=os.environ['RESULTSWEEK'])
+      except ScoresWeek.DoesNotExist:
+         pass
+      else:
+         # Update WorstWeek if needed
+         if weekscore.WeekScore < alltime.AllTimeWorst:
+            alltime.AllTimeWorst = weekscore.WeekScore
+         # Update BestWeek if needed
+         if weekscore.WeekScore > alltime.AllTimeBest:
+            alltime.AllTimeBest = weekscore.WeekScore
+         # Recalculate Season Percentage
+         alltimecorrect = Prediction.objects.filter(User=alltime.User, Points__gt=0).count()
+         alltimepredcount = Prediction.objects.filter(User=alltime.User).count()
+         alltime.AllTimePercentage = (alltimecorrect/alltimepredcount)*100
+         # Recalculate Season Average
+         alltime.AllTimeAverage = alltime.AllTimeScore/ScoresWeek.objects.filter(User=alltime.User).count()
+         # Recalculate Banker Average
+         alltimebanktotal = 0
+         for alltimebanker in Prediction.objects.filter(User=alltime.User, Banker=True):
+            if isinstance(alltimebanker.Points, int):
+               alltimebanktotal += alltimebanker.Points
+         alltime.AllTimeBankerAverage=alltimebanktotal/Prediction.objects.filter(User=alltime.User, Banker=True).count()
+         alltime.save()
