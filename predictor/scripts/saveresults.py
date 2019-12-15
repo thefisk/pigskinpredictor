@@ -53,7 +53,8 @@ def run():
          # Recalculate Banker Average
          banktotal = 0
          for banker in Prediction.objects.filter(PredSeason=os.environ['PREDICTSEASON'], User=score.User, Banker=True):
-            banktotal += banker.Points
+            if isinstance(banker.Points, int):
+               banktotal += banker.Points
          score.BankerAverage=banktotal/Prediction.objects.filter(PredSeason=os.environ['PREDICTSEASON'], User=score.User, Banker=True).count()
          score.save()
 
@@ -75,7 +76,8 @@ def run():
          # Recalculate Banker Average
          alltimebanktotal = 0
          for alltimebanker in Prediction.objects.filter(User=alltime.User, Banker=True):
-            alltimebanktotal += alltimebanker.Points
+            if isinstance(alltimebanker.Points, int):
+               alltimebanktotal += alltimebanker.Points
          alltime.AllTimeBankerAverage=alltimebanktotal/Prediction.objects.filter(User=alltime.User, Banker=True).count()
          alltime.save()
    else:
