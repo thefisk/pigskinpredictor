@@ -26,7 +26,7 @@ It is based on the Django web framework and uses Javascript to select and post u
  
  * As Prediction scores are saved, a further save override methods adds the points to Weekly, Season, and All-Time Score tables.
  
- * Every Thursday evening a further script is run to increment the PREDICTWEEK env var to make the next week's predictions available for selection.
+ * Every Wednesday evening a further script is run to increment the PREDICTWEEK env var to make the next week's predictions available for selection.
  
  * The Leaderboard page pulls in season scores for each user, plus their score from the last week (based on RESULTSWEEK -1).
  
