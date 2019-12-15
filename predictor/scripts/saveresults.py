@@ -60,7 +60,7 @@ def run():
             for banker in Prediction.objects.filter(PredSeason=os.environ['PREDICTSEASON'], User=score.User, Banker=True):
                if isinstance(banker.Points, int):
                   banktotal += banker.Points
-            score.BankerAverage=banktotal/Prediction.objects.filter(PredSeason=os.environ['PREDICTSEASON'], User=score.User, Banker=True).count()
+            score.BankerAverage=banktotal/Prediction.objects.filter(PredSeason=os.environ['PREDICTSEASON'], User=score.User, Banker=True).exclude(Points__isnull=True).count()
             score.save()
 
       # Update AllTime extended stats 
@@ -88,7 +88,7 @@ def run():
             for alltimebanker in Prediction.objects.filter(User=alltime.User, Banker=True):
                if isinstance(alltimebanker.Points, int):
                   alltimebanktotal += alltimebanker.Points
-            alltime.AllTimeBankerAverage=alltimebanktotal/Prediction.objects.filter(User=alltime.User, Banker=True).count()
+            alltime.AllTimeBankerAverage=alltimebanktotal/Prediction.objects.filter(User=alltime.User, Banker=True).exclude(Points__isnull=True).count()
             alltime.save()
    else:
       pass
