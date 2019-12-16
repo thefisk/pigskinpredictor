@@ -51,7 +51,7 @@ def run():
                score.SeasonBest = weekscore.WeekScore
             # Recalculate Season Percentage
             seasoncorrect = Prediction.objects.filter(PredSeason=os.environ['PREDICTSEASON'], User=score.User, Points__gt=0).count()
-            seasonpredcount = Prediction.objects.filter(PredSeason=os.environ['PREDICTSEASON'], User=score.User).count()
+            seasonpredcount = Prediction.objects.filter(PredSeason=os.environ['PREDICTSEASON'], User=score.User).exclude(Points__isnull=True).count()
             score.SeasonPercentage = (seasoncorrect/seasonpredcount)*100
             # Recalculate Season Average
             score.SeasonAverage = score.SeasonScore/ScoresWeek.objects.filter(Season=os.environ['PREDICTSEASON'], User=score.User).count()
@@ -79,7 +79,7 @@ def run():
                alltime.AllTimeBest = weekscore.WeekScore
             # Recalculate Season Percentage
             alltimecorrect = Prediction.objects.filter(User=alltime.User, Points__gt=0).count()
-            alltimepredcount = Prediction.objects.filter(User=alltime.User).count()
+            alltimepredcount = Prediction.objects.filter(User=alltime.User).exclude(Points__isnull=True).count()
             alltime.AllTimePercentage = (alltimecorrect/alltimepredcount)*100
             # Recalculate Season Average
             alltime.AllTimeAverage = alltime.AllTimeScore/ScoresWeek.objects.filter(User=alltime.User).count()
