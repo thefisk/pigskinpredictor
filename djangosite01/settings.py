@@ -19,6 +19,7 @@ ALLOWED_HOSTS = ['pigskinpredictor.herokuapp.com','pigskinpredictor.com']
 # Application definition
 
 INSTALLED_APPS = [
+    'debug_toolbar',
     'material',
     'predictor.apps.PredictorConfig',
     'accounts.apps.AccountsConfig',
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -178,3 +180,5 @@ ACCOUNT_FORMS = {
 
 # staticfiles=False added so Heroku will use S3.  Without, it uses local!
 django_heroku.settings(locals(), staticfiles=False)
+
+INTERNAL_IPS = ['127.0.0.1']
