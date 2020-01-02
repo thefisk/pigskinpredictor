@@ -15,6 +15,7 @@ from .views import (
     AboutView, #About
     ScoringView, #Scoring
     ReportsView, #Reports
+    NewYearView, #AfterWeek17
 )
 from . import views
 
@@ -33,6 +34,7 @@ urlpatterns = [
     path('about/',AboutView, name='about'), #About
     path('scoring/',ScoringView, name='scoring'), #Scoring
     path('report/',ReportsView, name='report'), #Reports
+    path('yearend/',NewYearView, name='new-year-view') #After Week 17
 ]
 
 if settings.DEBUG:
