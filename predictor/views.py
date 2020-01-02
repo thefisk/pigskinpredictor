@@ -58,11 +58,15 @@ class ResultsView(ListView):
 def CreatePredictionsView(request):
     week = os.environ['PREDICTWEEK']
     season = os.environ['PREDICTSEASON']
-    if len(Prediction.objects.filter(Game__Week=week, Game__Season=season, User=request.user)) == 0:
-        template = 'predictor/predict_new.html'
-    else:
-        response = redirect('amend-prediction-view')
+    if int(week) > 17:
+        response = redirect('new-year-view')
         return response
+    else:
+        if len(Prediction.objects.filter(Game__Week=week, Game__Season=season, User=request.user)) == 0:
+            template = 'predictor/predict_new.html'
+        else:
+            response = redirect('amend-prediction-view')
+            return response
     context = {
         'bankers':Banker.objects.filter(User=request.user, BankSeason=season),
         'predictions':Prediction.objects.all(),
@@ -100,6 +104,20 @@ def AmendPredictionsView(request):
         'title':'Amend Predictions'
     }
 
+    return render(request, template, context)
+
+### View to Display after week 17 ###
+@login_required
+def NewYearView(request):
+    nextyear = int(os.environ['PREDICTSEASON'])+1
+    score = ScoresSeason.objects.get(User=request.user, Season=os.environ['PREDICTSEASON']).SeasonScore
+    template = 'predictor/year_end.html'
+    context = {
+        'nextyear':nextyear,
+        'year':os.environ['PREDICTSEASON'],
+        'score':score,
+        'title':'Thanks For Playing'
+    }
     return render(request, template, context)
 
 class ScheduleView(ListView):

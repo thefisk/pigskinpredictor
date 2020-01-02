@@ -1,0 +1,20 @@
+{% extends "predictor/base.html" %}
+{% block content %}
+<script>
+ $('#predict').each(function(){
+        $(this).toggleClass('active');
+    });
+</script>
+<div class='container'>
+    <h5>Pigskin Predictor | Thanks For Playing</h5>
+        <br>
+            Thanks for playing in {{ year }}
+        <br><br>
+            You finished with {{ score }} points.  Check out the <a href="{% url 'scoretable' %}">scoretable</a> to see how you placed.
+        <br><br>
+            Come back in {{ nextyear }} to play again!
+        <br><br>
+             // Thanks again       
+
+</div>
+{% endblock content %}
