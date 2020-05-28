@@ -199,7 +199,11 @@ def AjaxAddBankerView(request):
 def ScoreTableView(request):
     # Below sets score week to 1 below current results week
     # IE - to pull scores from last completed week 
-    scoreweek = int(os.environ['RESULTSWEEK']) - 1
+    basescoreweek = int(os.environ['RESULTSWEEK']) - 1
+    if basescoreweek > 17:
+        scoreweek = 17
+    else:
+        scoreweek = basescoreweek
     weekscores = ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON'])   
     nopreds = CustomUser.objects.all().exclude(id__in=weekscores.values('User'))
 
@@ -248,7 +252,12 @@ def ScoreTableEnhancedView(request):
         if seasonscore.BankerAverage < worstbanker:
             worstbanker = seasonscore.BankerAverage
 
-    scoreweek = int(os.environ['RESULTSWEEK']) - 1
+    basescoreweek = int(os.environ['RESULTSWEEK']) - 1
+    if basescoreweek > 17:
+        scoreweek = 17
+    else:
+        scoreweek = basescoreweek
+
     weekscores = ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON'])   
     nopreds = CustomUser.objects.all().exclude(id__in=weekscores.values('User'))
     
