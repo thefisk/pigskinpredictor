@@ -1,4 +1,5 @@
 import json, os
+from rest_framework import viewsets
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -7,6 +8,7 @@ from django.contrib.auth.models import User
 from accounts.models import User as CustomUser
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import (
+    Team,
     Results,
     Match,
     Prediction,
@@ -16,7 +18,6 @@ from .models import (
     Banker
 )
 from .mixins import AjaxFormMixin
-#from .forms import testpredictionform
 from django.views.generic import (
     ListView,
     DetailView,
@@ -110,15 +111,28 @@ def AmendPredictionsView(request):
 @login_required
 def NewYearView(request):
     nextyear = int(os.environ['PREDICTSEASON'])+1
-    score = ScoresSeason.objects.get(User=request.user, Season=os.environ['PREDICTSEASON']).SeasonScore
-    template = 'predictor/year_end.html'
-    context = {
+    player = CustomUser.objects.get(username = request.user.username).first_name
+    try:
+        score = ScoresSeason.objects.get(User=request.user, Season=os.environ['PREDICTSEASON']).SeasonScore
+    except ScoresSeason.DoesNotExist:
+        template = "predictor/newplayer_yearend.html"
+        context = {
         'nextyear':nextyear,
         'year':os.environ['PREDICTSEASON'],
-        'score':score,
-        'title':'Thanks For Playing'
-    }
-    return render(request, template, context)
+        'title':'Thanks For Registering',
+        'player':player
+        }
+        return render(request, template, context)
+    else:  
+        template = 'predictor/year_end.html'
+        context = {
+            'nextyear':nextyear,
+            'year':os.environ['PREDICTSEASON'],
+            'score':score,
+            'title':'Thanks For Playing',
+            'player':player
+        }
+        return render(request, template, context)
 
 class ScheduleView(ListView):
     model = Match

@@ -84,3 +84,30 @@
     color: steelblue;
     text-decoration-line: underline;
 }
+
+.footer-pigskin{
+    padding-top: 0% !important;
+}
+
+.footer-row-pigskin{
+    margin-bottom: 0% !important;
+    padding-left: 0% !important;
+    padding-right: 0% !important!;
+}
+
+.footer-text{
+    font-size: 85%;
+}
+
+a.footer-link{
+    color:deepskyblue;
+}
+
+a.footer-link:hover{
+    color: aliceblue;
+    text-decoration: underline;
+}
+
+.brand-logo{
+    padding-left: 10px !important;
+}
