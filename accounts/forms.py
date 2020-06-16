@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, ReadOnlyPasswordHashField
 from .models import User
 from allauth.account.forms import SignupForm
 from predictor.models import Team
@@ -13,10 +13,12 @@ class CustomUserCreationForm(UserCreationForm):
         fields = ('username', 'email', 'FavouriteTeam')
 
 class CustomUserChangeForm(UserChangeForm):
+    password = ReadOnlyPasswordHashField(label="Password", widget=forms.HiddenInput())
 
     class Meta:
         model = User
-        fields = ('username', 'email')
+        fields = ('first_name', 'last_name', 'FavouriteTeam', 'password')
+        exclude = ('username', 'email')
 
 class CustomSignupForm(SignupForm):
     first_name = forms.CharField(max_length=30, label='First Name')

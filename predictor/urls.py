@@ -16,11 +16,15 @@ from .views import (
     ScoringView, #Scoring
     ReportsView, #Reports
     NewYearView, #AfterWeek17
+    ProfileView,
+    ProfileAmendedView,
 )
 from . import views
 
 urlpatterns = [
     path('',HomeView,name='home'),
+    path('profile',ProfileView,name="profile"),
+    path('profile-amended', ProfileAmendedView,name="profile-amended"),
     path('results/', ResultsView.as_view(), name='results-view'), #!!!!To implement!!!
     path('schedule/', ScheduleView.as_view(), name='schedule-view'), #!!!To Implement!!!
     path('predict/', CreatePredictionsView, name='new-prediction-view'), #New Predictions

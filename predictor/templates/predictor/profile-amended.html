@@ -1,0 +1,12 @@
+{% extends "predictor/base.html" %}
+{% block content %}
+<script>
+ $('#profile').each(function(){
+        $(this).toggleClass('active');
+    });
+</script>
+<div class='container'>
+    <h4>Pigskin Predictor | Profile Amended</h4>
+    Thanks, {{ user.first_name }}, your profile has been updated.
+</div>
+{% endblock content %}

@@ -1,0 +1,32 @@
+{% extends "predictor/base.html" %}
+{% load material_form %}
+{% load account %}
+{% load i18n %}
+{% block content %}
+<script>
+        $('#register').each(function(){
+               $(this).toggleClass('active');
+           });
+       </script>
+<div class="container">
+    <div class="row">
+        <div class="col s2 m2 l2">            
+        </div>
+        <div class="col s8 m8 l8">
+            <h43>{% trans "Confirm E-mail Address" %}</h4>
+                {% if confirmation %}
+                    {% user_display confirmation.email_address.user as user_display %}
+                    <p>{% blocktrans with confirmation.email_address.email as email %}Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is the e-mail address you wish to use.{% endblocktrans %}</p>
+                    <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+                        {% csrf_token %}
+                        <button type="submit" class="waves-effect waves-light btn">{% trans 'Confirm' %}</button>
+                    </form>
+                {% else %}
+                    {% url 'account_email' as email_url %}
+                    <p>{% blocktrans %}This e-mail confirmation link expired or is invalid. Please <a href="{{ email_url }}">issue a new e-mail confirmation request</a>.{% endblocktrans %}</p>
+                {% endif %}
+        </div>
+    <div class="col s2 m2 l2"></div>
+    </div>
+</div>
+{% endblock content %}

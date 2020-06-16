@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Roboto" rel="stylesheet">
     <link href="{% static "predictor/css/pigskin.css" %}" rel="stylesheet">
     <link href="{% static "predictor/css/materialize.pigskin.min.css" %}" rel="stylesheet">
+    <link href="https://cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet">
     <!--Materialize CSS-->
     <!-- Compiled and minified CSS -->
     <!-- link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"-->
@@ -42,7 +43,7 @@
     <!---div class="navbar-fixed"-->
     <nav>
         <div class="nav-wrapper">
-          <a href="{% url 'home' %}" class="brand-logo hide-on-med-and-down">Pigskin Predictor</a>
+          <a href="{% url 'home' %}" class="brand-logo hide-on-med-and-down pigskin-logo">Pigskin Predictor</a>
           <a href="{% url 'home' %}"><img class="logoimg brand-logo center" src="{% static "predictor/img/piglogo.png" %}" alt="logo"></a>
           
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
@@ -55,6 +56,7 @@
             <li id="leaderboard"><a class="navlink" href="{% url 'scoretable' %}">Leaderboard</a></li>
             <li id="scoring"><a class="navlink" href="{% url 'scoring' %}">Scoring</a></li>
             <li id="about"><a class="navlink" href="{% url 'about' %}">About</a></li>
+            <li id="profile"><a class="navlink" href="{% url 'profile' %}">Profile</a></li>
             <li id="logout"><a class="navlink" href="/accounts/logout">Logout</a></li>
             {% else %}
             <li id="leaderboard"><a class="navlink" href="{% url 'scoretable' %}">Leaderboard</a></li>
@@ -76,6 +78,7 @@
           <li><a href="{% url 'scoretable' %}">Leaderboard</a></li>
           <li><a href="{% url 'scoring' %}">Scoring</a></li>
           <li><a href="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'profile' %}">Profile</a></li>
           <li><a href="/accounts/logout">Logout</a></li>
           {% else %}
           <li><a href="{% url 'scoretable' %}">Leaderboard</a></li>

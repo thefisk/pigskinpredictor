@@ -1,5 +1,6 @@
 import json, os
 from django.shortcuts import render, get_object_or_404, redirect
+from accounts.forms import CustomUserChangeForm
 from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponse, JsonResponse
@@ -47,6 +48,21 @@ def ReportsView(request):
 
 def HomeView(request):
     return render(request, 'predictor/home.html')
+
+def ProfileView(request):
+    if request.method == 'POST':
+        form = CustomUserChangeForm(request.POST, instance=request.user)
+        if form.is_valid:
+            form.save()
+            return redirect('profile-amended')
+    else:
+        form = CustomUserChangeForm(instance=request.user)
+        template = "predictor/profile.html"
+        context = {'form': form}
+        return render(request, template, context)
+
+def ProfileAmendedView(request):
+    return render(request, 'predictor/profile-amended.html')
 
 class ResultsView(ListView):
     model = Results
