@@ -18,11 +18,13 @@ from .views import (
     NewYearView, #AfterWeek17
     ProfileView,
     ProfileAmendedView,
+    RobotsTXT
 )
 from . import views
 
 urlpatterns = [
     path('',HomeView,name='home'),
+    path('robots.txt', RobotsTXT),
     path('profile',ProfileView,name="profile"),
     path('profile-amended', ProfileAmendedView,name="profile-amended"),
     path('results/', ResultsView.as_view(), name='results-view'), #!!!!To implement!!!

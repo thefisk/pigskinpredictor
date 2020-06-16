@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
+from django.views.decorators.http import require_GET
 from accounts.models import User as CustomUser
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import (
@@ -26,6 +27,14 @@ from django.views.generic import (
     DeleteView,
     FormView
 )
+
+@require_GET
+def RobotsTXT(request):
+    lines = [
+        "User-Agent: *",
+        "Disallow: /"        
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")
 
 def is_reportviewer(user):
     return user.groups.filter(name='ReportViewers').exists()
