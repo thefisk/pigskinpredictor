@@ -7,23 +7,25 @@
     });
 </script>
 <div class='container'>
-    <div class="section">
-        <h4>My Stats</h4>
-    </div>
-    <div class="divider">
-    </div>
-    <div class="section">
-        <h5>Edit my Profile</h5>
-        <form method="post">
-        {% csrf_token %}
-        {% form form=form %}
-        {% part form.first_name prefix %}<i class="material-icons prefix">face</i>{% endpart %}
-        {% part form.last_name prefix %}<i class="material-icons prefix">face</i>{% endpart %}
-        {% part form.FavouriteTeam prefix %}<i class="material-icons prefix">sports_football</i>{% endpart %}
-        {% endform %}
-        <br>
-        <button type="submit" class="btn waves-effect waves-light">update</button>
-        </form>
+    <div class="row">
+        <div class="col s12 m6">
+            <h5>My Stats</h5>
+            <div class="divider"></div>
+        </div>
+        <div class="col s12 m6">
+            <h5>Edit my Profile</h5>
+            <div class="divider"></div>
+            <form method="post">
+            {% csrf_token %}
+            {% form form=form %}
+            {% part form.first_name prefix %}<i class="material-icons prefix">face</i>{% endpart %}
+            {% part form.last_name prefix %}<i class="material-icons prefix">face</i>{% endpart %}
+            {% part form.FavouriteTeam prefix %}<i class="material-icons prefix">sports_football</i>{% endpart %}
+            {% endform %}
+            <br>
+            <button type="submit" class="btn waves-effect waves-light">update</button>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock content %}
