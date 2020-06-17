@@ -73,10 +73,29 @@ def ProfileView(request):
 def ProfileAmendedView(request):
     return render(request, 'predictor/profile-amended.html')
 
-class ResultsView(ListView):
-    model = Results
-    context_object_name = 'results'
-    template_name = 'predictor/results.html' # <app>/<model>_viewtype>.html
+@login_required
+def ResultsView(request):
+    basescoreweek = int(os.environ['RESULTSWEEK']) - 1
+    if basescoreweek < 1:
+        return redirect('results-preseason')
+    elif basescoreweek > 17:
+        scoreweek = 17
+    else:
+        scoreweek = basescoreweek
+    template = 'predictor/results.html' # <app>/<model>_viewtype>.html
+    PredWeek = int(str(os.environ['PREDICTSEASON'])+str(scoreweek))
+    context = {
+        'season': os.environ['PREDICTSEASON'],
+        'week':scoreweek,
+        'weekscore': ScoresWeek.objects.get(User=request.user, Season=os.environ['PREDICTSEASON'], Week=scoreweek).WeekScore,
+        'predictions':Prediction.objects.filter(User=request.user, PredWeek=PredWeek),
+        'results':Results.objects.filter(Season=os.environ['PREDICTSEASON'], Week=scoreweek)
+    }
+    return render(request, template, context)
+
+def ResultsPreSeasonView(request):
+    template = 'predictor/results-preseason.html'
+    return render(request, template)
 
 ### View to Display "Add Predictions" Screen
 @login_required

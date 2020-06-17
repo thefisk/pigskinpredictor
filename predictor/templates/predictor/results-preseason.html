@@ -1,0 +1,21 @@
+{% extends "predictor/base.html" %}
+{% load predictor_custom_tags %}
+{% block content %}
+<script>
+    $('#results').each(function(){
+           $(this).toggleClass('active');
+       });
+</script>
+
+<div class="container">
+    <div class="row">
+        <div class="col m2"></div>
+        <div id="resultstable" class="col s12 m8">
+            <h5 class="mb-3">My Results</h5>
+            <h6>Come back after week 1 has been completed to see match results, along with your points for the week
+            </h6>
+        </div>
+        <div class="col m2"></div>
+    </div>
+</div>
+{% endblock content %}
