@@ -162,3 +162,25 @@ table.results-table tbody tr td {
 .results-table-total{
     font-weight: 700;
 }
+
+.stats-header{
+    font-weight: 400;
+}
+
+.stats-period{
+    font-size: large;
+    font-weight: 500;
+    font-family: Sriracha;
+}
+
+table#stats-table thead tr th {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    padding-left: 0px;
+}
+
+table#stats-table tbody tr td {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    padding-left: 0px;
+}

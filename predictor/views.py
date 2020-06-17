@@ -67,7 +67,22 @@ def ProfileView(request):
     else:
         form = CustomUserChangeForm(instance=request.user)
         template = "predictor/profile.html"
-        context = {'form': form}
+        seasonhigh = ScoresSeason.objects.get(User=request.user, Season=(os.environ['PREDICTSEASON'])).SeasonBest
+        seasonlow = ScoresSeason.objects.get(User=request.user, Season=(os.environ['PREDICTSEASON'])).SeasonWorst
+        seasonpct = ScoresSeason.objects.get(User=request.user, Season=(os.environ['PREDICTSEASON'])).SeasonPercentage
+        alltimehigh = ScoresAllTime.objects.get(User=request.user).AllTimeBest
+        alltimelow = ScoresAllTime.objects.get(User=request.user).AllTimeWorst
+        alltimepct = ScoresAllTime.objects.get(User=request.user).AllTimePercentage
+        context = {
+            'form': form,
+            'season': (os.environ['PREDICTSEASON']),
+            'seasonhigh': seasonhigh,
+            'seasonlow': seasonlow,
+            'seasonpct': seasonpct,
+            'alltimehigh': alltimehigh,
+            'alltimelow': alltimelow,
+            'alltimepct': alltimepct,
+            }
         return render(request, template, context)
 
 def ProfileAmendedView(request):
