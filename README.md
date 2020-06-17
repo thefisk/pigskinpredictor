@@ -1,5 +1,5 @@
 # Pigskin Predictor
-### *A weekly NFL predictions game*
+### *A weekly American Football predictions game*
 
 #### Intro
 
@@ -13,12 +13,12 @@ It is based on the Django web framework and uses Javascript to select and post u
 
 * The site uses three environment variables to track the season and weeks, RESULTSWEEK & PREDICTWEEK being independent from each other.
 
-* The season's schedule is imported before the start of the season, maintaining the NFL's individual game keys as primary keys in the Match table.
+* The season's schedule is imported before the start of the season, maintaining original individual game keys as primary keys in the Match table.
 
 * Users' select weekly winners, including their banker choice. Those selections are posted via AJAX to the Prediction and Banker models, with a link to the corresponding Match key.
 
 * On a Tuesday morning three scripts are run via the Heroku scheduler: -
-  * The first pulls the results from an NFL XML feed based on the current RESULTSWEEK env var and writes those to a JSON file with fields relevant to the Results model.
+  * The first pulls the results from an XML feed based on the current RESULTSWEEK env var and writes those to a JSON file with fields relevant to the Results model.
   * The second scripts reads that JSON file and imports the results into the Results database table
   * The third script increments the RESULTSWEEK env var
  
