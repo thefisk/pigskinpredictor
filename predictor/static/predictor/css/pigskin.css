@@ -45,7 +45,8 @@
 .navlink{
     font-family: roboto;
     color: white;
-    font-size: 110%;
+    font-weight: 300;
+    font-size: 100%;
 }
 
 .thodd{
@@ -110,4 +111,22 @@ a.footer-link:hover{
 
 .brand-logo{
     padding-left: 10px !important;
+}
+
+.pigskin-logo{
+    font-family: roboto !important;
+    font-weight: 300 !important;
+    letter-spacing: 0.5px;
+    }
+
+.icon-padding{
+    padding-top: 10px;
+}
+
+.blueicons{
+    color: #01579b;
+}
+
+.icon-padding-right{
+    padding-right: 8px;
 }

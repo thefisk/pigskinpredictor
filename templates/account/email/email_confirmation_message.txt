@@ -1,0 +1,1 @@
+--blank to override txt confirmation in favour of html emails--
