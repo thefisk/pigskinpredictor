@@ -1,63 +1,21 @@
-### Following deprecation of feeds.nfl.com this script
+### Following deprecation of feeds.nfl.com, this script
 ### uses BeautifulSoup to scrape schedule info from pro-football-reference.com
 ### and ingest into our custom Match model
 
 from bs4 import BeautifulSoup
 import requests
 import requests, json, boto3, os
+from dictionaries.main_dicts import team_dict, calendar_dict
 
 url = 'https://www.pro-football-reference.com/years/2020/games.htm'
 user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'
 headers = {'User-Agent': user_agent}
 
-with open('/mnt/f/PFR.html') as html:
-    soup = BeautifulSoup(html, 'lxml')
-
-team_dict = {
-    'Arizona Cardinals': 'ARI',
-    'Atlanta Falcons': 'ATL',
-    'Baltimore Ravens': 'BAL',
-    'Buffalo Bills': 'BUF',
-    'Carolina Panthers': 'CAR',
-    'Chicago Bears': 'CHI',
-    'Cincinnati Bengals': 'CIN',
-    'Cleveland Browns': 'CLE',
-    'Dallas Cowboys': 'DAL',
-    'Denver Broncos': 'DEN',
-    'Detroit Lions': 'DET',
-    'Green Bay Packers': 'GB',
-    'Houston Texans': 'HOU',
-    'Indianapolis Colts': 'IND',
-    'Jacksonville Jaguars': 'JAX',
-    'Kansas City Chiefs': 'KC',
-    'Las Vegas Raiders': 'LV', 
-    'Los Angeles Chargers': 'LAC',
-    'Los Angeles Rams': 'LA',
-    'Miami Dolphins': 'MIA',
-    'Minnesota Vikings': 'MIN',
-    'New England Patriots': 'NE',
-    'New Orleans Saints': 'NO',
-    'New York Giants': 'NYG',
-    'New York Jets': 'NYJ',
-    'Philadelphia Eagles': 'PHI',
-    'Pittsburgh Steelers': 'PIT',
-    'San Francisco 49ers': 'SF',
-    'Seattle Seahawks': 'SEA',
-    'Tampa Bay Buccaneers': 'TB',
-    'Tennessee Titans': 'TEN',
-    'Washington Redskins': 'WAS'
-}
-
-calendar_dict = {
-    'September': '09',
-    'October': '10',
-    'November': '11',
-    'December': '12',
-    'January': '01'
-}
+data = requests.get(url, headers=headers).text
+soup = BeautifulSoup(data, 'lxml')
 
 schedule=[]
-season = "2020"
+season = "2019"
 
 filename = "matchesimport_" + str(season) + ".json"
 outfile = open(filename, "w")
