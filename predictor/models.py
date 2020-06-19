@@ -29,7 +29,7 @@ class Team(models.Model):
 class Match(models.Model):
     Season = models.IntegerField(validators=[MinValueValidator(2012), MaxValueValidator(2050)])
     Week = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(17)])
-    GameID = models.IntegerField(primary_key=True,validators=[MinValueValidator(2010010101)])
+    GameID = models.IntegerField(primary_key=True,validators=[MinValueValidator(20120101)])
     HomeTeam = models.ForeignKey(Team, related_name='HomeTeam_Schedule_Set', on_delete=models.CASCADE)
     AwayTeam = models.ForeignKey(Team, related_name='AwayTeam_Schedule_Set', on_delete=models.CASCADE)
     DateTime = models.DateTimeField()
