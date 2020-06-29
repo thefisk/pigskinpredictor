@@ -3,6 +3,7 @@ from django.conf import settings
 from .views import (
     HomeView,
     ResultsView,
+    ResultsPreSeasonView,
     ScheduleView,
     CreatePredictionsView, #New Predictions
     AmendPredictionsView, #Amend Predictions
@@ -18,7 +19,7 @@ from .views import (
     NewYearView, #AfterWeek17
     ProfileView,
     ProfileAmendedView,
-    RobotsTXT
+    RobotsTXT,
 )
 from . import views
 
@@ -27,7 +28,8 @@ urlpatterns = [
     path('robots.txt', RobotsTXT),
     path('profile',ProfileView,name="profile"),
     path('profile-amended', ProfileAmendedView,name="profile-amended"),
-    path('results/', ResultsView.as_view(), name='results-view'), #!!!!To implement!!!
+    path('results/', ResultsView, name='results'),
+    path('results-preseason', ResultsPreSeasonView, name='results-preseason'),
     path('schedule/', ScheduleView.as_view(), name='schedule-view'), #!!!To Implement!!!
     path('predict/', CreatePredictionsView, name='new-prediction-view'), #New Predictions
     path('amendpredictions/', AmendPredictionsView, name='amend-prediction-view'), #Amend Predictions

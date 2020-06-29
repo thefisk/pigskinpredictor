@@ -1,14 +1,58 @@
 {% extends "predictor/base.html" %}
+{% load predictor_custom_tags %}
 {% block content %}
+<script>
+    $('#results').each(function(){
+           $(this).toggleClass('active');
+       });
+</script>
 
-<div name="Week Header">
-    <h2 class="article-title">Results | Week 17</h2>
+<div class="container">
+    <div class="row">
+        <div class="col m2"></div>
+        <div id="resultstable" class="col s12 m8">
+            <h5 class="mb-3">My Results</h5>
+            <h6>Season {{ season }}, week {{ week }}
+            </h6>
+            <table class="striped responsive-table results-table">
+                <thead>
+                    <tr class="results-table-row">
+                        <th>Road Team</th>
+                        <th>Score</th>
+                        <th>Home Team</th>
+                        <th>Prediction</th>
+                        <th>Points</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for pred in predictions %}
+                    <tr class="results-table-row">
+                        {% if pred.Points == 0 %}
+                            <td class="results-table-wrong"><img style="vertical-align:middle" src="{{ pred.Game.AwayTeam.Logo.url }}" class="team_small" alt="{{ pred.Game.AwayTeam }}">&nbsp; {{ pred.Game.AwayTeam.Nickname }}</td>
+                            <td class="results-table-wrong">{{ pred.Game.GameID|corresponding_away }} - {{ pred.Game.GameID|corresponding_home }}</td>
+                            <td class="results-table-wrong"><img style="vertical-align:middle" src="{{ pred.Game.HomeTeam.Logo.url }}" class="team_small" alt="{{ pred.Game.HomeTeam }}">&nbsp; {{ pred.Game.HomeTeam.Nickname }}</td>
+                            <td class="results-table-wrong">{{ pred.Winner }}</td>
+                            <td class="results-table-wrong">{{ pred.Points }}</td>
+                        {% else %}
+                            <td class="results-table-right"><img style="vertical-align:middle" src="{{ pred.Game.AwayTeam.Logo.url }}" class="team_small" alt="{{ pred.Game.AwayTeam }}">&nbsp; {{ pred.Game.AwayTeam.Nickname }}</td>
+                            <td class="results-table-right">{{ pred.Game.GameID|corresponding_away }} - {{ pred.Game.GameID|corresponding_home }}</td>
+                            <td class="results-table-right"><img style="vertical-align:middle" src="{{ pred.Game.HomeTeam.Logo.url }}" class="team_small" alt="{{ pred.Game.HomeTeam }}">&nbsp; {{ pred.Game.HomeTeam.Nickname }}</td>
+                            <td class="results-table-right">{{ pred.Winner }}</td>
+                            <td class="results-table-right">{{ pred.Points }}</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                    <tr class="results-table-row">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="results-table-total">Total</td>
+                        <td class="results-table-total">{{ weekscore }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col m2"></div>
+    </div>
 </div>
-
-{% for result in results %}
-    <p class="article-content">{{ result.HomeTeam.Nickname }} {{ result.HomeScore }} @ {{ result.AwayScore }} {{ result.AwayTeam.Nickname }}</p>
-{% endfor %}
-
 {% endblock content %}
-
-<!--instances of post. changed to object. to comply with what DetailView expects to see by default-->

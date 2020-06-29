@@ -1,23 +1,24 @@
-### Pulls Results From NFL XML Feed
-### Then Produces an Importable JSON
-### File that matches the predictor.Results model
+### Following deprecation of nfl.com's scorestrip, this script
+### uses BeautifulSoup to scrape results from pro-football-reference.com
+### ready to be ingested into our custom Results model
 
-import requests, json, os, boto3
-from xml.etree import ElementTree as ET
+from bs4 import BeautifulSoup
+import requests, json, boto3, os, datetime
+from dictionaries.gameid_dict2020 import gameid_dict_2020
+from dictionaries.main_dicts import team_dict
 
-def run():
-    # Pull results xml for current week
-    resultsweek = os.environ.get('RESULTSWEEK')
-    predseason = os.environ.get('PREDICTSEASON')
-    uri = 'http://www.nfl.com/ajax/scorestrip?season={}&seasonType=REG&week={}'.format(predseason, resultsweek)
-    xml = requests.get(uri)
-    tree = ET.fromstring(xml.content)
+def run:
+    ### Only run on a Tuesday
+    season = os.environ['PREDICTSEASON']
+    week = os.environ['RESULTSWEEK']
+    week = "17"
+    week_dict = gameid_dict_2020["Week_"+str(week)]
+    url = f'https://www.pro-football-reference.com/years/{season}/games.htm'
+    user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'
+    headers = {'User-Agent': user_agent}
 
-    # Below makes a dictionary to define following list by
-    for row in tree.getiterator('gms'):
-        resultset = (row.attrib)
-    week = resultset['w']
-    season = resultset['y']
+    data = requests.get(url, headers=headers).text
+    soup = BeautifulSoup(data, 'lxml')
 
     # Set Filename to include week number
     if int(week) < 10:
@@ -27,26 +28,41 @@ def run():
 
     outfile = open(filename, "w")
 
-    # Below makes a list of dictionaries for each game
-    resultsdiclist = []
-    for row in tree.getiterator('g'):
-        resultsdiclist.append(row.attrib)
-    tidyresults = []
-    count = 0
-    for i in resultsdiclist:
-        awayscore = int(resultsdiclist[count]['vs'])
-        homescore = int(resultsdiclist[count]['hs'])
-        if homescore == awayscore:
-            winner = 'Tie'
-        elif homescore > awayscore:
-            winner = 'Home'
+    results =[]
+
+    for game in soup.find_all('th', {'data-stat': 'week_num','csk': week}):
+        innerdict = {}
+        winningteam = (team_dict[game.find_next('td', {'data-stat': 'winner'}).text])
+        if (game.find_next('td',{'data-stat': 'game_location'}).text == "@"):
+            winner_location = "Away"
         else:
-            winner = 'Away'
-        innerdict = {'Winner': winner,'Week':int(week),'Season':int(season),'HomeTeam':resultsdiclist[count]['h'],'AwayTeam':resultsdiclist[count]['v'],'HomeScore':homescore,'AwayScore':awayscore}
-        mydict = {"model":'predictor.results', 'pk':int(resultsdiclist[count]['eid']), 'fields':innerdict}
-        tidyresults.append(mydict)
-        count+=1
-    jsonout = json.dumps(tidyresults)
+            winner_location = "Home"
+        losingteam = (team_dict[game.find_next('td', {'data-stat': 'loser'}).text])
+        pts_win = game.find_next('td', {'data-stat': 'pts_win'}).text
+        pts_lose = game.find_next('td', {'data-stat': 'pts_lose'}).text
+        innerdict['Week'] = int(week)
+        innerdict['Season'] = int(season)
+        if winner_location == "Away":
+            innerdict['Winner'] = "Away"
+            innerdict['AwayTeam'] = winningteam
+            innerdict['HomeTeam'] = losingteam
+            hometeam = losingteam
+            innerdict['AwayScore'] = int(pts_win)
+            innerdict['HomeScore'] = int(pts_lose)
+        else:
+            innerdict['Winner'] = "Home"
+            innerdict['AwayTeam'] = losingteam
+            innerdict['HomeTeam'] = winningteam
+            hometeam = winningteam
+            innerdict['AwayScore'] = int(pts_lose)
+            innerdict['HomeScore'] = int(pts_win)
+        outerdict = {}
+        outerdict['model'] = "predictor.results"
+        outerdict['pk'] = gameid_dict_2020["Week_"+str(week)][hometeam]
+        outerdict['fields'] = innerdict
+        results.append(outerdict)
+        
+    jsonout = json.dumps(results)
     outfile.write(jsonout)
     outfile.close()
 

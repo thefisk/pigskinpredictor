@@ -1,6 +1,6 @@
 from django import template
 from django.contrib.auth.models import Group
-from predictor.models import Match, ScoresWeek
+from predictor.models import Match, ScoresWeek, Results
 import os
 
 register = template.Library()
@@ -20,6 +20,24 @@ def corresponding_match(bankerteam):
         return 0
     else:
         return matched_game.GameID
+
+@register.filter(name='corresponding_home')
+def corresponding_home(predgameid):
+    try:
+        matched_result = Results.objects.get(GameID=predgameid)
+    except Results.DoesNotExist:
+        return 0
+    else:
+        return matched_result.HomeScore
+
+@register.filter(name='corresponding_away')
+def corresponding_away(predgameid):
+    try:
+        matched_result = Results.objects.get(GameID=predgameid)
+    except Results.DoesNotExist:
+        return 0
+    else:
+        return matched_result.AwayScore
 
 #@register.filter(name='seasonhigh')
 #def seasonhigh(user):
