@@ -7,7 +7,9 @@ import requests
 import requests, json, boto3, os
 from dictionaries.main_dicts import team_dict, calendar_dict
 
-url = 'https://www.pro-football-reference.com/years/2020/games.htm'
+season = os.environ['PREDICTSEASON']
+
+url = f'https://www.pro-football-reference.com/years/{season}/games.htm'
 user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'
 headers = {'User-Agent': user_agent}
 
@@ -15,7 +17,6 @@ data = requests.get(url, headers=headers).text
 soup = BeautifulSoup(data, 'lxml')
 
 schedule=[]
-season = "2019"
 
 filename = "matchesimport_" + str(season) + ".json"
 outfile = open(filename, "w")
