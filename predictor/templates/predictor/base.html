@@ -56,13 +56,11 @@
             <li id="results"><a class="navlink" href="{% url 'results' %}">Results</a></li>
             <li id="leaderboard"><a class="navlink" href="{% url 'scoretable' %}">Leaderboard</a></li>
             <li id="scoring"><a class="navlink" href="{% url 'scoring' %}">Scoring</a></li>
-            <li id="about"><a class="navlink" href="{% url 'about' %}">About</a></li>
             <li id="profile"><a class="navlink" href="{% url 'profile' %}">Profile</a></li>
             <li id="logout"><a class="navlink" href="/accounts/logout">Logout</a></li>
             {% else %}
             <li id="leaderboard"><a class="navlink" href="{% url 'scoretable' %}">Leaderboard</a></li>
             <li id ="scoring"><a class="navlink" href="{% url 'scoring' %}">Scoring</a></li>
-            <li id="about"><a class="navlink" href="{% url 'about' %}">About</a></li>
             <li id="login"><a class="navlink" href="/accounts/login">Login</a></li>
             <li id="register"><a class="navlink" href="/accounts/signup">Register</a></li>
             {% endif %}
@@ -79,13 +77,11 @@
           <li><a href="{% url 'results' %}">Results</a></li>
           <li><a href="{% url 'scoretable' %}">Leaderboard</a></li>
           <li><a href="{% url 'scoring' %}">Scoring</a></li>
-          <li><a href="{% url 'about' %}">About</a></li>
           <li><a href="{% url 'profile' %}">Profile</a></li>
           <li><a href="/accounts/logout">Logout</a></li>
           {% else %}
           <li><a href="{% url 'scoretable' %}">Leaderboard</a></li>
           <li><a href="{% url 'scoring' %}">Scoring</a></li>
-          <li><a href="{% url 'about' %}">About</a></li>
           <li><a href="/accounts/login">Login</a></li>
           <li><a href="/accounts/signup">Register</a></li>
           {% endif %}
@@ -109,7 +105,7 @@
         </div>
         <div class="footer-copyright">
           <div class="container footer-text">
-          An <a href="https://github.com/thefisk/pigskinpredictor" target="_blank" class="footer-link">open source</a> project by Nathan Fisk
+          An <a href="https://github.com/thefisk/pigskinpredictor" target="_blank" class="footer-link">open source</a> project by Nathan Fisk&nbsp; |&nbsp; <a href="{% url 'about' %}" class="footer-link">About this site</a>
           </div>
         </div>
       </footer>
