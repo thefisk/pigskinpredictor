@@ -33,6 +33,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'storages',
+    'rest_framework',
+    'django_filters',
     'dbbackup',
     'allauth',
     'allauth.account',
@@ -189,3 +191,7 @@ ACCOUNT_FORMS = {
 django_heroku.settings(locals(), staticfiles=False)
 
 INTERNAL_IPS = ['127.0.0.1']
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES' : ('rest_framework.permissions.IsAuthenticated',)
+}
