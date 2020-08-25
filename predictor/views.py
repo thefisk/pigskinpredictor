@@ -36,10 +36,10 @@ def RobotsTXT(request):
     ]
     return HttpResponse("\n".join(lines), content_type="text/plain")
 
-def is_reportviewer(user):
-    return user.groups.filter(name='ReportViewers').exists()
+def is_superuser(user):
+    return user.groups.filter(name='SuperUser').exists()
 
-@user_passes_test(is_reportviewer)
+@user_passes_test(is_superuser)
 @login_required
 def ReportsView(request):
     reportweek = os.environ['PREDICTWEEK']

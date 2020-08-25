@@ -5,7 +5,12 @@ from django.contrib.auth.models import AbstractUser, UserManager, PermissionsMix
 
 class User(AbstractUser):
     FavouriteTeam = models.ForeignKey('predictor.Team', on_delete=models.CASCADE, blank=True, null=True)
+    Full_Name = models.CharField(max_length=100, null=True, blank=True)
     
+    def save(self, *args, **kwargs):
+        self.Full_Name = str(self.first_name +" "+self.last_name)
+        super(User, self).save(*args, **kwargs)
+
     def __str__(self):
         return str(self.first_name +" "+self.last_name)
     

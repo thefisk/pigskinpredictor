@@ -12,7 +12,6 @@ class Team(models.Model):
     Division  = models.CharField(max_length=5, null=True, blank=True)
     ConfDiv = models.CharField(max_length=9, null=True, blank=True)
     Logo = models.ImageField(default='football.png', upload_to='logos')
-    
 
     def __str__(self):
         return('{} {}'.format(self.Town, self.Nickname))
@@ -33,7 +32,14 @@ class Match(models.Model):
     HomeTeam = models.ForeignKey(Team, related_name='HomeTeam_Schedule_Set', on_delete=models.CASCADE)
     AwayTeam = models.ForeignKey(Team, related_name='AwayTeam_Schedule_Set', on_delete=models.CASCADE)
     DateTime = models.DateTimeField()
+    FriendlyName = models.CharField(max_length=50, null=True, blank=True)
+    TeamsName = models.CharField(max_length=50, null=True, blank=True)
     
+    def save(self, *args, **kwargs):
+        self.FriendlyName = ('{} @ {}, Week {}, {}'.format(self.AwayTeam.Nickname, self.HomeTeam.Nickname, self.Week, self.Season))
+        self.TeamsName = ('{} @ {}'.format(self.AwayTeam.Nickname, self.HomeTeam.Nickname))
+        super(Match, self).save(*args, **kwargs)
+
     def __str__(self):
         return('{} @ {}, Week {}, {}'.format(self.AwayTeam.Nickname, self.HomeTeam.Nickname, self.Week, self.Season))
     
