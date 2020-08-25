@@ -141,6 +141,8 @@ else:
 # Use S3 static files
     STATIC_URL = 'https://{}.s3.{}.amazonaws.com/{}/'.format(AWS_STORAGE_BUCKET_NAME,AWS_S3_REGION_NAME,STATIC_LOCATION)
     STATICFILES_STORAGE = 'predictor.storage_backends.StaticStorage'
+    # Redirect http to https
+    SECURE_SSL_REDIRECT = True
 
 MEDIA_LOCATION = 'media'
 MEDIA_URL = 'https://{}.s3.{}.amazonaws.com/media/'.format(AWS_STORAGE_BUCKET_NAME,AWS_S3_REGION_NAME)
