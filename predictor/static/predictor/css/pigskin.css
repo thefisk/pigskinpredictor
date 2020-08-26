@@ -159,6 +159,10 @@ table.results-table tbody tr td {
     font-weight: 600;
 }
 
+.results-table-dnp{
+    color: #01579B;
+}
+
 .results-table-total{
     font-weight: 700;
 }
@@ -183,4 +187,9 @@ table#stats-table tbody tr td {
     padding-top: 10px !important;
     padding-bottom: 10px !important;
     padding-left: 0px;
+}
+
+.throwaway {
+    font-weight: lighter;
+    font-style: oblique;
 }

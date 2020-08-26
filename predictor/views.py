@@ -97,13 +97,32 @@ def ResultsView(request):
         scoreweek = 17
     else:
         scoreweek = basescoreweek
-    template = 'predictor/results.html' # <app>/<model>_viewtype>.html
+    template = 'predictor/results.html'
     PredWeek = int(str(os.environ['PREDICTSEASON'])+str(scoreweek))
-    context = {
+    if (Prediction.objects.filter(User=request.user, PredWeek=PredWeek)).count() == 0:
+        return redirect('results-didnotplay')   
+    else:
+        context = {
         'season': os.environ['PREDICTSEASON'],
         'week':scoreweek,
         'weekscore': ScoresWeek.objects.get(User=request.user, Season=os.environ['PREDICTSEASON'], Week=scoreweek).WeekScore,
         'predictions':Prediction.objects.filter(User=request.user, PredWeek=PredWeek),
+        'results':Results.objects.filter(Season=os.environ['PREDICTSEASON'], Week=scoreweek)
+        }
+        return render(request, template, context)
+
+def ResultsDidNotPlayView(request):
+    basescoreweek = int(os.environ['RESULTSWEEK']) - 1
+    if basescoreweek < 1:
+        return redirect('results-preseason')
+    elif basescoreweek > 17:
+        scoreweek = 17
+    else:
+        scoreweek = basescoreweek
+    template = 'predictor/results-didnotplay.html'
+    context = {
+        'season': os.environ['PREDICTSEASON'],
+        'week':scoreweek,
         'results':Results.objects.filter(Season=os.environ['PREDICTSEASON'], Week=scoreweek)
     }
     return render(request, template, context)
