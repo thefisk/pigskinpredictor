@@ -1,0 +1,40 @@
+{% extends "predictor/base.html" %}
+{% load predictor_custom_tags %}
+{% block content %}
+<script>
+    $('#results').each(function(){
+           $(this).toggleClass('active');
+       });
+</script>
+
+<div class="container">
+    <div class="row">
+        <div class="col m2"></div>
+        <div id="resultstable" class="col s12 m8">
+            <h5 class="mb-3">My Results</h5>
+            <h6>Looks like you didn't play in week {{ week }}
+            </h6>
+            <span class="throwaway">Nevermind; here are the results anyway</span>
+            <table class="striped responsive-table results-table">
+                <thead>
+                    <tr class="results-table-row">
+                        <th>Road Team</th>
+                        <th>Score</th>
+                        <th>Home Team</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for result in results %}
+                    <tr class="results-table-row">
+                            <td class="results-table-dnp"><img style="vertical-align:middle" src="{{ result.AwayTeam.Logo.url }}" class="team_small" alt="{{ result.AwayTeam }}">&nbsp; {{ result.AwayTeam.Nickname }}</td>
+                            <td class="results-table-dnp">{{ result.AwayScore }} - {{ result.HomeScore }}</td>
+                            <td class="results-table-dnp"><img style="vertical-align:middle" src="{{ result.HomeTeam.Logo.url }}" class="team_small" alt="{{ result.HomeTeam }}">&nbsp; {{ result.HomeTeam.Nickname }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col m2"></div>
+    </div>
+</div>
+{% endblock content %}

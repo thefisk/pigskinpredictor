@@ -4,6 +4,7 @@ from .views import (
     HomeView,
     ResultsView,
     ResultsPreSeasonView,
+    ResultsDidNotPlayView,
     ScheduleView,
     CreatePredictionsView, #New Predictions
     AmendPredictionsView, #Amend Predictions
@@ -29,6 +30,7 @@ urlpatterns = [
     path('profile',ProfileView,name="profile"),
     path('profile-amended', ProfileAmendedView,name="profile-amended"),
     path('results/', ResultsView, name='results'),
+    path('results-didnotplay/', ResultsDidNotPlayView, name='results-didnotplay'),
     path('results-preseason', ResultsPreSeasonView, name='results-preseason'),
     path('schedule/', ScheduleView.as_view(), name='schedule-view'), #!!!To Implement!!!
     path('predict/', CreatePredictionsView, name='new-prediction-view'), #New Predictions
