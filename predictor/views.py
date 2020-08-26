@@ -65,25 +65,39 @@ def ProfileView(request):
             form.save()
             return redirect('profile-amended')
     else:
-        form = CustomUserChangeForm(instance=request.user)
-        template = "predictor/profile.html"
-        seasonhigh = ScoresSeason.objects.get(User=request.user, Season=(os.environ['PREDICTSEASON'])).SeasonBest
-        seasonlow = ScoresSeason.objects.get(User=request.user, Season=(os.environ['PREDICTSEASON'])).SeasonWorst
-        seasonpct = ScoresSeason.objects.get(User=request.user, Season=(os.environ['PREDICTSEASON'])).SeasonPercentage
-        alltimehigh = ScoresAllTime.objects.get(User=request.user).AllTimeBest
-        alltimelow = ScoresAllTime.objects.get(User=request.user).AllTimeWorst
-        alltimepct = ScoresAllTime.objects.get(User=request.user).AllTimePercentage
-        context = {
-            'form': form,
-            'season': (os.environ['PREDICTSEASON']),
-            'seasonhigh': seasonhigh,
-            'seasonlow': seasonlow,
-            'seasonpct': seasonpct,
-            'alltimehigh': alltimehigh,
-            'alltimelow': alltimelow,
-            'alltimepct': alltimepct,
-            }
-        return render(request, template, context)
+        try:
+            ScoresAllTime.objects.get(User=request.user)
+        except ScoresAllTime.DoesNotExist:
+            return redirect('profile-newplayer')
+        else:
+            # if week one, show best from last season
+            if int(os.environ['PREDICTWEEK']) == 1:
+                profileseason = str((int(os.environ['PREDICTSEASON'])) -1)
+            else:
+                profileseason = os.environ['PREDICTSEASON']
+            form = CustomUserChangeForm(instance=request.user)
+            template = "predictor/profile.html"
+            seasonhigh = ScoresSeason.objects.get(User=request.user, Season=profileseason).SeasonBest
+            seasonlow = ScoresSeason.objects.get(User=request.user, Season=profileseason).SeasonWorst
+            seasonpct = ScoresSeason.objects.get(User=request.user, Season=profileseason).SeasonPercentage
+            alltimehigh = ScoresAllTime.objects.get(User=request.user).AllTimeBest
+            alltimelow = ScoresAllTime.objects.get(User=request.user).AllTimeWorst
+            alltimepct = ScoresAllTime.objects.get(User=request.user).AllTimePercentage
+            context = {
+                'form': form,
+                'season': profileseason,
+                'seasonhigh': seasonhigh,
+                'seasonlow': seasonlow,
+                'seasonpct': seasonpct,
+                'alltimehigh': alltimehigh,
+                'alltimelow': alltimelow,
+                'alltimepct': alltimepct,
+                }
+            return render(request, template, context)
+
+def ProfileNewPlayerView(request):
+    form = CustomUserChangeForm(instance=request.user)
+    return render(request, 'predictor/profile-newplayer.html', {'form': form})
 
 def ProfileAmendedView(request):
     return render(request, 'predictor/profile-amended.html')

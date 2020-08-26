@@ -1,0 +1,30 @@
+{% extends "predictor/base.html" %}
+{% load material_form %}
+{% block content %}
+<script>
+ $('#profile').each(function(){
+        $(this).toggleClass('active');
+    });
+</script>
+<div class='container'>
+    <div class="row">
+        <div class="col s12 m12">
+            <h5>Edit my Profile</h5>
+            <div class="divider"></div>
+            <div><br></div>
+            <form method="post">
+            {% csrf_token %}
+            {% form form=form %}
+            {% part form.first_name prefix %}<i class="material-icons prefix">face</i>{% endpart %}
+            {% part form.last_name prefix %}<i class="material-icons prefix">face</i>{% endpart %}
+            {% part form.FavouriteTeam prefix %}<i class="material-icons prefix">sports_football</i>{% endpart %}
+            {% endform %}
+            <br>
+            <button type="submit" style="float: right" class="btn waves-effect waves-light">update</button>
+            </form>
+            <br><br>
+            <span class="right-float"><i class="material-icons prefix pw-reset-icon">lock_open</i><a class="reset" href="/accounts/password/reset">RESET PASSWORD</a></span>
+        </div>
+    </div>
+</div>
+{% endblock content %}
