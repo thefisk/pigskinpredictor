@@ -193,3 +193,23 @@ table#stats-table tbody tr td {
     font-weight: lighter;
     font-style: oblique;
 }
+
+.reset {
+    color: orangered;
+    font-weight: normal;
+    font-size: smaller;
+}
+.reset:hover {
+    color: firebrick;
+}
+
+.pw-reset-icon {
+    padding-right: 5px;
+    position: relative;
+    top: 5px;
+    bottom: 5px;
+}
+
+.right-float {
+    float: right;
+}

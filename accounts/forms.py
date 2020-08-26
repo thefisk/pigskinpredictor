@@ -25,7 +25,8 @@ class CustomSignupForm(SignupForm):
     last_name = forms.CharField(max_length=30, label='Last Name')
     fav_team = forms.ModelChoiceField(queryset=Team.objects.all(), empty_label=None, label='Favourite Team')
     layout = Layout('email',
-                    Row('password1', 'password2'),Row('first_name', 'last_name'),
+                    Row('password1', 'password2'),
+                    Row('first_name', 'last_name'),
                              'fav_team')
     
     class Meta:
