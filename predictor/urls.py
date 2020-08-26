@@ -20,6 +20,7 @@ from .views import (
     NewYearView, #AfterWeek17
     ProfileView,
     ProfileAmendedView,
+    ProfileNewPlayerView,
     RobotsTXT,
 )
 from . import views
@@ -29,6 +30,7 @@ urlpatterns = [
     path('robots.txt', RobotsTXT),
     path('profile',ProfileView,name="profile"),
     path('profile-amended', ProfileAmendedView,name="profile-amended"),
+    path('profile-newplayer', ProfileNewPlayerView,name="profile-newplayer"),
     path('results/', ResultsView, name='results'),
     path('results-didnotplay/', ResultsDidNotPlayView, name='results-didnotplay'),
     path('results-preseason', ResultsPreSeasonView, name='results-preseason'),
