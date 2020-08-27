@@ -58,7 +58,7 @@ def run():
                 innerdict['HomeScore'] = int(pts_win)
             outerdict = {}
             outerdict['model'] = "predictor.results"
-            outerdict['pk'] = gameid_dict_2020["Week_"+str(week)][hometeam]
+            outerdict['pk'] = week_dict[hometeam]
             outerdict['fields'] = innerdict
             results.append(outerdict)
             
