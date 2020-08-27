@@ -14,7 +14,7 @@ class UserAPIView(viewsets.ReadOnlyModelViewSet):
     serializer_class = UserSerializer
 
 class PredictionCSVOrdering(r.CSVRenderer):
-    header = ['PredWeek', 'Game', 'User', 'Winner', 'Banker']
+    header = ['PredWeek', 'Game', 'User', 'Winner', 'Banker', 'Points']
 
 class BankersCSVOrdering(r.CSVRenderer):
     header = ['BankSeason', 'BankWeek', 'User', 'BankerTeam']
