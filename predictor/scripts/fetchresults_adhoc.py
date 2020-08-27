@@ -4,14 +4,13 @@
 
 from bs4 import BeautifulSoup
 import requests, json, boto3, os, datetime
-from dictionaries.gameid_dict2020 import gameid_dict_2020
-from dictionaries.main_dicts import team_dict
+from .dictionaries.gameid_dict2020 import gameid_dict_2020
+from .dictionaries.main_dicts import team_dict
 
-def run:
-    ### Only run on a Tuesday
+def run():
+    ### Tuesday 'if' loop removed so ad-hoc can be run any day
     season = os.environ['PREDICTSEASON']
     week = os.environ['RESULTSWEEK']
-    week = "17"
     week_dict = gameid_dict_2020["Week_"+str(week)]
     url = f'https://www.pro-football-reference.com/years/{season}/games.htm'
     user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'
