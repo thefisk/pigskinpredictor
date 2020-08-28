@@ -18,7 +18,8 @@ It is based on the Django web framework and uses Javascript to select and post u
 * Users' select weekly winners, including their banker choice. Those selections are posted via AJAX to the Prediction and Banker models, with a link to the corresponding Match key.
 
 * On a Tuesday morning three scripts are run via the Heroku scheduler: -
-  * The first pulls the results from an XML feed based on the current RESULTSWEEK env var and writes those to a JSON file with fields relevant to the Results model.
+  * ~~The first pulls the results from an XML feed based on the current RESULTSWEEK env var and writes those to a JSON file with fields relevant to the Results model.~~
+  * Following deprecation of the official, and free, XML feed, the first script now uses BeautifulSoup to scrape the results data from pro-football-reference.com. This isn't ideal as JSON/XML data is much easier to predict and manipulate, but I was unable to find a free API that I could pull results data from.  The script still outputs to a JSON file stored on AWS S3 ready to be imported by the application.
   * The second scripts reads that JSON file and imports the results into the Results database table
   * The third script increments the RESULTSWEEK env var
  
