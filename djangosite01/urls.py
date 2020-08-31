@@ -10,6 +10,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('predictor.urls')), #empty route will define home route
     path('api/',include('api.urls')), #API URLs
+    path('updates/', include('blog.urls')), #Blog updates
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'), #template name argument added to overwrite default of registration/login.html
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'), #this is a 'class based view', by default logout will return the admin screen login screen (not desirable)
     path('password-reset/', auth_views.PasswordResetView.as_view(template_name='users/password_reset.html'), name='password_reset'), #this is a 'class based view', by default logout will return the admin screen login screen (not desirable)
