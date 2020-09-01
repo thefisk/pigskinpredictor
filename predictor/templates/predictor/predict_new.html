@@ -29,6 +29,16 @@
                 </div>
             {% endfor %}
         </div>
+        {% if week == "1" %}
+        <button id="predict-submit" class="waves-effect waves-light btn hideme" type="submit">Submit</button>
+        <br>
+        <div class="hideme"></div>
+        </div>     
+            <div id="submitted">
+            </div>
+        {% else %}
+        <button id="predict-submit" class="waves-effect waves-light btn hideme" type="submit">Submit</button>
+        <div><br></div>
         <div class="divider hideme"></div>
         <div class = "section hideme" id="bankers">
             <h5>Used Bankers</h5>
@@ -37,10 +47,10 @@
                     <li id="{{ banker.BankerTeam|corresponding_match }}"><img src="{{ banker.BankerTeam.Logo.url }}" alt="{{ banker.BankerTeam.Nickname }}" class="team_small"> {{ banker.BankerTeam }}</li>
                 {% endfor %}
             </ul>
-        </div>
-        <div id="submitted">
-        </div>
-    <button id="predict-submit" class="waves-effect waves-light btn hideme" type="submit">Submit</button>
+        </div>     
+            <div id="submitted">
+            </div>
+    {% endif %}
     {% load static %}
     <script src="{% static "predictor/scripts/pigskin.js" %}"></script>
 {% endblock content %}
