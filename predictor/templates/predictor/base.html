@@ -49,18 +49,17 @@
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
           <ul class="right hide-on-med-and-down">
             {% if user.is_authenticated %}
-            {% if request.user|has_group:"ReportViewers" %}
-            <li id="report"><a class="navlink" href="{% url 'report' %}">Report</a></li>
-            {% endif %}
+            <!--{% if request.user|has_group:"SuperUser" %}!-->
+            <li id="updates"><a class="navlink" href="{% url 'updates' %}">Updates</a></li>
+            <!--li id="report"><a class="navlink" href="{% url 'report' %}">Report</a></li!-->
+            <!--{% endif %}!-->
             <li id="predict"><a class="navlink" href="{% url 'new-prediction-view' %}">Predict</a></li>
             <li id="results"><a class="navlink" href="{% url 'results' %}">Results</a></li>
             <li id="leaderboard"><a class="navlink" href="{% url 'scoretable' %}">Leaderboard</a></li>
-            <li id="scoring"><a class="navlink" href="{% url 'scoring' %}">Scoring</a></li>
             <li id="profile"><a class="navlink" href="{% url 'profile' %}">Profile</a></li>
             <li id="logout"><a class="navlink" href="/accounts/logout">Logout</a></li>
             {% else %}
             <li id="leaderboard"><a class="navlink" href="{% url 'scoretable' %}">Leaderboard</a></li>
-            <li id ="scoring"><a class="navlink" href="{% url 'scoring' %}">Scoring</a></li>
             <li id="login"><a class="navlink" href="/accounts/login">Login</a></li>
             <li id="register"><a class="navlink" href="/accounts/signup">Register</a></li>
             {% endif %}
@@ -70,18 +69,17 @@
     
       <ul class="sidenav" id="mobile-demo">
           {% if user.is_authenticated %}
-          {% if request.user|has_group:"ReportViewers" %}
-          <li id="report"><a class="navlink" href="{% url 'report' %}">Report</a></li>
-          {% endif %}
+          <!--{% if request.user|has_group:"SuperUser" %}!-->
+          <li id="updates"><a class="navlink" href="{% url 'updates' %}">Updates</a></li>
+          <!--li id="report"><a class="navlink" href="{% url 'report' %}">Report</a></li!-->
+          <!--{% endif %}!-->
           <li><a href="{% url 'new-prediction-view' %}">Predict</a></li>
           <li><a href="{% url 'results' %}">Results</a></li>
           <li><a href="{% url 'scoretable' %}">Leaderboard</a></li>
-          <li><a href="{% url 'scoring' %}">Scoring</a></li>
           <li><a href="{% url 'profile' %}">Profile</a></li>
           <li><a href="/accounts/logout">Logout</a></li>
           {% else %}
           <li><a href="{% url 'scoretable' %}">Leaderboard</a></li>
-          <li><a href="{% url 'scoring' %}">Scoring</a></li>
           <li><a href="/accounts/login">Login</a></li>
           <li><a href="/accounts/signup">Register</a></li>
           {% endif %}
@@ -106,6 +104,10 @@
         <div class="footer-copyright">
           <div class="container footer-text">
           An <a href="https://github.com/thefisk/pigskinpredictor" target="_blank" class="footer-link">open source</a> project by Nathan Fisk&nbsp; |&nbsp; <a href="{% url 'about' %}" class="footer-link">About this site</a>
+          &nbsp; |&nbsp; <a href="{% url 'scoring' %}" class="footer-link">Scoring</a>
+          {% if request.user|has_group:"SuperUser" %}
+          &nbsp; |&nbsp; <a href="{% url 'post-create' %}" class="footer-link">New Update</a>
+          {% endif %}
           </div>
         </div>
       </footer>

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import (
     ListView,
@@ -8,7 +8,7 @@ from django.views.generic import (
     DeleteView
 )
 from .models import Post
-
+from .forms import NewPostForm
 
 class PostListView(ListView):
     model = Post
@@ -22,13 +22,20 @@ class PostDetailView(DetailView):
     model = Post
 
 
-class PostCreateView(LoginRequiredMixin, CreateView):
+class PostCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Post
     fields = ['title', 'content']
+    form = NewPostForm()
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+
+    def test_func(self):
+        return self.request.user.groups.filter(name='SuperUser').exists()
+    
+    def handle_no_permission(self):
+        return redirect('home')
 
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):

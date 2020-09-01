@@ -1,5 +1,10 @@
 {% extends "predictor/base.html" %}
 {% block content %}
+<script>
+ $('#updates').each(function(){
+        $(this).toggleClass('active');
+    });
+</script>
 <div class='container'>
         <form method="POST">
             {% csrf_token %}

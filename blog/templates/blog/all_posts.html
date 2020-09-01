@@ -1,33 +1,44 @@
 {% extends "predictor/base.html" %}
+{% load predictor_custom_tags %}
 {% block content %}
+<script>
+ $('#updates').each(function(){
+        $(this).toggleClass('active');
+    });
+</script>
 <div class='container'>
     {% for post in posts %}
         <article class="media content-section">
             <h5><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h4>
-            <small class="text-muted">{{ object.author }} | {{ object.date_posted|date:"F d, Y" }}</small>
-            <p class="article-content">{{ post.content }}</p>
+            <small class="text-muted">{{ post.author }} | {{ post.date_posted|date:"F d, Y" }}</small>
+            <p class="article-content">{{ post.content | linebreaks }}</p>
         </article>
+        <div class="divider"></div>   
     {% endfor %}
+    <br>
         {% if is_paginated %}
 
       {% if page_obj.has_previous %}
-        <a class="btn btn-outline-info mb-4" href="?page=1">Newest</a>
-        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        <a class="waves-effect waves-light btn-small" href="?page=1">Newest</a>
+        <a class="waves-effect waves-light btn-small" href="?page={{ page_obj.previous_page_number }}">Previous</a>
       {% endif %}
 
       {% for num in page_obj.paginator.page_range %}
         {% if page_obj.number == num %}
-          <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+          <a class="waves-effect waves-light btn-small" href="?page={{ num }}">{{ num }}</a>
         {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-          <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+          <a class="waves-effect waves-light btn-small" href="?page={{ num }}">{{ num }}</a>
         {% endif %}
       {% endfor %}
 
       {% if page_obj.has_next %}
-        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
-        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Oldest</a>
+        <a class="waves-effect waves-light btn-small" href="?page={{ page_obj.next_page_number }}">Next</a>
+        <a class="waves-effect waves-light btn-small" href="?page={{ page_obj.paginator.num_pages }}">Oldest</a>
       {% endif %}
 
+    {% endif %}
+    {% if request.user|has_group:"SuperUser" %}
+      <span class="right-float"><a class="new-post" href="{% url 'post-create' %}"><i class="material-icons prefix centered-icon">create</i>New Update</a></span>
     {% endif %}
   </div>
 {% endblock content %}
