@@ -6,8 +6,9 @@
        });
    </script>
 <div class="container">
-<div class = col s3">
-<h5>Are you sure you want to log out?</h5><p></p>
+<div class = "col s3 centered">
+<h5>Are you sure you want to log out?</h5>
+<br>
 <form method="post">
   {% csrf_token %}
   {{ form.as_p }}

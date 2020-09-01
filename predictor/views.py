@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 from django.views.decorators.http import require_GET
 from accounts.models import User as CustomUser
 from django.contrib.auth.decorators import login_required, user_passes_test
+from blog.models import Post
+from django.urls import reverse
 from .models import (
     Team,
     Results,
@@ -39,7 +41,7 @@ def RobotsTXT(request):
 def is_superuser(user):
     return user.groups.filter(name='SuperUser').exists()
 
-@user_passes_test(is_superuser)
+@user_passes_test(is_superuser, login_url='home')
 @login_required
 def ReportsView(request):
     reportweek = os.environ['PREDICTWEEK']
@@ -56,7 +58,14 @@ def ReportsView(request):
     return render(request,template,context)
 
 def HomeView(request):
-    return render(request, 'predictor/home.html')
+    if request.user.is_authenticated:
+        if Post.objects.all().count() > 0:
+            latest = Post.objects.all().first().pk
+            return redirect('post-latest', latest)
+        else:
+            pass
+    else:
+        return render(request, 'predictor/home.html')
 
 def ProfileView(request):
     if request.method == 'POST':

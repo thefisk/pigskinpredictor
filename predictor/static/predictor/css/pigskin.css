@@ -203,7 +203,7 @@ table#stats-table tbody tr td {
     color: firebrick;
 }
 
-.pw-reset-icon {
+.centered-icon {
     padding-right: 5px;
     position: relative;
     top: 5px;
@@ -212,4 +212,23 @@ table#stats-table tbody tr td {
 
 .right-float {
     float: right;
+}
+
+.post-metadata {
+    color: lightslategrey;
+    font-size: 90%;
+}
+
+.centered {
+    text-align: center;
+}
+
+.new-post{
+    color: #20a599;
+    font-weight: normal;
+    font-size: large;
+}
+
+.new-post:hover {
+    color: mediumseagreen;
 }

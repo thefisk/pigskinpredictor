@@ -20,6 +20,8 @@ ALLOWED_HOSTS = ['pigskinpredictor.herokuapp.com','pigskinpredictor.com']
 
 INSTALLED_APPS = [
     'debug_toolbar',
+    'api',
+    'blog',
     'material',
     'predictor.apps.PredictorConfig',
     'accounts.apps.AccountsConfig',

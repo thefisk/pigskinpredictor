@@ -1,0 +1,23 @@
+{% extends "predictor/base.html" %}
+{% block content %}
+<script>
+ $('#updates').each(function(){
+        $(this).toggleClass('active');
+    });
+</script>
+<div class='container'>
+      <h4 class="article-title">{{ object.title }}</h4>
+      <P class="post-metadata">{{ object.author }} | {{ object.date_posted|date:"F d, Y" }}</p>
+      <div class="divider"></div>  
+      <p class="article-content">{{ object.content | linebreaks}}</p>
+              {% if object.author == user %}
+          <div>
+            <div class="divider"></div>
+            <br>
+            <a class="waves-effect waves-light btn-small" href="{% url 'post-update' object.id %}">Update</a>
+            <a class="waves-effect waves-light btn-small" href="{% url 'post-delete' object.id %}">Delete</a>
+          </div>
+        {% endif %}
+    </div>
+  </article>
+{% endblock content %}
