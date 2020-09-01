@@ -63,7 +63,7 @@ def HomeView(request):
             latest = Post.objects.all().first().pk
             return redirect('post-latest', latest)
         else:
-            pass
+            return render(request, 'predictor/home.html')
     else:
         return render(request, 'predictor/home.html')
 
