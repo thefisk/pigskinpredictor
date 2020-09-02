@@ -10,8 +10,8 @@
     {% for post in posts %}
         <article class="media content-section">
             <h5><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h4>
-            <small class="text-muted">{{ post.author }} | {{ post.date_posted|date:"F d, Y" }}</small>
-            <p class="article-content">{{ post.content | linebreaks }}</p>
+            <small class="post-metadata">{{ post.author }} | {{ post.date_posted|date:"F d, Y" }}</small>
+            <a class="update-snippet" href="{% url 'post-detail' post.id %}">{{ post.short_content | linebreaks }}</a>
         </article>
         <div class="divider"></div>   
     {% endfor %}
@@ -19,8 +19,8 @@
         {% if is_paginated %}
 
       {% if page_obj.has_previous %}
-        <a class="waves-effect waves-light btn-small" href="?page=1">Newest</a>
-        <a class="waves-effect waves-light btn-small" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        <a class="waves-effect waves-light btn-small" href="?page=1">&lt;&lt;</a>
+        <a class="waves-effect waves-light btn-small" href="?page={{ page_obj.previous_page_number }}">&lt;</a>
       {% endif %}
 
       {% for num in page_obj.paginator.page_range %}
@@ -32,8 +32,8 @@
       {% endfor %}
 
       {% if page_obj.has_next %}
-        <a class="waves-effect waves-light btn-small" href="?page={{ page_obj.next_page_number }}">Next</a>
-        <a class="waves-effect waves-light btn-small" href="?page={{ page_obj.paginator.num_pages }}">Oldest</a>
+        <a class="waves-effect waves-light btn-small" href="?page={{ page_obj.next_page_number }}">&gt;</a>
+        <a class="waves-effect waves-light btn-small" href="?page={{ page_obj.paginator.num_pages }}">&gt;&gt;</a>
       {% endif %}
 
     {% endif %}

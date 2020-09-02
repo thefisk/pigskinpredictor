@@ -21,6 +21,7 @@ from .views import (
     ProfileView,
     ProfileAmendedView,
     ProfileNewPlayerView,
+    ScoreTablePreSeasonView,
     RobotsTXT,
 )
 from . import views
@@ -43,6 +44,7 @@ urlpatterns = [
     path('ajaxamendbanker/',AjaxAmendBankerView, name='ajax-amend-banker'), #AJAX
     path('scoretable/',ScoreTableView, name='scoretable'), #Leaderboard
     path('scoretableenhanced/',ScoreTableEnhancedView, name='scoretableenhanced'), #Leaderboard
+    path('scoretable-preseason', ScoreTablePreSeasonView, name='scoretable-preseason'),
     path('about/',AboutView, name='about'), #About
     path('scoring/',ScoringView, name='scoring'), #Scoring
     path('report/',ReportsView, name='report'), #Reports

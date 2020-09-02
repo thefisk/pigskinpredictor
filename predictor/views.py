@@ -314,7 +314,9 @@ def ScoreTableView(request):
     # Below sets score week to 1 below current results week
     # IE - to pull scores from last completed week 
     basescoreweek = int(os.environ['RESULTSWEEK']) - 1
-    if basescoreweek > 17:
+    if basescoreweek < 1:
+        return redirect('scoretable-preseason')
+    elif basescoreweek > 17:
         scoreweek = 17
     else:
         scoreweek = basescoreweek
@@ -336,6 +338,15 @@ def ScoreTableView(request):
 def ScoreTableEnhancedView(request):
     # Below sets score week to 1 below current results week
     # IE - to pull scores from last completed week
+    
+    basescoreweek = int(os.environ['RESULTSWEEK']) - 1
+    if basescoreweek < 1:
+        return redirect('scoretable-preseason')
+    elif basescoreweek > 17:
+        scoreweek = 17
+    else:
+        scoreweek = basescoreweek
+
     high = -999
     for weekscore in ScoresWeek.objects.filter(Season=os.environ['PREDICTSEASON']):
         if weekscore.WeekScore > high:
@@ -366,12 +377,6 @@ def ScoreTableEnhancedView(request):
         if seasonscore.BankerAverage < worstbanker:
             worstbanker = seasonscore.BankerAverage
 
-    basescoreweek = int(os.environ['RESULTSWEEK']) - 1
-    if basescoreweek > 17:
-        scoreweek = 17
-    else:
-        scoreweek = basescoreweek
-
     weekscores = ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON'])   
     nopreds = CustomUser.objects.all().exclude(id__in=weekscores.values('User'))
     
@@ -391,6 +396,10 @@ def ScoreTableEnhancedView(request):
     }
 
     return render(request, 'predictor/scoretable_enhanced.html', context)
+
+def ScoreTablePreSeasonView(request):
+    template = 'predictor/scoretable-preseason.html'
+    return render(request, template)
 
 ### View called by Ajax to amend predictions in database.  Returns JSON response.
 def AjaxAmendPredictionView(request):

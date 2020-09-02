@@ -232,3 +232,15 @@ table#stats-table tbody tr td {
 .new-post:hover {
     color: mediumseagreen;
 }
+
+.update-snippet {
+    color: black;
+}
+
+.update-snippet:hover {
+    color: darkslategrey;
+}
+
+.article-title:hover {
+    color: darkslategrey;
+}
