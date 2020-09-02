@@ -7,9 +7,14 @@ from .serializers import BankerSerializer, UserSerializer, PredictionSerializer
 from rest_framework.settings import api_settings
 from rest_framework_csv import renderers as r
 from django_filters.rest_framework import DjangoFilterBackend
+from allauth.account.models import EmailAddress
 
 class UserAPIView(viewsets.ReadOnlyModelViewSet):
-    queryset = User.objects.all()
+    verified = EmailAddress.objects.filter(verified=True)
+    verifiedemails = []
+    for entry in verified:
+        verifiedemails.append(entry.email)
+    queryset = User.objects.filter(email__in=verifiedemails)
     permission_classes = [IsSuperUser]
     serializer_class = UserSerializer
 
