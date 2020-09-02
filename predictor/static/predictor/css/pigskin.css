@@ -244,3 +244,14 @@ table#stats-table tbody tr td {
 .article-title:hover {
     color: darkslategrey;
 }
+
+.icon-saved {
+    width: 50px !important;
+    height:50px !important;
+    font-size: 50px;
+    color: limegreen;
+}
+
+.luck {
+    color: dimgrey;
+}

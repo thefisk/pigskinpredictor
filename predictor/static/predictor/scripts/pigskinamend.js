@@ -223,7 +223,7 @@ $(function() {
                 var jsonbanker = JSON.stringify(bankerobj[0]);
                 if(predarray.length == numberOfGames){
                     $('.hideme').hide();
-                    $('#submitted').html('<h3><center>Predictions Amended, Good Luck!</center></h3>');
+                    $('#submitted').html('<h4><center><i class="material-icons icon-saved">cloud_done</i><br>Predictions Amended<br><span class="luck">Good Luck!</span></center></h4><br>&nbsp;');
                     var jsonstring = JSON.stringify(predarray);
                     var predjson = JSON.parse(jsonstring);
                     loop_predictions(predjson);
