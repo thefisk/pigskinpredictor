@@ -473,7 +473,10 @@ def DivisionTableView(request):
         scoreweek = 17
     else:
         scoreweek = basescoreweek
-    userdivision = request.user.FavouriteTeam.ConfDiv
+    try:
+        userdivision = request.user.FavouriteTeam.ConfDiv
+    except:
+        userdivision = 'NFC North'
     NFCN = Team.objects.filter(ConfDiv='NFC North')
     NFCS = Team.objects.filter(ConfDiv='NFC South')
     NFCW = Team.objects.filter(ConfDiv='NFC West')
