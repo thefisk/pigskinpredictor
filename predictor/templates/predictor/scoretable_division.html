@@ -12,7 +12,7 @@
         </style>
 
 {% extends "predictor/base.html" %}
-
+{% load predictor_custom_tags %}
 {% block content %}
 <script>
         $('#leaderboard').each(function(){
@@ -21,8 +21,8 @@
        </script>
 <div class="container">
 <h5 class="mb-3">
-    Live Score Table</h5>
-    <a href="{% url 'scoretableenhanced' %}" class="smalllink">Enhanced Score Table</a>&nbsp;|&nbsp;<a href="{% url 'scoretable-division' %}" class="smalllink">Division Score Table</a>
+    Division Score Table</h5>
+    <a href="{% url 'scoretable' %}" class="smalllink">Standard Score Table</a>&nbsp;|&nbsp;<a href="{% url 'scoretableenhanced' %}" class="smalllink">Enhanced Score Table</a>
     <h6>Season {{ season }}<BR>
     Including week {{ week }} games
 </h6>
@@ -31,27 +31,31 @@
             <thead>
                 <tr>
                     <th>Pos.</th>
-                    <th>Player</th>
-                    <th>Last Week</th>
+                    <th>Division</th>
+                    <th>Average Score</th>
+                    <th>Players</th>
                     <th>Total Score</th>
                 </tr>
             </thead>
             <tbody>
-        {% for seasonscore in seasonscores %}
+        {% for div, score in scores %}
+            {% if div == userdivision %}
+                <tr>
+                    <td class="count userdiv"></td>
+                    <td class="userdiv">{{ div }}</td>
+                    <td class="userdiv">{{ score }}</td>
+                    <td class="userdiv">{{ div|division_players }}</td>
+                    <td class="userdiv">{{ div|division_total }}</td>
+                </tr>
+            {% else %}
                 <tr>
                     <td class="count"></td>
-                    <td><img src="{{ seasonscore.User.FavouriteTeam.Logo.url }}" class="team_small"> &nbsp; {{ seasonscore.User.first_name }} {{ seasonscore.User.last_name }}</td>
-                    {% if seasonscore.User in nopreds %}
-                        <td>Did Not Play</td>
-                    {% else %}
-                        {% for weekscore in weekscores %}
-                            {% if seasonscore.User == weekscore.User %}
-                            <td>{{ weekscore.WeekScore }}</td>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                    <td>{{ seasonscore.SeasonScore }}</td>
+                    <td>{{ div }}</td>
+                    <td>{{ score }}</td>
+                    <td>{{ div|division_players }}</td>
+                    <td>{{ div|division_total }}</td>
                 </tr>
+        {% endif %}
         {% endfor %}
             </tbody>
         </table>

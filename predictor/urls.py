@@ -22,6 +22,7 @@ from .views import (
     ProfileAmendedView,
     ProfileNewPlayerView,
     ScoreTablePreSeasonView,
+    DivisionTableView,
     RobotsTXT,
 )
 from . import views
@@ -45,6 +46,7 @@ urlpatterns = [
     path('scoretable/',ScoreTableView, name='scoretable'), #Leaderboard
     path('scoretableenhanced/',ScoreTableEnhancedView, name='scoretableenhanced'), #Leaderboard
     path('scoretable-preseason', ScoreTablePreSeasonView, name='scoretable-preseason'),
+    path('scoretable-division', DivisionTableView, name='scoretable-division'),
     path('about/',AboutView, name='about'), #About
     path('scoring/',ScoringView, name='scoring'), #Scoring
     path('report/',ReportsView, name='report'), #Reports

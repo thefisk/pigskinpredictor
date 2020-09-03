@@ -464,3 +464,180 @@ def AjaxAmendBankerView(request):
 
         else:
             return JsonResponse({"nothing to see": "this isn't happening"})
+
+def DivisionTableView(request):
+    basescoreweek = int(os.environ['RESULTSWEEK']) - 1
+    if basescoreweek < 1:
+        return redirect('scoretable-preseason')
+    elif basescoreweek > 17:
+        scoreweek = 17
+    else:
+        scoreweek = basescoreweek
+    userdivision = request.user.FavouriteTeam.ConfDiv
+    NFCN = Team.objects.filter(ConfDiv='NFC North')
+    NFCS = Team.objects.filter(ConfDiv='NFC South')
+    NFCW = Team.objects.filter(ConfDiv='NFC West')
+    NFCE = Team.objects.filter(ConfDiv='NFC East')
+    AFCN = Team.objects.filter(ConfDiv='AFC North')
+    AFCS = Team.objects.filter(ConfDiv='AFC South')
+    AFCW = Team.objects.filter(ConfDiv='AFC West')
+    AFCE = Team.objects.filter(ConfDiv='AFC East')
+    try:
+        NFCNfans = CustomUser.objects.filter(FavouriteTeam__in=NFCN)
+    except:
+        NFCNcount = 0
+        NFCNfans = []
+    else:
+        NFCNcount = NFCNfans.count()
+    try:
+        NFCSfans = CustomUser.objects.filter(FavouriteTeam__in=NFCS)
+    except:
+        NFCScount = 0
+        NFCSfans = []
+    else:
+        NFCScount = NFCSfans.count()
+    try:
+        NFCWfans = CustomUser.objects.filter(FavouriteTeam__in=NFCW)
+    except:
+        NFCWcount = 0
+        NFCWfans = []
+    else:
+        NFCWcount = NFCWfans.count()
+    try:
+        NFCEfans = CustomUser.objects.filter(FavouriteTeam__in=NFCE)
+    except:
+        NFCEcount = 0
+        NFCEfans = []
+    else:
+        NFCEcount = NFCEfans.count()
+    try:
+        AFCNfans = CustomUser.objects.filter(FavouriteTeam__in=AFCN)
+    except:
+        AFCNcount = 0
+        AFCNfans = []
+    else:
+        AFCNcount = AFCNfans.count()
+    try:
+        AFCSfans = CustomUser.objects.filter(FavouriteTeam__in=AFCS)
+    except:
+        AFCScount = 0
+        AFCSfans = []
+    else:
+        AFCScount = AFCSfans.count()
+    try:
+        AFCWfans = CustomUser.objects.filter(FavouriteTeam__in=AFCW)
+    except:
+        AFCWcount = 0
+        AFCWfans = []
+    else:
+        AFCWcount = AFCWfans.count()
+    try:
+        AFCEfans = CustomUser.objects.filter(FavouriteTeam__in=AFCE)
+    except:
+        AFCEcount = 0
+        AFCEfans = []
+    else:
+        AFCEcount = AFCEfans.count()
+    NFCNTotal = 0
+    NFCSTotal = 0
+    NFCETotal = 0
+    NFCWTotal = 0
+    AFCNTotal = 0
+    AFCSTotal = 0
+    AFCETotal = 0
+    AFCWTotal = 0
+    for fan in NFCNfans:
+        try:
+            NFCNTotal += ScoresSeason.objects.get(Season=int(os.environ['PREDICTSEASON']), User=fan).SeasonScore
+        except ScoresSeason.DoesNotExist:
+            pass
+    try:
+        NFCNAvg = int(NFCNTotal/NFCNcount)
+    except ZeroDivisionError:
+        NFCNAvg = 0
+
+    for fan in NFCSfans:
+        try:
+            NFCSTotal += ScoresSeason.objects.get(User=fan).SeasonScore
+        except ScoresSeason.DoesNotExist:
+            pass
+    try:
+        NFCSAvg = int(NFCSTotal/NFCScount)
+    except ZeroDivisionError:
+        NFCSAvg = 0
+    
+    for fan in NFCEfans:
+        try:
+            NFCETotal += ScoresSeason.objects.get(User=fan).SeasonScore
+        except ScoresSeason.DoesNotExist:
+            pass
+    try:
+        NFCEAvg = int(NFCETotal/NFCEcount)
+    except ZeroDivisionError:
+        NFCEAvg = 0
+
+    for fan in NFCWfans:
+        try:
+            NFCWTotal += ScoresSeason.objects.get(User=fan).SeasonScore
+        except ScoresSeason.DoesNotExist:
+            pass
+    try:
+        NFCWAvg = int(NFCWTotal/NFCWcount)
+    except ZeroDivisionError:
+        NFCWAvg = 0
+    
+    for fan in AFCNfans:
+        try:
+            AFCNTotal += ScoresSeason.objects.get(User=fan).SeasonScore
+        except ScoresSeason.DoesNotExist:
+            pass
+    try:
+        AFCNAvg = int(AFCNTotal/AFCNcount)
+    except ZeroDivisionError:
+        AFCNAvg = 0
+    
+    for fan in AFCSfans:
+        try:
+            AFCSTotal += ScoresSeason.objects.get(User=fan).SeasonScore
+        except ScoresSeason.DoesNotExist:
+            pass
+    try:
+        AFCSAvg = int(AFCSTotal/AFCScount)
+    except ZeroDivisionError:
+        AFCSAvg = 0
+
+    for fan in AFCWfans:
+        try:
+            AFCWTotal += ScoresSeason.objects.get(User=fan).SeasonScore
+        except ScoresSeason.DoesNotExist:
+            pass
+    try:
+        AFCWAvg = int(AFCWTotal/AFCWcount)
+    except ZeroDivisionError:
+        AFCWAvg = 0
+
+    for fan in AFCEfans:
+        try:
+            AFCETotal += ScoresSeason.objects.get(User=fan).SeasonScore
+        except ScoresSeason.DoesNotExist:
+            pass
+    try:
+        AFCEAvg = int(AFCETotal/AFCEcount)
+    except ZeroDivisionError:
+        AFCEAvg = 0
+
+    RawDict = {'NFC North': NFCNAvg, 'NFC South': NFCSAvg,
+    'NFC East': NFCEAvg, 'NFC West': NFCWAvg, 'AFC North': AFCNAvg,
+    'AFC South': AFCSAvg, 'AFC East': AFCEAvg, 'AFC West': AFCWAvg,}
+
+    SortedDict = {k: v for k, v in sorted(RawDict.items(), key=lambda item: item[1],reverse=True)}
+    SortedList = list(SortedDict.items())
+
+    context = {
+        'scores': SortedList,
+        'week':scoreweek,
+        'season':os.environ['PREDICTSEASON'],
+        'userdivision': userdivision,
+    }
+
+    return render(request, 'predictor/scoretable_division.html', context)
