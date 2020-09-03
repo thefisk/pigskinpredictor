@@ -39,6 +39,15 @@
             </thead>
             <tbody>
         {% for div, score in scores %}
+            {% if div == userdivision %}
+                <tr>
+                    <td class="count userdiv"></td>
+                    <td class="userdiv">{{ div }}</td>
+                    <td class="userdiv">{{ score }}</td>
+                    <td class="userdiv">{{ div|division_players }}</td>
+                    <td class="userdiv">{{ div|division_total }}</td>
+                </tr>
+            {% else %}
                 <tr>
                     <td class="count"></td>
                     <td>{{ div }}</td>
@@ -46,6 +55,7 @@
                     <td>{{ div|division_players }}</td>
                     <td>{{ div|division_total }}</td>
                 </tr>
+        {% endif %}
         {% endfor %}
             </tbody>
         </table>

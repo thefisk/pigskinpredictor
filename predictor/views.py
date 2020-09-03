@@ -473,6 +473,7 @@ def DivisionTableView(request):
         scoreweek = 17
     else:
         scoreweek = basescoreweek
+    userdivision = request.user.FavouriteTeam.ConfDiv
     NFCN = Team.objects.filter(ConfDiv='NFC North')
     NFCS = Team.objects.filter(ConfDiv='NFC South')
     NFCW = Team.objects.filter(ConfDiv='NFC West')
@@ -636,6 +637,7 @@ def DivisionTableView(request):
         'scores': SortedList,
         'week':scoreweek,
         'season':os.environ['PREDICTSEASON'],
+        'userdivision': userdivision,
     }
 
     return render(request, 'predictor/scoretable_division.html', context)

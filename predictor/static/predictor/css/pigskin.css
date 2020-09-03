@@ -255,3 +255,8 @@ table#stats-table tbody tr td {
 .luck {
     color: dimgrey;
 }
+
+.userdiv {
+    color: midnightblue;
+    font-weight: 700;
+}
