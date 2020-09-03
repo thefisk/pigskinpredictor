@@ -55,11 +55,11 @@
             <!--{% endif %}!-->
             <li id="predict"><a class="navlink" href="{% url 'new-prediction-view' %}">Predict</a></li>
             <li id="results"><a class="navlink" href="{% url 'results' %}">Results</a></li>
-            <li id="leaderboard"><a class="navlink" href="{% url 'scoretable' %}">Leaderboard</a></li>
+            <li id="leaderboard"><a class="navlink" href="{% url 'scoretable' %}">Leaderboards</a></li>
             <li id="profile"><a class="navlink" href="{% url 'profile' %}">Profile</a></li>
             <li id="logout"><a class="navlink" href="/accounts/logout">Logout</a></li>
             {% else %}
-            <li id="leaderboard"><a class="navlink" href="{% url 'scoretable' %}">Leaderboard</a></li>
+            <li id="leaderboard"><a class="navlink" href="{% url 'scoretable' %}">Leaderboards</a></li>
             <li id="login"><a class="navlink" href="/accounts/login">Login</a></li>
             <li id="register"><a class="navlink" href="/accounts/signup">Register</a></li>
             {% endif %}
@@ -75,11 +75,11 @@
           <!--{% endif %}!-->
           <li><a href="{% url 'new-prediction-view' %}">Predict</a></li>
           <li><a href="{% url 'results' %}">Results</a></li>
-          <li><a href="{% url 'scoretable' %}">Leaderboard</a></li>
+          <li><a href="{% url 'scoretable' %}">Leaderboards</a></li>
           <li><a href="{% url 'profile' %}">Profile</a></li>
           <li><a href="/accounts/logout">Logout</a></li>
           {% else %}
-          <li><a href="{% url 'scoretable' %}">Leaderboard</a></li>
+          <li><a href="{% url 'scoretable' %}">Leaderboards</a></li>
           <li><a href="/accounts/login">Login</a></li>
           <li><a href="/accounts/signup">Register</a></li>
           {% endif %}

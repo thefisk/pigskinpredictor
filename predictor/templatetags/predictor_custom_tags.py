@@ -1,6 +1,7 @@
 from django import template
 from django.contrib.auth.models import Group
-from predictor.models import Match, ScoresWeek, Results
+from predictor.models import Match, ScoresWeek, Results, Team, ScoresSeason
+from accounts.models import User
 import os
 
 register = template.Library()
@@ -38,6 +39,31 @@ def corresponding_away(predgameid):
         return 0
     else:
         return matched_result.AwayScore
+
+@register.filter(name='division_players')
+def division_players(div):
+    division = Team.objects.filter(ConfDiv=div)
+    try:
+        players = User.objects.filter(FavouriteTeam__in=division).count()
+    except:
+        return 0
+    else:
+        return players
+
+@register.filter(name='division_total')
+def division_total(div):
+    division = Team.objects.filter(ConfDiv=div)
+    try:
+        players = User.objects.filter(FavouriteTeam__in=division)
+    except:
+        return 0
+    total = 0
+    for player in players:
+        try:
+            total += ScoresSeason.objects.get(User=player, Season=int(os.environ['PREDICTSEASON'])).SeasonScore
+        except:
+            pass
+    return total
 
 #@register.filter(name='seasonhigh')
 #def seasonhigh(user):
