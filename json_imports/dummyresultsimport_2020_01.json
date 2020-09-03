@@ -1,0 +1,193 @@
+[{
+    "model": "predictor.results",
+    "pk": 20200101,
+    "fields": {
+        "Week": 1,
+        "Season": 2020,
+        "Winner": "Away",
+        "AwayTeam": "KC",
+        "HomeTeam": "HOU",
+        "AwayScore": 10,
+        "HomeScore": 3
+    }
+}, {
+    "model": "predictor.results",
+    "pk": 20200102,
+    "fields": {
+        "Week": 1,
+        "Season": 2020,
+        "Winner": "Away",
+        "AwayTeam": "SEA",
+        "HomeTeam": "ATL",
+        "AwayScore": 43,
+        "HomeScore": 13
+    }
+}, {
+    "model": "predictor.results",
+    "pk": 20200103,
+    "fields": {
+        "Week": 1,
+        "Season": 2020,
+        "Winner": "Home",
+        "AwayTeam": "NYJ",
+        "HomeTeam": "BUF",
+        "AwayScore": 12,
+        "HomeScore": 28
+    }
+}, {
+    "model": "predictor.results",
+    "pk": 20200104,
+    "fields": {
+        "Week": 1,
+        "Season": 2020,
+        "Winner": "Home",
+        "AwayTeam": "LV",
+        "HomeTeam": "CAR",
+        "AwayScore": 27,
+        "HomeScore": 32
+    }
+}, {
+    "model": "predictor.results",
+    "pk": 20200105,
+    "fields": {
+        "Week": 1,
+        "Season": 2020,
+        "Winner": "Away",
+        "AwayTeam": "CHI",
+        "HomeTeam": "DET",
+        "AwayScore": 30,
+        "HomeScore": 27
+    }
+}, {
+    "model": "predictor.results",
+    "pk": 20200106,
+    "fields": {
+        "Week": 1,
+        "Season": 2020,
+        "Winner": "Away",
+        "AwayTeam": "IND",
+        "HomeTeam": "JAX",
+        "AwayScore": 17,
+        "HomeScore": 16
+    }
+}, {
+    "model": "predictor.results",
+    "pk": 20200107,
+    "fields": {
+        "Week": 1,
+        "Season": 2020,
+        "Winner": "Away",
+        "AwayTeam": "GB",
+        "HomeTeam": "MIN",
+        "AwayScore": 40,
+        "HomeScore": 26
+    }
+}, {
+    "model": "predictor.results",
+    "pk": 20200108,
+    "fields": {
+        "Week": 1,
+        "Season": 2020,
+        "Winner": "Away",
+        "AwayTeam": "MIA",
+        "HomeTeam": "NE",
+        "AwayScore": 59,
+        "HomeScore": 10
+    }
+}, {
+    "model": "predictor.results",
+    "pk": 20200109,
+    "fields": {
+        "Week": 1,
+        "Season": 2020,
+        "Winner": "Home",
+        "AwayTeam": "CLE",
+        "HomeTeam": "BAL",
+        "AwayScore": 24,
+        "HomeScore": 30
+    }
+}, {
+    "model": "predictor.results",
+    "pk": 20200110,
+    "fields": {
+        "Week": 1,
+        "Season": 2020,
+        "Winner": "Home",
+        "AwayTeam": "PHI",
+        "HomeTeam": "WAS",
+        "AwayScore": 20,
+        "HomeScore": 21
+    }
+}, {
+    "model": "predictor.results",
+    "pk": 20200111,
+    "fields": {
+        "Week": 1,
+        "Season": 2020,
+        "Winner": "Home",
+        "AwayTeam": "LAC",
+        "HomeTeam": "CIN",
+        "AwayScore": 17,
+        "HomeScore": 35
+    }
+}, {
+    "model": "predictor.results",
+    "pk": 20200112,
+    "fields": {
+        "Week": 1,
+        "Season": 2020,
+        "Winner": "Tie",
+        "AwayTeam": "TB",
+        "HomeTeam": "NO",
+        "AwayScore": 27,
+        "HomeScore": 27
+    }
+}, {
+    "model": "predictor.results",
+    "pk": 20200113,
+    "fields": {
+        "Week": 1,
+        "Season": 2020,
+        "Winner": "Away",
+        "AwayTeam": "ARI",
+        "HomeTeam": "SF",
+        "AwayScore": 31,
+        "HomeScore": 17
+    }
+}, {
+    "model": "predictor.results",
+    "pk": 20200114,
+    "fields": {
+        "Week": 1,
+        "Season": 2020,
+        "Winner": "Home",
+        "AwayTeam": "DAL",
+        "HomeTeam": "LA",
+        "AwayScore": 3,
+        "HomeScore": 33
+    }
+}, {
+    "model": "predictor.results",
+    "pk": 20200115,
+    "fields": {
+        "Week": 1,
+        "Season": 2020,
+        "Winner": "Home",
+        "AwayTeam": "PIT",
+        "HomeTeam": "NYG",
+        "AwayScore": 28,
+        "HomeScore": 30
+    }
+}, {
+    "model": "predictor.results",
+    "pk": 20200116,
+    "fields": {
+        "Week": 1,
+        "Season": 2020,
+        "Winner": "Home",
+        "AwayTeam": "TEN",
+        "HomeTeam": "DEN",
+        "AwayScore": 16,
+        "HomeScore": 24
+    }
+}]
