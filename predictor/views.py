@@ -476,7 +476,7 @@ def DivisionTableView(request):
     try:
         userdivision = request.user.FavouriteTeam.ConfDiv
     except:
-        userdivision = 'NFC North'
+        userdivision = 'None'
     NFCN = Team.objects.filter(ConfDiv='NFC North')
     NFCS = Team.objects.filter(ConfDiv='NFC South')
     NFCW = Team.objects.filter(ConfDiv='NFC West')
