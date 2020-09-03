@@ -80,7 +80,7 @@ def ProfileView(request):
             return redirect('profile-newplayer')
         else:
             # if week one, show best from last season
-            if int(os.environ['PREDICTWEEK']) == 1:
+            if int(os.environ['RESULTSWEEK']) == 1:
                 profileseason = str((int(os.environ['PREDICTSEASON'])) -1)
             else:
                 profileseason = os.environ['PREDICTSEASON']
