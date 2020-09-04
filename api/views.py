@@ -10,13 +10,14 @@ from django_filters.rest_framework import DjangoFilterBackend
 from allauth.account.models import EmailAddress
 
 class UserAPIView(viewsets.ReadOnlyModelViewSet):
-    verified = EmailAddress.objects.filter(verified=True)
-    verifiedemails = []
-    for entry in verified:
-        verifiedemails.append(entry.email)
-    queryset = User.objects.filter(email__in=verifiedemails)
     permission_classes = [IsSuperUser]
     serializer_class = UserSerializer
+    def get_queryset(self):
+        verified = EmailAddress.objects.filter(verified=True)
+        verifiedemails = []
+        for entry in verified:
+            verifiedemails.append(entry.email)
+        return User.objects.filter(email__in=verifiedemails)
 
 class PredictionCSVOrdering(r.CSVRenderer):
     header = ['PredWeek', 'Game', 'User', 'Winner', 'Banker', 'Points']
