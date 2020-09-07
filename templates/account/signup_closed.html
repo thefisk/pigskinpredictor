@@ -1,0 +1,21 @@
+{% extends "predictor/base.html" %}
+{% load predictor_custom_tags %}
+{% block content %}
+<script>
+    $('#register').each(function(){
+           $(this).toggleClass('active');
+       });
+</script>
+
+<div class="container">
+    <div class="row">
+        <div class="col m2"></div>
+        <div id="resultstable" class="col s12 m8">
+            <br>
+            <h5><center>Sorry, registration is closed during the season.<BR><BR>Please come back next season.
+            </h5>
+        </div>
+        <div class="col m2"></div>
+    </div>
+</div>
+{% endblock content %}

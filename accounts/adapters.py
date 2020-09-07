@@ -1,4 +1,5 @@
 from allauth.account.adapter import DefaultAccountAdapter
+import os
 
 class AccountAdapter(DefaultAccountAdapter):
     def save_user(self, request, user, form, commit=False):
@@ -14,3 +15,7 @@ class AccountAdapter(DefaultAccountAdapter):
         self.populate_username(request, user)
         user.save()
         return user
+
+    def is_open_for_signup(self, request):
+        return (os.environ['REGISTRATION_OPEN'] == "True")
+        # Returns True or False to manage registration status
