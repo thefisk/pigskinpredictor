@@ -105,8 +105,14 @@ def ProfileView(request):
             return render(request, template, context)
 
 def ProfileNewPlayerView(request):
-    form = CustomUserChangeForm(instance=request.user)
-    return render(request, 'predictor/profile-newplayer.html', {'form': form})
+    if request.method == 'POST':
+        form = CustomUserChangeForm(request.POST, instance=request.user)
+        if form.is_valid:
+            form.save()
+            return redirect('profile-amended')
+    else:    
+        form = CustomUserChangeForm(instance=request.user)
+        return render(request, 'predictor/profile-newplayer.html', {'form': form})
 
 def ProfileAmendedView(request):
     return render(request, 'predictor/profile-amended.html')
