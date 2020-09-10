@@ -273,7 +273,7 @@ $(function() {
                 // handle a successful response
                 success : function(json) {
                     $('.hideme').hide();
-                    $('#submitted').html('<h4><center><i class="material-icons icon-saved">cloud_done</i><br>Predictions Amended<br><span class="luck">Good Luck!</span></center></h4><br>&nbsp;');
+                    $('#submitted').html('<h4><center><i class="material-icons icon-saved">cloud_done</i><br>Predictions Submitted<br><span class="luck">Good Luck!</span></center></h4><br>&nbsp;');
                     $('#post-text').val(''); // remove the value from the input
                      // log the returned json to the console
                     $("#talk").prepend("<li><strong>"+json.text+"</strong> - <em> "+json.author+"</em> - <span> "+json.created+
