@@ -5,6 +5,9 @@
 
 $(function() {
 
+    // Initialise returnedresponses variable
+    let returnedresponses = 0;
+
     // Initialise chosenbanker variable
     var chosenbanker;
 
@@ -196,19 +199,13 @@ $(function() {
                 window.alert("Banker already used - please choose another")
                 }
             else{
-                // Initiate Banker Object
-                var bankerobj = [];
-                bankerobj[0]= {};
-                bankerobj[0]['bank_game']=chosenbanker;
-                var jsonbanker = JSON.stringify(bankerobj[0]);
                 if(predarray.length == numberOfGames){
-                    $('.hideme').hide();
-                    $('#submitted').html('<h4><center><i class="material-icons icon-saved">cloud_done</i><br>Predictions Submitted<br><span class="luck">Good Luck!</span></center></h4><br>&nbsp;');
                     var jsonstring = JSON.stringify(predarray);
                     var predjson = JSON.parse(jsonstring);
+                    // Post Predictions
                     loop_predictions(predjson);
-                    // Post banker
-                    add_banker(jsonbanker);
+                    // Banker then posted only if all predictions receive success response,
+                    // Then preds hidden and success message displayed only if banker receives success response.
                     }
                 else{
                     window.alert("Please fill in all predictions");
@@ -238,6 +235,15 @@ $(function() {
             data : pred_string,
             // handle a successful response
             success : function(json) {
+                returnedresponses ++;
+                if(returnedresponses == numberOfGames){
+                // Initiate Banker Object
+                var bankerobj = [];
+                bankerobj[0]= {};
+                bankerobj[0]['bank_game']=chosenbanker;
+                var jsonbanker = JSON.stringify(bankerobj[0]);
+                    add_banker(jsonbanker);
+                }
                 $('#post-text').val(''); // remove the value from the input
                  // log the returned json to the console
                 $("#talk").prepend("<li><strong>"+json.text+"</strong> - <em> "+json.author+"</em> - <span> "+json.created+
@@ -265,6 +271,8 @@ $(function() {
                 data : bank_string,
                 // handle a successful response
                 success : function(json) {
+                    $('.hideme').hide();
+                    $('#submitted').html('<h4><center><i class="material-icons icon-saved">cloud_done</i><br>Predictions Amended<br><span class="luck">Good Luck!</span></center></h4><br>&nbsp;');
                     $('#post-text').val(''); // remove the value from the input
                      // log the returned json to the console
                     $("#talk").prepend("<li><strong>"+json.text+"</strong> - <em> "+json.author+"</em> - <span> "+json.created+
