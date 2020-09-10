@@ -44,7 +44,7 @@
             <h5>Used Bankers</h5>
             <ul>
                 {% for banker in bankers %}
-                    <li id="{{ banker.BankerTeam|corresponding_match }}"><img src="{{ banker.BankerTeam.Logo.url }}" alt="{{ banker.BankerTeam.Nickname }}" class="team_small"> {{ banker.BankerTeam }}</li>
+                    <li id="{{ banker.BankerTeam|corresponding_match }}"><img src="{{ banker.BankerTeam.Logo.url }}" alt="{{ banker.BankerTeam.Nickname }}" class="team_small usedbanker"> {{ banker.BankerTeam }}</li>
                 {% endfor %}
             </ul>
         </div>     

@@ -10,6 +10,12 @@
     background-color: orangered !important;
 }
 
+.usedbanker {
+    margin-right: 5px;
+    position: relative;
+    top: 5px;
+    bottom: 5px;
+}
 .game-card {
     font-size: 20px !important;
     color: #01579b !important;
