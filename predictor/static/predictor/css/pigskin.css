@@ -259,6 +259,13 @@ table#stats-table tbody tr td {
     color: limegreen;
 }
 
+.icon-error {
+    width: 50px !important;
+    height:50px !important;
+    font-size: 50px;
+    color: firebrick;
+}
+
 .luck {
     color: dimgrey;
 }

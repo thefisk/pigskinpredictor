@@ -251,9 +251,10 @@ $(function() {
             },
             // handle a non-successful response
             error : function(xhr,errmsg,err) {
-                $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-                    " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-                 // provide a bit more info about the error to the console
+                $('.hideme').hide();
+                let duffpred = returnedresponses + 1;
+                $('#submitted').html("<h4><center><i class='material-icons icon-error'>error</i><br>Oops! We ran into an issue<br><br></h4><center><h5>Source: Add Prediction no. "+duffpred+"<br><span class='luck'>Error message: \""+err+"\"</span></center></h4><br>&nbsp;"); // add the error to the dom
+                // Above will display error details to the user to help diagnose any issues
             }
         });
     };
@@ -280,9 +281,9 @@ $(function() {
                 },
                 // handle a non-successful response
                 error : function(xhr,errmsg,err) {
-                    $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-                        " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-                     // provide a bit more info about the error to the console
+                    $('.hideme').hide();
+                    $('#submitted').html("<h4><center><i class='material-icons icon-error'>error</i><br>Oops! We ran into an issue<br><br></h4><center><h5>Source: Add Banker (Predictions were successful, banker wasn't)<br><span class='luck'>Error message: \""+err+"\"</span></center></h4><br>&nbsp;"); // add the error to the dom
+                    // Above will display error details to the user to help diagnose any issues
                 }
             });
         };
