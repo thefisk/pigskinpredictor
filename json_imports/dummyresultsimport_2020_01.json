@@ -5,10 +5,10 @@
         "Week": 1,
         "Season": 2020,
         "Winner": "Away",
-        "AwayTeam": "KC",
-        "HomeTeam": "HOU",
-        "AwayScore": 10,
-        "HomeScore": 3
+        "AwayTeam": "HOU",
+        "HomeTeam": "KC",
+        "AwayScore": 20,
+        "HomeScore": 34
     }
 }, {
     "model": "predictor.results",
