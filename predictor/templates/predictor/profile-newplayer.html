@@ -31,5 +31,37 @@
             <span class="right-float"><i class="material-icons prefix centered-icon">lock_open</i><a class="reset" href="/accounts/password/reset">RESET PASSWORD</a></span>
         </div>
     </div>
+     {% if preds == "yes" %}
+    <div class = "divider"></div>
+        <div class="row">
+        <div class="col s12 m12">
+            <center><h5>My Week {{ mypredweek }} Predictions</h5><center>
+            <table class="striped results-table">
+                <thead>
+                    <tr class="results-table-row">
+                        <th class="table-left">Road Team</th>
+                        <th></th>
+                        <th class="table-right">Home Team</th>
+                    </tr>
+                </thead>
+                <tbody>
+            {% for pred in mypreds%}
+            <tr>
+                {% if pred.Winner == "Away" %}
+                    {% if pred.Banker == True %}
+                        <td class="profile-banker table-left">{{pred.Game.AwayTeam}}</td><td class="table-center">@</td><td class="profile-notpicked table-right">{{pred.Game.HomeTeam}}</td>
+                    {% else %}
+                        <td class="profile-picked table-left">{{pred.Game.AwayTeam}}</td><td class="table-center">@</td><td class="profile-notpicked table-right">{{pred.Game.HomeTeam}}</td>
+                    {% endif %}
+                {% endif %}
+                {% if pred.Winner == "Home"%}
+                    <td class="profile-notpicked table-left">{{pred.Game.AwayTeam}}</td><td class="table-center">@</td><td class="profile-picked table-right">{{pred.Game.HomeTeam}}</td>
+                {% endif %}
+            {% endfor %}
+            </tr>
+            </table>
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock content %}

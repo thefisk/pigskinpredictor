@@ -84,6 +84,23 @@ def ProfileView(request):
                 profileseason = str((int(os.environ['PREDICTSEASON'])) -1)
             else:
                 profileseason = os.environ['PREDICTSEASON']
+            if int(os.environ['RESULTSWEEK']) < 18:
+                predweek = int(os.environ['PREDICTSEASON']+os.environ['RESULTSWEEK'])
+                try:
+                    mypreds = Prediction.objects.filter(User=request.user, PredWeek=predweek)
+                    if mypreds.count() > 0:
+                        preds = "yes"
+                    else:
+                        preds="no"
+                    mypredweek = os.environ['RESULTSWEEK']
+                except Prediction.DoesNotExist:
+                    mypreds = []
+                    preds = "no"
+                    mypredweek = "0"
+            else:
+                mypreds = []
+                preds="no"
+                mypredweek = "0"
             form = CustomUserChangeForm(instance=request.user)
             template = "predictor/profile.html"
             seasonhigh = ScoresSeason.objects.get(User=request.user, Season=profileseason).SeasonBest
@@ -93,6 +110,9 @@ def ProfileView(request):
             alltimelow = ScoresAllTime.objects.get(User=request.user).AllTimeWorst
             alltimepct = ScoresAllTime.objects.get(User=request.user).AllTimePercentage
             context = {
+                'mypredweek': mypredweek,
+                'preds': preds,
+                'mypreds':mypreds,
                 'form': form,
                 'season': profileseason,
                 'seasonhigh': seasonhigh,
@@ -112,7 +132,30 @@ def ProfileNewPlayerView(request):
             return redirect('profile-amended')
     else:    
         form = CustomUserChangeForm(instance=request.user)
-        return render(request, 'predictor/profile-newplayer.html', {'form': form})
+        if int(os.environ['RESULTSWEEK']) < 18:
+            predweek = int(os.environ['PREDICTSEASON']+os.environ['RESULTSWEEK'])
+            try:
+                mypreds = Prediction.objects.filter(User=request.user, PredWeek=predweek)
+                if mypreds.count() > 0:
+                    preds = "yes"
+                else:
+                    preds="no"
+                mypredweek = os.environ['RESULTSWEEK']
+            except Prediction.DoesNotExist:
+                mypreds = []
+                preds = "no"
+                mypredweek = "0"
+        else:
+            mypreds = []
+            preds="no"
+            mypredweek = "0"
+        context = {
+                'mypredweek': mypredweek,
+                'preds': preds,
+                'mypreds':mypreds,
+                'form': form
+        }
+        return render(request, 'predictor/profile-newplayer.html', context)
 
 def ProfileAmendedView(request):
     return render(request, 'predictor/profile-amended.html')

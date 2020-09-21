@@ -274,3 +274,30 @@ table#stats-table tbody tr td {
     color: midnightblue;
     font-weight: 700;
 }
+
+.profile-picked {
+    color: green;
+    font-weight: 500;
+}
+
+.profile-banker {
+    color: crimson;
+    font-weight: 600;
+}
+
+.profile-notpicked {
+ color: darkgrey;
+ font-weight: 400;
+}
+
+.table-left {
+    text-align: right;
+}
+
+.table-right {
+    text-align:left;
+}
+
+.table-center {
+    text-align:center;
+}
