@@ -11,6 +11,9 @@ $(function() {
     // Initialise chosenbanker variable
     var chosenbanker;
 
+    // Read in week for deadline checker
+    let weekverifier = document.getElementsByClassName("week-heading")[0].id;
+
     // Read in used bankers
     var usedbankers = [];
     $('#bankers li').each(function(){
@@ -220,12 +223,8 @@ $(function() {
                 }
             else{
                 if(predarray.length == numberOfGames){
-                    var jsonstring = JSON.stringify(predarray);
-                    var predjson = JSON.parse(jsonstring);
-                    // Post Predictions
-                    loop_predictions(predjson);
-                    // Banker then posted only if all predictions receive success response,
-                    // Then preds hidden and success message displayed only if banker receives success response.
+                    // Check Deadline First
+                    deadline_checker();
                     }
                 else{
                     window.alert("Please fill in all predictions");
@@ -233,6 +232,35 @@ $(function() {
                 }
             }
         });
+    
+    // Deadline Checker
+    function deadline_checker() {
+        var verification = {};
+        verification['pred-week'] = weekverifier;
+        verificationstring = JSON.stringify(verification)
+        $.ajax({
+            url : "../ajaxdeadlineverification/",
+            type : "POST",
+            headers: {
+                "X-CSRFToken": csrftoken,
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            },
+            data : verificationstring,
+            // handle a successful response
+            success : function(json) {
+                // Post Predictions
+                var jsonstring = JSON.stringify(predarray);
+                var predjson = JSON.parse(jsonstring);
+                loop_predictions(predjson);
+            },
+            // handle a non-successful response
+            error : function(xhr,errmsg,err) {
+                $('.hideme').hide();
+                $('#submitted').html("<h4><center><i class='material-icons icon-error'>error</i><br>Sorry! The weekly deadline has now passed.<BR><BR>"); // Tell user they're too late
+            }
+        })
+    }
 
     // Loop through JSON Array and submit each entry
     function loop_predictions(jsonobject) {

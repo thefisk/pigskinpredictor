@@ -24,6 +24,7 @@ from .views import (
     ScoreTablePreSeasonView,
     DivisionTableView,
     RobotsTXT,
+    AjaxDeadlineVerification,
 )
 from . import views
 
@@ -50,7 +51,8 @@ urlpatterns = [
     path('about/',AboutView, name='about'), #About
     path('scoring/',ScoringView, name='scoring'), #Scoring
     path('report/',ReportsView, name='report'), #Reports
-    path('yearend/',NewYearView, name='new-year-view') #After Week 17
+    path('yearend/',NewYearView, name='new-year-view'), #After Week 17
+    path('ajaxdeadlineverification/',AjaxDeadlineVerification, name='report'), #AJAX
 ]
 
 if settings.DEBUG:

@@ -358,6 +358,22 @@ def AjaxAddBankerView(request):
         else:
             return JsonResponse({"nothing to see": "this isn't happening"})
 
+def AjaxDeadlineVerification(request):
+        if request.method == 'POST':
+            json_data = json.loads(request.body.decode('utf-8'))
+            actualpredweek = int(os.environ['PREDICTWEEK'])
+            postedpredweek = int(json_data['pred-week'])
+            if postedpredweek == actualpredweek:
+                response_data = {}
+                response_data['deadline_verification'] = "Passed"
+                return JsonResponse(response_data)
+            else:
+                response_data = {}
+                response_data['deadline_verification'] = "Failed"
+                return JsonResponse(response_data,status=500)
+        else:
+            return JsonResponse({"nothing to see": "this isn't happening"})
+
 ### View to display latest scoretable for all users
 def ScoreTableView(request):
     # Below sets score week to 1 below current results week
