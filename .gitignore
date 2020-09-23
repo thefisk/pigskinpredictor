@@ -107,5 +107,8 @@ venv.bak/
 .mypy_cache/
 
 # Node Report files
-
 report*.json
+
+# Manual html imports
+
+/predictor/scripts/manual_html/*

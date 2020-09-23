@@ -15,7 +15,7 @@ team_dict = {
     'Indianapolis Colts': 'IND',
     'Jacksonville Jaguars': 'JAX',
     'Kansas City Chiefs': 'KC',
-    'Las Vegas Raiders': 'LV', 
+    'Las Vegas Raiders': 'LV',
     'Los Angeles Chargers': 'LAC',
     'Los Angeles Rams': 'LA',
     'Miami Dolphins': 'MIA',
@@ -31,6 +31,7 @@ team_dict = {
     'Tampa Bay Buccaneers': 'TB',
     'Tennessee Titans': 'TEN',
     'Washington Redskins': 'WAS',
+    'Washington Football Team': 'WAS',
     'Oakland Raiders': 'LV'
 }
 
