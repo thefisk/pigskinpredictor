@@ -60,7 +60,6 @@ def run():
             outerdict = {}
             outerdict["model"] = "predictor.results"
             outerdict["pk"] = week_dict[innerdict['HomeTeam']]
-            #outerdict['pk'] = "test"
             outerdict["fields"] = innerdict
             results.append(outerdict)
 
