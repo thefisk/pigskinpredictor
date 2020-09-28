@@ -1,26 +1,17 @@
-### Following deprecation of nfl.com's scorestrip, this script
-### uses BeautifulSoup to scrape results from pro-football-reference.com
-### ready to be ingested into our custom Results model
+## v3 Results Fetch Script
+## Uses ESPN JSON API
 
-from bs4 import BeautifulSoup
-import requests, json, boto3, os, datetime
+import requests, json, os, boto3, operator
+from datetime import datetime
 from .dictionaries.gameid_dict2020 import gameid_dict_2020 as gameid_dict
-from .dictionaries.main_dicts import team_dict
 
 def run():
+    ## Only run on a Tuesday
     if datetime.datetime.today().isoweekday() == 2:
-        ### Only run on a Tuesday
-        season = os.environ['PREDICTSEASON']
         week = os.environ['RESULTSWEEK']
+        season = os.environ['PREDICTSEASON']
         week_dict = gameid_dict["Week_"+str(week)]
-        url = f'https://www.pro-football-reference.com/years/{season}/games.htm'
-        user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'
-        headers = {'User-Agent': user_agent}
 
-        data = requests.get(url, headers=headers).text
-        soup = BeautifulSoup(data, 'lxml')
-
-        # Set Filename to include week number
         if int(week) < 10:
             filename = "resultsimport_"+season+"_0"+week+".json"
         else:
@@ -28,69 +19,67 @@ def run():
 
         outfile = open(filename, "w")
 
-        results =[]
+        # Weeks param doesn't seem to work on ESPN API so have to use date range
+        # ESPN uses Zulu time so MNF will be a Tuesday datetime, hence including today in range
+        today = datetime.today().strftime('%Y%m%d')
+        thurs = str(int(today)-5)
+        source = f"http://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates={thurs}-{today}"
 
-        for game in soup.find_all('th', {'data-stat': 'week_num','csk': week}):
+        rawjson = requests.get(source).json()
+
+        results = []
+
+        for game in rawjson['events']:
+            team1 = {}
+            team1['team'] = game['competitions'][0]['competitors'][0]['team']['abbreviation']
+            team1['score'] = int(game['competitions'][0]['competitors'][0]['score'])
+            team1['location'] = game['competitions'][0]['competitors'][0]['homeAway']
+            team2 = {}
+            team2['team'] = game['competitions'][0]['competitors'][1]['team']['abbreviation']
+            team2['score'] = int(game['competitions'][0]['competitors'][1]['score'])
+            team2['location'] = game['competitions'][0]['competitors'][1]['homeAway']
             innerdict = {}
-            #if game is tied (pro-football references omits a <strong> tag on the winning column for tied games)
-            if (game.find_next('td', {'data-stat': 'winner'})).strong == None:
-                winningteam = (team_dict[game.find_next('td', {'data-stat': 'winner'}).text])
-                if (game.find_next('td',{'data-stat': 'game_location'}).text == "@"):
-                    winner_location = "Away"
-                else:
-                    winner_location = "Home"
-                losingteam = (team_dict[game.find_next('td', {'data-stat': 'loser'}).text])
-                pts_win = game.find_next('td', {'data-stat': 'pts_win'}).text
-                pts_lose = game.find_next('td', {'data-stat': 'pts_lose'}).text
-                innerdict['Week'] = int(week)
-                innerdict['Season'] = int(season)
-                if winner_location == "Away":
-                    innerdict['Winner'] = "Tie"
-                    innerdict['AwayTeam'] = winningteam
-                    innerdict['HomeTeam'] = losingteam
-                    hometeam = losingteam
-                    innerdict['AwayScore'] = int(pts_win)
-                    innerdict['HomeScore'] = int(pts_lose)
-                else:
-                    innerdict['Winner'] = "Tie"
-                    innerdict['AwayTeam'] = losingteam
-                    innerdict['HomeTeam'] = winningteam
-                    hometeam = winningteam
-                    innerdict['AwayScore'] = int(pts_lose)
-                    innerdict['HomeScore'] = int(pts_win)
-            # if game not tied
+            innerdict["Week"] = int(week)
+            innerdict["Season"] = int(season)
+            if team1['location'] == "home":
+                innerdict["HomeTeam"] = team1['team']
+                innerdict["AwayTeam"] = team2['team']
+                innerdict["HomeScore"] = team1['score']
+                innerdict["AwayScore"] = team2['score']
             else:
-                winningteam = (team_dict[game.find_next('td', {'data-stat': 'winner'}).text])
-                if (game.find_next('td',{'data-stat': 'game_location'}).text == "@"):
-                    winner_location = "Away"
-                else:
-                    winner_location = "Home"
-                losingteam = (team_dict[game.find_next('td', {'data-stat': 'loser'}).text])
-                pts_win = game.find_next('td', {'data-stat': 'pts_win'}).text
-                pts_lose = game.find_next('td', {'data-stat': 'pts_lose'}).text
-                innerdict['Week'] = int(week)
-                innerdict['Season'] = int(season)
-                if winner_location == "Away":
-                    innerdict['Winner'] = "Away"
-                    innerdict['AwayTeam'] = winningteam
-                    innerdict['HomeTeam'] = losingteam
-                    hometeam = losingteam
-                    innerdict['AwayScore'] = int(pts_win)
-                    innerdict['HomeScore'] = int(pts_lose)
-                else:
-                    innerdict['Winner'] = "Home"
-                    innerdict['AwayTeam'] = losingteam
-                    innerdict['HomeTeam'] = winningteam
-                    hometeam = winningteam
-                    innerdict['AwayScore'] = int(pts_lose)
-                    innerdict['HomeScore'] = int(pts_win)
+                innerdict["HomeTeam"] = team2['team']
+                innerdict["AwayTeam"] = team1['team']
+                innerdict["HomeScore"] = team2['score']
+                innerdict["AwayScore"] = team1['score']
+            if team1['score'] == team2['score']:
+                innerdict["Winner"] = "Tie"
+            elif (team1['score']) > (team2['score']):
+                innerdict["Winner"] = "Home"
+            else:
+                innerdict["Winner"] = "Away"
             outerdict = {}
-            outerdict['model'] = "predictor.results"
-            outerdict['pk'] = week_dict[hometeam]
-            outerdict['fields'] = innerdict
+            outerdict["model"] = "predictor.results"
+            outerdict["pk"] = week_dict[innerdict['HomeTeam']]
+            #outerdict['pk'] = "test"
+            outerdict["fields"] = innerdict
             results.append(outerdict)
-                 
-        jsonout = json.dumps(results)
+
+        # ESPN Uses different short names for Washington and LA Rams to NFL.com
+        # Loop through and rename them to ensure they match our model
+        # Otherwise the import won't work!
+
+        for result in results:
+            if (result['fields']['HomeTeam']) == "WSH":
+                result['fields']['HomeTeam'] = "WAS"
+            if (result['fields']['HomeTeam']) == "LAR":
+                result['fields']['HomeTeam'] = "LA"
+            if (result['fields']['AwayTeam']) == "WSH":
+                result['fields']['AwayTeam'] = "WAS"
+            if (result['fields']['AwayTeam']) == "LAR":
+                result['fields']['AwayTeam'] = "LA"
+
+        sortedresults = sorted(results, key=lambda k: k['pk'])
+        jsonout = json.dumps(sortedresults)
         outfile.write(jsonout)
         outfile.close()
 
