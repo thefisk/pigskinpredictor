@@ -7,7 +7,7 @@ from .dictionaries.gameid_dict2020 import gameid_dict_2020 as gameid_dict
 
 def run():
     ## Only run on a Tuesday
-    if datetime.datetime.today().isoweekday() == 2:
+    if datetime.today().isoweekday() == 2:
         week = os.environ['RESULTSWEEK']
         season = os.environ['PREDICTSEASON']
         week_dict = gameid_dict["Week_"+str(week)]
