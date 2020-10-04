@@ -301,3 +301,7 @@ table#stats-table tbody tr td {
 .table-center {
     text-align:center;
 }
+
+.green {
+    color: green;
+}

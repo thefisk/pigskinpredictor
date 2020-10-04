@@ -450,8 +450,33 @@ def ScoreTableEnhancedView(request):
 
     weekscores = ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON'])   
     nopreds = CustomUser.objects.all().exclude(id__in=weekscores.values('User'))
-    
+
+    jsonseasonscores = {'season_scores' : [{
+        'pos': i+1,
+        'user': s.User.Full_Name,
+        'seasonscore': s.SeasonScore,
+        'seasonworst': s.SeasonWorst,
+        'seasonbest': s.SeasonBest,
+        'seasoncorrect': s.SeasonCorrect,
+        'seasonpercentage': s.SeasonPercentage,
+        'seasonaverage': s.SeasonAverage,
+        'bankeraverage': s.BankerAverage
+        }
+        # enumerate needed to allow us to extract the index (position) using i,s
+        for i,s in enumerate(ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']))]
+    }
+
+    jsonweekscores = {'week_scores' : [{
+        'user': s.User.Full_Name,
+        'weekscore': s.WeekScore
+            }
+        for s in ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON'])
+        ]
+    }
+
     context = {
+        'jsonseasonscores': jsonseasonscores,
+        'jsonweekscores': jsonweekscores,
         'nopreds': nopreds,
         'bestbanker': bestbanker,
         'worstbanker': worstbanker,

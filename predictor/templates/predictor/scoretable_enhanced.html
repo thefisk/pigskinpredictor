@@ -10,16 +10,41 @@
           content: counter(my-sec-counter) ". ";
         }
         </style>
-
+ 
 {% extends "predictor/base.html" %}
 {% load predictor_custom_tags %}
 {% block content %}
+
+<!--Vue JS-->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
 <script>
         $('#leaderboard').each(function(){
                $(this).toggleClass('active');
            });
        </script>
+{{ jsonseasonscores|json_script:'seasonscores' }}
+{{ jsonweekscores|json_script:'weekscores' }}
 <div class="container">
+<div id="vue-table">
+            <table class="striped">
+            <thead>
+                <tr>
+                    <th @click="sort('pos')" class="enhanced"><a href="#" class="sortable">Pos. </a>&nbsp;<i class="material-icons" :class="(currentSorting = 'posasc') ? 'green' : 'black'">arrow_drop_down</i></th>
+                    <th @click="sort('user')" class="enhanced"><a href="#" class="sortable">Player</a></th>
+                    <th @click="sort('seasonscore')" class="thodd enhanced"><a href="#" class="sortable">Score</a></th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr v-for="score in sortedTable">
+                <td>[[score.pos]]</td>
+                <td>[[score.user]]</td>
+                <td>[[score.seasonscore]]</td>
+            </tr>
+            </tbody>
+            </table>
+    debug: sort=[[currentSort]], dir=[[currentSortDir]]
+</div>
 <h5 class="mb-3">
     Enhanced Score Table</h5>
     <a href="{% url 'scoretable' %}" class="smalllink">Standard Score Table</a>&nbsp;|&nbsp;<a href="{% url 'scoretable-division' %}" class="smalllink">Division Score Table</a>
@@ -86,6 +111,45 @@
             </tbody>
         </table>
     </div>
+<script>
+let seasonScores = JSON.parse(document.getElementById('seasonscores').textContent).season_scores;
+let weekScores = JSON.parse(document.getElementById('weekscores').textContent).week_scores;
+</script>
+<script>
+    var app = new Vue({
+        delimiters: ['[[', ']]'],
+        el: '#vue-table',
+        data: {
+            seasonScores,
+            weekScores,
+            currentSort: 'pos',
+            currentSortDir: 'asc',
+            currentSorting: 'posasc'
+        },
+        methods: {
+            sort: function(s){
+                //if s == current sort, reverse
+                if(s === this.currentSort) {
+                    this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
+                }
+                this.currentSort =s;
+                this.currentSorting = s+this.currentSortDir;
+            }
+        },
+        computed:{
+            sortedTable:function() {
+                return this.seasonScores.sort((a,b) => {
+                let modifier = 1;
+                if(this.currentSortDir === 'desc') modifier = -1;
+                if(a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+                if(a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+                return 0;
+                });
+            }
+        }
+    })
+</script>
+
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
 {% load static %}
 <script src="{% static "predictor/scripts/pigskin.js" %}"></script>
