@@ -1,311 +1,313 @@
 .chosenwinner {
-    -webkit-box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-    box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-    background-color: green !important;
+  -webkit-box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background-color: green !important;
 }
 
 .chosenbanker {
-    -webkit-box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-    box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-    background-color: orangered !important;
+  -webkit-box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background-color: orangered !important;
 }
 
 .usedbanker {
-    margin-right: 5px;
-    position: relative;
-    top: 5px;
-    bottom: 5px;
+  margin-right: 5px;
+  position: relative;
+  top: 5px;
+  bottom: 5px;
 }
 .game-card {
-    font-size: 20px !important;
-    color: #01579b !important;
+  font-size: 20px !important;
+  color: #01579b !important;
 }
 
 .logoimg {
-    max-height: 100%;
+  max-height: 100%;
 }
 
 .team {
-    height: 75px;
-    width: 75px;
-    margin-bottom: 5px;
+  height: 75px;
+  width: 75px;
+  margin-bottom: 5px;
 }
 
-.team_small{
-    height: 20px;
-    width: 20px;
+.team_small {
+  height: 20px;
+  width: 20px;
 }
 
-.error{
-    font-family: roboto;
-    color: red;
-    font-size: 90% ;
-    font-weight: 700;
+.error {
+  font-family: roboto;
+  color: red;
+  font-size: 90%;
+  font-weight: 700;
 }
 
-.reportheader{
-    color: firebrick;
-    font-size: 120%;
-    font-weight: 400;
+.reportheader {
+  color: firebrick;
+  font-size: 120%;
+  font-weight: 400;
 }
 
-.navlink{
-    font-family: roboto;
-    color: white;
-    font-weight: 300;
-    font-size: 100%;
+.navlink {
+  font-family: roboto;
+  color: white;
+  font-weight: 300;
+  font-size: 100%;
 }
 
-.thodd{
-   color: dimgrey; 
-} 
-
-.tdodd{
-    color: dimgrey;
+.thodd {
+  color: dimgrey;
 }
 
-.theven{
-    color: darkslategrey;
+.tdodd {
+  color: dimgrey;
 }
 
-.tdeven{
-    color: darkslategrey;
+.theven {
+  color: darkslategrey;
 }
 
-.enhanced{
-    font-size:90%;
+.tdeven {
+  color: darkslategrey;
 }
 
-.scoretablelow{
-    color: white;
-    text-shadow: 1px 1px 2px black, 0 0 4px red, 0 0 8px red, 0 0 25px red;
+.enhanced {
+  font-size: 90%;
 }
 
-.scoretablehigh{
-    color: white;
-    font-size: 110% !important;
-    text-shadow: 1px 1px 2px black, 0 0 4px gold, 0 0 8px gold, 0 0 25px gold;
+.scoretablelow {
+  color: white;
+  text-shadow: 1px 1px 2px black, 0 0 4px red, 0 0 8px red, 0 0 25px red;
 }
 
-.smalllink{
-    font-size: small !important;
-    color: steelblue;
-    text-decoration-line: underline;
+.scoretablehigh {
+  color: white;
+  font-size: 110% !important;
+  text-shadow: 1px 1px 2px black, 0 0 4px gold, 0 0 8px gold, 0 0 25px gold;
 }
 
-.footer-pigskin{
-    padding-top: 0% !important;
+.smalllink {
+  font-size: small !important;
+  color: steelblue;
+  text-decoration-line: underline;
 }
 
-.footer-row-pigskin{
-    margin-bottom: 0% !important;
-    padding-left: 0% !important;
-    padding-right: 0% !important;
+.footer-pigskin {
+  padding-top: 0% !important;
 }
 
-.footer-text{
-    font-size: 85%;
+.footer-row-pigskin {
+  margin-bottom: 0% !important;
+  padding-left: 0% !important;
+  padding-right: 0% !important;
 }
 
-a.footer-link{
-    color:deepskyblue;
+.footer-text {
+  font-size: 85%;
 }
 
-a.footer-link:hover{
-    color: aliceblue;
-    text-decoration: underline;
+a.footer-link {
+  color: deepskyblue;
 }
 
-.brand-logo{
-    padding-left: 10px !important;
+a.footer-link:hover {
+  color: aliceblue;
+  text-decoration: underline;
 }
 
-.pigskin-logo{
-    font-family: roboto !important;
-    font-weight: 300 !important;
-    letter-spacing: 0.5px;
-    }
-
-.icon-padding{
-    padding-top: 10px;
+.brand-logo {
+  padding-left: 10px !important;
 }
 
-.blueicons{
-    color: #01579b;
+.pigskin-logo {
+  font-family: roboto !important;
+  font-weight: 300 !important;
+  letter-spacing: 0.5px;
 }
 
-.icon-padding-right{
-    padding-right: 8px;
+.icon-padding {
+  padding-top: 10px;
+}
+
+.blueicons {
+  color: #01579b;
+}
+
+.icon-padding-right {
+  padding-right: 8px;
 }
 
 #results-table {
-    vertical-align: middle;
+  vertical-align: middle;
 }
 
 table.results-table thead tr th {
-    padding-top: 10px !important;
-    padding-bottom: 10px !important;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
 }
 
 table.results-table tbody tr td {
-    padding-top: 10px !important;
-    padding-bottom: 10px !important;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
 }
 
-.results-table-row{
-    line-height: 20px;
+.results-table-row {
+  line-height: 20px;
 }
 
-.results-table-wrong{
-    color: red;
-    font-weight: 100;
+.results-table-wrong {
+  color: red;
+  font-weight: 100;
 }
 
-.results-table-right{
-    color: green;
-    font-weight: 600;
+.results-table-right {
+  color: green;
+  font-weight: 600;
 }
 
-.results-table-dnp{
-    color: #01579B;
+.results-table-dnp {
+  color: #01579b;
 }
 
-.results-table-total{
-    font-weight: 700;
+.results-table-total {
+  font-weight: 700;
 }
 
-.stats-header{
-    font-weight: 400;
+.stats-header {
+  font-weight: 400;
 }
 
-.stats-period{
-    font-size: large;
-    font-weight: 500;
-    font-family: Sriracha;
+.stats-period {
+  font-size: large;
+  font-weight: 500;
+  font-family: Sriracha;
 }
 
 table#stats-table thead tr th {
-    padding-top: 10px !important;
-    padding-bottom: 10px !important;
-    padding-left: 0px;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  padding-left: 0px;
 }
 
 table#stats-table tbody tr td {
-    padding-top: 10px !important;
-    padding-bottom: 10px !important;
-    padding-left: 0px;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  padding-left: 0px;
 }
 
 .throwaway {
-    font-weight: lighter;
-    font-style: oblique;
+  font-weight: lighter;
+  font-style: oblique;
 }
 
 .reset {
-    color: orangered;
-    font-weight: normal;
-    font-size: smaller;
+  color: orangered;
+  font-weight: normal;
+  font-size: smaller;
 }
 .reset:hover {
-    color: firebrick;
+  color: firebrick;
 }
 
 .centered-icon {
-    padding-right: 5px;
-    position: relative;
-    top: 5px;
-    bottom: 5px;
+  padding-right: 5px;
+  position: relative;
+  top: 5px;
+  bottom: 5px;
 }
 
 .right-float {
-    float: right;
+  float: right;
 }
 
 .post-metadata {
-    color: lightslategrey;
-    font-size: 90%;
+  color: lightslategrey;
+  font-size: 90%;
 }
 
 .centered {
-    text-align: center;
+  text-align: center;
 }
 
-.new-post{
-    color: #20a599;
-    font-weight: normal;
-    font-size: large;
+.new-post {
+  color: #20a599;
+  font-weight: normal;
+  font-size: large;
 }
 
 .new-post:hover {
-    color: mediumseagreen;
+  color: mediumseagreen;
 }
 
 .update-snippet {
-    color: black;
+  color: black;
 }
 
 .update-snippet:hover {
-    color: darkslategrey;
+  color: darkslategrey;
 }
 
 .article-title:hover {
-    color: darkslategrey;
+  color: darkslategrey;
 }
 
 .icon-saved {
-    width: 50px !important;
-    height:50px !important;
-    font-size: 50px;
-    color: limegreen;
+  width: 50px !important;
+  height: 50px !important;
+  font-size: 50px;
+  color: limegreen;
 }
 
 .icon-error {
-    width: 50px !important;
-    height:50px !important;
-    font-size: 50px;
-    color: firebrick;
+  width: 50px !important;
+  height: 50px !important;
+  font-size: 50px;
+  color: firebrick;
 }
 
 .luck {
-    color: dimgrey;
+  color: dimgrey;
 }
 
 .userdiv {
-    color: midnightblue;
-    font-weight: 700;
+  color: midnightblue;
+  font-weight: 700;
 }
 
 .profile-picked {
-    color: green;
-    font-weight: 500;
+  color: green;
+  font-weight: 500;
 }
 
 .profile-banker {
-    color: crimson;
-    font-weight: 600;
+  color: crimson;
+  font-weight: 600;
 }
 
 .profile-notpicked {
- color: darkgrey;
- font-weight: 400;
+  color: darkgrey;
+  font-weight: 400;
 }
 
 .table-left {
-    text-align: right;
+  text-align: right;
 }
 
 .table-right {
-    text-align:left;
+  text-align: left;
 }
 
 .table-center {
-    text-align:center;
+  text-align: center;
 }
 
 .sort-column {
-    color: limegreen;
+  color: limegreen;
 }
 
 .non-sort-column {
-    color: dimgrey
+  color: dimgrey;
 }
