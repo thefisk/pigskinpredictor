@@ -30,16 +30,14 @@
             <table class="striped">
             <thead>
                 <tr>
-                    <th @click="sort('pos')" class="enhanced"><a href="#" class="sortable">Pos. </a>&nbsp;<i class="material-icons" :class="(currentSorting = 'posasc') ? 'green' : 'black'">arrow_drop_down</i></th>
-                    <th @click="sort('user')" class="enhanced"><a href="#" class="sortable">Player</a></th>
-                    <th @click="sort('seasonscore')" class="thodd enhanced"><a href="#" class="sortable">Score</a></th>
+                    <th v-for="header in tableHeadings" @click="sort(header.jsonfield)" class="enhanced"><a href="#" class="sortable" :class="header.sorting ? 'sort-column' : 'non-sort-column'">[[ header.name ]]</a></th>
                 </tr>
             </thead>
             <tbody>
             <tr v-for="score in sortedTable">
-                <td>[[score.pos]]</td>
-                <td>[[score.user]]</td>
-                <td>[[score.seasonscore]]</td>
+                <td class="enhanced">[[score.pos]]</td>
+                <td class="enhanced">[[score.user]]</td>
+                <td class="enhanced">[[score.seasonscore]]</td>
             </tr>
             </tbody>
             </table>
@@ -114,6 +112,8 @@
 <script>
 let seasonScores = JSON.parse(document.getElementById('seasonscores').textContent).season_scores;
 let weekScores = JSON.parse(document.getElementById('weekscores').textContent).week_scores;
+// for loop to add weekScores to seasonScores for each user
+
 </script>
 <script>
     var app = new Vue({
@@ -124,16 +124,108 @@ let weekScores = JSON.parse(document.getElementById('weekscores').textContent).w
             weekScores,
             currentSort: 'pos',
             currentSortDir: 'asc',
-            currentSorting: 'posasc'
+            currentSorting: 'posasc',
+            tableHeadings: [
+                {
+                    "name": "Pos",
+                    "jsonfield": "pos",
+                    "sortAsc": true,
+                    "sortDesc": false,
+                    "sorting": true
+                },
+                {
+                    "name": "Player",
+                    "jsonfield": "user",
+                    "sortAsc": false,
+                    "sortDesc": false,
+                    "sorting": false
+                },
+                {
+                    "name": "Last Week",
+                    "jsonfield": "week",
+                    "sortAsc": false,
+                    "sortDesc": false,
+                    "sorting": false
+                },
+                {
+                    "name": "No. Correct",
+                    "jsonfield": "seasoncorrect",
+                    "sortAsc": false,
+                    "sortDesc": false,
+                    "sorting": false
+                },
+                {
+                    "name": "% Correct",
+                    "jsonfield": "seasonpercentage",
+                    "sortAsc": false,
+                    "sortDesc": false,
+                    "sorting": false
+                },
+                {
+                    "name": "Best Week",
+                    "jsonfield": "seasonbest",
+                    "sortAsc": false,
+                    "sortDesc": false,
+                    "sorting": false
+                },
+                {
+                    "name": "Avg Week",
+                    "jsonfield": "seasonaverage",
+                    "sortAsc": false,
+                    "sortDesc": false,
+                    "sorting": false
+                },
+                {
+                    "name": "Worst Week",
+                    "jsonfield": "seasonworst",
+                    "sortAsc": false,
+                    "sortDesc": false,
+                    "sorting": false
+                },
+                {
+                    "name": "Avg Banker",
+                    "jsonfield": "bankeraverage",
+                    "sortAsc": false,
+                    "sortDesc": false,
+                    "sorting": false
+                },
+                {
+                    "name": "Score",
+                    "jsonfield": "seasonscore",
+                    "sortAsc": false,
+                    "sortDesc": false,
+                    "sorting": false
+                }
+            ]
         },
         methods: {
             sort: function(s){
-                //if s == current sort, reverse
+                // find tableHeading sort value and set to false
+                header = this.tableHeadings.find(x => x.jsonfield === this.currentSort);
+                if (this.currentSortDir === "asc") {
+                    direction = "sortAsc";
+                }
+                else {
+                    direction = "sortDesc";
+                }
+                header[direction] = false;
+                header.sorting = false;
+                // if s == current sort, reverse
                 if(s === this.currentSort) {
                     this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
                 }
                 this.currentSort =s;
                 this.currentSorting = s+this.currentSortDir;
+                // find new header and set sort value to true
+                newheader = header = this.tableHeadings.find(x => x.jsonfield === this.currentSort);
+                if (this.currentSortDir === "asc") {
+                    direction = "sortAsc";
+                }
+                else {
+                    direction = "sortDesc";
+                }
+                newheader[direction] = true;
+                newheader.sorting = true;
             }
         },
         computed:{
