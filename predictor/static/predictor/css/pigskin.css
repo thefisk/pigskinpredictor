@@ -302,6 +302,10 @@ table#stats-table tbody tr td {
     text-align:center;
 }
 
-.green {
-    color: green;
+.sort-column {
+    color: limegreen;
+}
+
+.non-sort-column {
+    color: dimgrey
 }
