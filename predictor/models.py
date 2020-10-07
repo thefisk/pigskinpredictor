@@ -178,7 +178,7 @@ class ScoresSeason(models.Model):
 
     class Meta:
         verbose_name_plural = "Season Scores"
-        ordering = ['-SeasonScore', 'User']
+        ordering = ['-SeasonScore', '-SeasonCorrect', '-BankerAverage', 'User']
 
 class ScoresAllTime(models.Model):
     User = models.ForeignKey(User, on_delete=models.CASCADE)
