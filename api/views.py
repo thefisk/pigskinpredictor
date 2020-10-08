@@ -30,7 +30,7 @@ class NoPredsAPIView(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         week = os.environ['PREDICTWEEK']
         season = os.environ['PREDICTSEASON']
-        predweek = int(week+season)
+        predweek = int(season+week)
         haspicked = []
         for pred in Prediction.objects.filter(PredWeek=predweek):
             if pred.User.id not in haspicked:
@@ -60,7 +60,7 @@ class ThisWeekCSVView(mixins.ListModelMixin,viewsets.GenericViewSet):
     def get_queryset(self):
         week = os.environ['PREDICTWEEK']
         season = os.environ['PREDICTSEASON']
-        predweek = int(week+season)
+        predweek = int(season+week)
         return Prediction.objects.filter(PredWeek=predweek)
 
 class LastWeekCSVView(mixins.ListModelMixin,viewsets.GenericViewSet):
@@ -72,7 +72,7 @@ class LastWeekCSVView(mixins.ListModelMixin,viewsets.GenericViewSet):
     def get_queryset(self):
         week = os.environ['PREDICTWEEK']
         season = os.environ['PREDICTSEASON']
-        predweek = int(week+season)-1
+        predweek = int(season+week)-1
         return Prediction.objects.filter(PredWeek=predweek)
 
 class BankersCSVView(mixins.ListModelMixin,viewsets.GenericViewSet):
