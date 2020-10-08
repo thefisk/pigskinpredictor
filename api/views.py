@@ -1,9 +1,15 @@
+import OS
 from predictor.models import Prediction
 from rest_framework import viewsets, mixins
 from accounts.models import User
 from .permissions import IsSuperUser
 from predictor.models import Prediction, Banker
-from .serializers import BankerSerializer, UserSerializer, PredictionSerializer
+from .serializers import (
+BankerSerializer,
+UserSerializer,
+PredictionSerializer,
+NoPredsSerializer
+)
 from rest_framework.settings import api_settings
 from rest_framework_csv import renderers as r
 from django_filters.rest_framework import DjangoFilterBackend
@@ -19,6 +25,19 @@ class UserAPIView(viewsets.ReadOnlyModelViewSet):
             verifiedemails.append(entry.email)
         return User.objects.filter(email__in=verifiedemails)
 
+class NoPredsAPIView(viewsets.ReadOnlyModelViewSet):
+    permission_classes = [IsSuperUser]
+    serializer_class = UserSerializer
+    def get_queryset(self):
+        week = OS.environ['PREDICTWEEK']
+        season = OS.environ['PREDICTSEASON']
+        predweek = int(week+season)
+        haspicked = []
+        for pred in Prediction.objects.filter(PredWeek=predweek):
+            if pred.User.id not in haspicked:
+                haspicked.append(pred.User.id)
+        return User.objects.exclude(id__in=haspicked)
+
 class PredictionCSVOrdering(r.CSVRenderer):
     header = ['PredWeek', 'Game', 'User', 'Winner', 'Banker', 'Points']
 
@@ -32,6 +51,30 @@ class PredictionCSVView(mixins.ListModelMixin,viewsets.GenericViewSet):
     queryset=Prediction.objects.all()
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['User', 'PredWeek', 'PredSeason']
+
+class ThisWeekCSVView(mixins.ListModelMixin,viewsets.GenericViewSet):
+    permission_classes = [IsSuperUser]
+    renderer_classes = (PredictionCSVOrdering, ) + tuple(api_settings.DEFAULT_RENDERER_CLASSES)
+    serializer_class = PredictionSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['User', 'PredWeek', 'PredSeason']
+    def get_queryset(self):
+        week = OS.environ['PREDICTWEEK']
+        season = OS.environ['PREDICTSEASON']
+        predweek = int(week+season)
+        return Prediction.objects.filter(PredWeek=predweek)
+
+class LastWeekCSVView(mixins.ListModelMixin,viewsets.GenericViewSet):
+    permission_classes = [IsSuperUser]
+    renderer_classes = (PredictionCSVOrdering, ) + tuple(api_settings.DEFAULT_RENDERER_CLASSES)
+    serializer_class = PredictionSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['User', 'PredWeek', 'PredSeason']
+    def get_queryset(self):
+        week = OS.environ['PREDICTWEEK']
+        season = OS.environ['PREDICTSEASON']
+        predweek = int(week+season)-1
+        return Prediction.objects.filter(PredWeek=predweek)
 
 class BankersCSVView(mixins.ListModelMixin,viewsets.GenericViewSet):
     permission_classes = [IsSuperUser]
