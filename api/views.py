@@ -8,7 +8,6 @@ from .serializers import (
 BankerSerializer,
 UserSerializer,
 PredictionSerializer,
-NoPredsSerializer
 )
 from rest_framework.settings import api_settings
 from rest_framework_csv import renderers as r
