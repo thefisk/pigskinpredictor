@@ -1,4 +1,4 @@
-import OS
+import os
 from predictor.models import Prediction
 from rest_framework import viewsets, mixins
 from accounts.models import User
@@ -29,8 +29,8 @@ class NoPredsAPIView(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsSuperUser]
     serializer_class = UserSerializer
     def get_queryset(self):
-        week = OS.environ['PREDICTWEEK']
-        season = OS.environ['PREDICTSEASON']
+        week = os.environ['PREDICTWEEK']
+        season = os.environ['PREDICTSEASON']
         predweek = int(week+season)
         haspicked = []
         for pred in Prediction.objects.filter(PredWeek=predweek):
@@ -59,8 +59,8 @@ class ThisWeekCSVView(mixins.ListModelMixin,viewsets.GenericViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['User', 'PredWeek', 'PredSeason']
     def get_queryset(self):
-        week = OS.environ['PREDICTWEEK']
-        season = OS.environ['PREDICTSEASON']
+        week = os.environ['PREDICTWEEK']
+        season = os.environ['PREDICTSEASON']
         predweek = int(week+season)
         return Prediction.objects.filter(PredWeek=predweek)
 
@@ -71,8 +71,8 @@ class LastWeekCSVView(mixins.ListModelMixin,viewsets.GenericViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['User', 'PredWeek', 'PredSeason']
     def get_queryset(self):
-        week = OS.environ['PREDICTWEEK']
-        season = OS.environ['PREDICTSEASON']
+        week = os.environ['PREDICTWEEK']
+        season = os.environ['PREDICTSEASON']
         predweek = int(week+season)-1
         return Prediction.objects.filter(PredWeek=predweek)
 
