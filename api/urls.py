@@ -8,7 +8,9 @@ router = routers.DefaultRouter()
 router.register('users', views.UserAPIView, basename='users')
 router.register('predictions', views.PredictionCSVView, basename='predictions')
 router.register('bankers', views.BankersCSVView, basename='bankers')
-
+router.register('thisweek', views.ThisWeekCSVView, basename='thisweek')
+router.register('lastweek', views.LastWeekCSVView, basename='lastweek')
+router.register('nopreds', views.NoPredsAPIView, basename='nopreds')
 
 urlpatterns = [
     path('',include(router.urls)),
