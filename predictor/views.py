@@ -482,8 +482,12 @@ def AjaxAmendPredictionView(request):
             pred_game = Match.objects.get(GameID=pred_game_str)
             response_data = {}
 
-            oldprediction = Prediction.objects.get(User=pred_user, Game=pred_game)
-            oldprediction.delete()
+            try:
+                oldprediction = Prediction.objects.get(User=pred_user, Game=pred_game)
+            except Prediction.DoesNotExist:
+                pass
+            else:
+                oldprediction.delete()
         
             predictionentry = Prediction(User=pred_user, Game=pred_game, Winner=pred_winner)
             predictionentry.save()
