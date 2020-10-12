@@ -36,7 +36,11 @@
                                         {% endif %}
                                     {% endif %}
                                 {% endfor %}
-
+                                {% for game in notpredicted %}
+                                    {% if match.GameID == game.GameID %}
+                                        <img class="responsive-img hoverable team" src="{{ match.AwayTeam.Logo.url }}" id="Away" alt="{{ match.AwayTeam }}">  <img class="responsive-img hoverable team" src="{{ match.HomeTeam.Logo.url }}" id="Home" alt="{{ match.HomeTeam }}">
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         </div>
                     </div>

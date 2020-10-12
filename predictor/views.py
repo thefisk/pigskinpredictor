@@ -234,8 +234,13 @@ def AmendPredictionsView(request):
     week = os.environ['PREDICTWEEK']
     season = os.environ['PREDICTSEASON']
     UserPreds = Prediction.objects.filter(Game__Week=week, Game__Season=season, User=request.user)
+    Unpredicted = []
+    for i in UserPreds:
+        Unpredicted.append(i.Game.GameID)
     UserBankers = Banker.objects.filter(User=request.user, BankSeason=season)
     UserBankersAmend = UserBankers.exclude(BankWeek=week)
+    Matches = Match.objects.filter(Week=week, Season=season)
+    NotPredicted = Matches.exclude(GameID__in=Unpredicted)
     ClassDict = {}
     for preds in UserPreds:
         ClassDict[preds.Game.GameID] = preds.Winner
@@ -248,10 +253,11 @@ def AmendPredictionsView(request):
         'bankers':UserBankersAmend,
         'predictions':Prediction.objects.all(),
         'originalbanker':Banker.objects.get(BankWeek=week, BankSeason=season, User=request.user),
-        'matches':Match.objects.filter(Week=week, Season=season),
+        'matches':Matches,
         'week':week,
         'season':season,
-        'title':'Amend Predictions'
+        'title':'Amend Predictions',
+        'notpredicted': NotPredicted,
     }
 
     return render(request, template, context)
@@ -476,8 +482,12 @@ def AjaxAmendPredictionView(request):
             pred_game = Match.objects.get(GameID=pred_game_str)
             response_data = {}
 
-            oldprediction = Prediction.objects.get(User=pred_user, Game=pred_game)
-            oldprediction.delete()
+            try:
+                oldprediction = Prediction.objects.get(User=pred_user, Game=pred_game)
+            except Prediction.DoesNotExist:
+                pass
+            else:
+                oldprediction.delete()
         
             predictionentry = Prediction(User=pred_user, Game=pred_game, Winner=pred_winner)
             predictionentry.save()
