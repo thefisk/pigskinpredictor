@@ -35,10 +35,22 @@ class Match(models.Model):
     FriendlyName = models.CharField(max_length=50, null=True, blank=True)
     TeamsName = models.CharField(max_length=50, null=True, blank=True)
     
+    def update_preds(self):
+        # Change Corresponding Prediction PredWeek values if Game is rearranged for Covid
+        try:
+            preds = Prediction.objects.filter(Game=self)
+        except Prediction.DoesNotExist:
+            pass
+        else:
+            for pred in preds:
+                pred.PredWeek = int(str(self.Season)+str(self.Week))
+                pred.save()
+
     def save(self, *args, **kwargs):
         self.FriendlyName = ('{} @ {}, Week {}, {}'.format(self.AwayTeam.Nickname, self.HomeTeam.Nickname, self.Week, self.Season))
         self.TeamsName = ('{} @ {}'.format(self.AwayTeam.Nickname, self.HomeTeam.Nickname))
         super(Match, self).save(*args, **kwargs)
+        self.update_preds()
 
     def __str__(self):
         return('{} @ {}, Week {}, {}'.format(self.AwayTeam.Nickname, self.HomeTeam.Nickname, self.Week, self.Season))
