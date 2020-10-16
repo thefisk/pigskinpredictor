@@ -26,7 +26,7 @@
                                 {% for game, winner in classdict.items %}
                                     {% if match.GameID == game %}
                                         {% if winner == 'Away'%}
-                                            {% if match.GameID == originalbanker.BankGame.GameID %}
+                                            {% if match.GameID == originalbanker %}
                                                 <img class="responsive-img hoverable team chosenbanker" src="{{ match.AwayTeam.Logo.url }}" id="Away" alt="{{ match.AwayTeam }}">  <img class="responsive-img hoverable team" src="{{ match.HomeTeam.Logo.url }}" id="Home" alt="{{ match.HomeTeam }}">
                                             {% else %}
                                                 <img class="responsive-img hoverable team chosenwinner" src="{{ match.AwayTeam.Logo.url }}" id="Away" alt="{{ match.AwayTeam }}">  <img class="responsive-img hoverable team" src="{{ match.HomeTeam.Logo.url }}" id="Home" alt="{{ match.HomeTeam }}">
