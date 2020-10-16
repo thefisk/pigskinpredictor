@@ -524,10 +524,10 @@ def AjaxAmendBankerView(request):
                 pass
             else:
             # Remove Banker flag in corresponding Prediction
-            oldprediction = Prediction.objects.get(User=banker_user, Game=oldbanker.BankGame)
-            oldprediction.Banker = False
-            oldprediction.save()
-            oldbanker.delete()
+                oldprediction = Prediction.objects.get(User=banker_user, Game=oldbanker.BankGame)
+                oldprediction.Banker = False
+                oldprediction.save()
+                oldbanker.delete()
         
             bankerentry = Banker(User=banker_user, BankWeek=bankweek, BankSeason=bankseason, BankGame=bankgame, BankerTeam=bankerteam)
             bankerentry.save()
