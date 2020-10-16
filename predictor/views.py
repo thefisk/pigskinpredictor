@@ -241,6 +241,10 @@ def AmendPredictionsView(request):
     UserBankersAmend = UserBankers.exclude(BankWeek=week)
     Matches = Match.objects.filter(Week=week, Season=season)
     NotPredicted = Matches.exclude(GameID__in=Unpredicted)
+    try:
+        originalbanker = Banker.objects.get(BankWeek=week, BankSeason=season, User=request.user).BankGame.GameID
+    except:
+        originalbanker = 20140101
     ClassDict = {}
     for preds in UserPreds:
         ClassDict[preds.Game.GameID] = preds.Winner
@@ -252,7 +256,7 @@ def AmendPredictionsView(request):
         'classdict':ClassDict,
         'bankers':UserBankersAmend,
         'predictions':Prediction.objects.all(),
-        'originalbanker':Banker.objects.get(BankWeek=week, BankSeason=season, User=request.user),
+        'originalbanker':originalbanker,
         'matches':Matches,
         'week':week,
         'season':season,
