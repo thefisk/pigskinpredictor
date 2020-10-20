@@ -241,6 +241,10 @@ def AmendPredictionsView(request):
     UserBankersAmend = UserBankers.exclude(BankWeek=week)
     Matches = Match.objects.filter(Week=week, Season=season)
     NotPredicted = Matches.exclude(GameID__in=Unpredicted)
+    try:
+        originalbanker = Banker.objects.get(BankWeek=week, BankSeason=season, User=request.user).BankGame.GameID
+    except:
+        originalbanker = 20140101
     ClassDict = {}
     for preds in UserPreds:
         ClassDict[preds.Game.GameID] = preds.Winner
@@ -252,7 +256,7 @@ def AmendPredictionsView(request):
         'classdict':ClassDict,
         'bankers':UserBankersAmend,
         'predictions':Prediction.objects.all(),
-        'originalbanker':Banker.objects.get(BankWeek=week, BankSeason=season, User=request.user),
+        'originalbanker':originalbanker,
         'matches':Matches,
         'week':week,
         'season':season,
@@ -539,13 +543,16 @@ def AjaxAmendBankerView(request):
             response_data = {}
             bankseason = os.environ['PREDICTSEASON']
 
-            oldbanker = Banker.objects.get(User=banker_user, BankWeek=bankweek, BankSeason=bankseason)
+            try:
+                oldbanker = Banker.objects.get(User=banker_user, BankWeek=bankweek, BankSeason=bankseason)
+            except:
+                pass
+            else:
             # Remove Banker flag in corresponding Prediction
-            oldprediction = Prediction.objects.get(User=banker_user, Game=oldbanker.BankGame)
-            oldprediction.Banker = False
-            oldprediction.save()
-            
-            oldbanker.delete()
+                oldprediction = Prediction.objects.get(User=banker_user, Game=oldbanker.BankGame)
+                oldprediction.Banker = False
+                oldprediction.save()
+                oldbanker.delete()
         
             bankerentry = Banker(User=banker_user, BankWeek=bankweek, BankSeason=bankseason, BankGame=bankgame, BankerTeam=bankerteam)
             bankerentry.save()
