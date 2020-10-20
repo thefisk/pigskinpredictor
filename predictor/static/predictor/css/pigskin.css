@@ -305,9 +305,13 @@ table#stats-table tbody tr td {
 }
 
 .sort-column {
-  color: limegreen;
+  color: dodgerblue;
 }
 
 .non-sort-column {
   color: dimgrey;
+}
+
+.non-sort-column:hover {
+  color: dodgerblue;
 }

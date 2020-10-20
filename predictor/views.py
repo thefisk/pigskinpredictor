@@ -1,4 +1,5 @@
 import json, os
+from .helpers import get_json_week_score
 from django.shortcuts import render, get_object_or_404, redirect
 from accounts.forms import CustomUserChangeForm
 from django.utils import timezone
@@ -458,6 +459,8 @@ def ScoreTableEnhancedView(request):
     jsonseasonscores = {'season_scores' : [{
         'pos': i+1,
         'user': s.User.Full_Name,
+        'logo': s.User.FavouriteTeam.Logo.url,
+        'week': get_json_week_score(s.User, scoreweek, os.environ['PREDICTSEASON']),
         'seasonscore': s.SeasonScore,
         'seasonworst': s.SeasonWorst,
         'seasonbest': s.SeasonBest,

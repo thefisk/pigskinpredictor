@@ -26,6 +26,12 @@
 {{ jsonseasonscores|json_script:'seasonscores' }}
 {{ jsonweekscores|json_script:'weekscores' }}
 <div class="container">
+<h5 class="mb-3">
+    Enhanced Score Table</h5>
+    <a href="{% url 'scoretable' %}" class="smalllink">Standard Score Table</a>&nbsp;|&nbsp;<a href="{% url 'scoretable-division' %}" class="smalllink">Division Score Table</a>
+    <h6>Season {{ season }}<BR>
+    Including week {{ week }} games
+</h6>
 <div id="vue-table">
             <table class="striped">
             <thead>
@@ -36,7 +42,7 @@
             <tbody>
             <tr v-for="score in sortedTable">
                 <td class="enhanced">[[score.pos]]</td>
-                <td class="enhanced">[[score.user]]</td>
+                <td class="enhanced"><img v-bind:src=[[score.logo]] class="team_small"></img>&nbsp; [[score.user]]</td>
                 <td class="enhanced">[[score.week]]</td>
                 <td class="enhanced">[[score.seasoncorrect]]</td>
                 <td class="enhanced">[[score.seasonpercentage]]</td>
@@ -48,74 +54,8 @@
             </tr>
             </tbody>
             </table>
-    debug: sort=[[currentSort]], dir=[[currentSortDir]]
 </div>
-<h5 class="mb-3">
-    Enhanced Score Table</h5>
-    <a href="{% url 'scoretable' %}" class="smalllink">Standard Score Table</a>&nbsp;|&nbsp;<a href="{% url 'scoretable-division' %}" class="smalllink">Division Score Table</a>
-    <h6>Season {{ season }}<BR>
-    Including week {{ week }} games
-</h6>
-    <div id="scoretable" class="">
-        <table class="striped">
-            <thead>
-                <tr>
-                    <th class="enhanced">Pos.</th>
-                    <th class="enhanced">Player</th>
-                    <th class="thodd enhanced">Last Week</th>
-                    <th class="theven enhanced">No. Correct</th>
-                    <th class="thodd enhanced">% Correct</th>
-                    <th class="theven enhanced">Best Week</th>
-                    <th class="thodd enhanced">Avg Week</th>
-                    <th class="theven enhanced">Worst Week</th>
-                    <th class="thodd enhanced">Avg Banker</th>
-                    <th class="theven enhanced">Total Score</th>
-                </tr>
-            </thead>
-            <tbody>
-        {% for seasonscore in seasonscores %}
-                <tr>
-                    <td class="count enhanced"></td>
-                    <td class="enhanced"><img src="{{ seasonscore.User.FavouriteTeam.Logo.url }}" class="team_small" alt="{{ seasonscore.User.FavouriteTeam }}"> &nbsp; {{ seasonscore.User.first_name }} {{ seasonscore.User.last_name }}</td>
-                    {% if seasonscore.User in nopreds %}
-                        <td class="tdodd enhanced">DNP</td>
-                    {% else %}
-                        {% for weekscore in weekscores %}
-                            {% if seasonscore.User == weekscore.User %}
-                                <td class="tdodd enhanced">{{ weekscore.WeekScore }}</td>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                    <td class="tdeven enhanced">{{ seasonscore.SeasonCorrect }}</td>
-                    <td class="tdodd enhanced">{{ seasonscore.SeasonPercentage }}</td>
-                    {% if seasonscore.SeasonBest == bestweekeveryone %}
-                        <td class="tdeven enhanced"><span class="scoretablehigh">{{ seasonscore.SeasonBest }}</span></td>        
-                    {% elif seasonscore.SeasonBest == worstbest %}
-                        <td class="tdeven enhanced"><span class="scoretablelow">{{ seasonscore.SeasonBest }}</span></td>        
-                    {% else %}
-                        <td class="tdeven enhanced">{{ seasonscore.SeasonBest }}</td>
-                    {% endif %}
-                        <td class="tdodd enhanced">{{ seasonscore.SeasonAverage }}</td>
-                    {% if seasonscore.SeasonWorst == worstweekeveryone %}
-                        <td class="enhanced"><span class="scoretablelow">{{ seasonscore.SeasonWorst }}</span></td>
-                    {% elif seasonscore.SeasonWorst == bestworst %}
-                        <td class="enhanced"><span class="scoretablehigh">{{ seasonscore.SeasonWorst }}</span></td>
-                    {% else %}
-                        <td class="tdeven enhanced">{{ seasonscore.SeasonWorst }}</td>
-                    {% endif %}
-                    {% if seasonscore.BankerAverage == worstbanker %}
-                        <td class="tdodd enhanced"><span class="scoretablelow">{{ seasonscore.BankerAverage }}</span></td>
-                    {% elif seasonscore.BankerAverage == bestbanker %}
-                        <td class="tdodd enhanced"><span class="scoretablehigh">{{ seasonscore.BankerAverage }}</span></td>
-                    {% else %}
-                        <td class="tdodd enhanced">{{ seasonscore.BankerAverage }}</td>
-                    {% endif %}
-                    <td class="tdeven enhanced">{{ seasonscore.SeasonScore }}</td>
-                </tr>
-        {% endfor %}
-            </tbody>
-        </table>
-    </div>
+
 <script>
 let seasonScores = JSON.parse(document.getElementById('seasonscores').textContent).season_scores;
 let weekScores = JSON.parse(document.getElementById('weekscores').textContent).week_scores;
