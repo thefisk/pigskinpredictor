@@ -465,9 +465,9 @@ def ScoreTableEnhancedView(request):
         'seasonworst': s.SeasonWorst,
         'seasonbest': s.SeasonBest,
         'seasoncorrect': s.SeasonCorrect,
-        'seasonpercentage': s.SeasonPercentage,
-        'seasonaverage': s.SeasonAverage,
-        'bankeraverage': s.BankerAverage
+        'seasonpercentage': float(s.SeasonPercentage),
+        'seasonaverage': float(s.SeasonAverage),
+        'bankeraverage': float(s.BankerAverage),
         }
         # enumerate needed to allow us to extract the index (position) using i,s
         for i,s in enumerate(ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']))]
