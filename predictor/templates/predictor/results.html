@@ -27,7 +27,13 @@
                 <tbody>
                 {% for pred in predictions %}
                     <tr class="results-table-row">
-                        {% if pred.Points == 0 %}
+                        {% if pred.Banker == True %}
+                            <td class="{{ pred|banker_class }}"><img style="vertical-align:middle" src="{{ pred.Game.AwayTeam.Logo.url }}" class="team_small" alt="{{ pred.Game.AwayTeam }}">&nbsp; {{ pred.Game.AwayTeam.Nickname }}</td>
+                            <td class="{{ pred|banker_class }}">{{ pred.Game.GameID|corresponding_away }} - {{ pred.Game.GameID|corresponding_home }}</td>
+                            <td class="{{ pred|banker_class }}"><img style="vertical-align:middle" src="{{ pred.Game.HomeTeam.Logo.url }}" class="team_small" alt="{{ pred.Game.HomeTeam }}">&nbsp; {{ pred.Game.HomeTeam.Nickname }}</td>
+                            <td class="{{ pred|banker_class }}">{{ pred.Winner }}</td>
+                            <td class="{{ pred|banker_class }}">{{ pred.Points }}</td>                       
+                        {% elif pred.Points == 0 %}
                             <td class="results-table-wrong"><img style="vertical-align:middle" src="{{ pred.Game.AwayTeam.Logo.url }}" class="team_small" alt="{{ pred.Game.AwayTeam }}">&nbsp; {{ pred.Game.AwayTeam.Nickname }}</td>
                             <td class="results-table-wrong">{{ pred.Game.GameID|corresponding_away }} - {{ pred.Game.GameID|corresponding_home }}</td>
                             <td class="results-table-wrong"><img style="vertical-align:middle" src="{{ pred.Game.HomeTeam.Logo.url }}" class="team_small" alt="{{ pred.Game.HomeTeam }}">&nbsp; {{ pred.Game.HomeTeam.Nickname }}</td>
