@@ -168,6 +168,18 @@ table.results-table tbody tr td {
   font-weight: 600;
 }
 
+.results-table-wrong-banker {
+  color: firebrick;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.results-table-right-banker {
+  color: goldenrod;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
 .results-table-dnp {
   color: #01579b;
 }
