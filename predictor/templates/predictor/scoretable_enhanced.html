@@ -10,15 +10,21 @@
           content: counter(my-sec-counter) ". ";
         }
         </style>
-
+ 
 {% extends "predictor/base.html" %}
 {% load predictor_custom_tags %}
 {% block content %}
+
+<!--Vue JS-->
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
 <script>
         $('#leaderboard').each(function(){
                $(this).toggleClass('active');
            });
        </script>
+{{ jsonseasonscores|json_script:'seasonscores' }}
+{{ jsonweekscores|json_script:'weekscores' }}
 <div class="container">
 <h5 class="mb-3">
     Enhanced Score Table</h5>
@@ -26,66 +32,163 @@
     <h6>Season {{ season }}<BR>
     Including week {{ week }} games
 </h6>
-    <div id="scoretable" class="">
-        <table class="striped">
+<div id="vue-table">
+            <table class="striped">
             <thead>
                 <tr>
-                    <th class="enhanced">Pos.</th>
-                    <th class="enhanced">Player</th>
-                    <th class="thodd enhanced">Last Week</th>
-                    <th class="theven enhanced">No. Correct</th>
-                    <th class="thodd enhanced">% Correct</th>
-                    <th class="theven enhanced">Best Week</th>
-                    <th class="thodd enhanced">Avg Week</th>
-                    <th class="theven enhanced">Worst Week</th>
-                    <th class="thodd enhanced">Avg Banker</th>
-                    <th class="theven enhanced">Total Score</th>
+                    <th v-for="header in tableHeadings" @click="sort(header.jsonfield)" class="enhanced"><a href="#" class="sortable" :class="header.sorting ? 'sort-column' : 'non-sort-column'">[[ header.name ]]</a></th>
                 </tr>
             </thead>
             <tbody>
-        {% for seasonscore in seasonscores %}
-                <tr>
-                    <td class="count enhanced"></td>
-                    <td class="enhanced"><img src="{{ seasonscore.User.FavouriteTeam.Logo.url }}" class="team_small" alt="{{ seasonscore.User.FavouriteTeam }}"> &nbsp; {{ seasonscore.User.first_name }} {{ seasonscore.User.last_name }}</td>
-                    {% if seasonscore.User in nopreds %}
-                        <td class="tdodd enhanced">DNP</td>
-                    {% else %}
-                        {% for weekscore in weekscores %}
-                            {% if seasonscore.User == weekscore.User %}
-                                <td class="tdodd enhanced">{{ weekscore.WeekScore }}</td>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                    <td class="tdeven enhanced">{{ seasonscore.SeasonCorrect }}</td>
-                    <td class="tdodd enhanced">{{ seasonscore.SeasonPercentage }}</td>
-                    {% if seasonscore.SeasonBest == bestweekeveryone %}
-                        <td class="tdeven enhanced"><span class="scoretablehigh">{{ seasonscore.SeasonBest }}</span></td>        
-                    {% elif seasonscore.SeasonBest == worstbest %}
-                        <td class="tdeven enhanced"><span class="scoretablelow">{{ seasonscore.SeasonBest }}</span></td>        
-                    {% else %}
-                        <td class="tdeven enhanced">{{ seasonscore.SeasonBest }}</td>
-                    {% endif %}
-                        <td class="tdodd enhanced">{{ seasonscore.SeasonAverage }}</td>
-                    {% if seasonscore.SeasonWorst == worstweekeveryone %}
-                        <td class="enhanced"><span class="scoretablelow">{{ seasonscore.SeasonWorst }}</span></td>
-                    {% elif seasonscore.SeasonWorst == bestworst %}
-                        <td class="enhanced"><span class="scoretablehigh">{{ seasonscore.SeasonWorst }}</span></td>
-                    {% else %}
-                        <td class="tdeven enhanced">{{ seasonscore.SeasonWorst }}</td>
-                    {% endif %}
-                    {% if seasonscore.BankerAverage == worstbanker %}
-                        <td class="tdodd enhanced"><span class="scoretablelow">{{ seasonscore.BankerAverage }}</span></td>
-                    {% elif seasonscore.BankerAverage == bestbanker %}
-                        <td class="tdodd enhanced"><span class="scoretablehigh">{{ seasonscore.BankerAverage }}</span></td>
-                    {% else %}
-                        <td class="tdodd enhanced">{{ seasonscore.BankerAverage }}</td>
-                    {% endif %}
-                    <td class="tdeven enhanced">{{ seasonscore.SeasonScore }}</td>
-                </tr>
-        {% endfor %}
+            <tr v-for="score in sortedTable">
+                <td class="enhanced">[[score.pos]]</td>
+                <td class="enhanced"><img v-bind:src=[[score.logo]] class="team_small"></img>&nbsp; [[score.user]]</td>
+                <td class="enhanced">[[score.week]]</td>
+                <td class="enhanced">[[score.seasoncorrect]]</td>
+                <td class="enhanced">[[score.seasonpercentage]]</td>
+                <td class="enhanced">[[score.seasonbest]]</td>
+                <td class="enhanced">[[score.seasonaverage]]</td>
+                <td class="enhanced">[[score.seasonworst]]</td>
+                <td class="enhanced">[[score.bankeraverage]]</td>
+                <td class="enhanced">[[score.seasonscore]]</td>
+            </tr>
             </tbody>
-        </table>
-    </div>
+            </table>
+</div>
+
+<script>
+let seasonScores = JSON.parse(document.getElementById('seasonscores').textContent).season_scores;
+let weekScores = JSON.parse(document.getElementById('weekscores').textContent).week_scores;
+// for loop to add weekScores to seasonScores for each user
+
+</script>
+<script>
+    var app = new Vue({
+        delimiters: ['[[', ']]'],
+        el: '#vue-table',
+        data: {
+            seasonScores,
+            weekScores,
+            currentSort: 'pos',
+            currentSortDir: 'asc',
+            currentSorting: 'posasc',
+            tableHeadings: [
+                {
+                    "name": "Pos",
+                    "jsonfield": "pos",
+                    "sortAsc": true,
+                    "sortDesc": false,
+                    "sorting": true
+                },
+                {
+                    "name": "Player",
+                    "jsonfield": "user",
+                    "sortAsc": false,
+                    "sortDesc": false,
+                    "sorting": false
+                },
+                {
+                    "name": "Last Week",
+                    "jsonfield": "week",
+                    "sortAsc": false,
+                    "sortDesc": false,
+                    "sorting": false
+                },
+                {
+                    "name": "No. Correct",
+                    "jsonfield": "seasoncorrect",
+                    "sortAsc": false,
+                    "sortDesc": false,
+                    "sorting": false
+                },
+                {
+                    "name": "% Correct",
+                    "jsonfield": "seasonpercentage",
+                    "sortAsc": false,
+                    "sortDesc": false,
+                    "sorting": false
+                },
+                {
+                    "name": "Best Week",
+                    "jsonfield": "seasonbest",
+                    "sortAsc": false,
+                    "sortDesc": false,
+                    "sorting": false
+                },
+                {
+                    "name": "Avg Week",
+                    "jsonfield": "seasonaverage",
+                    "sortAsc": false,
+                    "sortDesc": false,
+                    "sorting": false
+                },
+                {
+                    "name": "Worst Week",
+                    "jsonfield": "seasonworst",
+                    "sortAsc": false,
+                    "sortDesc": false,
+                    "sorting": false
+                },
+                {
+                    "name": "Avg Banker",
+                    "jsonfield": "bankeraverage",
+                    "sortAsc": false,
+                    "sortDesc": false,
+                    "sorting": false
+                },
+                {
+                    "name": "Score",
+                    "jsonfield": "seasonscore",
+                    "sortAsc": false,
+                    "sortDesc": false,
+                    "sorting": false
+                }
+            ]
+        },
+        methods: {
+            sort: function(s){
+                // find tableHeading sort value and set to false
+                header = this.tableHeadings.find(x => x.jsonfield === this.currentSort);
+                if (this.currentSortDir === "asc") {
+                    direction = "sortAsc";
+                }
+                else {
+                    direction = "sortDesc";
+                }
+                header[direction] = false;
+                header.sorting = false;
+                // if s == current sort, reverse
+                if(s === this.currentSort) {
+                    this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
+                }
+                this.currentSort =s;
+                this.currentSorting = s+this.currentSortDir;
+                // find new header and set sort value to true
+                newheader = header = this.tableHeadings.find(x => x.jsonfield === this.currentSort);
+                if (this.currentSortDir === "asc") {
+                    direction = "sortAsc";
+                }
+                else {
+                    direction = "sortDesc";
+                }
+                newheader[direction] = true;
+                newheader.sorting = true;
+            }
+        },
+        computed:{
+            sortedTable:function() {
+                return this.seasonScores.sort((a,b) => {
+                let modifier = 1;
+                if(this.currentSortDir === 'desc') modifier = -1;
+                if(a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+                if(a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+                return 0;
+                });
+            }
+        }
+    })
+</script>
+
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
 {% load static %}
 <script src="{% static "predictor/scripts/pigskin.js" %}"></script>

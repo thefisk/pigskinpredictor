@@ -1,4 +1,5 @@
 import json, os
+from .helpers import get_json_week_score
 from django.shortcuts import render, get_object_or_404, redirect
 from accounts.forms import CustomUserChangeForm
 from django.utils import timezone
@@ -454,8 +455,35 @@ def ScoreTableEnhancedView(request):
 
     weekscores = ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON'])   
     nopreds = CustomUser.objects.all().exclude(id__in=weekscores.values('User'))
-    
+
+    jsonseasonscores = {'season_scores' : [{
+        'pos': i+1,
+        'user': s.User.Full_Name,
+        'logo': s.User.FavouriteTeam.Logo.url,
+        'week': get_json_week_score(s.User, scoreweek, os.environ['PREDICTSEASON']),
+        'seasonscore': s.SeasonScore,
+        'seasonworst': s.SeasonWorst,
+        'seasonbest': s.SeasonBest,
+        'seasoncorrect': s.SeasonCorrect,
+        'seasonpercentage': float(s.SeasonPercentage),
+        'seasonaverage': float(s.SeasonAverage),
+        'bankeraverage': float(s.BankerAverage),
+        }
+        # enumerate needed to allow us to extract the index (position) using i,s
+        for i,s in enumerate(ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']))]
+    }
+
+    jsonweekscores = {'week_scores' : [{
+        'user': s.User.Full_Name,
+        'weekscore': s.WeekScore
+            }
+        for s in ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON'])
+        ]
+    }
+
     context = {
+        'jsonseasonscores': jsonseasonscores,
+        'jsonweekscores': jsonweekscores,
         'nopreds': nopreds,
         'bestbanker': bestbanker,
         'worstbanker': worstbanker,
