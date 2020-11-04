@@ -2,7 +2,7 @@
 ## Uses ESPN JSON API
 
 import requests, json, os, boto3, operator
-from datetime import datetime
+from datetime import datetime, timedelta
 from .dictionaries.gameid_dict2020 import gameid_dict_2020 as gameid_dict
 
 def run():
@@ -21,7 +21,7 @@ def run():
     # Weeks param doesn't seem to work on ESPN API so have to use date range
     # ESPN uses Zulu time so MNF will be a Tuesday datetime, hence including today in range
     today = datetime.today().strftime('%Y%m%d')
-    thurs = str(int(today)-5)
+    thurs = (datetime.today() - timedelta(days=5)).strftime('%Y%m%d')
     source = f"http://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates={thurs}-{today}"
 
     rawjson = requests.get(source).json()
