@@ -23,7 +23,8 @@ def run():
         # ESPN uses Zulu time so MNF will be a Tuesday datetime, hence including today in range
         today = datetime.today().strftime('%Y%m%d')
         thurs = str(int(today)-6)
-        source = f"http://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates={thurs}-{today}"
+        source = "http://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=20201029-20201104"
+        #source = f"http://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates={thurs}-{today}"
 
         rawjson = requests.get(source).json()
 
