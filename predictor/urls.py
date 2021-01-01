@@ -18,6 +18,7 @@ from .views import (
     ScoringView, #Scoring
     ReportsView, #Reports
     NewYearView, #AfterWeek17
+    Week17View, #LastWeek
     ProfileView,
     ProfileAmendedView,
     ProfileNewPlayerView,
@@ -52,6 +53,7 @@ urlpatterns = [
     path('scoring/',ScoringView, name='scoring'), #Scoring
     path('report/',ReportsView, name='report'), #Reports
     path('yearend/',NewYearView, name='new-year-view'), #After Week 17
+    path('week17/',Week17View, name='week-17-view'), #After Week 17
     path('ajaxdeadlineverification/',AjaxDeadlineVerification, name='report'), #AJAX
 ]
 

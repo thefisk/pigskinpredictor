@@ -72,7 +72,7 @@ class LastWeekCSVView(mixins.ListModelMixin,viewsets.GenericViewSet):
     def get_queryset(self):
         week = os.environ['PREDICTWEEK']
         season = os.environ['PREDICTSEASON']
-        predweek = int(season+week)-1
+        predweek = int(season+(str(int(week)-1)))
         return Prediction.objects.filter(PredWeek=predweek)
 
 class BankersCSVView(mixins.ListModelMixin,viewsets.GenericViewSet):

@@ -210,7 +210,10 @@ def CreatePredictionsView(request):
     week = os.environ['PREDICTWEEK']
     season = os.environ['PREDICTSEASON']
     if int(week) > 17:
-        response = redirect('new-year-view')
+        if int(os.environ['RESULTSWEEK']) == 17:
+            response = redirect('week-17-view')
+        else:
+            response = redirect('new-year-view')
         return response
     else:
         if len(Prediction.objects.filter(Game__Week=week, Game__Season=season, User=request.user)) == 0:
@@ -285,6 +288,33 @@ def NewYearView(request):
         return render(request, template, context)
     else:  
         template = 'predictor/year_end.html'
+        context = {
+            'nextyear':nextyear,
+            'year':os.environ['PREDICTSEASON'],
+            'score':score,
+            'title':'Thanks For Playing',
+            'player':player
+        }
+        return render(request, template, context)
+
+### View to During week 17 ###
+@login_required
+def Week17View(request):
+    nextyear = int(os.environ['PREDICTSEASON'])+1
+    player = CustomUser.objects.get(username = request.user.username).first_name
+    try:
+        score = ScoresSeason.objects.get(User=request.user, Season=os.environ['PREDICTSEASON']).SeasonScore
+    except ScoresSeason.DoesNotExist:
+        template = "predictor/newplayer_yearend.html"
+        context = {
+        'nextyear':nextyear,
+        'year':os.environ['PREDICTSEASON'],
+        'title':'Thanks For Registering',
+        'player':player
+        }
+        return render(request, template, context)
+    else:  
+        template = 'predictor/week_17.html'
         context = {
             'nextyear':nextyear,
             'year':os.environ['PREDICTSEASON'],

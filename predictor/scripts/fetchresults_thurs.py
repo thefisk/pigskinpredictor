@@ -6,8 +6,8 @@ from datetime import datetime, timedelta
 from .dictionaries.gameid_dict2020 import gameid_dict_2020 as gameid_dict
 
 def run():
-    ## Only run on a Wednesday
-    if datetime.today().isoweekday() == 3:
+    ## Only run on a Thursday
+    if datetime.today().isoweekday() == 4:
         week = os.environ['RESULTSWEEK']
         season = os.environ['PREDICTSEASON']
         week_dict = gameid_dict["Week_"+str(week)]
@@ -22,7 +22,7 @@ def run():
         # Weeks param doesn't seem to work on ESPN API so have to use date range
         # ESPN uses Zulu time so MNF will be a Tuesday datetime, hence including today in range
         today = datetime.today().strftime('%Y%m%d')
-        thurs = (datetime.today() - timedelta(days=6)).strftime('%Y%m%d')
+        thurs = (datetime.today() - timedelta(days=7)).strftime('%Y%m%d')
         source = f"http://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates={thurs}-{today}"
 
         rawjson = requests.get(source).json()
