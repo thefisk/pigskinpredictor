@@ -327,3 +327,7 @@ table#stats-table tbody tr td {
 .non-sort-column:hover {
   color: dodgerblue;
 }
+
+.table-highlight {
+  background-color: rgba(1, 89, 157, 0.1) !important;
+}

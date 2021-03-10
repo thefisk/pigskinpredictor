@@ -38,7 +38,11 @@
             </thead>
             <tbody>
         {% for seasonscore in seasonscores %}
+            {% if seasonscore.User == user %}
+                <tr class = "table-highlight">
+            {% else %}
                 <tr>
+            {% endif %}
                     <td class="count"></td>
                     <td><img src="{{ seasonscore.User.FavouriteTeam.Logo.url }}" class="team_small"> &nbsp; {{ seasonscore.User.first_name }} {{ seasonscore.User.last_name }}</td>
                     {% if seasonscore.User in nopreds %}

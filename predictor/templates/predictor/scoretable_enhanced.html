@@ -25,6 +25,7 @@
        </script>
 {{ jsonseasonscores|json_script:'seasonscores' }}
 {{ jsonweekscores|json_script:'weekscores' }}
+{{ jsonuser|json_script:'currentuser' }}
 <div class="container">
 <h5 class="mb-3">
     Enhanced Score Table</h5>
@@ -41,16 +42,26 @@
             </thead>
             <tbody>
             <tr v-for="score in sortedTable">
-                <td class="enhanced">[[score.pos]]</td>
-                <td class="enhanced"><img v-bind:src=[[score.logo]] class="team_small"></img>&nbsp; [[score.user]]</td>
-                <td class="enhanced">[[score.week]]</td>
-                <td class="enhanced">[[score.seasoncorrect]]</td>
-                <td class="enhanced">[[score.seasonpercentage]]</td>
-                <td class="enhanced">[[score.seasonbest]]</td>
-                <td class="enhanced">[[score.seasonaverage]]</td>
-                <td class="enhanced">[[score.seasonworst]]</td>
-                <td class="enhanced">[[score.bankeraverage]]</td>
-                <td class="enhanced">[[score.seasonscore]]</td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced">[[score.pos]] </td>
+                <td v-else td class="enhanced">[[score.pos]] </td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced"><img v-bind:src=[[score.logo]] class="team_small"></img>&nbsp; [[score.user]]</td>
+                <td v-else class="enhanced"><img v-bind:src=[[score.logo]] class="team_small"></img>&nbsp; [[score.user]]</td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced">[[score.week]]</td>
+                <td v-else class="enhanced">[[score.week]]</td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced">[[score.seasoncorrect]]</td>
+                <td v-else class="enhanced">[[score.seasoncorrect]]</td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced">[[score.seasonpercentage]]</td>
+                <td v-else class="enhanced">[[score.seasonpercentage]]</td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced">[[score.seasonbest]]</td>
+                <td v-else class="enhanced">[[score.seasonbest]]</td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced">[[score.seasonaverage]]</td>
+                <td v-else class="enhanced">[[score.seasonaverage]]</td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced">[[score.seasonworst]]</td>
+                <td v-else class="enhanced">[[score.seasonworst]]</td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced">[[score.bankeraverage]]</td>
+                <td v-else class="enhanced">[[score.bankeraverage]]</td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced">[[score.seasonscore]]</td>
+                <td v-else class="enhanced">[[score.seasonscore]]</td>
             </tr>
             </tbody>
             </table>
@@ -59,6 +70,8 @@
 <script>
 let seasonScores = JSON.parse(document.getElementById('seasonscores').textContent).season_scores;
 let weekScores = JSON.parse(document.getElementById('weekscores').textContent).week_scores;
+let currentUser = JSON.parse(document.getElementById('currentuser').textContent).user;
+
 // for loop to add weekScores to seasonScores for each user
 
 </script>

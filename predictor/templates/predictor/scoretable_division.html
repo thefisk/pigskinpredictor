@@ -41,11 +41,11 @@
         {% for div, score in scores %}
             {% if div == userdivision %}
                 <tr>
-                    <td class="count userdiv"></td>
-                    <td class="userdiv">{{ div }}</td>
-                    <td class="userdiv">{{ score }}</td>
-                    <td class="userdiv">{{ div|division_players }}</td>
-                    <td class="userdiv">{{ div|division_total }}</td>
+                    <td class="count table-highlight"></td>
+                    <td class="table-highlight">{{ div }}</td>
+                    <td class="table-highlight">{{ score }}</td>
+                    <td class="table-highlight">{{ div|division_players }}</td>
+                    <td class="table-highlight">{{ div|division_total }}</td>
                 </tr>
             {% else %}
                 <tr>

@@ -511,9 +511,14 @@ def ScoreTableEnhancedView(request):
         ]
     }
 
+    jsonuser = {
+        'user': request.user.Full_Name
+    }
+
     context = {
         'jsonseasonscores': jsonseasonscores,
         'jsonweekscores': jsonweekscores,
+        'jsonuser': jsonuser,
         'nopreds': nopreds,
         'bestbanker': bestbanker,
         'worstbanker': worstbanker,
