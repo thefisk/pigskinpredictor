@@ -180,6 +180,11 @@ table.results-table tbody tr td {
   text-transform: uppercase;
 }
 
+.table-fixed {
+  width: 100%;
+  table-layout: fixed;
+}
+
 .results-table-dnp {
   color: #01579b;
 }
@@ -189,7 +194,49 @@ table.results-table tbody tr td {
 }
 
 .stats-header {
-  font-weight: 400;
+  font-weight: 200;
+  font-size: 85%;
+  padding-left: 10px !important;
+}
+
+.lowlight {
+  color: rgba(0, 0, 0, 0.35);
+  font-weight: 100;
+}
+.icongrey{
+  color: rgba(0, 0, 0, 0.19);
+}
+
+.col-25 {
+  width: 25%;
+}
+
+.col-50 {
+  width: 50%;
+}
+
+.col-100 {
+  width: 100%;
+  text-align: center;
+}
+
+.col-46 {
+  width: 46%;
+}
+
+.col-8 {
+  width: 8%
+}
+
+#stats-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.stat-value {
+  padding-left: 10px !important;
+  color:rgba(0, 0, 0, 0.60);
+  font-weight: 600;
 }
 
 .stats-period {
@@ -208,6 +255,14 @@ table#stats-table tbody tr td {
   padding-top: 10px !important;
   padding-bottom: 10px !important;
   padding-left: 0px;
+}
+
+.stats-table-header {
+  text-transform: uppercase !important;
+  color: rgba(1, 89, 157, 0.7) !important;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
 }
 
 .throwaway {
@@ -290,18 +345,36 @@ table#stats-table tbody tr td {
 }
 
 .profile-picked {
-  color: green;
-  font-weight: 500;
+  color: rgba(0, 0, 0, 0.75);
+  font-weight: 400;
 }
 
 .profile-banker {
-  color: crimson;
+  color: rgba(1, 89, 157);
   font-weight: 600;
+  text-transform: uppercase;
+}
+
+.bank-background {
+  background-color: rgba(218, 165, 32, 0.6);
 }
 
 .profile-notpicked {
-  color: darkgrey;
+  color: rgba(0, 0, 0, 0.19);
   font-weight: 400;
+}
+
+.profile-notpicked-banker {
+  color:white;
+}
+
+.at {
+  color: rgba(0, 0, 0, 0.19);
+  font-weight: 400;
+}
+
+.at-banker {
+  color: white;
 }
 
 .table-left {
@@ -330,4 +403,14 @@ table#stats-table tbody tr td {
 
 .table-highlight {
   background-color: rgba(1, 89, 157, 0.1) !important;
+}
+
+.table-secondary {
+  background-color: rgba(1, 89, 157, 0.05) !important;
+}
+
+.table-secondary-header {
+  text-transform: uppercase !important;
+  color: rgba(1, 89, 157, 0.5) !important;
+  font-weight: normal;
 }

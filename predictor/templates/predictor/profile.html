@@ -11,38 +11,47 @@
         <div class="col s12 m6">
             <h5>My Stats</h5>
             <div class="divider"></div>         
-            <h6 class="stats-period">All Time</h6>
-            <table id="stats-table">
+            <table id="stats-table" class = "striped">
+            <br>
                 <thead>
-                    <tr>
-                        <th class="stats-header">Best Week</th>
-                        <th class="stats-header">Worst Week</th>
-                        <th class="stats-header">Overall Percentage</th>
+                    <tr class = "table-highlight">
+                        <td class = "stats-table-header col-25">All Time</td>
+                        <td class = "col-25"></td>
+                        <td class = "col-50"></td>
+                    </tr>
+                    <tr class = "table-secondary">
+                        <th class="stats-header table-secondary-header">Best Week</th>
+                        <th class="stats-header table-secondary-header">Worst Week</th>
+                        <th class="stats-header table-secondary-header">Overall Percentage</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{ alltimehigh }}</td>
-                        <td>{{ alltimelow }}</td>
-                        <td>{{ alltimepct }}</td>
+                        <td class="stat-value">{{ alltimehigh }}<span class = "lowlight"> pts</span></td>
+                        <td class="stat-value">{{ alltimelow }}<span class = "lowlight"> pts</span></td>
+                        <td class="stat-value">{{ alltimepct }}<span class = "lowlight"> %</span></td>
                     </tr>
                 </tbody>
             </table>
             <BR>
-            <h6 class="stats-period">{{ season }} Season</h6>
-            <table id="stats-table">
+            <table id="stats-table" class = "striped">
                 <thead>
-                    <tr>
-                        <th class="stats-header">Best Week</th>
-                        <th class="stats-header">Worst Week</th>
-                        <th class="stats-header">Overall Percentage</th>
+                   <tr class = "table-highlight">
+                        <td class = "stats-table-header col-25">{{ season }} Season</td>
+                        <td class = "col-25"></td>
+                        <td class = "col-50"></td>
+                    </tr>
+                    <tr class = "table-secondary">
+                        <th class="stats-header table-secondary-header">Best Week</th>
+                        <th class="stats-header table-secondary-header">Worst Week</th>
+                        <th class="stats-header table-secondary-header">Overall Percentage</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{ seasonhigh }}</td>
-                        <td>{{ seasonlow }}</td>
-                        <td>{{ seasonpct }}</td>
+                        <td class="stat-value">{{ seasonhigh }}<span class = "lowlight"> pts</span></td>
+                        <td class="stat-value">{{ seasonlow }}<span class = "lowlight"> pts</span></td>
+                        <td class="stat-value">{{ seasonpct }}<span class = "lowlight"> %</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -54,9 +63,9 @@
             <form method="post">
             {% csrf_token %}
             {% form form=form %}
-            {% part form.first_name prefix %}<i class="material-icons prefix">face</i>{% endpart %}
-            {% part form.last_name prefix %}<i class="material-icons prefix">face</i>{% endpart %}
-            {% part form.FavouriteTeam prefix %}<i class="material-icons prefix">sports_football</i>{% endpart %}
+            {% part form.first_name prefix %}<i class="material-icons prefix icongrey">face</i>{% endpart %}
+            {% part form.last_name prefix %}<i class="material-icons prefix icongrey">face</i>{% endpart %}
+            {% part form.FavouriteTeam prefix %}<i class="material-icons prefix icongrey">sports_football</i>{% endpart %}
             {% endform %}
             <br>
             <button type="submit" style="float: right" class="btn waves-effect waves-light">update</button>
@@ -66,16 +75,19 @@
         </div>
     </div>
     {% if preds == "yes" %}
-    <div class = "divider"></div>
         <div class="row">
         <div class="col s12 m12">
-            <center><h5>My Week {{ mypredweek }} Predictions</h5><center>
-            <table class="striped results-table">
+            <table>
+                    <tr class = "table-highlight">
+                        <td class = "stats-table-header col-100">My Week {{ mypredweek }} Predictions</td>
+                    </tr>
+            </table>
+            <table class="striped results-table table-fixed">
                 <thead>
-                    <tr class="results-table-row">
-                        <th class="table-left">Road Team</th>
-                        <th></th>
-                        <th class="table-right">Home Team</th>
+                    <tr class="results-table-row table-secondary">
+                        <th class="table-left col-46 table-secondary-header">Road Team</th>
+                        <th class="col-8"></th>
+                        <th class="table-right col-46 table-secondary-header">Home Team</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -83,13 +95,13 @@
             <tr>
                 {% if pred.Winner == "Away" %}
                     {% if pred.Banker == True %}
-                        <td class="profile-banker table-left">{{pred.Game.AwayTeam}}</td><td class="table-center">@</td><td class="profile-notpicked table-right">{{pred.Game.HomeTeam}}</td>
+                        <td class="profile-banker bank-background table-left">{{pred.Game.AwayTeam}}</td><td class="table-center bank-background at-banker">@</td><td class="profile-notpicked-banker bank-background table-right">{{pred.Game.HomeTeam}}</td>
                     {% else %}
-                        <td class="profile-picked table-left">{{pred.Game.AwayTeam}}</td><td class="table-center">@</td><td class="profile-notpicked table-right">{{pred.Game.HomeTeam}}</td>
+                        <td class="profile-picked table-left">{{pred.Game.AwayTeam}}</td><td class="table-center at">@</td><td class="profile-notpicked table-right">{{pred.Game.HomeTeam}}</td>
                     {% endif %}
                 {% endif %}
                 {% if pred.Winner == "Home"%}
-                    <td class="profile-notpicked table-left">{{pred.Game.AwayTeam}}</td><td class="table-center">@</td><td class="profile-picked table-right">{{pred.Game.HomeTeam}}</td>
+                    <td class="profile-notpicked table-left">{{pred.Game.AwayTeam}}</td><td class="table-center at">@</td><td class="profile-picked table-right">{{pred.Game.HomeTeam}}</td>
                 {% endif %}
             {% endfor %}
             </tr>
