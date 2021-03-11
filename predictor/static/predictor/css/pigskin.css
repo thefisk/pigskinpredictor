@@ -169,16 +169,22 @@ table.results-table tbody tr td {
 }
 
 .results-table-wrong-banker {
-  color: firebrick;
-  font-weight: 700;
-  text-transform: uppercase;
+  font-family: roboto;
+  background-color: rgba(212, 42, 42, 0.5);
+  color: rgba(1, 89, 157);
+  font-weight: 500;
+  padding-left: 10px;
 }
 
 .results-table-right-banker {
-  color: goldenrod;
-  font-weight: 700;
-  text-transform: uppercase;
+  font-family: roboto;
+  background-color: rgba(218, 165, 32, 0.5);
+  color: rgba(1, 89, 157);
+  font-weight: 500;
+  padding-left: 10px;
 }
+
+
 
 .table-fixed {
   width: 100%;
@@ -190,7 +196,11 @@ table.results-table tbody tr td {
 }
 
 .results-table-total {
-  font-weight: 700;
+  font-weight: 600;
+  font-size: 110%;
+  font-family: roboto;
+  color: rgba(1, 89, 157, 0.6);
+  padding-left: 10px;
 }
 
 .stats-header {
@@ -203,12 +213,21 @@ table.results-table tbody tr td {
   color: rgba(0, 0, 0, 0.35);
   font-weight: 100;
 }
+
 .icongrey{
   color: rgba(0, 0, 0, 0.19);
 }
 
 .col-25 {
   width: 25%;
+}
+
+.col-30 {
+  width: 30%;
+}
+
+.col-40 {
+  width: 40%;
 }
 
 .col-50 {
@@ -218,6 +237,21 @@ table.results-table tbody tr td {
 .col-100 {
   width: 100%;
   text-align: center;
+}
+
+.col-100-l {
+  width: 100%;
+  text-align: left;
+}
+
+.col-50-l {
+  width: 50%;
+  text-align: left;
+}
+
+.col-50-r {
+  width: 50%;
+  text-align: right;
 }
 
 .col-46 {
@@ -390,19 +424,31 @@ table#stats-table tbody tr td {
 }
 
 .sort-column {
-  color: dodgerblue;
+  text-transform: uppercase !important;
+  color: rgba(1, 89, 157, 0.9) !important;
+  font-weight: 500;
 }
 
 .non-sort-column {
-  color: dimgrey;
+  text-transform: uppercase !important;
+  color: rgba(1, 89, 157, 0.45) !important;
+  font-weight: normal;
 }
 
 .non-sort-column:hover {
-  color: dodgerblue;
+  color: rgba(1, 89, 157, 0.9) !important;
+}
+
+.sort-column:hover {
+  color: rgba(1, 89, 157, 0.45) !important;
 }
 
 .table-highlight {
   background-color: rgba(1, 89, 157, 0.1) !important;
+}
+
+.table-user-highlight {
+  background-color: rgba(1, 89, 157, 0.15) !important;
 }
 
 .table-secondary {
@@ -413,4 +459,86 @@ table#stats-table tbody tr td {
   text-transform: uppercase !important;
   color: rgba(1, 89, 157, 0.5) !important;
   font-weight: normal;
+}
+
+.table-primary-header {
+  text-transform: uppercase !important;
+  color: rgba(1, 89, 157, 0.7) !important;
+  font-weight: normal;
+}
+
+.subtle {
+  color: rgba(0, 0, 0, 0.30);
+  font-weight: 300;
+  text-transform: uppercase;
+  font-size: 120%;
+  font-family: roboto;
+}
+
+.non-subtle {
+  color: rgba(0, 0, 0, 0.75);
+  font-weight:500;
+  text-transform: uppercase;
+  font-size: 120%;
+  font-family: roboto;
+}
+
+.results-row-wrong {
+  font-family: roboto;
+  background-color: rgba(212, 42, 42, 0.1);
+  color: rgba(0, 0, 0, 0.6);
+  padding-left: 10px;
+}
+
+.results-row-right {
+  font-family: roboto;
+  background-color: rgba(42, 212, 42, 0.1);
+  color: rgba(0, 0, 0, 0.8);
+  padding-left: 10px;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.lowercase {
+  text-transform: lowercase;
+}
+
+.table-top-pad {
+  margin-top: 15px;
+}
+
+.logo-pad {
+  margin-top: 5px;
+}
+
+h5 {
+  font-family: roboto;
+  font-weight: 100;
+  font-size: 120%;
+  color: rgba(0, 0, 0, 0.30);
+  text-transform: lowercase;
+  letter-spacing: 4px;
+}
+
+.shorten {
+  line-height: 5px;
+}
+
+.pad-l {
+  padding-left: 10px;
+}
+
+.pad-l-vue {
+  padding-left: 5px;
+}
+
+.tip {
+  font-family: roboto;
+  font-weight: 300;
+  font-size: 85%;;
+  letter-spacing: 1px;
+  color:rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
 }

@@ -28,22 +28,29 @@
 {{ jsonuser|json_script:'currentuser' }}
 <div class="container">
 <h5 class="mb-3">
-    Enhanced Score Table</h5>
-    <a href="{% url 'scoretable' %}" class="smalllink">Standard Score Table</a>&nbsp;|&nbsp;<a href="{% url 'scoretable-division' %}" class="smalllink">Division Score Table</a>
-    <h6>Season {{ season }}<BR>
-    Including week {{ week }} games
-</h6>
-<div id="vue-table">
+    Enhanced Leaderboard</h5>
+    <a href="{% url 'scoretable' %}" class="smalllink">Standard Leaderboard</a>&nbsp;|&nbsp;<a href="{% url 'scoretable-division' %}" class="smalllink">Division Leaderboard</a>
+    <p>
+    <span class = "tip logo-pad"><i class="material-icons prefix centered-icon">info</i>Click table headings to sort</span><br>
+        <div id="vue-table">
+            <table class = "striped table-top-pad">
+                <tr class = "table-highlight">
+                    <td class = "stats-table-header col-100-l">Standings after week {{ week }}</td>
+                </tr>
+            </table>
             <table class="striped">
             <thead>
-                <tr>
-                    <th v-for="header in tableHeadings" @click="sort(header.jsonfield)" class="enhanced"><a href="#" class="sortable" :class="header.sorting ? 'sort-column' : 'non-sort-column'">[[ header.name ]]</a></th>
+                <tr class = "table-secondary">
+                    <th v-for="header in tableHeadings" @click="sort(header.jsonfield)" class="enhanced">
+                        <a v-if="header.name === 'Pos'" href="#" class="sortable pad-l-vue" :class="header.sorting ? 'sort-column' : 'non-sort-column'">[[ header.name ]]</a>
+                        <a v-else href="#" class="sortable" :class="header.sorting ? 'sort-column' : 'non-sort-column'">[[ header.name ]]</a>
+                    </th>
                 </tr>
             </thead>
             <tbody>
             <tr v-for="score in sortedTable">
-                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced">[[score.pos]] </td>
-                <td v-else td class="enhanced">[[score.pos]] </td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced pad-l">[[score.pos]] </td>
+                <td v-else td class="enhanced pad-l">[[score.pos]] </td>
                 <td v-if="score.user ===  currentUser" class = "table-highlight enhanced"><img v-bind:src=[[score.logo]] class="team_small"></img>&nbsp; [[score.user]]</td>
                 <td v-else class="enhanced"><img v-bind:src=[[score.logo]] class="team_small"></img>&nbsp; [[score.user]]</td>
                 <td v-if="score.user ===  currentUser" class = "table-highlight enhanced">[[score.week]]</td>

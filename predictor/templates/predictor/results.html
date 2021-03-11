@@ -9,19 +9,18 @@
 
 <div class="container">
     <div class="row">
-        <div class="col m2"></div>
-        <div id="resultstable" class="col s12 m8">
+        <div class="col m1"></div>
+        <div id="resultstable" class="col s12 m10">
             <h5 class="mb-3">My Results</h5>
-            <h6>Season {{ season }}, week {{ week }}
-            </h6>
-            <table class="striped results-table">
+            <span class="subtle">Week</span><span class = "non-subtle">{{ week }}</span>
+            <table class="striped results-table table-top-pad">
                 <thead>
-                    <tr class="results-table-row">
-                        <th>Road Team</th>
-                        <th>Score</th>
-                        <th>Home Team</th>
-                        <th>Prediction</th>
-                        <th>Points</th>
+                    <tr class="results-table-row table-highlight table">
+                        <th class = "stats-table-header table-primary-header">Road Team</th>
+                        <th class = "stats-table-header table-primary-header">Score</th>
+                        <th class = "stats-table-header table-primary-header">Home Team</th>
+                        <th class = "stats-table-header table-primary-header">Prediction</th>
+                        <th class = "stats-table-header table-primary-header">Points</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,17 +33,17 @@
                             <td class="{{ pred|banker_class }}">{{ pred.Winner }}</td>
                             <td class="{{ pred|banker_class }}">{{ pred.Points }}</td>                       
                         {% elif pred.Points == 0 %}
-                            <td class="results-table-wrong"><img style="vertical-align:middle" src="{{ pred.Game.AwayTeam.Logo.url }}" class="team_small" alt="{{ pred.Game.AwayTeam }}">&nbsp; {{ pred.Game.AwayTeam.Nickname }}</td>
-                            <td class="results-table-wrong">{{ pred.Game.GameID|corresponding_away }} - {{ pred.Game.GameID|corresponding_home }}</td>
-                            <td class="results-table-wrong"><img style="vertical-align:middle" src="{{ pred.Game.HomeTeam.Logo.url }}" class="team_small" alt="{{ pred.Game.HomeTeam }}">&nbsp; {{ pred.Game.HomeTeam.Nickname }}</td>
-                            <td class="results-table-wrong">{{ pred.Winner }}</td>
-                            <td class="results-table-wrong">{{ pred.Points }}</td>
+                            <td class="results-row-wrong"><img style="vertical-align:middle" src="{{ pred.Game.AwayTeam.Logo.url }}" class="team_small" alt="{{ pred.Game.AwayTeam }}">&nbsp; {{ pred.Game.AwayTeam.Nickname }}</td>
+                            <td class="results-row-wrong">{{ pred.Game.GameID|corresponding_away }} - {{ pred.Game.GameID|corresponding_home }}</td>
+                            <td class="results-row-wrong"><img style="vertical-align:middle" src="{{ pred.Game.HomeTeam.Logo.url }}" class="team_small" alt="{{ pred.Game.HomeTeam }}">&nbsp; {{ pred.Game.HomeTeam.Nickname }}</td>
+                            <td class="results-row-wrong">{{ pred.Winner }}</td>
+                            <td class="results-row-wrong">{{ pred.Points }}</td>
                         {% else %}
-                            <td class="results-table-right"><img style="vertical-align:middle" src="{{ pred.Game.AwayTeam.Logo.url }}" class="team_small" alt="{{ pred.Game.AwayTeam }}">&nbsp; {{ pred.Game.AwayTeam.Nickname }}</td>
-                            <td class="results-table-right">{{ pred.Game.GameID|corresponding_away }} - {{ pred.Game.GameID|corresponding_home }}</td>
-                            <td class="results-table-right"><img style="vertical-align:middle" src="{{ pred.Game.HomeTeam.Logo.url }}" class="team_small" alt="{{ pred.Game.HomeTeam }}">&nbsp; {{ pred.Game.HomeTeam.Nickname }}</td>
-                            <td class="results-table-right">{{ pred.Winner }}</td>
-                            <td class="results-table-right">{{ pred.Points }}</td>
+                            <td class="results-row-right"><img style="vertical-align:middle" src="{{ pred.Game.AwayTeam.Logo.url }}" class="team_small" alt="{{ pred.Game.AwayTeam }}">&nbsp; {{ pred.Game.AwayTeam.Nickname }}</td>
+                            <td class="results-row-right">{{ pred.Game.GameID|corresponding_away }} - {{ pred.Game.GameID|corresponding_home }}</td>
+                            <td class="results-row-right"><img style="vertical-align:middle" src="{{ pred.Game.HomeTeam.Logo.url }}" class="team_small" alt="{{ pred.Game.HomeTeam }}">&nbsp; {{ pred.Game.HomeTeam.Nickname }}</td>
+                            <td class="results-row-right">{{ pred.Winner }}</td>
+                            <td class="results-row-right">{{ pred.Points }}</td>
                         {% endif %}
                     </tr>
                 {% endfor %}
@@ -58,7 +57,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="col m2"></div>
+        <div class="col m1"></div>
     </div>
 </div>
 {% endblock content %}

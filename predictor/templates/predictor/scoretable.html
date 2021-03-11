@@ -20,41 +20,42 @@
            });
        </script>
 <div class="container">
-<h5 class="mb-3">
-    Live Score Table</h5>
-    <a href="{% url 'scoretableenhanced' %}" class="smalllink">Enhanced Score Table</a>&nbsp;|&nbsp;<a href="{% url 'scoretable-division' %}" class="smalllink">Division Score Table</a>
-    <h6>Season {{ season }}<BR>
-    Including week {{ week }} games
-</h6>
+<h5 class="mb-3">Leaderboard</h5>
+    <a href="{% url 'scoretableenhanced' %}" class="smalllink">Enhanced Leaderboard</a>&nbsp;|&nbsp;<a href="{% url 'scoretable-division' %}" class="smalllink">Division Leaderboard</a>
     <div id="scoretable" class="">
-        <table class="striped">
+        <table class = "striped table-top-pad">
+                <tr class = "table-highlight">
+                    <td class = "stats-table-header col-100-l">Standings after week {{ week }}</td>
+                </tr>
+        </table>
+        <table class = "striped">
             <thead>
-                <tr>
-                    <th>Pos.</th>
-                    <th>Player</th>
-                    <th>Last Week</th>
-                    <th>Total Score</th>
+                <tr class = "table-secondary">
+                    <th class="stats-header table-secondary-header">Pos.</th>
+                    <th class="stats-header table-secondary-header">Player</th>
+                    <th class="stats-header table-secondary-header">Last Week</th>
+                    <th class="stats-header table-secondary-header">Total Score</th>
                 </tr>
             </thead>
             <tbody>
         {% for seasonscore in seasonscores %}
             {% if seasonscore.User == user %}
-                <tr class = "table-highlight">
+                <tr class = "table-user-highlight">
             {% else %}
                 <tr>
             {% endif %}
-                    <td class="count"></td>
-                    <td><img src="{{ seasonscore.User.FavouriteTeam.Logo.url }}" class="team_small"> &nbsp; {{ seasonscore.User.first_name }} {{ seasonscore.User.last_name }}</td>
+                    <td class="count stat-value"></td>
+                    <td class="stat-value"><img src="{{ seasonscore.User.FavouriteTeam.Logo.url }}" class="team_small"> &nbsp; {{ seasonscore.User.first_name }} {{ seasonscore.User.last_name }}</td>
                     {% if seasonscore.User in nopreds %}
-                        <td>Did Not Play</td>
+                        <td class="stat-value">Did Not Play</td>
                     {% else %}
                         {% for weekscore in weekscores %}
                             {% if seasonscore.User == weekscore.User %}
-                            <td>{{ weekscore.WeekScore }}</td>
+                            <td class="stat-value">{{ weekscore.WeekScore }}</td>
                             {% endif %}
                         {% endfor %}
                     {% endif %}
-                    <td>{{ seasonscore.SeasonScore }}</td>
+                    <td class="stat-value">{{ seasonscore.SeasonScore }}</td>
                 </tr>
         {% endfor %}
             </tbody>
