@@ -43,19 +43,19 @@
         {% for div, score in scores %}
             {% if div == userdivision %}
                 <tr>
-                    <td class="stat-value count table-highlight"></td>
-                    <td class="stat-value table-highlight">{{ div }}</td>
-                    <td class="stat-value table-highlight">{{ score }}</td>
-                    <td class="stat-value table-highlight">{{ div|division_players }}</td>
-                    <td class="stat-value table-highlight">{{ div|division_total }}</td>
+                    <td class="table-value count table-highlight"></td>
+                    <td class="table-value table-highlight">{{ div }}</td>
+                    <td class="table-value table-highlight">{{ score }}</td>
+                    <td class="table-value table-highlight">{{ div|division_players }}</td>
+                    <td class="table-value table-highlight">{{ div|division_total }}</td>
                 </tr>
             {% else %}
                 <tr>
-                    <td class="stat-value count"></td>
-                    <td class="stat-value">{{ div }}</td>
-                    <td class="stat-value">{{ score }}</td>
-                    <td class="stat-value">{{ div|division_players }}</td>
-                    <td class="stat-value">{{ div|division_total }}</td>
+                    <td class="table-value count"></td>
+                    <td class="table-value">{{ div }}</td>
+                    <td class="table-value">{{ score }}</td>
+                    <td class="table-value">{{ div|division_players }}</td>
+                    <td class="table-value">{{ div|division_total }}</td>
                 </tr>
         {% endif %}
         {% endfor %}

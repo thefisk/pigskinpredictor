@@ -169,7 +169,6 @@ table.results-table tbody tr td {
 }
 
 .results-table-wrong-banker {
-  font-family: roboto;
   background-color: rgba(212, 42, 42, 0.5);
   color: rgba(1, 89, 157);
   font-weight: 500;
@@ -177,7 +176,6 @@ table.results-table tbody tr td {
 }
 
 .results-table-right-banker {
-  font-family: roboto;
   background-color: rgba(218, 165, 32, 0.5);
   color: rgba(1, 89, 157);
   font-weight: 500;
@@ -271,6 +269,12 @@ table.results-table tbody tr td {
   padding-left: 10px !important;
   color:rgba(0, 0, 0, 0.60);
   font-weight: 600;
+}
+
+.table-value {
+  padding-left: 10px !important;
+  color:rgba(0, 0, 0, 0.60);
+  font-weight: 400;
 }
 
 .stats-period {
@@ -484,14 +488,12 @@ table#stats-table tbody tr td {
 }
 
 .results-row-wrong {
-  font-family: roboto;
   background-color: rgba(212, 42, 42, 0.1);
   color: rgba(0, 0, 0, 0.6);
   padding-left: 10px;
 }
 
 .results-row-right {
-  font-family: roboto;
   background-color: rgba(42, 212, 42, 0.1);
   color: rgba(0, 0, 0, 0.8);
   padding-left: 10px;
