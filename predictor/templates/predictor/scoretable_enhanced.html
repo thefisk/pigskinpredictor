@@ -28,8 +28,7 @@
 {{ jsonuser|json_script:'currentuser' }}
 <div class="container">
 <h5 class="mb-3">
-    Enhanced Leaderboard</h5>
-    <a href="{% url 'scoretable' %}" class="smalllink">Standard Leaderboard</a>&nbsp;|&nbsp;<a href="{% url 'scoretable-division' %}" class="smalllink">Division Leaderboard</a>
+    Leaderboards: <a href="{% url 'scoretable' %}" class = "big-link-inactive">Standard</a> <span class = "superlowlight">|</span> <span class = "big-link-active">Enhanced</span> <span class = "superlowlight">|</span> <a class = "big-link-inactive" href="{% url 'scoretable-division' %}">Division</a></h5>
     <p>
     <span class = "tip logo-pad"><i class="material-icons prefix centered-icon">info</i>Click table headings to sort</span><br>
         <div id="vue-table">

@@ -212,6 +212,25 @@ table.results-table tbody tr td {
   font-weight: 100;
 }
 
+.big-link-inactive {
+  color: rgba(0, 0, 0, 0.20);
+}
+
+.big-link-inactive:hover {
+  color: rgba(0, 0, 0, 0.50);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.big-link-active {
+  color: rgba(0, 0, 0, 0.50);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.superlowlight {
+  color: rgba(0, 0, 0, 0.25);
+  font-weight: 100;
+}
+
 .icongrey{
   color: rgba(0, 0, 0, 0.19);
 }

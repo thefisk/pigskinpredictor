@@ -20,8 +20,8 @@
            });
        </script>
 <div class="container">
-<h5 class="mb-3">Leaderboard</h5>
-    <a href="{% url 'scoretableenhanced' %}" class="smalllink">Enhanced Leaderboard</a>&nbsp;|&nbsp;<a href="{% url 'scoretable-division' %}" class="smalllink">Division Leaderboard</a>
+<h5 class="mb-3">Leaderboards: <a href="{% url 'scoretable' %}" class = "big-link-active">Standard</a> <span class = "superlowlight">|</span> <a href="{% url 'scoretableenhanced' %}" class = "big-link-inactive">Enhanced</a> <span class = "superlowlight">|</span> <a class = "big-link-inactive" href="{% url 'scoretable-division' %}">Division</a></h5>
+    <br>
     <div id="scoretable" class="">
         <table class = "striped table-top-pad">
                 <tr class = "table-highlight">
