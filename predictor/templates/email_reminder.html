@@ -1,9 +1,3 @@
-{% load account %}
-{% user_display user as user_display %}
-{% load i18n %}
-{% autoescape off %}
-
-
 <!DOCTYPE html>
 <html>
 
@@ -109,7 +103,7 @@
 
 <body style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
     <!-- HIDDEN PREHEADER TEXT -->
-    <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;"> Thanks for signing up to play at Pigskin Predictor. </div>
+    <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;">Pigskin Predictions Reminder</div>
     <table border="0" cellpadding="0" cellspacing="0" width="100%">
         <!-- LOGO -->
         <tr>
@@ -126,7 +120,7 @@
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                     <tr>
                         <td bgcolor="#ffffff" align="center" valign="top" style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 48px; font-weight: 400; letter-spacing: 4px; line-height: 48px;">
-                            <h1 style="font-size: 48px; font-weight: 400; margin: 2;">Welcome!</h1> <img src="https://pigskinpredictorpublic.s3.eu-west-2.amazonaws.com/piglogo_blue.png" style="display: block; border: 0px;" />
+                            <h1 style="font-size: 48px; font-weight: 400; margin: 2;">Just A Wee Reminder</h1><br><img src="https://pigskinpredictorpublic.s3.eu-west-2.amazonaws.com/piglogo_blue.png" style="display: block; border: 0px;" />
                         </td>
                     </tr>
                 </table>
@@ -137,7 +131,7 @@
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                     <tr>
                         <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 40px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                            <p style="margin: 0;" align="center">Hi {{ user.get_short_name }}, we're excited to have you on board!<br><br>Before you can play though, we just need you to confirm your email address. Hit the button below and you can join in on the fun.</p>
+                            <p style="margin: 0;" align="center">Don't forget to get your predictions in for the week.<br>Click below to go to your predictions.</p>
                         </td>
                     </tr>
                     <tr>
@@ -147,7 +141,7 @@
                                     <td bgcolor="#ffffff" align="center" style="padding: 20px 30px 60px 30px;">
                                         <table border="0" cellspacing="0" cellpadding="0">
                                             <tr>
-                                                <td align="center" style="border-radius: 3px;" bgcolor="#285F8A"><a href="{{ activate_url }}" target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #285F8A; display: inline-block;">Confirm Account</a></td>
+                                                <td align="center" style="border-radius: 3px;" bgcolor="#285F8A"><a href="https://pigskinpredictor.com/predict" target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #285F8A; display: inline-block;">My Predictions</a></td>
                                             </tr>
                                         </table>
                                     </td>
@@ -156,17 +150,17 @@
                         </td>
                     </tr> <!-- COPY -->
                     <tr>
-                        <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 0px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                        <td bgcolor="#ffffff" align="center" style="padding: 0px 30px 0px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
                             <p style="margin: 0;">If that doesn't work, copy and paste the following link in your browser:</p>
                         </td>
                     </tr> <!-- COPY -->
                     <tr>
-                        <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 20px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                            <p style="margin: 0;"><a href="#" target="_blank" style="color: #285F8A;">{{ activate_url }}</a></p>
+                        <td bgcolor="#ffffff" align="center" style="padding: 20px 30px 20px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                            <p align="center" style="margin: 0;"><a href="https://pigskinpredictor.com/predict" target="_blank" style="color: #285F8A;">https://pigskinpredictor.com/predict</a></p>
                         </td>
                     </tr>
                     <tr>
-                        <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                        <td bgcolor="#ffffff" align="center" style="padding: 0px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
                             <p style="margin: 0;">Cheers,<br>Nathan</p>
                         </td>
                     </tr>
@@ -177,4 +171,3 @@
 </body>
 
 </html>
-{% endautoescape %}
