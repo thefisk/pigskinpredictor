@@ -602,3 +602,7 @@ h5 {
 	border-left: 5px solid #285f8a !important;
 	;
 }
+
+#id_content {
+  height: 20rem !important;
+}
