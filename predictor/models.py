@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.deletion import CASCADE
 from django.utils import timezone
 from accounts.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -259,3 +260,15 @@ class Results(models.Model):
     
     class Meta:
         verbose_name_plural = "Results"
+
+class Record(models.model):
+    Title = models.CharField(max_length=100, null=True, blank=True)
+    Holders = models.ManyToManyField(User)
+    Year = models.IntegerField(validators=[MinValueValidator(1990), MaxValueValidator(2100)])
+    Record = models.IntegerField()
+
+    def __str__(self):
+        return('{}: {}, held by {}, in {}'.format(self.Title, self.Record, self.Holder, self.Year))
+
+    class Meta:
+        verbose_name_plural = "Records"
