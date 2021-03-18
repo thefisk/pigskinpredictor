@@ -10,7 +10,8 @@ from django.views.decorators.http import require_GET
 from accounts.models import User as CustomUser
 from django.contrib.auth.decorators import login_required, user_passes_test
 from blog.models import Post
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
+from .forms import RecordsForm
 from .models import (
     Team,
     Results,
@@ -19,7 +20,8 @@ from .models import (
     ScoresWeek,
     ScoresSeason,
     ScoresAllTime,
-    Banker
+    Banker,
+    Record
 )
 from .mixins import AjaxFormMixin
 from django.views.generic import (
@@ -789,3 +791,51 @@ def DivisionTableView(request):
     }
 
     return render(request, 'predictor/scoretable_division.html', context)
+
+def RecordsView(request):
+    if request.method == 'POST':
+        form = RecordsForm(request.POST, instance=request.user)
+        if form.is_valid:
+            form.save()
+            return redirect('profile-amended')
+
+class AddRecordView(LoginRequiredMixin, UserPassesTestMixin,CreateView):
+    model = Record
+    form_class = RecordsForm
+    template_name = 'predictor/new_record.html'
+    success_url = reverse_lazy('add-record')
+
+    def test_func(self):
+        return self.request.user.groups.filter(name='SuperUser').exists()
+
+    def handle_no_permission(self):
+        return redirect('home')
+
+class AmendRecordView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Record
+    template_name = 'predictor/amend_record.html'
+    fields = ['Title','Holders','Year','Week','Record','Priority']
+
+    def test_func(self):
+        return self.request.user.groups.filter(name='SuperUser').exists()
+
+    def handle_no_permission(self):
+        return redirect('home')
+    
+    def get_success_url(self):
+        return reverse('records')
+
+class RecordsView(ListView):
+    model = Record
+    title = 'Record Books'
+    template_name = 'predictor/records.html'
+
+class RecordDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Record
+    success_url = '/records'
+
+    def test_func(self):
+        return self.request.user.groups.filter(name='SuperUser').exists()
+
+    def handle_no_permission(self):
+        return redirect('home')

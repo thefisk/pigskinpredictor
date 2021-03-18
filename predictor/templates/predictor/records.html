@@ -1,0 +1,36 @@
+{% extends "predictor/base.html" %}
+{% load material_form %}
+{% block content %}
+{% load predictor_custom_tags %}
+<script>
+ $('#records').each(function(){
+        $(this).toggleClass('active');
+    });
+</script>
+<div class='container'>
+    <h5>Record Books</h5>
+    <div class="divider"></div>
+    <div id="resultstable" class="">
+        <table class="striped results-table table-top-pad">
+            <thead>
+                <tr class="results-table-row table-highlight table">
+                    <th class = "stats-table-header table-primary-header">Title</th>
+                    <th class = "stats-table-header table-primary-header">Holder(s)</th>
+                    <th class = "stats-table-header table-primary-header">Achieved</th>
+                    <th class = "stats-table-header table-primary-header">Record</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for record in record_list %}
+                <tr class="results-table-row">
+                    {% if request.user|has_group:"SuperUser"%}<td class="table-value"><a class="record-link" href="{% url 'amend-record' pk=record.pk %}">{{ record.Title }}</a></td>
+                    {% else %}<td class="table-value">{{ record.Title }}</td>{% endif %}
+                    <td class="table-value">{% for holder in record.Holders.all %} {{ holder }} <br>{% endfor %}</td>
+                    <td class="table-value">{% if record.Week %}Week {{record.Week}}, {% endif %}{{ record.Year }}</td>
+                    <td class="table-value">{{ record.Record }}</td>
+            {% endfor %}
+            </tbody>
+        </table>            
+    </div>
+</div>
+{% endblock content %}

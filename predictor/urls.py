@@ -1,7 +1,7 @@
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf import settings
 from .views import (
-    HomeView,
+    HomeView, RecordDeleteView,
     ResultsView,
     ResultsPreSeasonView,
     ResultsDidNotPlayView,
@@ -26,18 +26,26 @@ from .views import (
     DivisionTableView,
     RobotsTXT,
     AjaxDeadlineVerification,
+    AddRecordView,
+    AmendRecordView,
+    RecordsView,
+    RecordDeleteView
 )
 from . import views
 
 urlpatterns = [
     path('',HomeView,name='home'),
+    path('add-record', AddRecordView.as_view(), name="add-record"),
+    path('records/', RecordsView.as_view(), name="records"),
+    path('<int:pk>/delete/', RecordDeleteView.as_view(), name='record-delete'),
+    re_path(r'^amend-record/(?P<pk>\d+)/$', AmendRecordView.as_view(), name="amend-record"),
     path('robots.txt', RobotsTXT),
-    path('profile',ProfileView,name="profile"),
-    path('profile-amended', ProfileAmendedView,name="profile-amended"),
-    path('profile-newplayer', ProfileNewPlayerView,name="profile-newplayer"),
+    path('profile/',ProfileView,name="profile"),
+    path('profile-amended/', ProfileAmendedView,name="profile-amended"),
+    path('profile-newplayer/', ProfileNewPlayerView,name="profile-newplayer"),
     path('results/', ResultsView, name='results'),
     path('results-didnotplay/', ResultsDidNotPlayView, name='results-didnotplay'),
-    path('results-preseason', ResultsPreSeasonView, name='results-preseason'),
+    path('results-preseason/', ResultsPreSeasonView, name='results-preseason'),
     path('schedule/', ScheduleView.as_view(), name='schedule-view'), #!!!To Implement!!!
     path('predict/', CreatePredictionsView, name='new-prediction-view'), #New Predictions
     path('amendpredictions/', AmendPredictionsView, name='amend-prediction-view'), #Amend Predictions
@@ -47,8 +55,8 @@ urlpatterns = [
     path('ajaxamendbanker/',AjaxAmendBankerView, name='ajax-amend-banker'), #AJAX
     path('scoretable/',ScoreTableView, name='scoretable'), #Leaderboard
     path('scoretableenhanced/',ScoreTableEnhancedView, name='scoretableenhanced'), #Leaderboard
-    path('scoretable-preseason', ScoreTablePreSeasonView, name='scoretable-preseason'),
-    path('scoretable-division', DivisionTableView, name='scoretable-division'),
+    path('scoretable-preseason/', ScoreTablePreSeasonView, name='scoretable-preseason'),
+    path('scoretable-division/', DivisionTableView, name='scoretable-division'),
     path('about/',AboutView, name='about'), #About
     path('scoring/',ScoringView, name='scoring'), #Scoring
     path('report/',ReportsView, name='report'), #Reports
