@@ -8,11 +8,9 @@
        </script>
     <div class="container">
         
-        <h5 class="center-align hideme week-heading" id="{{ week }}">
-        Amend  Predictions for week {{ week }}
-        </h5>
-        <p><h6 class="center-align hideme tip"><i class="material-icons prefix centered-icon">info</i>Double click for away bankers, single click for all others</h6></p>
-        
+        <h5 class="hideme week-heading" id="{{ week }}">Amend Predictions <span class = "superlowlight">|</span> week {{ week }}</h5>
+        <div class="divider"></div>
+        <p><h6 class="hideme tip">Double click for away bankers, single click for all others</h6></p>
         <div id="predictioncards" class="row hideme">
             {% for match in matches %}
                 <div class="col s12 m6 l3">

@@ -261,14 +261,17 @@ class Results(models.Model):
     class Meta:
         verbose_name_plural = "Results"
 
-class Record(models.model):
+class Record(models.Model):
     Title = models.CharField(max_length=100, null=True, blank=True)
     Holders = models.ManyToManyField(User)
     Year = models.IntegerField(validators=[MinValueValidator(1990), MaxValueValidator(2100)])
-    Record = models.IntegerField()
+    Week = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(25)], blank=True, null=True)
+    Record = models.CharField(max_length=50, null=True, blank=True)
+    Priority = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(1000)])
 
     def __str__(self):
-        return('{}: {}, held by {}, in {}'.format(self.Title, self.Record, self.Holder, self.Year))
+        return('{}: {}, in {}'.format(self.Title, self.Record, self.Year))
 
     class Meta:
         verbose_name_plural = "Records"
+        ordering = ['Priority']

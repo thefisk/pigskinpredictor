@@ -29,12 +29,11 @@
 <div class="container">
 <h5 class="mb-3">
     Leaderboards: <a href="{% url 'scoretable' %}" class = "big-link-inactive">Standard</a> <span class = "superlowlight">|</span> <span class = "big-link-active">Enhanced</span> <span class = "superlowlight">|</span> <a class = "big-link-inactive" href="{% url 'scoretable-division' %}">Division</a></h5>
-    <p>
-    <span class = "tip logo-pad"><i class="material-icons prefix centered-icon">info</i>Click table headings to sort</span><br>
+    <div class="divider"></div>
         <div id="vue-table">
             <table class = "striped table-top-pad">
                 <tr class = "table-highlight">
-                    <td class = "stats-table-header col-100-l">Standings after week {{ week }}</td>
+                    <td class = "stats-table-header col-100-l">Standings after week {{ week }}<span class = "table-tip">&nbsp; | &nbsp;Click Table Headings to sort</span></td>
                 </tr>
             </table>
             <table class="striped">
