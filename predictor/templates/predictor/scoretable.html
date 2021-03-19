@@ -31,7 +31,8 @@
         <table class = "striped">
             <thead>
                 <tr class = "table-secondary">
-                    <th class="stats-header table-secondary-header">Pos.</th>
+                    <th class="stats-pos table-secondary-header"><i class="pos-std fas fa-medal"></i></th>
+                    <th class="stats-header table-secondary-header"></th>
                     <th class="stats-header table-secondary-header">Player</th>
                     <th class="stats-header table-secondary-header">Last Week</th>
                     <th class="stats-header table-secondary-header">Total Score</th>
@@ -44,18 +45,19 @@
             {% else %}
                 <tr>
             {% endif %}
-                    <td class="count table-value"></td>
-                    <td class="table-value"><img src="{{ seasonscore.User.FavouriteTeam.Logo.url }}" class="team_small"> &nbsp; {{ seasonscore.User.first_name }} {{ seasonscore.User.last_name }}</td>
+                    <td class="count table-pos clamp"></td>
+                    <td class="table-logo clamp"><img src="{{ seasonscore.User.FavouriteTeam.Logo.url }}" class="team_small"></td>
+                    <td class="table-value clamp">{{ seasonscore.User.first_name }} {{ seasonscore.User.last_name }}</td>
                     {% if seasonscore.User in nopreds %}
-                        <td class="table-value">Did Not Play</td>
+                        <td class="table-value clamp">Did Not Play</td>
                     {% else %}
                         {% for weekscore in weekscores %}
                             {% if seasonscore.User == weekscore.User %}
-                            <td class="table-value">{{ weekscore.WeekScore }}</td>
+                            <td class="table-value clamp">{{ weekscore.WeekScore }}</td>
                             {% endif %}
                         {% endfor %}
                     {% endif %}
-                    <td class="table-value">{{ seasonscore.SeasonScore }}</td>
+                    <td class="table-value clamp">{{ seasonscore.SeasonScore }}</td>
                 </tr>
         {% endfor %}
             </tbody>

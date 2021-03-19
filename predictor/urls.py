@@ -35,10 +35,10 @@ from . import views
 
 urlpatterns = [
     path('',HomeView,name='home'),
-    path('add-record', AddRecordView.as_view(), name="add-record"),
-    path('records/', RecordsView.as_view(), name="records"),
-    path('<int:pk>/delete/', RecordDeleteView.as_view(), name='record-delete'),
-    re_path(r'^amend-record/(?P<pk>\d+)/$', AmendRecordView.as_view(), name="amend-record"),
+    path('add-record', AddRecordView.as_view(extra_context={'title': 'Add Record'}), name="add-record"),
+    path('records/', RecordsView.as_view(extra_context={'title': 'Record Books'}), name="records"),
+    path('<int:pk>/delete/', RecordDeleteView.as_view(extra_context={'title': 'Delete Record'}), name='record-delete'),
+    re_path(r'^amend-record/(?P<pk>\d+)/$', AmendRecordView.as_view(extra_context={'title': 'Amend Record'}), name="amend-record"),
     path('robots.txt', RobotsTXT),
     path('profile/',ProfileView,name="profile"),
     path('profile-amended/', ProfileAmendedView,name="profile-amended"),
@@ -46,7 +46,6 @@ urlpatterns = [
     path('results/', ResultsView, name='results'),
     path('results-didnotplay/', ResultsDidNotPlayView, name='results-didnotplay'),
     path('results-preseason/', ResultsPreSeasonView, name='results-preseason'),
-    path('schedule/', ScheduleView.as_view(), name='schedule-view'), #!!!To Implement!!!
     path('predict/', CreatePredictionsView, name='new-prediction-view'), #New Predictions
     path('amendpredictions/', AmendPredictionsView, name='amend-prediction-view'), #Amend Predictions
     path('ajaxaddprediction/',AjaxAddPredictionView, name='ajax-add-prediction'), #AJAX

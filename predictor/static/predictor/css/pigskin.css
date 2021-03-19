@@ -172,16 +172,15 @@ table.results-table tbody tr td {
   background-color: rgba(212, 42, 42, 0.5);
   color: rgba(1, 89, 157);
   font-weight: 500;
-  padding-left: 10px;
+  padding-left: 5px;
 }
 
 .results-table-right-banker {
   background-color: rgba(218, 165, 32, 0.5);
   color: rgba(1, 89, 157);
   font-weight: 500;
-  padding-left: 10px;
+  padding-left: 5px;
 }
-
 
 .table-fixed {
   width: 100%;
@@ -189,14 +188,20 @@ table.results-table tbody tr td {
 }
 
 .results-table-total {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 110%;
   font-family: roboto;
   color: rgba(1, 89, 157, 0.6);
-  padding-left: 10px;
+  padding-left: 5px;
 }
 
 .stats-header {
+  font-weight: 200;
+  font-size: 85%;
+  padding-left: 10px !important;
+}
+
+.stats-pos {
   font-weight: 200;
   font-size: 85%;
   padding-left: 10px !important;
@@ -285,6 +290,12 @@ table.results-table tbody tr td {
 }
 
 .table-value {
+  padding-left: 5px !important;
+  color:rgba(0, 0, 0, 0.60);
+  font-weight: 400;
+}
+
+.table-pos {
   padding-left: 10px !important;
   color:rgba(0, 0, 0, 0.60);
   font-weight: 400;
@@ -349,6 +360,10 @@ table#stats-table tbody tr td {
 
 .right-float {
   float: right;
+}
+
+.left-float {
+  float: left;
 }
 
 .post-metadata {
@@ -456,6 +471,22 @@ table#stats-table tbody tr td {
   font-weight: 500;
 }
 
+.sort-column-pos {
+  text-transform: uppercase !important;
+  color: rgba(1, 89, 157, 0.75) !important;
+  font-weight: 500;
+  vertical-align: middle;
+}
+
+.pos-std {
+  color: rgba(1, 89, 157, 0.55) !important;
+  vertical-align: middle;
+}
+
+.icon-center {
+  text-align: center;
+}
+
 .non-sort-column {
   text-transform: uppercase !important;
   color: rgba(1, 89, 157, 0.45) !important;
@@ -513,18 +544,18 @@ table#stats-table tbody tr td {
 .results-row-wrong {
   background-color: rgba(212, 42, 42, 0.1);
   color: rgba(0, 0, 0, 0.6);
-  padding-left: 10px;
+  padding-left: 5px;
 }
 
 .results-row-right {
   background-color: rgba(42, 212, 42, 0.1);
   color: rgba(0, 0, 0, 0.8);
-  padding-left: 10px;
+  padding-left: 5px;
 }
 
 .results-row-dnp {
   color: rgba(0, 0, 0, 0.8);
-  padding-left: 10px;
+  padding-left: 5px;
 }
 
 .uppercase {
@@ -557,7 +588,7 @@ h5 {
 }
 
 .pad-l {
-  padding-left: 10px;
+  padding-left: 10px !important;
 }
 
 .pad-l-vue {
@@ -628,4 +659,17 @@ h5 {
   text-transform: uppercase !important;
   color: rgba(1, 89, 157, 0.45) !important;
   font-weight: normal;
+}
+
+.clamp {
+  font-size: clamp(1rem, 1.2vw, 1.2rem);
+}
+
+.table-logo {
+  text-align: center;
+  width: 22px;
+}
+
+.pad-l5 {
+  padding-left: 5px;
 }

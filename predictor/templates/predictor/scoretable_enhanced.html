@@ -40,33 +40,35 @@
             <thead>
                 <tr class = "table-secondary">
                     <th v-for="header in tableHeadings" @click="sort(header.jsonfield)" class="enhanced">
-                        <a v-if="header.name === 'Pos'" href="#" class="sortable pad-l-vue" :class="header.sorting ? 'sort-column' : 'non-sort-column'">[[ header.name ]]</a>
+                        <a v-if="header.name === 'Pos'" href="#" class="sortable pad-l5 icon-center" :class="header.sorting ? 'sort-column-pos' : 'non-sort-column'"><i class="fas fa-medal"></i></a>
                         <a v-else href="#" class="sortable" :class="header.sorting ? 'sort-column' : 'non-sort-column'">[[ header.name ]]</a>
                     </th>
                 </tr>
             </thead>
             <tbody>
             <tr v-for="score in sortedTable">
-                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced pad-l">[[score.pos]] </td>
-                <td v-else td class="enhanced pad-l">[[score.pos]] </td>
-                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced"><img v-bind:src=[[score.logo]] class="team_small"></img>&nbsp; [[score.user]]</td>
-                <td v-else class="enhanced"><img v-bind:src=[[score.logo]] class="team_small"></img>&nbsp; [[score.user]]</td>
-                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced">[[score.week]]</td>
-                <td v-else class="enhanced">[[score.week]]</td>
-                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced">[[score.seasoncorrect]]</td>
-                <td v-else class="enhanced">[[score.seasoncorrect]]</td>
-                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced">[[score.seasonpercentage]]</td>
-                <td v-else class="enhanced">[[score.seasonpercentage]]</td>
-                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced">[[score.seasonbest]]</td>
-                <td v-else class="enhanced">[[score.seasonbest]]</td>
-                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced">[[score.seasonaverage]]</td>
-                <td v-else class="enhanced">[[score.seasonaverage]]</td>
-                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced">[[score.seasonworst]]</td>
-                <td v-else class="enhanced">[[score.seasonworst]]</td>
-                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced">[[score.bankeraverage]]</td>
-                <td v-else class="enhanced">[[score.bankeraverage]]</td>
-                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced">[[score.seasonscore]]</td>
-                <td v-else class="enhanced">[[score.seasonscore]]</td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp pad-l">[[score.pos]] </td>
+                <td v-else td class="enhanced clamp pad-l">[[score.pos]] </td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp pad-l table-logo"><img v-bind:src=[[score.logo]] class="team_small"></img></td>
+                <td v-else td class="enhanced clamp pad-l table-logo"><img v-bind:src=[[score.logo]] class="team_small"></img></td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp">[[score.user]]</td>
+                <td v-else class="enhanced clamp">[[score.user]]</td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp">[[score.week]]</td>
+                <td v-else class="enhanced clamp">[[score.week]]</td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp">[[score.seasoncorrect]]</td>
+                <td v-else class="enhanced clamp">[[score.seasoncorrect]]</td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp">[[score.seasonpercentage]]</td>
+                <td v-else class="enhanced clamp">[[score.seasonpercentage]]</td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp">[[score.seasonbest]]</td>
+                <td v-else class="enhanced clamp">[[score.seasonbest]]</td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp">[[score.seasonaverage]]</td>
+                <td v-else class="enhanced clamp">[[score.seasonaverage]]</td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp">[[score.seasonworst]]</td>
+                <td v-else class="enhanced clamp">[[score.seasonworst]]</td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp">[[score.bankeraverage]]</td>
+                <td v-else class="enhanced clamp">[[score.bankeraverage]]</td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp">[[score.seasonscore]]</td>
+                <td v-else class="enhanced clamp">[[score.seasonscore]]</td>
             </tr>
             </tbody>
             </table>
@@ -97,6 +99,9 @@ let currentUser = JSON.parse(document.getElementById('currentuser').textContent)
                     "sortAsc": true,
                     "sortDesc": false,
                     "sorting": true
+                },
+                {
+                    "name": "",
                 },
                 {
                     "name": "Player",

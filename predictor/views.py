@@ -124,6 +124,7 @@ def ProfileView(request):
                 'alltimehigh': alltimehigh,
                 'alltimelow': alltimelow,
                 'alltimepct': alltimepct,
+                'title': 'My Profile'
                 }
             return render(request, template, context)
 
@@ -179,7 +180,8 @@ def ResultsView(request):
     else:
         context = {
         'season': os.environ['PREDICTSEASON'],
-        'week':scoreweek,
+        'week': scoreweek,
+        'title': 'Results',
         'weekscore': ScoresWeek.objects.get(User=request.user, Season=os.environ['PREDICTSEASON'], Week=scoreweek).WeekScore,
         'predictions':Prediction.objects.filter(User=request.user, PredWeek=PredWeek),
         'results':Results.objects.filter(Season=os.environ['PREDICTSEASON'], Week=scoreweek)
@@ -229,7 +231,7 @@ def CreatePredictionsView(request):
         'matches':Match.objects.filter(Week=week, Season=season),
         'week':week,
         'season':season,
-        'title':'New Prediction'
+        'title': 'Predictios'
     }
 
     return render(request, template, context)
@@ -804,6 +806,7 @@ class AddRecordView(LoginRequiredMixin, UserPassesTestMixin,CreateView):
     form_class = RecordsForm
     template_name = 'predictor/new_record.html'
     success_url = reverse_lazy('add-record')
+    title = 'Add Recordssss'
 
     def test_func(self):
         return self.request.user.groups.filter(name='SuperUser').exists()
@@ -815,6 +818,7 @@ class AmendRecordView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Record
     template_name = 'predictor/amend_record.html'
     fields = ['Title','Holders','Year','Week','Record','Priority']
+    title = 'Amend Record'
 
     def test_func(self):
         return self.request.user.groups.filter(name='SuperUser').exists()
@@ -832,6 +836,7 @@ class RecordsView(ListView):
 
 class RecordDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Record
+    title = 'Delete Record'
     success_url = '/records'
 
     def test_func(self):
