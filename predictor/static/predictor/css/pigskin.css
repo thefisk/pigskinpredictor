@@ -673,3 +673,8 @@ h5 {
 .pad-l5 {
   padding-left: 5px;
 }
+
+.records-p {
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}

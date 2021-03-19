@@ -33,7 +33,7 @@
                     {% else %}
                         <td class="table-value clamp pad-l">{{ record.Title }}</td>
                     {% endif %}
-                    <td class="table-value clamp">{% for holder in record.Holders.all %} {{ holder }} <br>{% endfor %}</td>
+                    <td class="table-value clamp">{% for holder in record.Holders.all %} {{ holder }} <p class="records-p"> {% endfor %}</td>
                     <td class="table-value clamp">{% if record.Week %}Week {{record.Week}}, {% endif %}{{ record.Year }}</td>
                     <td class="table-value clamp">{{ record.Record }}</td>
             {% endfor %}
