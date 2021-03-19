@@ -198,7 +198,7 @@ table.results-table tbody tr td {
 .stats-header {
   font-weight: 200;
   font-size: 85%;
-  padding-left: 10px !important;
+  padding-left: 5px !important;
 }
 
 .stats-pos {
@@ -284,7 +284,7 @@ table.results-table tbody tr td {
 }
 
 .stat-value {
-  padding-left: 10px !important;
+  padding-left: 5px !important;
   color:rgba(0, 0, 0, 0.60);
   font-weight: 600;
 }
