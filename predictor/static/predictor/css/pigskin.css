@@ -678,3 +678,15 @@ h5 {
   padding-bottom: 0 !important;
   margin-bottom: 0 !important;
 }
+
+.td-border-right {
+  border-right: 2px solid rgba(1, 89, 157, 0.1) !important;
+}
+
+.td-align-right {
+  text-align:  right;
+}
+
+.light-text {
+  color:rgba(0, 0, 0, .45)
+}

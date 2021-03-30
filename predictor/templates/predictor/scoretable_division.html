@@ -33,9 +33,9 @@
                 <tr class = "table-secondary">
                     <th class="stats-pos table-secondary-header"><i class="pos-std fas fa-medal"></i></th>
                     <th class="stats-header table-secondary-header">Division</th>
-                    <th class="stats-header table-secondary-header">Average Score</th>
-                    <th class="stats-header table-secondary-header">Players</th>
-                    <th class="stats-header table-secondary-header">Total Score</th>
+                    <th class="stats-header table-secondary-header td-border-right">Average Score</th>
+                    <th class="stats-header table-secondary-header td-align-right">Players</th>
+                    <th class="stats-header table-secondary-header td-align-right">Total Score</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,17 +44,17 @@
                 <tr>
                     <td class="table-pos count table-highlight clamp"></td>
                     <td class="table-value table-highlight clamp">{{ div }}</td>
-                    <td class="table-value table-highlight clamp">{{ score }}</td>
-                    <td class="table-value table-highlight clamp">{{ div|division_players }}</td>
-                    <td class="table-value table-highlight clamp">{{ div|division_total }}</td>
+                    <td class="table-value table-highlight clamp td-border-right">{{ score }}</td>
+                    <td class="table-value table-highlight clamp td-align-right light-text">{{ div|division_players }}</td>
+                    <td class="table-value table-highlight clamp td-align-right light-text">{{ div|division_total }}</td>
                 </tr>
             {% else %}
                 <tr>
                     <td class="table-pos count"></td>
                     <td class="table-value clamp">{{ div }}</td>
-                    <td class="table-value clamp">{{ score }}</td>
-                    <td class="table-value clamp">{{ div|division_players }}</td>
-                    <td class="table-value clamp">{{ div|division_total }}</td>
+                    <td class="table-value clamp td-border-right">{{ score }}</td>
+                    <td class="table-value clamp td-align-right light-text">{{ div|division_players }}</td>
+                    <td class="table-value clamp td-align-right light-text">{{ div|division_total }}</td>
                 </tr>
         {% endif %}
         {% endfor %}
