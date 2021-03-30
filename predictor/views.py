@@ -340,13 +340,13 @@ def Week17View(request):
         }
         return render(request, template, context)
 
-@require_GET
+
 class ScheduleView(ListView):
     model = Match
     context_object_name = 'matches'
     template_name = 'predictor/schedule.html' # <app>/<model>_viewtype>.html
 
-@require_GET
+
 class UserPredictions(ListView):
     model = Prediction
     template_name = 'predictor/user_predictions.html'
@@ -821,7 +821,7 @@ def DivisionTableView(request):
 
     return render(request, 'predictor/scoretable_division.html', context)
 
-@require_http_methods(["GET", "POST"])
+
 class AddRecordView(LoginRequiredMixin, UserPassesTestMixin,CreateView):
     model = Record
     form_class = RecordsForm
@@ -835,7 +835,7 @@ class AddRecordView(LoginRequiredMixin, UserPassesTestMixin,CreateView):
     def handle_no_permission(self):
         return redirect('home')
 
-@require_http_methods(["GET", "POST"])
+
 class AmendRecordView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Record
     template_name = 'predictor/amend_record.html'
@@ -851,13 +851,13 @@ class AmendRecordView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def get_success_url(self):
         return reverse('records')
 
-@require_GET
+
 class RecordsView(ListView):
     model = Record
     title = 'Record Books'
     template_name = 'predictor/records.html'
 
-@require_http_methods(["GET", "POST"])
+
 class RecordDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Record
     title = 'Delete Record'
