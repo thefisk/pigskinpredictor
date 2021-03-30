@@ -13,9 +13,7 @@
     <link href="{% static "predictor/css/pigskin.css" %}" rel="stylesheet">
     <link href="{% static "predictor/css/materialize.pigskin.min.css" %}" rel="stylesheet">
     <link href="https://cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet">
-    <!--Materialize CSS-->
     <!-- Compiled and minified CSS -->
-    <!-- link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"-->
     <!-- Compiled and minified JavaScript -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -50,10 +48,7 @@
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
           <ul class="right hide-on-med-and-down">
             {% if user.is_authenticated %}
-            <!--{% if request.user|has_group:"SuperUser" %}!-->
             <li id="updates"><a class="navlink" href="{% url 'updates' %}">Updates</a></li>
-            <!--li id="report"><a class="navlink" href="{% url 'report' %}">Report</a></li!-->
-            <!--{% endif %}!-->
             <li id="predict"><a class="navlink" href="{% url 'new-prediction-view' %}">Predict</a></li>
             <li id="results"><a class="navlink" href="{% url 'results' %}">Results</a></li>
             <li id="leaderboard"><a class="navlink" href="{% url 'scoretable' %}">Tables</a></li>
@@ -70,10 +65,7 @@
     
       <ul class="sidenav" id="mobile-demo">
           {% if user.is_authenticated %}
-          <!--{% if request.user|has_group:"SuperUser" %}!-->
           <li id="updates"><a class="navlink" href="{% url 'updates' %}">Updates</a></li>
-          <!--li id="report"><a class="navlink" href="{% url 'report' %}">Report</a></li!-->
-          <!--{% endif %}!-->
           <li><a href="{% url 'new-prediction-view' %}">Predict</a></li>
           <li><a href="{% url 'results' %}">Results</a></li>
           <li><a href="{% url 'scoretable' %}">Tables</a></li>
@@ -86,7 +78,6 @@
           {% endif %}
       </ul>
       </header>
-    <!--/div-->
       <main>
       {% block content %}
       {% endblock %}
@@ -104,7 +95,7 @@
         </div>
         <div class="footer-copyright">
           <div class="container footer-text">
-          An <a href="https://github.com/thefisk/pigskinpredictor" target="_blank" class="footer-link">open source</a> project by Nathan Fisk&nbsp; |&nbsp; <a href="{% url 'about' %}" class="footer-link">About this site</a>
+          An <a href="https://github.com/thefisk/pigskinpredictor" target="_blank" rel="noopener" class="footer-link">open source</a> project by Nathan Fisk&nbsp; |&nbsp; <a href="{% url 'about' %}" class="footer-link">About this site</a>
           &nbsp; |&nbsp; <a href="{% url 'scoring' %}" class="footer-link">Scoring</a>
           {% if request.user|has_group:"SuperUser" %}
           &nbsp; |&nbsp; <a href="{% url 'post-create' %}" class="footer-link">New Update</a>&nbsp; |&nbsp; <a href="{% url 'add-record' %}" class="footer-link">New Record</a>

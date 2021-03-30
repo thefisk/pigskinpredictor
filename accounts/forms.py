@@ -4,7 +4,6 @@ from .models import User
 from allauth.account.forms import SignupForm
 from predictor.models import Team
 from django.contrib.auth import get_user_model
-from material import *
 
 class CustomUserCreationForm(UserCreationForm):
 

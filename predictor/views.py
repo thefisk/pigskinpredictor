@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
-from django.views.decorators.http import require_GET
+from django.views.decorators.http import require_GET, require_POST, require_http_methods
 from accounts.models import User as CustomUser
 from django.contrib.auth.decorators import login_required, user_passes_test
 from blog.models import Post
@@ -44,6 +44,7 @@ def RobotsTXT(request):
 def is_superuser(user):
     return user.groups.filter(name='SuperUser').exists()
 
+@require_GET
 @user_passes_test(is_superuser, login_url='home')
 @login_required
 def ReportsView(request):
@@ -60,6 +61,7 @@ def ReportsView(request):
     template='predictor/report.html'
     return render(request,template,context)
 
+@require_GET
 def HomeView(request):
     if request.user.is_authenticated:
         if Post.objects.all().count() > 0:
@@ -70,6 +72,7 @@ def HomeView(request):
     else:
         return render(request, 'predictor/home.html')
 
+@require_http_methods(["GET", "POST"])
 def ProfileView(request):
     if request.method == 'POST':
         form = CustomUserChangeForm(request.POST, instance=request.user)
@@ -128,6 +131,7 @@ def ProfileView(request):
                 }
             return render(request, template, context)
 
+@require_http_methods(["GET", "POST"])
 def ProfileNewPlayerView(request):
     if request.method == 'POST':
         form = CustomUserChangeForm(request.POST, instance=request.user)
@@ -161,9 +165,11 @@ def ProfileNewPlayerView(request):
         }
         return render(request, 'predictor/profile-newplayer.html', context)
 
+@require_GET
 def ProfileAmendedView(request):
     return render(request, 'predictor/profile-amended.html')
 
+@require_GET
 @login_required
 def ResultsView(request):
     basescoreweek = int(os.environ['RESULTSWEEK']) - 1
@@ -188,6 +194,7 @@ def ResultsView(request):
         }
         return render(request, template, context)
 
+@require_GET
 def ResultsDidNotPlayView(request):
     basescoreweek = int(os.environ['RESULTSWEEK']) - 1
     if basescoreweek < 1:
@@ -204,11 +211,13 @@ def ResultsDidNotPlayView(request):
     }
     return render(request, template, context)
 
+@require_GET
 def ResultsPreSeasonView(request):
     template = 'predictor/results-preseason.html'
     return render(request, template)
 
 ### View to Display "Add Predictions" Screen
+@require_GET
 @login_required
 def CreatePredictionsView(request):
     week = os.environ['PREDICTWEEK']
@@ -237,6 +246,7 @@ def CreatePredictionsView(request):
     return render(request, template, context)
 
 ### View to Display "Amend Predictions" Screen
+@require_GET
 @login_required
 def AmendPredictionsView(request):
     week = os.environ['PREDICTWEEK']
@@ -275,6 +285,7 @@ def AmendPredictionsView(request):
     return render(request, template, context)
 
 ### View to Display after week 17 ###
+@require_GET
 @login_required
 def NewYearView(request):
     nextyear = int(os.environ['PREDICTSEASON'])+1
@@ -302,6 +313,7 @@ def NewYearView(request):
         return render(request, template, context)
 
 ### View to During week 17 ###
+@require_GET
 @login_required
 def Week17View(request):
     nextyear = int(os.environ['PREDICTSEASON'])+1
@@ -328,11 +340,13 @@ def Week17View(request):
         }
         return render(request, template, context)
 
+@require_GET
 class ScheduleView(ListView):
     model = Match
     context_object_name = 'matches'
     template_name = 'predictor/schedule.html' # <app>/<model>_viewtype>.html
 
+@require_GET
 class UserPredictions(ListView):
     model = Prediction
     template_name = 'predictor/user_predictions.html'
@@ -344,13 +358,16 @@ class UserPredictions(ListView):
         season = self.kwargs.get('season')
         return Prediction.objects.filter(User=user,Game__Week=week,Game__Season=season)
 
+@require_GET
 def AboutView(request):
     return render(request, 'predictor/about.html', {'title':'About'})
 
+@require_GET
 def ScoringView(request):
     return render(request, 'predictor/scoring.html', {'title':'Scoring'})
 
 ### View called by Ajax to add predictions to database.  Returns JSON response.
+@require_POST
 def AjaxAddPredictionView(request):
         if request.method == 'POST':
             pred_user = request.user
@@ -374,6 +391,7 @@ def AjaxAddPredictionView(request):
             return JsonResponse({"nothing to see": "this isn't happening"})
 
 ### View called by Ajax to add Banker to database.  Returns JSON response.
+@require_POST
 def AjaxAddBankerView(request):
         if request.method == 'POST':
             banker_user = request.user
@@ -403,6 +421,8 @@ def AjaxAddBankerView(request):
         else:
             return JsonResponse({"nothing to see": "this isn't happening"})
 
+### View called by Ajax to ensure deadline hasn't passed
+@require_POST
 def AjaxDeadlineVerification(request):
         if request.method == 'POST':
             json_data = json.loads(request.body.decode('utf-8'))
@@ -420,6 +440,7 @@ def AjaxDeadlineVerification(request):
             return JsonResponse({"nothing to see": "this isn't happening"})
 
 ### View to display latest scoretable for all users
+@require_GET
 def ScoreTableView(request):
     # Below sets score week to 1 below current results week
     # IE - to pull scores from last completed week 
@@ -445,6 +466,7 @@ def ScoreTableView(request):
     return render(request, 'predictor/scoretable.html', context)
 
 ### View to display enhanced scoretable for all users
+@require_GET
 def ScoreTableEnhancedView(request):
     # Below sets score week to 1 below current results week
     # IE - to pull scores from last completed week
@@ -494,6 +516,7 @@ def ScoreTableEnhancedView(request):
         'pos': i+1,
         'user': s.User.Full_Name,
         'logo': s.User.FavouriteTeam.Logo.url,
+        'teamshort': s.User.FavouriteTeam.ShortName,
         'week': get_json_week_score(s.User, scoreweek, os.environ['PREDICTSEASON']),
         'seasonscore': s.SeasonScore,
         'seasonworst': s.SeasonWorst,
@@ -539,11 +562,13 @@ def ScoreTableEnhancedView(request):
 
     return render(request, 'predictor/scoretable_enhanced.html', context)
 
+@require_GET
 def ScoreTablePreSeasonView(request):
     template = 'predictor/scoretable-preseason.html'
     return render(request, template)
 
 ### View called by Ajax to amend predictions in database.  Returns JSON response.
+@require_POST
 def AjaxAmendPredictionView(request):
         if request.method == 'POST':
             pred_user = request.user
@@ -574,6 +599,7 @@ def AjaxAmendPredictionView(request):
             return JsonResponse({"nothing to see": "this isn't happening"})
 
 ### View called by Ajax to amend Banker to database.  Returns JSON response.
+@require_POST
 def AjaxAmendBankerView(request):
         if request.method == 'POST':
             banker_user = request.user
@@ -614,6 +640,7 @@ def AjaxAmendBankerView(request):
         else:
             return JsonResponse({"nothing to see": "this isn't happening"})
 
+@require_GET
 def DivisionTableView(request):
     basescoreweek = int(os.environ['RESULTSWEEK']) - 1
     if basescoreweek < 1:
@@ -794,19 +821,13 @@ def DivisionTableView(request):
 
     return render(request, 'predictor/scoretable_division.html', context)
 
-def RecordsView(request):
-    if request.method == 'POST':
-        form = RecordsForm(request.POST, instance=request.user)
-        if form.is_valid:
-            form.save()
-            return redirect('profile-amended')
-
+@require_http_methods(["GET", "POST"])
 class AddRecordView(LoginRequiredMixin, UserPassesTestMixin,CreateView):
     model = Record
     form_class = RecordsForm
     template_name = 'predictor/new_record.html'
     success_url = reverse_lazy('add-record')
-    title = 'Add Recordssss'
+    title = 'Add Records'
 
     def test_func(self):
         return self.request.user.groups.filter(name='SuperUser').exists()
@@ -814,6 +835,7 @@ class AddRecordView(LoginRequiredMixin, UserPassesTestMixin,CreateView):
     def handle_no_permission(self):
         return redirect('home')
 
+@require_http_methods(["GET", "POST"])
 class AmendRecordView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Record
     template_name = 'predictor/amend_record.html'
@@ -829,11 +851,13 @@ class AmendRecordView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def get_success_url(self):
         return reverse('records')
 
+@require_GET
 class RecordsView(ListView):
     model = Record
     title = 'Record Books'
     template_name = 'predictor/records.html'
 
+@require_http_methods(["GET", "POST"])
 class RecordDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Record
     title = 'Delete Record'

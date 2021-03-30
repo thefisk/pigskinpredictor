@@ -11,7 +11,7 @@
         <div class="col s12 m6">
             <h5>My Stats</h5>
             <div class="divider"></div>         
-            <table id="stats-table" class = "striped">
+            <table id="stats-table" class="striped" aria-describedby="All Time Results">
             <br>
                 <thead>
                     <tr class = "table-highlight">
@@ -34,7 +34,7 @@
                 </tbody>
             </table>
             <BR>
-            <table id="stats-table" class = "striped">
+            <table id="stats-table" class="striped" aria-describedby="Season Results">
                 <thead>
                    <tr class = "table-highlight">
                         <td class = "stats-table-header col-30">{{ season }} Season</td>
@@ -77,7 +77,7 @@
     {% if preds == "yes" %}
         <div class="row">
         <div class="col s12 m12">
-            <table>
+            <table aria-describedby="My Predictions">
                     <tr class = "table-highlight">
                         <td class = "stats-table-header col-100">My Week {{ mypredweek }} Predictions</td>
                     </tr>
