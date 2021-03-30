@@ -17,4 +17,4 @@ class User(AbstractUser):
         return str(self.first_name +" "+self.last_name)
     
     class Meta:
-        verbose_name_plural = "My Custom User Class"
+        verbose_name_plural = "Pigskin User Profile"

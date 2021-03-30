@@ -23,12 +23,12 @@
 <h5 class="mb-3">Leaderboards: <a href="{% url 'scoretable' %}" class = "big-link-inactive">Standard</a> <span class = "superlowlight">|</span> <a href="{% url 'scoretableenhanced' %}" class = "big-link-inactive">Enhanced</a> <span class = "superlowlight">|</span> <span class = "big-link-active">Division</span></h5>
 <div class="divider"></div>
     <div id="scoretable" class="">
-        <table class = "striped table-top-pad">
-            <tr class = "table-highlight">
+        <table class="striped table-top-pad" aria-describedby="Table Header">
+            <tr class="table-highlight">
                 <td class = "stats-table-header col-100-l">Standings after week {{ week }}</td>
             </tr>
         </table>
-        <table class="striped">
+        <table class="striped" aria-describedby="Division Scoretable">
             <thead>
                 <tr class = "table-secondary">
                     <th class="stats-pos table-secondary-header"><i class="pos-std fas fa-medal"></i></th>

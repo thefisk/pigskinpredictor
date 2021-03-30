@@ -10,11 +10,9 @@
                     <div class="card-content white-text">
                         <span class="card-title blue-text">{{ pred.Game.AwayTeam.Nickname }} @ {{ pred.Game.HomeTeam.Nickname }}</span>
                             <div style="margin: 0 auto">
-                                <img class="responsive-img" src="{{ pred.Game.AwayTeam.Logo.url }}"> | <img class="responsive-img" src="{{ pred.Game.HomeTeam.Logo.url }}">
+                                <img class="responsive-img" src="{{ pred.Game.AwayTeam.Logo.url }}" alt="{{ pred.Game.AwayTeam.ShortName }}"> | <img class="responsive-img" src="{{ pred.Game.HomeTeam.Logo.url }}" alt="{{ pred.Game.HomeTeam.ShortName }}">
                             </div>
                     </div>
-                    <!---div class="card-action"-->
-                    <!--/div-->
                 </div>
             </div>
     {% endfor %}

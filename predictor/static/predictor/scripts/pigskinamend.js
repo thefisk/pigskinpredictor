@@ -237,7 +237,7 @@ $(function() {
     function deadline_checker() {
         var verification = {};
         verification['pred-week'] = weekverifier;
-        verificationstring = JSON.stringify(verification)
+        let verificationstring = JSON.stringify(verification)
         $.ajax({
             url : "../ajaxdeadlineverification/",
             type : "POST",
