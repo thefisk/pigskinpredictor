@@ -440,6 +440,11 @@ table#stats-table tbody tr td {
   font-weight: 400;
 }
 
+.email-notpicked {
+  color: rgba(0, 0, 0, 0.35);
+  font-weight: 400;
+}
+
 .profile-notpicked-banker {
   color:white;
 }
@@ -705,4 +710,8 @@ h5 {
 
 #id_PickConfirmation + span {
   padding-left: 42px;
+}
+
+.email-tr {
+  background-color: white;
 }
