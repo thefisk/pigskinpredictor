@@ -15,7 +15,15 @@ def run(hours):
     nopreds = User.objects.exclude(id__in=haspicked)
     email_list = []
     for user in nopreds:
-        email_list += user.email
+        email_list.append(user.email)
+    if hours == 48:
+        optedinemails = []
+        optedinusers = User.objects.filter(Reminder48=True)
+        for i in optedinusers:
+            optedinemails.append(i.email)
+        for i in email_list:
+            if i not in optedinemails:
+                email_list.remove(i)
     
     templatefile = "email_reminder.html"
     html_message = render_to_string(templatefile)

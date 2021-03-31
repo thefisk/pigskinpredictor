@@ -17,7 +17,7 @@ class CustomUserChangeForm(UserChangeForm):
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'FavouriteTeam', 'password')
+        fields = ('first_name', 'last_name', 'FavouriteTeam', 'password', 'Reminder48', 'PickConfirmation')
         exclude = ('username', 'email')
 
 class CustomSignupForm(SignupForm):

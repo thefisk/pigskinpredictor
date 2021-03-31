@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'storages',
+    'django_inlinecss',
     'rest_framework',
     'django_filters',
     'dbbackup',
@@ -114,7 +115,7 @@ LOGOUT_REDIRECT_URL = 'home'
 
 LOGIN_URL= '/accounts/login'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'predictor/static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
