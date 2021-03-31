@@ -690,3 +690,19 @@ h5 {
 .light-text {
   color:rgba(0, 0, 0, .45)
 }
+
+#id_Reminder48_container {
+  padding-top: 15px;
+}
+
+#id_PickConfirmation_container {
+  padding-top: 10px;
+}
+
+#id_Reminder48 + span {
+  padding-left: 42px;
+}
+
+#id_PickConfirmation + span {
+  padding-left: 42px;
+}
