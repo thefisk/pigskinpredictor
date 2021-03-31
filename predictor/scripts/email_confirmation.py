@@ -20,7 +20,6 @@ def email_confirmation(user, week, type):
             {
                 'heading': heading,
                 'mypreds': mypreds,
-                'user': user
             }
         ),
         from_email,
