@@ -204,6 +204,8 @@ $(function() {
             else{
                 if(predarray.length == numberOfGames){
                     // Check Deadline First
+                    $('.hideme').hide();
+                    $('#submitted').html("<img src='/static/predictor/img/loading.gif' class='loader'><br>"); // display loading spinner immediately
                     deadline_checker();
                     }
                 else{
