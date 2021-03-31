@@ -225,7 +225,7 @@ $(function() {
                 if(predarray.length == numberOfGames){
                     // Check Deadline First
                     $('.hideme').hide();
-                    $('#submitted').html("<img src='https://pigskinpredictor.s3.eu-west-2.amazonaws.com/static/predictor/img/loading.gif' class='loader'><br>"); // display loading spinner immediately
+                    $('#submitted').html("<img src='https://pigskinpredictorpublic.s3.eu-west-2.amazonaws.com/loading.gif' class='loader'><br>"); // display loading spinner immediately
                     deadline_checker();
                     }
                 else{
