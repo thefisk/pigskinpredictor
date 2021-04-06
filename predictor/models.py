@@ -1,9 +1,11 @@
+from predictor.signals import email_confirmation
 from django.db import models
 from django.db.models.deletion import CASCADE
 from django.utils import timezone
 from accounts.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.urls import reverse
+from django.db.models.signals import post_save
 
 class Team(models.Model):
     ShortName = models.CharField(max_length=4, primary_key=True)
@@ -78,6 +80,8 @@ class Banker(models.Model):
         self.BankSeason = self.BankGame.Season
         self.BankWeek = self.BankGame.Week
         super(Banker, self).save(*args, **kwargs)
+
+post_save.connect(email_confirmation, sender=Banker)
 
 class Prediction(models.Model):
     User = models.ForeignKey(User, on_delete=models.CASCADE)

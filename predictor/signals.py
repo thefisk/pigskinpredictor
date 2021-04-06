@@ -3,7 +3,7 @@ from accounts.models import User
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
 
-def email_confirmation(user, week, type):
+def email_confirmation(sender, **kwargs):
     mypreds = Prediction.objects.filter(User=user, PredWeek=week)
     address = []
     shortweek = str(week)[4::]
