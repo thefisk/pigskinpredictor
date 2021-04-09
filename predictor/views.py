@@ -518,23 +518,27 @@ def ScoreTableEnhancedView(request):
     weekscores = ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON'])   
     nopreds = CustomUser.objects.all().exclude(id__in=weekscores.values('User'))
 
-    jsonseasonscores = {'season_scores' : [{
-        'pos': i+1,
-        'user': s.User.Full_Name,
-        'logo': s.User.FavouriteTeam.Logo.url,
-        'teamshort': s.User.FavouriteTeam.ShortName,
-        'week': get_json_week_score(s.User, scoreweek, os.environ['PREDICTSEASON']),
-        'seasonscore': s.SeasonScore,
-        'seasonworst': s.SeasonWorst,
-        'seasonbest': s.SeasonBest,
-        'seasoncorrect': s.SeasonCorrect,
-        'seasonpercentage': float(s.SeasonPercentage),
-        'seasonaverage': float(s.SeasonAverage),
-        'bankeraverage': float(s.BankerAverage),
+    jsonseasonscores = cache.get('jsonseasonscorescache')
+
+    if not jsonseasonscores:
+        jsonseasonscores = {'season_scores' : [{
+            'pos': i+1,
+            'user': s.User.Full_Name,
+            'logo': s.User.FavouriteTeam.Logo.url,
+            'teamshort': s.User.FavouriteTeam.ShortName,
+            'week': get_json_week_score(s.User, scoreweek, os.environ['PREDICTSEASON']),
+            'seasonscore': s.SeasonScore,
+            'seasonworst': s.SeasonWorst,
+            'seasonbest': s.SeasonBest,
+            'seasoncorrect': s.SeasonCorrect,
+            'seasonpercentage': float(s.SeasonPercentage),
+            'seasonaverage': float(s.SeasonAverage),
+            'bankeraverage': float(s.BankerAverage),
+            }
+            # enumerate needed to allow us to extract the index (position) using i,s
+            for i,s in enumerate(ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']))]
         }
-        # enumerate needed to allow us to extract the index (position) using i,s
-        for i,s in enumerate(ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']))]
-    }
+        cache.set('jsonseasonscorescache', jsonseasonscores)
 
     jsonweekscores = {'week_scores' : [{
         'user': s.User.Full_Name,
