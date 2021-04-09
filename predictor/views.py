@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from blog.models import Post
 from django.urls import reverse, reverse_lazy
 from .forms import RecordsForm
+from .tasks import email_confirmation
 from .models import (
     Team,
     Results,
@@ -417,6 +418,10 @@ def AjaxAddBankerView(request):
             response_data['user'] = str(bankerentry.User)
             response_data['winner'] = str(bankerentry.BankerTeam)
 
+            # Call Email Confirmation Script after banker because banker AJAX occurs once, after Preds have been added
+            if request.user in CustomUser.objects.filter(PickConfirmation = True):
+                email_confirmation.delay(user=request.user.pk, week=int(str(bankseason)+str(bankweek)), type='New')
+
             return JsonResponse(response_data)
         else:
             return JsonResponse({"nothing to see": "this isn't happening"})
@@ -634,6 +639,10 @@ def AjaxAmendBankerView(request):
             response_data['game'] = str(bankerentry.BankGame)
             response_data['user'] = str(bankerentry.User)
             response_data['winner'] = str(bankerentry.BankerTeam)
+
+            # Call Email Confirmation Script after banker because banker AJAX occurs once, after Preds have been added
+            if request.user in CustomUser.objects.filter(PickConfirmation = True):
+                email_confirmation.delay(user=request.user.pk, week=int(str(bankseason)+str(bankweek)), type='Amended')
 
             return JsonResponse(response_data)
 
