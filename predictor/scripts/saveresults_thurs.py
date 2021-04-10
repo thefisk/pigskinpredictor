@@ -5,6 +5,8 @@
 
 import os, json, boto3, datetime
 from predictor.models import Team, Results, ScoresSeason, ScoresAllTime, ScoresWeek, Prediction
+from django.core.cache import cache
+from .cacheflushlist import cachestoflush
 
 def run():
    # Loop to ensure script only executes on a Thursday!
@@ -90,5 +92,7 @@ def run():
                   alltimebanktotal += alltimebanker.Points
             alltime.AllTimeBankerAverage=alltimebanktotal/Prediction.objects.filter(User=alltime.User, Banker=True).exclude(Points__isnull=True).count()
             alltime.save()
+      for c in cachestoflush:
+            cache.delete(c)
    else:
       pass

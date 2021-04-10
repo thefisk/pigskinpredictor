@@ -212,6 +212,5 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
         "KEY_PREFIX": "pigskindjango",
-        "TIMEOUT": 60 * 60 * 24 * 7 # Items in the cache will expire after 1 week
     }
 }

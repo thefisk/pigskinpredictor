@@ -1,7 +1,9 @@
 {% load static %}
+{% load cache %}
 {% load predictor_custom_tags %}
 {% include 'material/includes/material_css.html' %}
 {% include 'material/includes/material_js.html' %}
+{% cache 600 header request.user.username %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -79,8 +81,10 @@
       </ul>
       </header>
       <main>
+      {% endcache %}
       {% block content %}
       {% endblock %}
+      {% cache 600 footer request.user.username %}
       <p></p>
       </main>
       <footer class="page-footer footer-pigskin">
@@ -109,3 +113,4 @@
     {% endblock javascript %}
   </body>
 </html>
+{% endcache %}

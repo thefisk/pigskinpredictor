@@ -43,7 +43,7 @@ def corresponding_away(predgameid):
 
 @register.filter(name='division_players')
 def division_players(div):
-    cachename=div+'_players'
+    cachename=div+'_Players'
     players = cache.get(cachename)
     if not players:
         division = Team.objects.filter(ConfDiv=div)
@@ -58,7 +58,7 @@ def division_players(div):
 
 @register.filter(name='division_total')
 def division_total(div):
-    cachename=div+'_total'
+    cachename=div+'_Total'
     total = cache.get(cachename)
     if not total:
         division = Team.objects.filter(ConfDiv=div)

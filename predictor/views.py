@@ -35,6 +35,11 @@ from django.views.generic import (
     FormView
 )
 
+CacheTTL_1Week = 60 * 60 * 24 * 7
+CacheTTL_1Day = 60 * 60 * 24
+CacheTTL_1Hour = 60 * 60
+CacheTTL_3Hours = 60 * 60 * 3
+
 @require_GET
 def RobotsTXT(request):
     lines = [
@@ -538,15 +543,19 @@ def ScoreTableEnhancedView(request):
             # enumerate needed to allow us to extract the index (position) using i,s
             for i,s in enumerate(ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']))]
         }
-        cache.set('jsonseasonscorescache', jsonseasonscores)
+        cache.set('jsonseasonscorescache', jsonseasonscores, CacheTTL_1Week)
 
-    jsonweekscores = {'week_scores' : [{
-        'user': s.User.Full_Name,
-        'weekscore': s.WeekScore
-            }
-        for s in ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON'])
-        ]
-    }
+    jsonweekscores = cache.get('jsonweekscorescache')
+
+    if not jsonweekscores:
+        jsonweekscores = {'week_scores' : [{
+            'user': s.User.Full_Name,
+            'weekscore': s.WeekScore
+                }
+            for s in ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON'])
+            ]
+        }
+        cache.set('jsonweekscorescache', jsonweekscores, CacheTTL_1Week)
 
     jsonuser = {
         'user': request.user.Full_Name
@@ -831,7 +840,7 @@ def DivisionTableView(request):
         SortedList = list(SortedDict.items())
         print(type(SortedList))
 
-        cache.set('DivAvgDict', SortedList)
+        cache.set('DivAvgDict', SortedList, CacheTTL_1Week)
 
     context = {
         'scores': SortedList,
