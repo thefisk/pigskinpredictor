@@ -4,6 +4,8 @@
 
 import os, json, boto3
 from predictor.models import Team, Results, ScoresSeason, ScoresAllTime, ScoresWeek, Prediction
+from django.core.cache import cache
+from .cacheflushlist import cachestoflush
 
 def run():
    resultsweek = os.environ['RESULTSWEEK']
@@ -88,3 +90,5 @@ def run():
                alltimebanktotal += alltimebanker.Points
          alltime.AllTimeBankerAverage=alltimebanktotal/Prediction.objects.filter(User=alltime.User, Banker=True).exclude(Points__isnull=True).count()
          alltime.save()
+   for c in cachestoflush:
+      cache.delete(c)

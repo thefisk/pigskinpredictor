@@ -1,4 +1,5 @@
 from django import template
+from django.core.cache import cache
 from django.contrib.auth.models import Group
 from predictor.models import Match, ScoresWeek, Results, Team, ScoresSeason, Prediction
 from accounts.models import User
@@ -42,27 +43,37 @@ def corresponding_away(predgameid):
 
 @register.filter(name='division_players')
 def division_players(div):
-    division = Team.objects.filter(ConfDiv=div)
-    try:
-        players = User.objects.filter(FavouriteTeam__in=division).count()
-    except:
-        return 0
-    else:
-        return players
+    cachename=div+'_Players'
+    players = cache.get(cachename)
+    if not players:
+        division = Team.objects.filter(ConfDiv=div)
+        try:
+            players = User.objects.filter(FavouriteTeam__in=division).count()
+        except:
+            players = 0
+            cache.set(cachename, 0)
+        else:
+            cache.set(cachename, players)
+    return players
 
 @register.filter(name='division_total')
 def division_total(div):
-    division = Team.objects.filter(ConfDiv=div)
-    try:
-        players = User.objects.filter(FavouriteTeam__in=division)
-    except:
-        return 0
-    total = 0
-    for player in players:
+    cachename=div+'_Total'
+    total = cache.get(cachename)
+    if not total:
+        division = Team.objects.filter(ConfDiv=div)
         try:
-            total += ScoresSeason.objects.get(User=player, Season=int(os.environ['PREDICTSEASON'])).SeasonScore
+            players = User.objects.filter(FavouriteTeam__in=division)
         except:
-            pass
+            cache.set(cachename, 0)
+            total = 0
+        total = 0
+        for player in players:
+            try:
+                total += ScoresSeason.objects.get(User=player, Season=int(os.environ['PREDICTSEASON'])).SeasonScore
+            except:
+                pass
+        cache.set(cachename, total)
     return total
 
 @register.filter(name='banker_class')
