@@ -5,6 +5,12 @@ from predictor.models import Match, ScoresWeek, Results, Team, ScoresSeason, Pre
 from accounts.models import User
 import os
 
+CacheTTL_1Week = 60 * 60 * 24 * 7
+CacheTTL_1Day = 60 * 60 * 24
+CacheTTL_1Hour = 60 * 60
+CacheTTL_3Hours = 60 * 60 * 3
+CacheTTL_5Mins = 60 *5
+
 register = template.Library()
 
 @register.filter(name='has_group')
@@ -43,7 +49,7 @@ def corresponding_away(predgameid):
 
 @register.filter(name='division_players')
 def division_players(div):
-    cachename=div+'_Players'
+    cachename = div+'_Players'
     players = cache.get(cachename)
     if not players:
         division = Team.objects.filter(ConfDiv=div)
@@ -53,12 +59,12 @@ def division_players(div):
             players = 0
             cache.set(cachename, 0)
         else:
-            cache.set(cachename, players)
+            cache.set(cachename, players, CacheTTL_1Week)
     return players
 
 @register.filter(name='division_total')
 def division_total(div):
-    cachename=div+'_Total'
+    cachename = div+'_Total'
     total = cache.get(cachename)
     if not total:
         division = Team.objects.filter(ConfDiv=div)
@@ -73,7 +79,7 @@ def division_total(div):
                 total += ScoresSeason.objects.get(User=player, Season=int(os.environ['PREDICTSEASON'])).SeasonScore
             except:
                 pass
-        cache.set(cachename, total)
+        cache.set(cachename, total, CacheTTL_1Week)
     return total
 
 @register.filter(name='banker_class')
