@@ -39,6 +39,7 @@ CacheTTL_1Week = 60 * 60 * 24 * 7
 CacheTTL_1Day = 60 * 60 * 24
 CacheTTL_1Hour = 60 * 60
 CacheTTL_3Hours = 60 * 60 * 3
+CacheTTL_5Mins = 60 *5
 
 @require_GET
 def RobotsTXT(request):
@@ -529,7 +530,6 @@ def ScoreTableEnhancedView(request):
         jsonseasonscores = {'season_scores' : [{
             'pos': i+1,
             'user': s.User.Full_Name,
-            'logo': s.User.FavouriteTeam.Logo.url,
             'teamshort': s.User.FavouriteTeam.ShortName,
             'week': get_json_week_score(s.User, scoreweek, os.environ['PREDICTSEASON']),
             'seasonscore': s.SeasonScore,
@@ -561,7 +561,14 @@ def ScoreTableEnhancedView(request):
         'user': request.user.Full_Name
     }
 
+    jsonurls = {
+    }
+    
+    for team in Team.objects.all():
+        jsonurls[team.pk] = team.Logo.url
+
     context = {
+        'jsonurls': jsonurls,
         'jsonseasonscores': jsonseasonscores,
         'jsonweekscores': jsonweekscores,
         'jsonuser': jsonuser,
