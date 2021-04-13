@@ -28,7 +28,7 @@ class Team(models.Model):
 
 class Match(models.Model):
     Season = models.IntegerField(validators=[MinValueValidator(2012), MaxValueValidator(2050)])
-    Week = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(17)])
+    Week = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(18)])
     GameID = models.IntegerField(primary_key=True,validators=[MinValueValidator(20120101)])
     HomeTeam = models.ForeignKey(Team, related_name='HomeTeam_Schedule_Set', on_delete=models.CASCADE)
     AwayTeam = models.ForeignKey(Team, related_name='AwayTeam_Schedule_Set', on_delete=models.CASCADE)
@@ -164,7 +164,7 @@ class Prediction(models.Model):
 
 class ScoresWeek(models.Model):
     User = models.ForeignKey(User, on_delete=models.CASCADE)
-    Week = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(17)])
+    Week = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(18)])
     WeekScore = models.IntegerField()
     Season = models.IntegerField(validators=[MinValueValidator(2012), MaxValueValidator(2050)])
 
@@ -212,7 +212,7 @@ class ScoresAllTime(models.Model):
 
 class Results(models.Model):
     Season = models.IntegerField(validators=[MinValueValidator(2012), MaxValueValidator(2050)])
-    Week = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(17)])
+    Week = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(18)])
     GameID = models.IntegerField(primary_key=True,validators=[MinValueValidator(20100101)])
     HomeTeam = models.ForeignKey(Team, related_name='HomeTeam_Results_Set', on_delete=models.CASCADE)
     AwayTeam = models.ForeignKey(Team, related_name='AwayTeam_Results_Set', on_delete=models.CASCADE)

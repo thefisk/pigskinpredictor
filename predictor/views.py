@@ -98,7 +98,7 @@ def ProfileView(request):
                 profileseason = str((int(os.environ['PREDICTSEASON'])) -1)
             else:
                 profileseason = os.environ['PREDICTSEASON']
-            if int(os.environ['RESULTSWEEK']) < 18:
+            if int(os.environ['RESULTSWEEK']) < 19:
                 predweek = int(os.environ['PREDICTSEASON']+os.environ['RESULTSWEEK'])
                 try:
                     mypreds = Prediction.objects.filter(User=request.user, PredWeek=predweek)
@@ -148,7 +148,7 @@ def ProfileNewPlayerView(request):
             return redirect('profile-amended')
     else:    
         form = CustomUserChangeForm(instance=request.user)
-        if int(os.environ['RESULTSWEEK']) < 18:
+        if int(os.environ['RESULTSWEEK']) < 19:
             predweek = int(os.environ['PREDICTSEASON']+os.environ['RESULTSWEEK'])
             try:
                 mypreds = Prediction.objects.filter(User=request.user, PredWeek=predweek)
@@ -183,8 +183,8 @@ def ResultsView(request):
     basescoreweek = int(os.environ['RESULTSWEEK']) - 1
     if basescoreweek < 1:
         return redirect('results-preseason')
-    elif basescoreweek > 17:
-        scoreweek = 17
+    elif basescoreweek > 18:
+        scoreweek = 18
     else:
         scoreweek = basescoreweek
     template = 'predictor/results.html'
@@ -207,8 +207,8 @@ def ResultsDidNotPlayView(request):
     basescoreweek = int(os.environ['RESULTSWEEK']) - 1
     if basescoreweek < 1:
         return redirect('results-preseason')
-    elif basescoreweek > 17:
-        scoreweek = 17
+    elif basescoreweek > 18:
+        scoreweek = 18
     else:
         scoreweek = basescoreweek
     template = 'predictor/results-didnotplay.html'
@@ -230,9 +230,9 @@ def ResultsPreSeasonView(request):
 def CreatePredictionsView(request):
     week = os.environ['PREDICTWEEK']
     season = os.environ['PREDICTSEASON']
-    if int(week) > 17:
-        if int(os.environ['RESULTSWEEK']) == 17:
-            response = redirect('week-17-view')
+    if int(week) > 18:
+        if int(os.environ['RESULTSWEEK']) == 18:
+            response = redirect('week-18-view')
         else:
             response = redirect('new-year-view')
         return response
@@ -292,7 +292,7 @@ def AmendPredictionsView(request):
 
     return render(request, template, context)
 
-### View to Display after week 17 ###
+### View to Display after week 18 ###
 @require_GET
 @login_required
 def NewYearView(request):
@@ -320,10 +320,10 @@ def NewYearView(request):
         }
         return render(request, template, context)
 
-### View to During week 17 ###
+### Predict view to show during week 18 ###
 @require_GET
 @login_required
-def Week17View(request):
+def Week18View(request):
     nextyear = int(os.environ['PREDICTSEASON'])+1
     player = CustomUser.objects.get(username = request.user.username).first_name
     try:
@@ -338,7 +338,7 @@ def Week17View(request):
         }
         return render(request, template, context)
     else:  
-        template = 'predictor/week_17.html'
+        template = 'predictor/week_18.html'
         context = {
             'nextyear':nextyear,
             'year':os.environ['PREDICTSEASON'],
@@ -347,12 +347,6 @@ def Week17View(request):
             'player':player
         }
         return render(request, template, context)
-
-
-class ScheduleView(ListView):
-    model = Match
-    context_object_name = 'matches'
-    template_name = 'predictor/schedule.html' # <app>/<model>_viewtype>.html
 
 
 class UserPredictions(ListView):
@@ -459,8 +453,8 @@ def ScoreTableView(request):
     basescoreweek = int(os.environ['RESULTSWEEK']) - 1
     if basescoreweek < 1:
         return redirect('scoretable-preseason')
-    elif basescoreweek > 17:
-        scoreweek = 17
+    elif basescoreweek > 18:
+        scoreweek = 18
     else:
         scoreweek = basescoreweek
     weekscores = ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON'])   
@@ -486,8 +480,8 @@ def ScoreTableEnhancedView(request):
     basescoreweek = int(os.environ['RESULTSWEEK']) - 1
     if basescoreweek < 1:
         return redirect('scoretable-preseason')
-    elif basescoreweek > 17:
-        scoreweek = 17
+    elif basescoreweek > 18:
+        scoreweek = 18
     else:
         scoreweek = basescoreweek
 
@@ -675,8 +669,8 @@ def DivisionTableView(request):
     basescoreweek = int(os.environ['RESULTSWEEK']) - 1
     if basescoreweek < 1:
         return redirect('scoretable-preseason')
-    elif basescoreweek > 17:
-        scoreweek = 17
+    elif basescoreweek > 18:
+        scoreweek = 18
     else:
         scoreweek = basescoreweek
     try:

@@ -5,7 +5,6 @@ from .views import (
     ResultsView,
     ResultsPreSeasonView,
     ResultsDidNotPlayView,
-    ScheduleView,
     CreatePredictionsView, #New Predictions
     AmendPredictionsView, #Amend Predictions
     AjaxAddPredictionView, #AJAX
@@ -18,7 +17,7 @@ from .views import (
     ScoringView, #Scoring
     ReportsView, #Reports
     NewYearView, #AfterWeek17
-    Week17View, #LastWeek
+    Week18View, #LastWeek
     ProfileView,
     ProfileAmendedView,
     ProfileNewPlayerView,
@@ -59,8 +58,8 @@ urlpatterns = [
     path('about/',AboutView, name='about'), #About
     path('scoring/',ScoringView, name='scoring'), #Scoring
     path('report/',ReportsView, name='report'), #Reports
-    path('yearend/',NewYearView, name='new-year-view'), #After Week 17
-    path('week17/',Week17View, name='week-17-view'), #After Week 17
+    path('yearend/',NewYearView, name='new-year-view'), #After Week 18
+    path('week18/',Week18View, name='week-18-view'), #After Week 18
     path('ajaxdeadlineverification/',AjaxDeadlineVerification, name='report'), #AJAX
 ]
 
