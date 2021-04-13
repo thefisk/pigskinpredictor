@@ -45,6 +45,26 @@
                 </div>
             {% endfor %}
         </div>
+        {% if jokeravailable %}
+            {% if jokerchecked %}
+                <div>
+                    <label for = "Joker">
+                        <input id="Joker" type="checkbox" class="filled-in" checked="checked"/>
+                        <span>Play Joker <em>(triple pts, once per season)</em></span>
+                    </label>
+                    <P>
+                </div>
+            {% else %}
+                <div>
+                    <label for = "Joker">
+                        <input id="Joker" type="checkbox" class="filled-in"/>
+                        <span>Play Joker <em>(triple pts, once per season)</em></span>
+                    </label>
+                    <P>
+                </div>
+            {% endif %}
+
+        {% endif %}
         {% if week == "1" %}
         <button id="predict-submit" class="waves-effect waves-light btn hideme" type="submit">Submit</button>
         <br>

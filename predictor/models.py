@@ -88,7 +88,7 @@ class Prediction(models.Model):
     Banker = models.BooleanField(default=False)
     PredWeek = models.IntegerField(blank=True, null=True)
     PredSeason = models.IntegerField(blank=True, null=True)
-
+    Joker = models.BooleanField(default=False)
     class Meta:
         unique_together = ("User", "Game"),
     
@@ -241,6 +241,8 @@ class Results(models.Model):
             except:
                 if pred.Winner == self.Winner:
                     pred.Points = scored
+                    if pred.Joker == True:
+                        pred.Points = (pred.Points * 3)
                     pred.save()
                 else:
                     pred.Points = 0
@@ -249,9 +251,13 @@ class Results(models.Model):
             else:
                 if pred.Winner == self.Winner:
                     pred.Points = scored*2
+                    if pred.Joker == True:
+                        pred.Points = (pred.Points * 3)
                     pred.save()
                 else:
                     pred.Points = 0-(scored*2)
+                    if pred.Joker == True:
+                        pred.Points = (pred.Points * 3)
                     pred.save()
         super(Results, self).save(*args, **kwargs)
 
