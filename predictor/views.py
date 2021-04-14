@@ -230,6 +230,12 @@ def ResultsPreSeasonView(request):
 def CreatePredictionsView(request):
     week = os.environ['PREDICTWEEK']
     season = os.environ['PREDICTSEASON']
+    if request.user.JokerUsed == int(week):
+        jokeravailable = True
+    elif request.user.JokerUsed == None:
+        jokeravailable = True
+    else:
+        jokeravailable = False
     if int(week) > 18:
         if int(os.environ['RESULTSWEEK']) == 18:
             response = redirect('week-18-view')
@@ -243,6 +249,7 @@ def CreatePredictionsView(request):
             response = redirect('amend-prediction-view')
             return response
     context = {
+        'jokeravailable':jokeravailable,
         'bankers':Banker.objects.filter(User=request.user, BankSeason=season),
         'predictions':Prediction.objects.all(),
         'matches':Match.objects.filter(Week=week, Season=season),
@@ -259,6 +266,15 @@ def CreatePredictionsView(request):
 def AmendPredictionsView(request):
     week = os.environ['PREDICTWEEK']
     season = os.environ['PREDICTSEASON']
+    if request.user.JokerUsed == int(week):
+        jokeravailable = True
+        jokerchecked = True
+    elif request.user.JokerUsed == None:
+        jokeravailable = True
+        jokerchecked = False
+    else:
+        jokeravailable = False
+        jokerchecked = False
     UserPreds = Prediction.objects.filter(Game__Week=week, Game__Season=season, User=request.user)
     Unpredicted = []
     for i in UserPreds:
@@ -279,6 +295,8 @@ def AmendPredictionsView(request):
     else:
         template = 'predictor/predict_amend.html'
     context = {
+        'jokeravailable':jokeravailable,
+        'jokerchecked':jokerchecked,
         'classdict':ClassDict,
         'bankers':UserBankersAmend,
         'predictions':Prediction.objects.all(),
@@ -376,10 +394,18 @@ def AjaxAddPredictionView(request):
             json_data = json.loads(request.body.decode('utf-8'))
             pred_winner = json_data['pred_winner']
             pred_game_str = json_data['pred_game']
+            joker = bool(json_data['joker'])
             pred_game = Match.objects.get(GameID=pred_game_str)
             response_data = {}
+
+            if joker == True:
+                # Add JokerUsed week value if new predictions use Joker
+                if request.user.JokerUsed == None:
+                    updateuser = CustomUser.objects.get(pk = request.user.id)
+                    updateuser.JokerUsed = int(os.environ['PREDICTWEEK'])
+                    updateuser.save()
         
-            predictionentry = Prediction(User=pred_user, Game=pred_game, Winner=pred_winner)
+            predictionentry = Prediction(User=pred_user, Game=pred_game, Winner=pred_winner, Joker=joker)
             predictionentry.save()
 
             response_data['result'] = 'Prediction entry successful!'
@@ -595,8 +621,23 @@ def AjaxAmendPredictionView(request):
             json_data = json.loads(request.body.decode('utf-8'))
             pred_winner = json_data['pred_winner']
             pred_game_str = json_data['pred_game']
+            joker = bool(json_data['joker'])
             pred_game = Match.objects.get(GameID=pred_game_str)
             response_data = {}
+
+            if joker == True:
+                # Change User JokerUsed to week number if selected on amend
+                if request.user.JokerUsed == None:
+                    updateuser = CustomUser.objects.get(pk = request.user.id)
+                    updateuser.JokerUsed = int(os.environ['PREDICTWEEK'])
+                    updateuser.save()
+            else:
+                # Reset User JokerUsed to blank if deselected on amend
+                if request.user.JokerUsed == int(os.environ['PREDICTWEEK']):
+                    updateuser = CustomUser.objects.get(pk = request.user.id)
+                    print(updateuser)
+                    updateuser.JokerUsed = None
+                    updateuser.save()
 
             try:
                 oldprediction = Prediction.objects.get(User=pred_user, Game=pred_game)
@@ -605,7 +646,7 @@ def AjaxAmendPredictionView(request):
             else:
                 oldprediction.delete()
         
-            predictionentry = Prediction(User=pred_user, Game=pred_game, Winner=pred_winner)
+            predictionentry = Prediction(User=pred_user, Game=pred_game, Winner=pred_winner, Joker=joker)
             predictionentry.save()
 
             response_data['result'] = 'Prediction entry successful!'
