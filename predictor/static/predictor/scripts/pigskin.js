@@ -204,11 +204,26 @@ $(function() {
             else{
                 if(predarray.length == numberOfGames){
                     // Check Deadline First
-                    $('.hideme').hide();
-                    $('#submitted').html("<img src='https://pigskinpredictorpublic.s3.eu-west-2.amazonaws.com/loading.gif' class='loader'><br>"); // display loading spinner immediately
-                    deadline_checker();
+                    let joker = document.getElementById("Joker")
+                    if (joker.checked == true){
+                        // Only submit if OK is pressed at prompt
+                        if (confirm("Play 1 off Joker?")) {
+                            $('.hideme').hide();
+                            $('#submitted').html("<img src='https://pigskinpredictorpublic.s3.eu-west-2.amazonaws.com/loading.gif' class='loader'><br>"); // display loading spinner immediately
+                            deadline_checker();
+                            }
+                        else {
+                            // Return to screen if cancel pressed
+                        }
                     }
-                else{
+                    // Submit without a Joker prompt if Joker is deselected
+                    else {
+                        $('.hideme').hide();
+                        $('#submitted').html("<img src='https://pigskinpredictorpublic.s3.eu-west-2.amazonaws.com/loading.gif' class='loader'><br>"); // display loading spinner immediately
+                        deadline_checker();
+                    }
+                }
+                else {
                     window.alert("Please fill in all predictions");
                     }
                 }
@@ -231,6 +246,28 @@ $(function() {
             data : verificationstring,
             // handle a successful response
             success : function(json) {
+                // Add Joker value to Array elements
+                let joker = document.getElementById("Joker")
+                // If Joker checkbox exists, check its value
+                if (joker) {
+                    if (document.getElementById("Joker").checked == true) {
+                        
+                        for(var i = 0; i < predarray.length; i++) {
+                            predarray[i]['joker']=1
+                        }
+                    }
+                    else {
+                        for(var i = 0; i < predarray.length; i++) {
+                            predarray[i]['joker']=0
+                        }
+                    }
+                }
+                // If Joker checkbox does not exist, add false to Joker in Array elements
+                else {
+                    for(var i = 0; i < predarray.length; i++) {
+                        predarray[i]['joker']=0
+                    }
+                }
                 // Post Predictions
                 var jsonstring = JSON.stringify(predarray);
                 var predjson = JSON.parse(jsonstring);

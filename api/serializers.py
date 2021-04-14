@@ -25,7 +25,7 @@ class PredictionSerializer(serializers.ModelSerializer):
     )
     class Meta:
         model = Prediction
-        fields = ('User','Game','PredWeek','Winner', 'Banker', 'Points')
+        fields = ('User','Game','PredWeek','Winner', 'Banker', 'Points', 'Joker')
 
 class BankerSerializer(serializers.ModelSerializer):
     User = serializers.SlugRelatedField(

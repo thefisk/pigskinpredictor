@@ -274,6 +274,7 @@ def AmendPredictionsView(request):
         jokerchecked = False
     else:
         jokeravailable = False
+        jokerchecked = False
     UserPreds = Prediction.objects.filter(Game__Week=week, Game__Season=season, User=request.user)
     Unpredicted = []
     for i in UserPreds:
@@ -400,8 +401,8 @@ def AjaxAddPredictionView(request):
             if joker == True:
                 # Add JokerUsed week value if new predictions use Joker
                 if request.user.JokerUsed == None:
-                    updateuser = User.objects.get(pk = request.user.id)
-                    updateuser.JokerUsed = int(os.environ.['PREDICTWEEK'])
+                    updateuser = CustomUser.objects.get(pk = request.user.id)
+                    updateuser.JokerUsed = int(os.environ['PREDICTWEEK'])
                     updateuser.save()
         
             predictionentry = Prediction(User=pred_user, Game=pred_game, Winner=pred_winner, Joker=joker)
@@ -627,13 +628,14 @@ def AjaxAmendPredictionView(request):
             if joker == True:
                 # Change User JokerUsed to week number if selected on amend
                 if request.user.JokerUsed == None:
-                    updateuser = User.objects.get(pk = request.user.id)
+                    updateuser = CustomUser.objects.get(pk = request.user.id)
                     updateuser.JokerUsed = int(os.environ['PREDICTWEEK'])
                     updateuser.save()
             else:
                 # Reset User JokerUsed to blank if deselected on amend
                 if request.user.JokerUsed == int(os.environ['PREDICTWEEK']):
-                    updateuser = User.objects.get(pk = request.user.id)
+                    updateuser = CustomUser.objects.get(pk = request.user.id)
+                    print(updateuser)
                     updateuser.JokerUsed = None
                     updateuser.save()
 

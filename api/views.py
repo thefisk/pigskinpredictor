@@ -38,7 +38,7 @@ class NoPredsAPIView(viewsets.ReadOnlyModelViewSet):
         return User.objects.exclude(id__in=haspicked)
 
 class PredictionCSVOrdering(r.CSVRenderer):
-    header = ['PredWeek', 'Game', 'User', 'Winner', 'Banker', 'Points']
+    header = ['PredWeek', 'Game', 'User', 'Winner', 'Banker', 'Joker', 'Points']
 
 class BankersCSVOrdering(r.CSVRenderer):
     header = ['BankSeason', 'BankWeek', 'User', 'BankerTeam']
