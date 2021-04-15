@@ -511,38 +511,34 @@ def ScoreTableEnhancedView(request):
     else:
         scoreweek = basescoreweek
 
-    high = -999
-    for weekscore in ScoresWeek.objects.filter(Season=os.environ['PREDICTSEASON']):
-        if weekscore.WeekScore > high:
-            high = weekscore.WeekScore
-
-    low = 999
-    for weekscore in ScoresWeek.objects.filter(Season=os.environ['PREDICTSEASON']):
-        if weekscore.WeekScore < low:
-            low = weekscore.WeekScore
-
-    worstbest = 999
-    for score in ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']):
-        if score.SeasonBest < worstbest:
-            worstbest = score.SeasonBest
-
-    bestworst = -999
-    for score in ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']):
-        if score.SeasonWorst > bestworst:
-            bestworst = score.SeasonWorst   
-
-    bestbanker = -999
-    for seasonscore in ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']):
-        if seasonscore.BankerAverage > bestbanker:
-            bestbanker = seasonscore.BankerAverage
-
-    worstbanker = 999
-    for seasonscore in ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']):
-        if seasonscore.BankerAverage < worstbanker:
-            worstbanker = seasonscore.BankerAverage
-
     weekscores = ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON'])   
     nopreds = CustomUser.objects.all().exclude(id__in=weekscores.values('User'))
+
+    jsonpositions = cache.get('jsonpositionscache')
+
+    lastweek = str(scoreweek)
+    previousweek = str(scoreweek - 1)
+
+    if not jsonpositions:
+        season = os.environ['PREDICTSEASON']
+        lastweek = str(scoreweek)
+        previousweek = str(scoreweek - 1)
+        jsonpositions = {}
+        for i in CustomUser.objects.all():
+            if scoreweek == 1:
+                move="up"
+            else:
+                try: 
+                    if int(i.Positions['data'][season][lastweek]) < int(i.Positions['data'][season][previousweek]):
+                        move = "up"
+                    elif int(i.Positions['data'][season][lastweek]) > int(i.Positions['data'][season][previousweek]):
+                        move = "down"
+                    else:
+                        move = "same"
+                except(IndexError):
+                    move = "dnp"
+            jsonpositions[i.Full_Name] = move
+        cache.set('jsonpositionscache', jsonpositions, CacheTTL_1Week)
 
     jsonseasonscores = cache.get('jsonseasonscorescache')
 
@@ -588,17 +584,12 @@ def ScoreTableEnhancedView(request):
         jsonurls[team.pk] = team.Logo.url
 
     context = {
+        'jsonpositions': jsonpositions,
         'jsonurls': jsonurls,
         'jsonseasonscores': jsonseasonscores,
         'jsonweekscores': jsonweekscores,
         'jsonuser': jsonuser,
         'nopreds': nopreds,
-        'bestbanker': bestbanker,
-        'worstbanker': worstbanker,
-        'worstweekeveryone': low,
-        'bestweekeveryone': high,
-        'worstbest': worstbest,
-        'bestworst': bestworst,
         'seasonscores': ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']),
         'weekscores': ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON']),
         'week':scoreweek,

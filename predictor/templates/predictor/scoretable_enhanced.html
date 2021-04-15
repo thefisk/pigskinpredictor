@@ -27,6 +27,7 @@
 {{ jsonweekscores|json_script:'weekscores' }}
 {{ jsonuser|json_script:'currentuser' }}
 {{ jsonurls|json_script:'logo_urls' }}
+{{ jsonpositions|json_script:'positions'}}
 
 <div class="container">
 <h5 class="mb-3">
@@ -81,6 +82,7 @@ let seasonScores = JSON.parse(document.getElementById('seasonscores').textConten
 let weekScores = JSON.parse(document.getElementById('weekscores').textContent).week_scores;
 let currentUser = JSON.parse(document.getElementById('currentuser').textContent).user;
 let logoUrls = JSON.parse(document.getElementById('logo_urls').textContent);
+let positions = JSON.parse(document.getElementById('positions').textContent)
 
 // for loop to add weekScores to seasonScores for each user
 
@@ -90,6 +92,7 @@ let logoUrls = JSON.parse(document.getElementById('logo_urls').textContent);
         delimiters: ['[[', ']]'],
         el: '#vue-table',
         data: {
+            positions,
             seasonScores,
             logoUrls,
             currentUser,

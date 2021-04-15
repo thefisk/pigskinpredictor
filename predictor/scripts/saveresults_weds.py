@@ -5,6 +5,7 @@
 
 import os, json, boto3, datetime
 from predictor.models import Team, Results, ScoresSeason, ScoresAllTime, ScoresWeek, Prediction
+from accounts.models import User
 from django.core.cache import cache
 from .cacheflushlist import cachestoflush
 
@@ -92,6 +93,29 @@ def run():
                   alltimebanktotal += alltimebanker.Points
             alltime.AllTimeBankerAverage=alltimebanktotal/Prediction.objects.filter(User=alltime.User, Banker=True).exclude(Points__isnull=True).count()
             alltime.save()
+
+      # Add latest positional data to each user profile
+      scorecounter = 0
+      positiondict = {}
+      for i in ScoresSeason.objects.all():
+         positiondict[i.User.pk]=scorecounter
+         scorecounter += 1
+      if resultsweek == 1:
+         for i in User.objects.all():
+            # Create season object before adding to it in week 1
+            i.Positions['data'][str(fileseason)] = {}
+            try:
+               i.Positions['data'][str(fileseason)][str(resultsweek)] = positiondict[i.pk]
+            except(IndexError):
+               # Put a super low position in if they didn't play in week 1
+               i.Positions['data'][str(fileseason)][str(resultsweek)] = positiondict[2000]
+            i.save()
+      else:
+         for i in User.objects.all():
+            i.Positions['data'][str(fileseason)][str(resultsweek)] = positiondict[i.pk]
+            i.save()
+
+      # Finally, clear the Redis caches
       for c in cachestoflush:
          cache.delete(c)
    else:

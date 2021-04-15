@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import JSONField
 from django.contrib.auth.models import AbstractUser, UserManager, PermissionsMixin
 
 
@@ -9,6 +10,7 @@ class User(AbstractUser):
     Reminder48 = models.BooleanField(default=True, verbose_name='48 Hour Reminder Emails')
     PickConfirmation = models.BooleanField(default=False, verbose_name='Pick Confirmation Emails')
     JokerUsed = models.IntegerField(null=True, blank=True, verbose_name='Joker Used')
+    Positions = JSONField(null=True)
     
     def save(self, *args, **kwargs):
         self.first_name = self.first_name.title()
