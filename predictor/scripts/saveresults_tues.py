@@ -117,7 +117,6 @@ def run():
       # Finally, clear the Redis caches
       for c in cachestoflush:
          cache.delete(c)       
-      for c in cachestoflush:
-         cache.delete(c)
+
    else:
       pass

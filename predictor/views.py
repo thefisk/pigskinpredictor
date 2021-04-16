@@ -117,6 +117,7 @@ def ProfileView(request):
                 mypredweek = "0"
             form = CustomUserChangeForm(instance=request.user)
             template = "predictor/profile.html"
+            positions = CustomUser.objects.get(pk=request.user.pk).Positions['data'][os.environ['PREDICTSEASON']]
             seasonhigh = ScoresSeason.objects.get(User=request.user, Season=profileseason).SeasonBest
             seasonlow = ScoresSeason.objects.get(User=request.user, Season=profileseason).SeasonWorst
             seasonpct = ScoresSeason.objects.get(User=request.user, Season=profileseason).SeasonPercentage
@@ -124,6 +125,7 @@ def ProfileView(request):
             alltimelow = ScoresAllTime.objects.get(User=request.user).AllTimeWorst
             alltimepct = ScoresAllTime.objects.get(User=request.user).AllTimePercentage
             context = {
+                'positionsjson': positions,
                 'mypredweek': mypredweek,
                 'preds': preds,
                 'mypreds':mypreds,

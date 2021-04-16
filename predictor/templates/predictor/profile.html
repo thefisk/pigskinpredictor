@@ -5,12 +5,48 @@
  $('#profile').each(function(){
         $(this).toggleClass('active');
     });
+
 </script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{{ positionsjson|json_script:'positions' }}
 <div class='container'>
     <div class="row">
         <div class="col s12 m6">
             <h5>My Stats</h5>
-            <div class="divider"></div>         
+            <div class="divider"></div>
+            <br>
+                    <table id="form-header" class="striped" aria-describedby="Current Form">
+                    <thead>
+                    <tr class = "table-highlight">
+                        <td class = "stats-table-header col-100-l">Current Form</td>
+                    </tr>
+                    </thead>
+                    </table>
+            <div id="form-line" class = "table-secondary">
+                <canvas id="form-chart" height="60"></canvas>
+            </div>
+            <br>
+            <table id="stats-table" class="striped" aria-describedby="Season Results">
+                <thead>
+                   <tr class = "table-highlight">
+                        <td class = "stats-table-header col-30">{{ season }} Season</td>
+                        <td class = "col-30"></td>
+                        <td class = "col-40"></td>
+                    </tr>
+                    <tr class = "table-secondary">
+                        <th class="stats-header table-secondary-header pad-l">Best Week</th>
+                        <th class="stats-header table-secondary-header">Worst Week</th>
+                        <th class="stats-header table-secondary-header">Overall Pct.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="stat-value pad-l">{{ seasonhigh }}<span class = "lowlight"> pts</span></td>
+                        <td class="stat-value">{{ seasonlow }}<span class = "lowlight"> pts</span></td>
+                        <td class="stat-value">{{ seasonpct }}<span class = "lowlight"> %</span></td>
+                    </tr>
+                </tbody>
+            </table>
             <table id="stats-table" class="striped" aria-describedby="All Time Results">
             <br>
                 <thead>
@@ -34,27 +70,7 @@
                 </tbody>
             </table>
             <BR>
-            <table id="stats-table" class="striped" aria-describedby="Season Results">
-                <thead>
-                   <tr class = "table-highlight">
-                        <td class = "stats-table-header col-30">{{ season }} Season</td>
-                        <td class = "col-30"></td>
-                        <td class = "col-40"></td>
-                    </tr>
-                    <tr class = "table-secondary">
-                        <th class="stats-header table-secondary-header pad-l">Best Week</th>
-                        <th class="stats-header table-secondary-header">Worst Week</th>
-                        <th class="stats-header table-secondary-header">Overall Pct.</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="stat-value pad-l">{{ seasonhigh }}<span class = "lowlight"> pts</span></td>
-                        <td class="stat-value">{{ seasonlow }}<span class = "lowlight"> pts</span></td>
-                        <td class="stat-value">{{ seasonpct }}<span class = "lowlight"> %</span></td>
-                    </tr>
-                </tbody>
-            </table>
+
         </div>
         <div class="col s12 m6">
             <h5>Edit my Profile</h5>
@@ -110,4 +126,96 @@
     </div>
     {% endif %}
 </div>
+<script>
+        const labels = [];
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Position',
+                backgroundColor: '#285f8a',
+                borderColor: '#285f8a',
+                data: [],
+                }]
+            };
+       const positions = JSON.parse(document.getElementById('positions').textContent);
+
+        // Only chart last 6 weeks
+        let entries = Object.keys(positions).length
+        if (entries > 6) {
+            for (let [week, position] of Object.entries(positions)) {
+                if (week < (entries - 5)) {
+                    delete positions[week]
+                }
+            }
+        }
+
+        // Convert our Positions object to compatible arrray
+        let posArray = []
+        for (let [week, position] of Object.entries(positions)){
+            labels.push('Week ' +week)
+            data.datasets[0].data.push(position)
+        }
+
+        const config = {
+            type: 'line',
+            data,
+            options: {
+                layout: {
+                    padding: 20,
+                },
+                scales: {
+                    yAxes: {
+                        grid: {
+                            drawBorder: false,
+                            display: false,
+                        },
+                        reverse: true,
+                        ticks: {
+                            display: false,
+                            stepSize: 1,
+                            fontColor: 'yellow'
+                        }
+                    },
+                    xAxes: {
+                        grid: {
+                            drawBorder: false,
+                            display: false,
+                        },
+                        ticks: {
+                            display: false,
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        backgroundColor: '#E5EEF5',
+                        titleColor: '#4485B7',
+                        bodyColor: '#4485B7'
+                    },
+                    legend: {
+                        display: false,
+                        labels: {
+                            font: {
+                                family: "roboto, sans-serif"
+                            }
+                        }
+                    }
+                },
+                elements: {
+                    point: {
+                        pointStyle: 'circle',
+                        pointRadius: 2
+                    },
+                    line: {
+                        borderWidth: 3
+                    }
+                }
+            }
+        };
+
+        var myChart = new Chart(
+            document.getElementById('form-chart'),
+            config
+            );
+</script>
 {% endblock content %}
