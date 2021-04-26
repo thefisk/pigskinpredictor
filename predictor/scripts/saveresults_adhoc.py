@@ -107,7 +107,7 @@ def run():
             i.Positions['data'][str(fileseason)][str(resultsweek)] = positiondict[i.pk]
          except(KeyError):
             # Make position bottom of table if they didn't play in week 1
-            i.Positions['data'][str(fileseason)][str(resultsweek)] = positiondict[usercount]
+            i.Positions['data'][str(fileseason)][str(resultsweek)] = usercount
          i.save()
    else:
       for i in User.objects.all():
