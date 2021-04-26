@@ -1,4 +1,4 @@
-import json, os
+import json, os, collections
 from django.core.cache import cache
 from .helpers import get_json_week_score
 from django.shortcuts import render, get_object_or_404, redirect
@@ -15,6 +15,7 @@ from django.urls import reverse, reverse_lazy
 from .forms import RecordsForm
 from .tasks import email_confirmation
 from .models import (
+    AvgScores,
     Team,
     Results,
     Match,
@@ -115,6 +116,47 @@ def ProfileView(request):
                 mypreds = []
                 preds="no"
                 mypredweek = "0"
+            # Points dict for Season Score Chart
+            mypoints = {}
+            try:
+                for i in ScoresWeek.objects.filter(Season=int(os.environ['PREDICTSEASON']), User=request.user.pk).order_by('Week'):
+                    mypoints[str(i.Week)] = i.WeekScore
+                # Return only latest 6 points
+                if len(mypoints) > 6:
+                    mypoints = dict(list(mypoints.items())[len(mypoints)-6:])
+                # Fill in zero points for bar chart for missed weeks
+                rw = int(os.environ['RESULTSWEEK'])
+                if rw > 19:
+                    limit = 19
+                else:
+                    limit = rw
+                if rw < 7:
+                    lowerlimit = 1
+                else:
+                    lowerlimit = rw-6
+                checklist = []
+                for i in range(lowerlimit,limit):
+                    checklist.append(str(i))
+                for i in checklist:
+                    if i not in mypoints.keys():
+                        mypoints[i] = 0
+
+
+            except ScoresWeek.DoesNotExist:
+                mypoints = None
+            
+            # Avg Points for Season Score Chart
+            avgpoints = cache.get('AvgPointsCache')
+            if not avgpoints:
+                try:
+                    avgpoints = AvgScores.objects.get(Season=int(os.environ['PREDICTSEASON'])).AvgScores
+                    # Return only latest 6 points
+                    if len(avgpoints) > 6:
+                        avgpoints = dict(list(avgpoints.items())[len(avgpoints)-6:])
+                    cache.set('AvgPointsCache', avgpoints, CacheTTL_1Week)
+                except AvgScores.DoesNotExist:
+                    avgpoints = None
+
             form = CustomUserChangeForm(instance=request.user)
             template = "predictor/profile.html"
             positions = CustomUser.objects.get(pk=request.user.pk).Positions['data'][os.environ['PREDICTSEASON']]
@@ -125,6 +167,8 @@ def ProfileView(request):
             alltimelow = ScoresAllTime.objects.get(User=request.user).AllTimeWorst
             alltimepct = ScoresAllTime.objects.get(User=request.user).AllTimePercentage
             context = {
+                'avgpointsjson': avgpoints,
+                'mypointsjson': mypoints,
                 'positionsjson': positions,
                 'mypredweek': mypredweek,
                 'preds': preds,

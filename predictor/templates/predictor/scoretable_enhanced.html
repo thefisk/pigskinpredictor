@@ -16,6 +16,7 @@
 {% block content %}
 
 <!--Vue JS-->
+<!--script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script-->
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 
 <script>
@@ -52,6 +53,8 @@
             <tr v-for="score in sortedTable" :key="score.pos">
                 <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp pad-l">[[score.pos]] </td>
                 <td v-else td class="enhanced clamp pad-l">[[score.pos]] </td>
+                <td v-if="score.user ===  currentUser" class="table-highlight enhanced clamp nopad"><i :class="score.user|direction|arrow"></i></td>
+                <td v-else td class="enhanced clamp nopad"><i :class="score.user|direction|arrow"></i></td>
                 <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp pad-l table-logo"><img v-bind:src="score.teamshort | imgurl" :alt="score.teamshort" class="team_small"></img></td>
                 <td v-else td class="enhanced clamp pad-l table-logo"><img :src="score.teamshort | imgurl" :alt="score.teamshort" class="team_small"></img></td>
                 <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp">[[score.user]]</td>
@@ -107,6 +110,9 @@ let positions = JSON.parse(document.getElementById('positions').textContent)
                     "sortAsc": true,
                     "sortDesc": false,
                     "sorting": true
+                },
+                {
+                    "name": "",
                 },
                 {
                     "name": "",
@@ -220,7 +226,21 @@ let positions = JSON.parse(document.getElementById('positions').textContent)
         filters:{
             imgurl: function(team) {
                 return logoUrls[team]
-            }
+            },
+            direction: function(user) {
+                return positions[user]
+            },
+            arrow: function(direction) {
+                    if (direction == "up") {
+                        return "lni lni-angle-double-up green-arrow"
+                    }
+                    else if (direction == "down") {
+                        return "lni lni-angle-double-down red-arrow"
+                    }
+                    else {
+                        return "lni lni-angle-double-right blue-arrow"
+                    }
+            },
         },
     })
 </script>

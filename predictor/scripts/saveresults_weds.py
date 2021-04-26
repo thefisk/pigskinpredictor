@@ -4,7 +4,7 @@
 ### but will only execute on a Tuesday
 
 import os, json, boto3, datetime
-from predictor.models import Team, Results, ScoresSeason, ScoresAllTime, ScoresWeek, Prediction
+from predictor.models import Team, Results, ScoresSeason, ScoresAllTime, ScoresWeek, Prediction, AvgScores
 from accounts.models import User
 from django.core.cache import cache
 from .cacheflushlist import cachestoflush
@@ -114,6 +114,24 @@ def run():
          for i in User.objects.all():
             i.Positions['data'][str(fileseason)][str(resultsweek)] = positiondict[i.pk]
             i.save()
+
+      # Add latest AvgScores
+      totalscores = 0
+      count = 0
+      for i in ScoresWeek.objects.filter(Season=int(os.environ['PREDICTSEASON']), Week=int(os.environ['RESULTSWEEK'])):
+         totalscores += i.WeekScore
+         count +=1
+      latestavg = int(totalscores/count)
+      try:
+         Avgs = AvgScores.objects.get(Season=int(fileseason))
+         Avgs.AvgScores[str(resultsweek)] = latestavg
+         Avgs.save()
+      except AvgScores.DoesNotExist:
+         NewDict = {}
+         NewDict[str(resultsweek)] = latestavg
+         NewAvgs = AvgScores(Season=int(fileseason), AvgScores=NewDict)
+         NewAvgs.save()
+
 
       # Finally, clear the Redis caches
       for c in cachestoflush:

@@ -9,23 +9,63 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {{ positionsjson|json_script:'positions' }}
+{{ mypointsjson|json_script:'mypoints' }}
+{{ avgpointsjson|json_script:'avgpoints' }}
 <div class='container'>
+    {% if mypointsjson %}
     <div class="row">
+        <div class ="col s12">
+            <h5>My Form</h5>
+            <div class="divider"></div>
+            <br>
+        </div>
         <div class="col s12 m6">
+            <table id="form-header" class="striped" aria-describedby="Current Form">
+                <thead>
+                    <tr class = "table-highlight">
+                        <td class = "stats-table-header col-100-l">Points Per Week</td>
+                    </tr>
+                </thead>
+            </table>
+            <table id="points-header" class="striped" aria-describedby="Points History">
+                <thead>
+                    <tr class = "table-secondary">
+                        <td class="stats-header table-secondary-header pad-l">Comparison with League Avg</td>
+                        <td class="stats-header table-secondary-header td-align-right">Me: <i class="lni lni-ruler bar-me"></i> &nbsp;&nbsp;Avg: <i class="lni lni-ruler bar-avg"></i></td>
+                    </tr>
+                </thead>
+            </table>
+            <div id="scoring-line" class = "profile-table-bg">
+                <canvas id="scoring-chart" height="75"></canvas>
+            </div>
+            </div>
+            <div class="col s12 m6">
+            <table id="form-header" class="striped" aria-describedby="Current Form">
+                <thead>
+                    <tr class = "table-highlight">
+                        <td class = "stats-table-header col-100-l">Positional Trending</td>
+                    </tr>
+                </thead>
+            </table>
+            <table id="form-header" class="striped" aria-describedby="Current Form">
+                <thead>
+                    <tr class = "table-secondary">
+                        <td class = "stats-header table-secondary-header pad-l">Recent league positions</td>
+                    </tr>
+                </thead>
+            </table>
+                <div id="positional-line" class = "profile-table-bg">
+                    <canvas id="positional-chart" height="75"></canvas>
+                </div>
+            </div>
+        {% endif %}
+        <div class = "row">
+        <div class ="col s12">
             <h5>My Stats</h5>
             <div class="divider"></div>
             <br>
-                    <table id="form-header" class="striped" aria-describedby="Current Form">
-                    <thead>
-                    <tr class = "table-highlight">
-                        <td class = "stats-table-header col-100-l">Current Form</td>
-                    </tr>
-                    </thead>
-                    </table>
-            <div id="form-line" class = "table-secondary">
-                <canvas id="form-chart" height="60"></canvas>
-            </div>
-            <br>
+        </div>
+        <div class="col s12 m6">
             <table id="stats-table" class="striped" aria-describedby="Season Results Header">
                 <thead>
                    <tr class = "table-highlight">
@@ -49,8 +89,9 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="col s12 m6">
             <table id="stats-table" class="striped" aria-describedby="All Time Results Header">
-            <br>
                 <thead>
                     <tr class = "table-highlight">
                         <td class = "stats-table-header col-100-l">All Time</td>
@@ -58,6 +99,7 @@
                 </thead>
                 </table>
                 <table id="stats-table" class="striped" aria-describedby="All Time Results Data">
+                <thead>
                     <tr class = "table-secondary">
                         <th class="stats-header table-secondary-header pad-l">Best Week</th>
                         <th class="stats-header table-secondary-header">Worst Week</th>
@@ -72,33 +114,18 @@
                     </tr>
                 </tbody>
             </table>
-            <BR>
-
-        </div>
-        <div class="col s12 m6">
-            <h5>Edit my Profile</h5>
-            <div class="divider"></div>
-            <div><br></div>
-            <form method="post">
-            {% csrf_token %}
-            {% form form=form %}
-            {% part form.first_name prefix %}<i class="material-icons prefix icongrey">face</i>{% endpart %}
-            {% part form.last_name prefix %}<i class="material-icons prefix icongrey">face</i>{% endpart %}
-            {% part form.FavouriteTeam prefix %}<i class="material-icons prefix icongrey">sports_football</i>{% endpart %}
-            {% endform %}
-            <br>
-            <button type="submit" style="float: right" class="btn waves-effect waves-light">update</button>
-            </form>
-            <br><br>
-            <span class="right-float"><i class="material-icons prefix centered-icon">lock_open</i><a class="reset" href="/accounts/password/reset">RESET PASSWORD</a></span>
         </div>
     </div>
-    {% if preds == "yes" %}
+
         <div class="row">
-        <div class="col s12 m12">
-            <table aria-describedby="My Predictions">
+        {% if preds == "yes" %}
+            <div class="col s12 m6">
+            <h5>My Predictions</h5>
+            <div class="divider"></div>
+            <br>
+            <table class="striped" aria-describedby="My Predictions">
                     <tr class = "table-highlight">
-                        <td class = "stats-table-header col-100">My Week {{ mypredweek }} Predictions</td>
+                        <td class = "stats-table-header col-100">Week {{ mypredweek }} Schedule</td>
                     </tr>
             </table>
             <table class="striped results-table table-fixed">
@@ -126,8 +153,25 @@
             </tr>
             </table>
         </div>
-    </div>
     {% endif %}
+            <div class="col s12 m6">
+            <h5>My Settings</h5>
+            <div class="divider"></div>
+            <br>
+            <form method="post">
+            {% csrf_token %}
+            {% form form=form %}
+            <span class="profile-input-border">{% part form.first_name prefix %}<i class="material-icons prefix icongrey">face</i>{% endpart %}</span>
+            {% part form.last_name prefix %}<i class="material-icons prefix icongrey">face</i>{% endpart %}
+            {% part form.FavouriteTeam prefix %}<i class="material-icons prefix icongrey">sports_football</i>{% endpart %}
+            {% endform %}
+            <br>
+            <span class="left-float"><i class="material-icons prefix centered-icon">lock_open</i><a class="reset" href="/accounts/password/reset">RESET PASSWORD &nbsp;</a></span><button type="submit" style="float: right" class="btn waves-effect waves-light">update</button>
+            </form>
+            <br><br>
+            
+            </div>
+            
 </div>
 <script>
         const labels = [];
@@ -142,8 +186,58 @@
                 }]
             };
        const positions = JSON.parse(document.getElementById('positions').textContent);
+       const mypoints = JSON.parse(document.getElementById('mypoints').textContent);
+       const avgpoints = JSON.parse(document.getElementById('avgpoints').textContent);
+       
+       var scoreData = {
+            datasets : [
+                {
+                label: 'me',
+                ill: true,
+                lineTension: 0.1,
+                backgroundColor: "rgba(1, 89, 157, 0.7)",
+                borderColor: "rgba(75,192,192,1)",
+                borderCapStyle: 'butt',
+                borderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'miter',
+                pointBorderColor: "rgba(75,192,192,1)",
+                pointBackgroundColor: "#fff",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+                data : mypoints,
+                },
+                {
+                label: 'avg',
+                ill: true,
+                lineTension: 0.1,
+                backgroundColor: "rgba(253, 153, 38, 0.7)",
+                borderColor: "rgb(40, 95, 138)",
+                borderCapStyle: 'butt',
+                borderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'miter',
+                pointBorderColor: "rgba(75,192,192,1)",
+                pointBackgroundColor: "#fff",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+                data : avgpoints,
+                spanGaps: false
+                },
+            ]
+            }
 
-        // Only chart last 6 weeks
+        // Only chart last 6 weeks for Positions
         let entries = Object.keys(positions).length
         if (entries > 6) {
             for (let [week, position] of Object.entries(positions)) {
@@ -156,11 +250,11 @@
         // Convert our Positions object to compatible arrray
         let posArray = []
         for (let [week, position] of Object.entries(positions)){
-            labels.push('Week ' +week)
+            labels.push(week)
             data.datasets[0].data.push(position)
         }
 
-        const config = {
+        const configForm = {
             type: 'line',
             data,
             options: {
@@ -183,10 +277,11 @@
                     xAxes: {
                         grid: {
                             drawBorder: false,
-                            display: false,
+                            display: true,
                         },
                         ticks: {
-                            display: false,
+                            display: true,
+                            color: 'rgba(0, 0, 0, 0.35)'
                         }
                     }
                 },
@@ -217,9 +312,79 @@
             }
         };
 
-        var myChart = new Chart(
-            document.getElementById('form-chart'),
-            config
+        const configScore = {
+            type: 'bar',
+            data: scoreData,
+                options: {
+                    layout: {
+                        padding: 10,
+                    },
+                    scales: {
+                        yAxes: {
+                            grid: {
+                                drawBorder: false,
+                                display: false,
+                                offset: false
+                            },
+                            ticks: {
+                                display: false,
+                                fontColor: 'yellow'
+                            }
+                        },
+                        xAxes: {
+                            title: {
+                                text: "week",
+                                display: false,
+                                padding: 0,
+                                color: 'rgba(0, 0, 0, 0.35)',
+                            },
+                            grid: {
+                                drawBorder: false,
+                                display: true,
+                            },
+                            ticks: {
+                                display: true,
+                                color: 'rgba(0, 0, 0, 0.35)'
+                            }
+                        }
+                },
+                    plugins: {
+                        tooltip: {
+                            backgroundColor: '#E5EEF5',
+                            titleColor: '#4485B7',
+                            bodyColor: '#4485B7'
+                        },
+                        legend: {
+                            align: 'start',
+                            display: false,
+                            labels: {
+                                usePointStyle: true,
+                                font: {
+                                    family: "roboto, sans-serif"
+                                }
+                            }
+                        }
+                },
+                elements: {
+                    point: {
+                        pointStyle: 'circle',
+                        pointRadius: 2
+                    },
+                    line: {
+                        borderWidth: 3
+                    }
+                }
+            }
+        };
+
+        var positionalChart = new Chart(
+            document.getElementById('positional-chart'),
+            configForm
             );
+        
+        var scoreChart = new Chart(
+            document.getElementById('scoring-chart'),
+            configScore
+        )
 </script>
 {% endblock content %}
