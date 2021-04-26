@@ -5,6 +5,7 @@
 
 import os, json, boto3, datetime
 from predictor.models import Team, Results, ScoresSeason, ScoresAllTime, ScoresWeek, Prediction, AvgScores
+from accounts.models import User
 from django.core.cache import cache
 from .cacheflushlist import cachestoflush
 
@@ -96,7 +97,7 @@ def run():
       # Add latest positional data to each user profile
       scorecounter = 0
       positiondict = {}
-      usercount = User.objects.all().count()
+      usercount = User.objects.all().count() -1
       for i in ScoresSeason.objects.all():
          positiondict[i.User.pk]=scorecounter
          scorecounter += 1
