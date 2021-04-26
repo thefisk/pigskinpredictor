@@ -100,7 +100,7 @@ def run():
       for i in ScoresSeason.objects.all():
          positiondict[i.User.pk]=scorecounter
          scorecounter += 1
-      if resultsweek == 1:
+      if int(resultsweek) == 1:
          for i in User.objects.all():
             # Create season object before adding to it in week 1
             i.Positions['data'][str(fileseason)] = {}
