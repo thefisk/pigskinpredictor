@@ -103,7 +103,7 @@ def run():
       if int(resultsweek) == 1:
          for i in User.objects.all():
             # Create season object before adding to it in week 1
-            i.Positions['data'][str(fileseason)] = {}
+            i.Positions = {"data":{str(fileseason):{}}}
             try:
                i.Positions['data'][str(fileseason)][str(resultsweek)] = positiondict[i.pk]
             except(IndexError):
