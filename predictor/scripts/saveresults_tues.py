@@ -96,6 +96,7 @@ def run():
       # Add latest positional data to each user profile
       scorecounter = 0
       positiondict = {}
+      usercount = User.objects.all().count()
       for i in ScoresSeason.objects.all():
          positiondict[i.User.pk]=scorecounter
          scorecounter += 1
@@ -105,10 +106,10 @@ def run():
             i.Positions = {"data":{str(fileseason):{}}}
             try:
                i.Positions['data'][str(fileseason)][str(resultsweek)] = positiondict[i.pk]
-            except(IndexError):
-               # Put a super low position in if they didn't play in week 1
-               i.Positions['data'][str(fileseason)][str(resultsweek)] = positiondict[2000]
-            i.save()
+            except(KeyError):
+               # Make position bottom of table if they didn't play in week 1
+               i.Positions['data'][str(fileseason)][str(resultsweek)] = positiondict[usercount]
+               i.save()
       else:
          for i in User.objects.all():
             i.Positions['data'][str(fileseason)][str(resultsweek)] = positiondict[i.pk]
