@@ -114,7 +114,11 @@ def run():
             i.save()
       else:
          for i in User.objects.all():
-            i.Positions['data'][str(fileseason)][str(resultsweek)] = positiondict[i.pk]
+            try: 
+               i.Positions['data'][str(fileseason)][str(resultsweek)] = positiondict[i.pk]
+            except(KeyError):
+               # Make position bottom of table if they didn't still didn't play
+               i.Positions['data'][str(fileseason)][str(resultsweek)] = usercount
             i.save()
 
       # Add latest AvgScores
