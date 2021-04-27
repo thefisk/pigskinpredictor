@@ -159,7 +159,10 @@ def ProfileView(request):
 
             form = CustomUserChangeForm(instance=request.user)
             template = "predictor/profile.html"
-            positions = CustomUser.objects.get(pk=request.user.pk).Positions['data'][os.environ['PREDICTSEASON']]
+            try:
+                positions = CustomUser.objects.get(pk=request.user.pk).Positions['data'][os.environ['PREDICTSEASON']]
+            except(TypeError):
+                positions = None
             seasonhigh = ScoresSeason.objects.get(User=request.user, Season=profileseason).SeasonBest
             seasonlow = ScoresSeason.objects.get(User=request.user, Season=profileseason).SeasonWorst
             seasonpct = ScoresSeason.objects.get(User=request.user, Season=profileseason).SeasonPercentage
