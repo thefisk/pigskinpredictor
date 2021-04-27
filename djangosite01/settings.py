@@ -13,7 +13,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = (os.environ.get('DEBUG_VALUE') == ('True'))
 
-ALLOWED_HOSTS = ['pigskinpredictor.herokuapp.com','pigskin-dev.herokuapp.com','pigskinpredictor.com']
+ALLOWED_HOSTS = ['pigskinpredictor.herokuapp.com','pigskin-dev.herokuapp.com','pigskinpredictor.com', 'pigskin-2021.herokuapp.com']
 
 
 # Application definition
@@ -78,8 +78,12 @@ WSGI_APPLICATION = 'djangosite01.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('LOCALDBNAME'),
+        'USER': os.environ.get('LOCALDBUSER'),
+        'PASSWORD': os.environ.get('LOCALDBPASS'),
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 

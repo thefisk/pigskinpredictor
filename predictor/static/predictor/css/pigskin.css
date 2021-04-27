@@ -230,8 +230,41 @@ table.results-table tbody tr td {
   font-weight: 100;
 }
 
+.nopad {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.bar-me {
+  color: rgba(1, 89, 157, 0.7);
+}
+
+.bar-avg {
+  color: rgba(253, 153, 38, 0.7);
+}
+
+.profile-input-border {
+  border-bottom-color: #E0E0E0 !important;
+}
+
+.profile-table-bg {
+  background-color: #F8F8F8;
+}
+
 .icongrey{
-  color: rgba(0, 0, 0, 0.19);
+  color: rgba(1, 89, 157, 0.4);
+}
+
+.green-arrow {
+  color: rgba(13, 165, 13, 0.5)
+}
+
+.red-arrow {
+  color: rgba(165, 13, 13, 0.5)
+}
+
+.blue-arrow {
+  color: rgba(1, 89, 157, 0.7);
 }
 
 .col-25 {
@@ -285,8 +318,9 @@ table.results-table tbody tr td {
 
 .stat-value {
   padding-left: 5px !important;
-  color:rgba(0, 0, 0, 0.60);
+  color:rgba(0, 0, 0, 0.55);
   font-weight: 600;
+  font-size: 18px
 }
 
 .table-value {
@@ -427,12 +461,11 @@ table#stats-table tbody tr td {
 
 .profile-banker {
   color: rgba(1, 89, 157);
-  font-weight: 600;
-  text-transform: uppercase;
+  font-weight: 500;
 }
 
 .bank-background {
-  background-color: rgba(218, 165, 32, 0.6);
+  background-color: rgba(218, 165, 32, 0.3);
 }
 
 .profile-notpicked {
@@ -446,7 +479,8 @@ table#stats-table tbody tr td {
 }
 
 .profile-notpicked-banker {
-  color:white;
+  color: rgba(0, 0, 0, 0.32);
+  font-weight: 500;
 }
 
 .at {
@@ -455,7 +489,8 @@ table#stats-table tbody tr td {
 }
 
 .at-banker {
-  color: white;
+  color: rgba(0, 0, 0, 0.32);
+  font-weight: 500;
 }
 
 .table-left {

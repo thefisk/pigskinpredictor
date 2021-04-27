@@ -16,6 +16,7 @@
 {% block content %}
 
 <!--Vue JS-->
+<!--script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script-->
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 
 <script>
@@ -27,6 +28,7 @@
 {{ jsonweekscores|json_script:'weekscores' }}
 {{ jsonuser|json_script:'currentuser' }}
 {{ jsonurls|json_script:'logo_urls' }}
+{{ jsonpositions|json_script:'positions'}}
 
 <div class="container">
 <h5 class="mb-3">
@@ -51,6 +53,8 @@
             <tr v-for="score in sortedTable" :key="score.pos">
                 <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp pad-l">[[score.pos]] </td>
                 <td v-else td class="enhanced clamp pad-l">[[score.pos]] </td>
+                <td v-if="score.user ===  currentUser" class="table-highlight enhanced clamp nopad"><i :class="score.user|direction|arrow"></i></td>
+                <td v-else td class="enhanced clamp nopad"><i :class="score.user|direction|arrow"></i></td>
                 <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp pad-l table-logo"><img v-bind:src="score.teamshort | imgurl" :alt="score.teamshort" class="team_small"></img></td>
                 <td v-else td class="enhanced clamp pad-l table-logo"><img :src="score.teamshort | imgurl" :alt="score.teamshort" class="team_small"></img></td>
                 <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp">[[score.user]]</td>
@@ -81,6 +85,7 @@ let seasonScores = JSON.parse(document.getElementById('seasonscores').textConten
 let weekScores = JSON.parse(document.getElementById('weekscores').textContent).week_scores;
 let currentUser = JSON.parse(document.getElementById('currentuser').textContent).user;
 let logoUrls = JSON.parse(document.getElementById('logo_urls').textContent);
+let positions = JSON.parse(document.getElementById('positions').textContent)
 
 // for loop to add weekScores to seasonScores for each user
 
@@ -90,6 +95,7 @@ let logoUrls = JSON.parse(document.getElementById('logo_urls').textContent);
         delimiters: ['[[', ']]'],
         el: '#vue-table',
         data: {
+            positions,
             seasonScores,
             logoUrls,
             currentUser,
@@ -104,6 +110,9 @@ let logoUrls = JSON.parse(document.getElementById('logo_urls').textContent);
                     "sortAsc": true,
                     "sortDesc": false,
                     "sorting": true
+                },
+                {
+                    "name": "",
                 },
                 {
                     "name": "",
@@ -217,7 +226,21 @@ let logoUrls = JSON.parse(document.getElementById('logo_urls').textContent);
         filters:{
             imgurl: function(team) {
                 return logoUrls[team]
-            }
+            },
+            direction: function(user) {
+                return positions[user]
+            },
+            arrow: function(direction) {
+                    if (direction == "up") {
+                        return "lni lni-angle-double-up green-arrow"
+                    }
+                    else if (direction == "down") {
+                        return "lni lni-angle-double-down red-arrow"
+                    }
+                    else {
+                        return "lni lni-angle-double-right blue-arrow"
+                    }
+            },
         },
     })
 </script>
