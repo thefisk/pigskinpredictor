@@ -95,7 +95,7 @@ def run():
             alltime.save()
 
       # Add latest positional data to each user profile
-      scorecounter = 0
+      scorecounter = 1
       positiondict = {}
       usercount = User.objects.all().count() -1
       for i in ScoresSeason.objects.all():
