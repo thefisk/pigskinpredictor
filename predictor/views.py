@@ -581,7 +581,7 @@ def ScoreTableEnhancedView(request):
                         move = "down"
                     else:
                         move = "same"
-                except(IndexError):
+                except(IndexError, TypeError):
                     move = "dnp"
             jsonpositions[i.Full_Name] = move
         cache.set('jsonpositionscache', jsonpositions, CacheTTL_1Week)
