@@ -212,6 +212,11 @@ table.results-table tbody tr td {
   font-weight: 100;
 }
 
+.table-secondary-data {
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 300;
+}
+
 .big-link-inactive {
   color: rgba(0, 0, 0, 0.20);
 }
@@ -518,6 +523,13 @@ table#stats-table tbody tr td {
   vertical-align: middle;
 }
 
+.locked-column-pos {
+  text-transform: uppercase !important;
+  color: rgba(1, 89, 157, 0.45) !important;
+  font-weight: 500;
+  vertical-align: middle;
+}
+
 .pos-std {
   color: rgba(1, 89, 157, 0.55) !important;
   vertical-align: middle;
@@ -623,6 +635,15 @@ h5 {
   letter-spacing: 3px;
 }
 
+.email-heading{
+  font-family: roboto;
+  font-weight: 300;
+  font-size: 60%;
+  color: rgba(0, 0, 0, 0.30);
+  text-transform: lowercase;
+  letter-spacing: 2px;
+}
+
 .shorten {
   line-height: 5px;
 }
@@ -707,6 +728,15 @@ h5 {
 
 .table-logo {
   text-align: center;
+  width: 22px;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+.table-small-l {
+  text-align: left;
   width: 22px;
 }
 

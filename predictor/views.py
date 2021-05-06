@@ -1,5 +1,6 @@
 import json, os, collections
 from django.core.cache import cache
+from django.views.decorators.cache import cache_page
 from .helpers import get_json_week_score
 from django.shortcuts import render, get_object_or_404, redirect
 from accounts.forms import CustomUserChangeForm
@@ -90,7 +91,8 @@ def ProfileView(request):
             return redirect('profile-amended')
     else:
         try:
-            ScoresAllTime.objects.get(User=request.user)
+            requestor = request.user
+            alltime = ScoresAllTime.objects.get(User=requestor)
         except ScoresAllTime.DoesNotExist:
             return redirect('profile-newplayer')
         else:
@@ -160,15 +162,16 @@ def ProfileView(request):
             form = CustomUserChangeForm(instance=request.user)
             template = "predictor/profile.html"
             try:
-                positions = CustomUser.objects.get(pk=request.user.pk).Positions['data'][os.environ['PREDICTSEASON']]
+                positions = requestor.Positions['data'][os.environ['PREDICTSEASON']]
             except(TypeError):
                 positions = None
-            seasonhigh = ScoresSeason.objects.get(User=request.user, Season=profileseason).SeasonBest
-            seasonlow = ScoresSeason.objects.get(User=request.user, Season=profileseason).SeasonWorst
-            seasonpct = ScoresSeason.objects.get(User=request.user, Season=profileseason).SeasonPercentage
-            alltimehigh = ScoresAllTime.objects.get(User=request.user).AllTimeBest
-            alltimelow = ScoresAllTime.objects.get(User=request.user).AllTimeWorst
-            alltimepct = ScoresAllTime.objects.get(User=request.user).AllTimePercentage
+            current = ScoresSeason.objects.get(User=requestor, Season=profileseason)
+            seasonhigh = current.SeasonBest
+            seasonlow = current.SeasonWorst
+            seasonpct = current.SeasonPercentage
+            alltimehigh = alltime.AllTimeBest
+            alltimelow = alltime.AllTimeWorst
+            alltimepct = alltime.AllTimePercentage
             context = {
                 'avgpointsjson': avgpoints,
                 'mypointsjson': mypoints,
@@ -299,9 +302,9 @@ def CreatePredictionsView(request):
             return response
     context = {
         'jokeravailable':jokeravailable,
-        'bankers':Banker.objects.filter(User=request.user, BankSeason=season),
+        'bankers':Banker.objects.filter(User=request.user, BankSeason=season).select_related('BankerTeam'),
         'predictions':Prediction.objects.all(),
-        'matches':Match.objects.filter(Week=week, Season=season),
+        'matches':Match.objects.filter(Week=week, Season=season).select_related('HomeTeam', 'AwayTeam'),
         'week':week,
         'season':season,
         'title': 'Predictios'
@@ -329,8 +332,8 @@ def AmendPredictionsView(request):
     for i in UserPreds:
         Unpredicted.append(i.Game.GameID)
     UserBankers = Banker.objects.filter(User=request.user, BankSeason=season)
-    UserBankersAmend = UserBankers.exclude(BankWeek=week)
-    Matches = Match.objects.filter(Week=week, Season=season)
+    UserBankersAmend = UserBankers.exclude(BankWeek=week).select_related('BankerTeam')
+    Matches = Match.objects.filter(Week=week, Season=season).select_related('HomeTeam', 'AwayTeam')
     NotPredicted = Matches.exclude(GameID__in=Unpredicted)
     try:
         originalbanker = Banker.objects.get(BankWeek=week, BankSeason=season, User=request.user).BankGame.GameID
@@ -428,10 +431,12 @@ class UserPredictions(ListView):
         return Prediction.objects.filter(User=user,Game__Week=week,Game__Season=season)
 
 @require_GET
+@cache_page(CacheTTL_1Week)
 def AboutView(request):
     return render(request, 'predictor/about.html', {'title':'About'})
 
 @require_GET
+@cache_page(CacheTTL_1Week)
 def ScoringView(request):
     return render(request, 'predictor/scoring.html', {'title':'Scoring'})
 
@@ -532,13 +537,68 @@ def ScoreTableView(request):
         scoreweek = 18
     else:
         scoreweek = basescoreweek
-    weekscores = ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON'])   
-    nopreds = CustomUser.objects.all().exclude(id__in=weekscores.values('User'))
+
+    jsonpositions = cache.get('jsonpositionscache')
+
+    lastweek = str(scoreweek)
+    previousweek = str(scoreweek - 1)
+
+    if not jsonpositions:
+        season = os.environ['PREDICTSEASON']
+        lastweek = str(scoreweek)
+        previousweek = str(scoreweek - 1)
+        jsonpositions = {}
+        for i in CustomUser.objects.all():
+            if scoreweek == 1:
+                move="up"
+            else:
+                try: 
+                    if int(i.Positions['data'][season][lastweek]) < int(i.Positions['data'][season][previousweek]):
+                        move = "up"
+                    elif int(i.Positions['data'][season][lastweek]) > int(i.Positions['data'][season][previousweek]):
+                        move = "down"
+                    else:
+                        move = "same"
+                except(IndexError, TypeError):
+                    move = "dnp"
+            jsonpositions[i.Full_Name] = move
+        cache.set('jsonpositionscache', jsonpositions, CacheTTL_1Week)
+
+    jsonstdscores = cache.get('jsonstdscorescache')
+
+    if not jsonstdscores:
+        jsonstdscores = {'std_scores' : [{
+            'pos': i+1,
+            'user': s.User.Full_Name,
+            'teamshort': s.User.FavouriteTeam.ShortName,
+            'week': get_json_week_score(s.User, scoreweek, os.environ['PREDICTSEASON']),
+            'seasonscore': s.SeasonScore,
+            }
+            # enumerate needed to allow us to extract the index (position) using i,s
+            for i,s in enumerate(ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']))]
+        }
+        cache.set('jsonstdscorescache', jsonstdscores, CacheTTL_1Week)
+    
+    try:
+        requestuser = request.user.Full_Name
+    except(AttributeError):
+        requestuser = "None"
+
+    jsonuser = {
+        'user': requestuser
+    }
+
+    jsonurls = {
+    }
+    
+    for team in Team.objects.all():
+        jsonurls[team.pk] = team.Logo.url
 
     context = {
-        'nopreds': nopreds,
-        'seasonscores': ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']),
-        'weekscores': weekscores,
+        'jsonpositions': jsonpositions,
+        'jsonurls': jsonurls,
+        'jsonstdscores': jsonstdscores,
+        'jsonuser': jsonuser,
         'week':scoreweek,
         'season':os.environ['PREDICTSEASON'],
         'title':'Leaderboard'
@@ -610,20 +670,13 @@ def ScoreTableEnhancedView(request):
         }
         cache.set('jsonseasonscorescache', jsonseasonscores, CacheTTL_1Week)
 
-    jsonweekscores = cache.get('jsonweekscorescache')
-
-    if not jsonweekscores:
-        jsonweekscores = {'week_scores' : [{
-            'user': s.User.Full_Name,
-            'weekscore': s.WeekScore
-                }
-            for s in ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON'])
-            ]
-        }
-        cache.set('jsonweekscorescache', jsonweekscores, CacheTTL_1Week)
+    try:
+        requestuser = request.user.Full_Name
+    except(AttributeError):
+        requestuser = "None"
 
     jsonuser = {
-        'user': request.user.Full_Name
+        'user': requestuser
     }
 
     jsonurls = {
@@ -636,7 +689,6 @@ def ScoreTableEnhancedView(request):
         'jsonpositions': jsonpositions,
         'jsonurls': jsonurls,
         'jsonseasonscores': jsonseasonscores,
-        'jsonweekscores': jsonweekscores,
         'jsonuser': jsonuser,
         'nopreds': nopreds,
         'seasonscores': ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']),
