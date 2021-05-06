@@ -20,12 +20,12 @@
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 
 <script>
-        $('#leaderboard').each(function(){
-               $(this).toggleClass('active');
-           });
-       </script>
+    $('#leaderboard').each(function(){
+            $(this).toggleClass('active');
+        });
+</script>
+
 {{ jsonseasonscores|json_script:'seasonscores' }}
-{{ jsonweekscores|json_script:'weekscores' }}
 {{ jsonuser|json_script:'currentuser' }}
 {{ jsonurls|json_script:'logo_urls' }}
 {{ jsonpositions|json_script:'positions'}}
@@ -57,8 +57,8 @@
                 <td v-else td class="enhanced clamp nopad"><i :class="score.user|direction|arrow"></i></td>
                 <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp pad-l table-logo"><img v-bind:src="score.teamshort | imgurl" :alt="score.teamshort" class="team_small"></img></td>
                 <td v-else td class="enhanced clamp pad-l table-logo"><img :src="score.teamshort | imgurl" :alt="score.teamshort" class="team_small"></img></td>
-                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp">[[score.user]]</td>
-                <td v-else class="enhanced clamp">[[score.user]]</td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp no-wrap">[[score.user]]</td>
+                <td v-else class="enhanced clamp no-wrap">[[score.user]]</td>
                 <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp">[[score.week]]</td>
                 <td v-else class="enhanced clamp">[[score.week]]</td>
                 <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp">[[score.seasoncorrect]]</td>
@@ -81,15 +81,12 @@
 </div>
 
 <script>
-let seasonScores = JSON.parse(document.getElementById('seasonscores').textContent).season_scores;
-let weekScores = JSON.parse(document.getElementById('weekscores').textContent).week_scores;
-let currentUser = JSON.parse(document.getElementById('currentuser').textContent).user;
-let logoUrls = JSON.parse(document.getElementById('logo_urls').textContent);
-let positions = JSON.parse(document.getElementById('positions').textContent)
-
-// for loop to add weekScores to seasonScores for each user
-
+    let seasonScores = JSON.parse(document.getElementById('seasonscores').textContent).season_scores;
+    let currentUser = JSON.parse(document.getElementById('currentuser').textContent).user;
+    let logoUrls = JSON.parse(document.getElementById('logo_urls').textContent);
+    let positions = JSON.parse(document.getElementById('positions').textContent)
 </script>
+
 <script>
     var app = new Vue({
         delimiters: ['[[', ']]'],
@@ -99,7 +96,6 @@ let positions = JSON.parse(document.getElementById('positions').textContent)
             seasonScores,
             logoUrls,
             currentUser,
-            weekScores,
             currentSort: 'pos',
             currentSortDir: 'asc',
             currentSorting: 'posasc',

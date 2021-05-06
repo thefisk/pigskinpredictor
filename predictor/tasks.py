@@ -11,9 +11,10 @@ def email_confirmation(user, week, type):
     address = []
     shortweek = str(week)[4::]
     if type =='New':
-        heading = 'New Picks Are In | Week ' + shortweek
+        heading = 'New Picks Are In'
     elif type == 'Amended':
-        heading = 'Picks Successfully Amended | Week ' + shortweek
+        heading = 'Picks Successfully Amended'
+    emailweek = 'Week ' + shortweek
     address.append(User.objects.get(id = user).email)
     subject = type + " Predictions Confirmed | Week " + shortweek
     from_email = "Pigskin Predictor"
@@ -22,6 +23,7 @@ def email_confirmation(user, week, type):
         get_template('email_confirmation.html').render(
             {
                 'heading': heading,
+                'week': emailweek,
                 'mypreds': mypreds,
             }
         ),
