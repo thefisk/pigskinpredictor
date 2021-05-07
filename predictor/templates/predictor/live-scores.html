@@ -1,0 +1,177 @@
+<style>
+        body {
+          /* Set "my-sec-counter" to 0 */
+          counter-reset: my-sec-counter;
+        }
+        
+        .count::after {
+          /* Increment "my-sec-counter" by 1 */
+          counter-increment: my-sec-counter;
+          content: counter(my-sec-counter) ". ";
+        }
+        </style>
+
+{% extends "predictor/base.html" %}
+
+{% block content %}
+<!--Vue JS-->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!--script src="https://cdn.jsdelivr.net/npm/vue"></script-->
+<!--Axios-->>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+
+<script>
+    $('#leaderboard').each(function(){
+            $(this).toggleClass('active');
+        });
+</script>
+
+{{ jsonpreds|json_script:'preds' }}
+{{ points|json_script:'points' }}
+{{ jsonuser|json_script:'currentuser' }}
+{{ jsonurls|json_script:'logo_urls' }}
+
+<div class="container">
+<h5 class="mb-3">Leaderboards: <span class = "big-link-active">Standard</span> <span class = "superlowlight">|</span> <a href="{% url 'scoretableenhanced' %}" class = "big-link-inactive">Enhanced</a> <span class = "superlowlight">|</span> <a class = "big-link-inactive" href="{% url 'scoretable-division' %}">Division</a></h5>
+    <div class="divider"></div>
+    <div id="vue-table">
+            <table class="striped table-top-pad" aria-describedby="Table Header">
+                <tr class="table-highlight">
+                    <td class = "stats-table-header col-100-l">Standings after week {{ week }}</td>
+                </tr>
+            </table>
+            <table class="striped" aria-describedby="Enhanced Scoretable">
+            <thead>
+                <tr class = "table-secondary">
+                    <th v-for="header in tableHeadings" class="enhanced stats-header table-secondary-header">
+                        <span v-if="header.name === 'Pos'" class="pad-l5 icon-center locked-column-pos"><i class="fas fa-medal"></i></span>
+                        <span v-else>[[ header.name ]]</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr v-for="score in stdScores" :key="score.pos">
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp pad-l table-small-l">[[score.pos]] </td>
+                <td v-else td class="enhanced clamp pad-l table-small-l">[[score.pos]] </td>
+                <td v-if="score.user ===  currentUser" class="table-highlight enhanced clamp nopad table-logo"><i :class="score.user|direction|arrow"></i></td>
+                <td v-else td class="enhanced clamp nopad table-logo"><i :class="score.user|direction|arrow"></i></td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp pad-l table-logo"><img v-bind:src="score.teamshort | imgurl" :alt="score.teamshort" class="team_small"></img></td>
+                <td v-else td class="enhanced clamp pad-l table-logo"><img :src="score.teamshort | imgurl" :alt="score.teamshort" class="team_small"></img></td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp no-wrap">[[score.user]]</td>
+                <td v-else class="enhanced clamp no-wrap">[[score.user]]</td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp">[[score.week]]</td>
+                <td v-else class="enhanced clamp">[[score.week]]</td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp">[[score.seasonscore]]</td>
+                <td v-else class="enhanced clamp">[[score.seasonscore]]</td>
+            </tr>
+            </tbody>
+            </table>
+</div>
+
+<script>
+    let preds = JSON.parse(document.getElementById('preds').textContent);
+    let points = JSON.parse(document.getElementById('points').textContent);
+    let currentUser = JSON.parse(document.getElementById('currentuser').textContent).user;
+    let logoUrls = JSON.parse(document.getElementById('logo_urls').textContent);
+</script>
+
+<script>
+    const getAPI = axios.create({
+        baseURL: 'http://127.0.0.1:8000',
+        timeout: 1000,
+    })
+</script>
+
+<script>
+    var app = new Vue({
+        delimiters: ['[[', ']]'],
+        el: '#vue-table',
+        data: {
+            points,
+            liveScores: [],
+            preds,
+            logoUrls,
+            currentUser,
+            tableHeadings: [
+                {
+                    "name": "Pos",
+                    "jsonfield": "pos",
+                    "sortAsc": true,
+                    "sortDesc": false,
+                    "sorting": true
+                },
+                {
+                    "name": "",
+                },
+                {
+                    "name": "",
+                },
+                {
+                    "name": "Player",
+                    "jsonfield": "user",
+                    "sortAsc": false,
+                    "sortDesc": false,
+                    "sorting": false
+                },
+                {
+                    "name": "Current Score",
+                    "jsonfield": "seasonscore",
+                    "sortAsc": false,
+                    "sortDesc": false,
+                    "sorting": false
+                }
+            ]
+        },
+        filters:{
+            imgurl: function(team) {
+                return logoUrls[team]
+            },
+            direction: function(user) {
+                return positions[user]
+            },
+            arrow: function(direction) {
+                    if (direction == "up") {
+                        return "lni lni-angle-double-up green-arrow"
+                    }
+                    else if (direction == "down") {
+                        return "lni lni-angle-double-down red-arrow"
+                    }
+                    else {
+                        return "lni lni-angle-double-right blue-arrow"
+                    }
+            },
+        },
+        methods: {
+            updatePoints() {
+                for (user in points){
+                        let playerpreds = preds[user]
+                        console.log(playerpreds)
+                        for (pred in playerpreds) {
+                            console.log(playerpreds)
+                        }
+                    }
+            },
+            getLiveScores() {
+                getAPI.get('/api/live-scores')
+                .then(response => {
+                    console.log('API received data')
+                    this.liveScores = response.data
+                    this.updatePoints()
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            },
+        },
+        created() {
+            this.getLiveScores();
+            this.timer = setInterval(this.getLiveScores, 10000);
+            }
+        })
+    
+</script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
+{% load static %}
+<script src="{% static "predictor/scripts/pigskin.js" %}"></script>
+{% endblock content %}

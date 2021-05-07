@@ -1,6 +1,8 @@
 import os
-from predictor.models import Prediction
-from rest_framework import viewsets, mixins
+from predictor.models import Prediction, LiveScores
+from rest_framework.permissions import AllowAny
+from rest_framework import viewsets, mixins, generics
+from rest_framework.response import Response
 from accounts.models import User
 from .permissions import IsSuperUser
 from predictor.models import Prediction, Banker
@@ -8,11 +10,23 @@ from .serializers import (
 BankerSerializer,
 UserSerializer,
 PredictionSerializer,
+LiveScoresSerializer
 )
 from rest_framework.settings import api_settings
 from rest_framework_csv import renderers as r
 from django_filters.rest_framework import DjangoFilterBackend
 from allauth.account.models import EmailAddress
+
+class LiveScoresAPIView(generics.RetrieveAPIView):
+    permission_classes = [AllowAny]
+    
+    def get_queryset(self):
+        return LiveScores.objects.all()
+    
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = LiveScoresSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 class UserAPIView(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsSuperUser]

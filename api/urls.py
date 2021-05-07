@@ -14,7 +14,8 @@ router.register('nopreds', views.NoPredsAPIView, basename='nopreds')
 
 urlpatterns = [
     path('',include(router.urls)),
-    path('api-auth',include('rest_framework.urls'))
+    path('api-auth',include('rest_framework.urls')),
+    path('live-scores', views.LiveScoresAPIView.as_view(), name='live-scores-api')
 ]
 
 if settings.DEBUG:

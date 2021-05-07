@@ -525,6 +525,69 @@ def AjaxDeadlineVerification(request):
         else:
             return JsonResponse({"nothing to see": "this isn't happening"})
 
+### View to display live scores
+@require_GET
+def LiveScoresView(request):
+        # Below sets score week to 1 below current results week
+    # IE - to pull scores from last completed week 
+    liveseason = int(os.environ['PREDICTSEASON'])
+    basescoreweek = int(os.environ['RESULTSWEEK'])
+    if basescoreweek > 18:
+        return redirect('scoretable-preseason')
+    else:
+        scoreweek = int(os.environ['PREDICTSEASON']+os.environ['RESULTSWEEK'])
+
+    jsonpredsforlive = cache.get('jsonpredsforlive')
+
+    userlist = {}
+
+    for i in Banker.objects.filter(BankWeek=basescoreweek, BankSeason=liveseason).select_related('User'):
+        userlist[i.User] = i.User.Full_Name
+
+    points = {}
+    for user in userlist:
+        points[user.Full_Name] = 0
+
+    if not jsonpredsforlive:
+        jsonpredsforlive ={}
+        for i in userlist:
+            jsonpredsforlive[i.Full_Name]=[]
+            for a in Prediction.objects.filter(PredWeek=scoreweek, User=i).select_related('Game'):
+                jsonpredsforlive[i.Full_Name].append({
+                'game': a.Game.GameID,
+                'winner': a.Winner,
+                'banker': a.Banker,
+                'joker': a.Joker,
+                'pts': 0
+                })
+        cache.set('jsonpredsforlive', jsonpredsforlive, CacheTTL_1Week)
+    
+    try:
+        requestuser = request.user.Full_Name
+    except(AttributeError):
+        requestuser = "None"
+
+    jsonuser = {
+        'user': requestuser
+    }
+
+    jsonurls = {
+    }
+    
+    for team in Team.objects.all():
+        jsonurls[team.pk] = team.Logo.url
+
+    context = {
+        'points': points,
+        'jsonurls': jsonurls,
+        'jsonpreds': jsonpredsforlive,
+        'jsonuser': jsonuser,
+        'week':scoreweek,
+        'title':'Live Scores'
+    }
+
+    return render(request, 'predictor/live-scores.html', context)
+
 ### View to display latest scoretable for all users
 @require_GET
 def ScoreTableView(request):

@@ -4,5 +4,5 @@ cachestoflush = [
          "NFC West_Total", "NFC East_Total", "NFC North_Total", "NFC South_Total",
          "AFC West_Total", "AFC East_Total", "AFC North_Total", "AFC South_Total",
          "jsonseasonscorescache", "jsonweekscorescache", "jsonpositionscache", "DivAvgDict",
-         "AvgPointsCache", "jsonstdscores"
+         "AvgPointsCache", "jsonstdscores", "jsonpredsforlive"
          ]

@@ -1,6 +1,12 @@
 from rest_framework import serializers
-from predictor.models import Prediction, Banker
+from predictor.models import Prediction, Banker, LiveScores
 from accounts.models import User
+
+
+class LiveScoresSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LiveScores
+        fields = '__all__'
 
 class UserSerializer(serializers.ModelSerializer):
     FavouriteTeam = serializers.SlugRelatedField(
