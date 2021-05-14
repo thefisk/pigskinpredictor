@@ -731,6 +731,23 @@ h5 {
   width: 22px;
 }
 
+.card .card-content {
+  padding: 12px !important;
+}
+
+#pred-date-div {
+  padding-top: 0;
+  margin-top: 0;
+  line-height: 50%;
+  margin-bottom: 15px;
+}
+
+.pred-date {
+  margin-top: 0;
+  font-size: clamp(0.8rem, 0.8vw, 0.9rem);
+  font-weight: 300;
+}
+
 .no-wrap {
   white-space: nowrap;
 }

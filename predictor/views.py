@@ -303,7 +303,6 @@ def CreatePredictionsView(request):
     context = {
         'jokeravailable':jokeravailable,
         'bankers':Banker.objects.filter(User=request.user, BankSeason=season).select_related('BankerTeam'),
-        'predictions':Prediction.objects.all(),
         'matches':Match.objects.filter(Week=week, Season=season).select_related('HomeTeam', 'AwayTeam'),
         'week':week,
         'season':season,
@@ -351,7 +350,6 @@ def AmendPredictionsView(request):
         'jokerchecked':jokerchecked,
         'classdict':ClassDict,
         'bankers':UserBankersAmend,
-        'predictions':Prediction.objects.all(),
         'originalbanker':originalbanker,
         'matches':Matches,
         'week':week,
