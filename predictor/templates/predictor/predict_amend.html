@@ -19,6 +19,9 @@
                         <div class="card-content white-text" id="{{ match.GameID }}">
                             <span class="card-title red-text darken-4 center-align game-card">
                                 {{ match.AwayTeam.ShortName }} @ {{ match.HomeTeam.ShortName }}
+                                <div id="pred-date-div">
+                                <span class="pred-date">- {{ match.DateTime | date:"D dS, H:i" }} -</span>
+                                </div>
                             </span>
                             <div class="center-align" id="{{ match.Week }}">
                                 {% for game, winner in classdict.items %}

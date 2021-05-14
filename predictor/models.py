@@ -59,6 +59,7 @@ class Match(models.Model):
     
     class Meta:
         verbose_name_plural = "Matches"
+        ordering = ['DateTime', 'AwayTeam']
 
 class Banker(models.Model):
     UserSeasonKey = models.CharField(max_length=10, null=True, blank=True)
