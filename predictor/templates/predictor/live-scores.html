@@ -142,14 +142,21 @@
             },
         },
         methods: {
+            // below approximately correct.  not recognised as a function though!
+            findLivePts(game, winner) {
+                let matchedGame = this.liveScores.find( ({ Game }) => Game === game )
+                console.log(matchedGame)
+            },
             updatePoints() {
                 for (user in points){
-                        let playerpreds = preds[user]
-                        console.log(playerpreds)
-                        for (pred in playerpreds) {
-                            console.log(playerpreds)
+                        let playerpreds = this.preds[user]
+                        playerpreds.forEach(function (pred) {
+                            var game = pred['game']
+                            var winner = pred['winner']
+                            let newPts = this.findLivePts(game, winner)
+                            console.log(user + ", " + pred['game'], + pred['pts'] + "pts ")
+                            })
                         }
-                    }
             },
             getLiveScores() {
                 getAPI.get('/api/live-scores')
