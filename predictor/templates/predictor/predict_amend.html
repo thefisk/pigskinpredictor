@@ -69,6 +69,8 @@
         {% endif %}
         {% if week == "1" %}
         <button id="predict-submit" class="waves-effect waves-light btn hideme" type="submit">Submit</button>
+        <!-- Lala alert section -->
+        <div id="lala-alert-container"><div id="lala-alert-wrapper"></div></div>
         <br>
         <div class="hideme"></div>
         </div>     
@@ -76,6 +78,8 @@
             </div>
         {% else %}
         <button id="predict-submit" class="waves-effect waves-light btn hideme" type="submit">Submit</button>
+        <!-- Lala alert section -->
+        <div id="lala-alert-container"><div id="lala-alert-wrapper"></div></div>
         <div><br></div>
         <div class="divider hideme"></div>
         <div class = "section hideme" id="bankers">
@@ -91,4 +95,7 @@
     {% endif %}
     {% load static %}
     <script src="{% static "predictor/scripts/pigskinamend.js" %}"></script>
+    <link href="{% static "predictor/css/bootstrap.css" %}" rel="stylesheet">
+    <link href="{% static "predictor/css/lala-alert.css" %}" rel="stylesheet">
+    <script src="{% static "predictor/scripts/lala-alert.js" %}"></script>
 {% endblock content %}

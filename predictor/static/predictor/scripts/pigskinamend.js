@@ -215,11 +215,11 @@ $(function() {
     $('#predict-submit').on('click', function(event){
         event.preventDefault();
         if(chosenbanker == null){
-            window.alert("Please choose a banker");
+            createAlert('Please choose a banker', 'info', 5000);
             }
         else{
             if(usedbankers.includes(chosenbanker)){
-                window.alert("Banker already used - please choose another")
+                createAlert('Banker already used - please choose another', 'info', 5000)
                 }
             else{
                 if(predarray.length == numberOfGames){
@@ -244,7 +244,7 @@ $(function() {
                     }
                 }
                 else {
-                    window.alert("Please fill in all predictions");
+                    createAlert('Please fill in all predictions', 'info', 5000);
                     }
                 }
             }
