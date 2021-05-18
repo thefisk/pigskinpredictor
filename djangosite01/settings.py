@@ -1,4 +1,5 @@
 import os, django_heroku
+from celery.schedules import crontab
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -35,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'storages',
+    'django_celery_beat',
     'django_inlinecss',
     'rest_framework',
     'django_filters',
@@ -207,6 +209,24 @@ REST_FRAMEWORK = {
 CELERY_BROKER_URL = os.environ.get('REDIS_URL')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Europe/London'
+CELERY_BEAT_SCHEDULE = {
+    '48hr Email Reminder': {
+        'task': 'predictor.tasks.email_reminder',
+        'schedule': crontab(hour=20, minute=00, day_of_week=2),
+        'args': ['48']
+    },
+    '24hr Email Reminder': {
+        'task': 'predictor.tasks.email_reminder',
+        'schedule': crontab(hour=20, minute=00, day_of_week=3),
+        'args': ['24']
+    },
+     '1hr Email Reminder': {
+        'task': 'predictor.tasks.email_reminder',
+        'schedule': crontab(hour=19, minute=00, day_of_week=4),
+        'args': ['1']
+    }
+}
 
 CACHES = {
     "default": {
