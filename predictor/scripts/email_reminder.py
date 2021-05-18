@@ -16,7 +16,7 @@ def run(hours):
     email_list = []
     for user in nopreds:
         email_list.append(user.email)
-    if hours == 48:
+    if int(hours) == 48:
         optedinemails = []
         optedinusers = User.objects.filter(Reminder48=True)
         for i in optedinusers:
