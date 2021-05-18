@@ -225,6 +225,10 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'predictor.tasks.email_reminder',
         'schedule': crontab(hour=19, minute=00, day_of_week=4),
         'args': ['1']
+    },
+    'Import Results': {
+        'task': 'predictor.tasks.fetchresults',
+        'schedule': crontab(hour=20, minute=24, day_of_week=2),
     }
 }
 
