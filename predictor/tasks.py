@@ -50,19 +50,20 @@ def email_reminder(hours):
     email_list = []
     for user in nopreds:
         email_list.append(user.email)
-    print(f"no preds list: {email_list}")
     if int(hours) == 48:
         optedinemails = []
         optedinusers = User.objects.filter(Reminder48=True)
         for i in optedinusers:
             optedinemails.append(i.email)
-        print(f"opted in list: {optedinemails}")
         email_list_copy = email_list.copy()
         for i in email_list:
             if i not in optedinemails:
                 email_list_copy.remove(i)
-        email_list = email_list_copy.copy()
-        print(f"final email list: {email_list}")
+        email_list = email_list_copy.copy
+    
+    # Below print will show on Celery output as a 'warning'
+    # Kept in as it is useful logging because addresses are BCCd
+    print(f"Emails going out to: {email_list}")
     
     templatefile = "email_reminder.html"
     html_message = render_to_string(templatefile)
