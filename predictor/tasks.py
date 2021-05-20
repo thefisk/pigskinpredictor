@@ -57,9 +57,11 @@ def email_reminder(hours):
         for i in optedinusers:
             optedinemails.append(i.email)
         print(f"opted in list: {optedinemails}")
+        email_list_copy = email_list.copy()
         for i in email_list:
             if i not in optedinemails:
-                email_list.remove(i)
+                email_list_copy.remove(i)
+        email_list = email_list_copy.copy()
         print(f"final email list: {email_list}")
     
     templatefile = "email_reminder.html"
