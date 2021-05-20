@@ -14,6 +14,7 @@ class Team(models.Model):
     Division  = models.CharField(max_length=5, null=True, blank=True)
     ConfDiv = models.CharField(max_length=9, null=True, blank=True)
     Logo = models.ImageField(default='football.png', upload_to='logos')
+    Active = models.BooleanField(default=True)
 
     def __str__(self):
         return('{} {}'.format(self.Town, self.Nickname))

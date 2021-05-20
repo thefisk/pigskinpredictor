@@ -13,8 +13,12 @@ class CustomUserCreationForm(UserCreationForm):
         fields = ('username', 'email', 'FavouriteTeam')
 
 class CustomUserChangeForm(UserChangeForm):
-    password = ReadOnlyPasswordHashField(label="Password", widget=forms.HiddenInput())
 
+    def __init__(self, *args, **kwargs):
+        super(CustomUserChangeForm, self).__init__(*args, **kwargs)
+        self.fields['FavouriteTeam'] = forms.ModelChoiceField(queryset=Team.objects.filter(Active=True), empty_label=None, label='Favourite Team')
+
+    password = ReadOnlyPasswordHashField(label="Password", widget=forms.HiddenInput())
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'FavouriteTeam', 'password', 'Reminder48', 'PickConfirmation')
@@ -23,7 +27,7 @@ class CustomUserChangeForm(UserChangeForm):
 class CustomSignupForm(SignupForm):
     first_name = forms.CharField(max_length=30, label='First Name')
     last_name = forms.CharField(max_length=30, label='Last Name')
-    fav_team = forms.ModelChoiceField(queryset=Team.objects.all(), empty_label=None, label='Favourite Team')
+    fav_team = forms.ModelChoiceField(queryset=Team.objects.filter(Active=True), empty_label=None, label='Favourite Team')
     layout = Layout('email',
                     Row('password1', 'password2'),
                     Row('first_name', 'last_name'),
