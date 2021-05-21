@@ -78,7 +78,8 @@ def email_reminder(hours):
     msg.attach_alternative(html_message, "text/html")
     msg.send()
 
-def saveresults():
+@shared_task
+def save_results():
    resultsweek = os.environ['RESULTSWEEK']
    if int(resultsweek) < 10:
       fileweek = '0'+resultsweek
@@ -212,7 +213,7 @@ def saveresults():
 
 
 @shared_task
-def fetchresults():
+def fetch_results():
     week = os.environ['RESULTSWEEK']
     season = os.environ['PREDICTSEASON']
 
@@ -292,4 +293,10 @@ def fetchresults():
     # Call Save Results once file is uploaded to S3
     # 30 second delay to let S3 sort itself out and ensure file is ready
     time.sleep(30)
-    saveresults()
+    save_results()
+
+@shared_task
+def joker_reset():
+    for user in User.objects.all():
+        user.JokerUsed = None
+        user.save()
