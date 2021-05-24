@@ -165,7 +165,7 @@ def save_results():
                 alltimebanktotal = 0
                 for alltimebanker in Prediction.objects.filter(User=alltime.User, Banker=True):
                     if isinstance(alltimebanker.Points, int):
-                    alltimebanktotal += alltimebanker.Points
+                        alltimebanktotal += alltimebanker.Points
                 alltime.AllTimeBankerAverage=alltimebanktotal/Prediction.objects.filter(User=alltime.User, Banker=True).exclude(Points__isnull=True).count()
                 alltime.save()
 
