@@ -137,7 +137,7 @@ def save_results():
                 banktotal = 0
                 for banker in Prediction.objects.filter(PredSeason=os.environ['PREDICTSEASON'], User=score.User, Banker=True):
                     if isinstance(banker.Points, int):
-                    banktotal += banker.Points
+                        banktotal += banker.Points
                 score.BankerAverage=banktotal/Prediction.objects.filter(PredSeason=os.environ['PREDICTSEASON'], User=score.User, Banker=True).exclude(Points__isnull=True).count()
                 score.save()
 
