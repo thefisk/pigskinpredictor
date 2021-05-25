@@ -109,7 +109,7 @@ class Prediction(models.Model):
         else:
             ### Add Points to Weekly Scores ###
             try:
-                ScoresWeek.objects.get(User=self.User, Week=self.Game.Week)
+                ScoresWeek.objects.get(User=self.User, Week=self.Game.Week, Season=self.Game.Season)
             except ScoresWeek.DoesNotExist:
                 # create new weekly score entry if none already exists
                 addweekscore = ScoresWeek(User=self.User, Week=self.Game.Week, WeekScore=self.Points, Season=self.Game.Season)
