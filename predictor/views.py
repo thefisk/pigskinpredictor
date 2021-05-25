@@ -896,7 +896,7 @@ def DivisionTableView(request):
 
         for fan in NFCSfans:
             try:
-                NFCSTotal += ScoresSeason.objects.get(User=fan).SeasonScore
+                NFCSTotal += ScoresSeason.objects.get(Season=int(os.environ['PREDICTSEASON']), User=fan).SeasonScore
             except ScoresSeason.DoesNotExist:
                 pass
         try:
@@ -906,7 +906,7 @@ def DivisionTableView(request):
         
         for fan in NFCEfans:
             try:
-                NFCETotal += ScoresSeason.objects.get(User=fan).SeasonScore
+                NFCETotal += ScoresSeason.objects.get(Season=int(os.environ['PREDICTSEASON']), User=fan).SeasonScore
             except ScoresSeason.DoesNotExist:
                 pass
         try:
@@ -916,7 +916,7 @@ def DivisionTableView(request):
 
         for fan in NFCWfans:
             try:
-                NFCWTotal += ScoresSeason.objects.get(User=fan).SeasonScore
+                NFCWTotal += ScoresSeason.objects.get(Season=int(os.environ['PREDICTSEASON']), User=fan).SeasonScore
             except ScoresSeason.DoesNotExist:
                 pass
         try:
@@ -926,7 +926,7 @@ def DivisionTableView(request):
         
         for fan in AFCNfans:
             try:
-                AFCNTotal += ScoresSeason.objects.get(User=fan).SeasonScore
+                AFCNTotal += ScoresSeason.objects.get(Season=int(os.environ['PREDICTSEASON']), User=fan).SeasonScore
             except ScoresSeason.DoesNotExist:
                 pass
         try:
@@ -936,7 +936,7 @@ def DivisionTableView(request):
         
         for fan in AFCSfans:
             try:
-                AFCSTotal += ScoresSeason.objects.get(User=fan).SeasonScore
+                AFCSTotal += ScoresSeason.objects.get(Season=int(os.environ['PREDICTSEASON']), User=fan).SeasonScore
             except ScoresSeason.DoesNotExist:
                 pass
         try:
@@ -946,7 +946,7 @@ def DivisionTableView(request):
 
         for fan in AFCWfans:
             try:
-                AFCWTotal += ScoresSeason.objects.get(User=fan).SeasonScore
+                AFCWTotal += ScoresSeason.objects.get(Season=int(os.environ['PREDICTSEASON']), User=fan).SeasonScore
             except ScoresSeason.DoesNotExist:
                 pass
         try:
@@ -956,7 +956,7 @@ def DivisionTableView(request):
 
         for fan in AFCEfans:
             try:
-                AFCETotal += ScoresSeason.objects.get(User=fan).SeasonScore
+                AFCETotal += ScoresSeason.objects.get(Season=int(os.environ['PREDICTSEASON']), User=fan).SeasonScore
             except ScoresSeason.DoesNotExist:
                 pass
         try:
