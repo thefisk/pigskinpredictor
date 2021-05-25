@@ -173,19 +173,31 @@ def save_results():
         scorecounter = 1
         positiondict = {}
         usercount = User.objects.all().count() -1
-        for i in ScoresSeason.objects.all():
+        for i in ScoresSeason.objects.filter(Season=int(fileseason)):
             positiondict[i.User.pk]=scorecounter
             scorecounter += 1
         if int(resultsweek) == 1:
             for i in User.objects.all():
-                # Create season object before adding to it in week 1
-                i.Positions = {"data":{str(fileseason):{}}}
-                try:
-                    i.Positions['data'][str(fileseason)][str(resultsweek)] = positiondict[i.pk]
-                except(KeyError):
-                    # Make position bottom of table if they didn't play in week 1
-                    i.Positions['data'][str(fileseason)][str(resultsweek)] = usercount
-                i.save()
+                # Append new season if previous data exists
+                if i.Positions:
+                    # Add new season
+                    i.Positions['data'][str(fileseason)] = {}
+                    try:
+                        i.Positions['data'][str(fileseason)][str(resultsweek)] = positiondict[i.pk]
+                    except(KeyError):
+                        # Make position bottom of table if they didn't play in week 1
+                        i.Positions['data'][str(fileseason)][str(resultsweek)] = usercount
+                    i.save()
+                # Create data object if none found
+                else:
+                    # Create season object before adding to it in week 1
+                    i.Positions = {"data":{str(fileseason):{}}}
+                    try:
+                        i.Positions['data'][str(fileseason)][str(resultsweek)] = positiondict[i.pk]
+                    except(KeyError):
+                        # Make position bottom of table if they didn't play in week 1
+                        i.Positions['data'][str(fileseason)][str(resultsweek)] = usercount
+                    i.save()
         else:
             for i in User.objects.all():
                 try: 
