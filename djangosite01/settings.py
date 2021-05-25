@@ -226,9 +226,10 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': crontab(hour=19, minute=00, day_of_week=4),
         'args': ['1']
     },
-    'Import Results': {
+    'Fetch and Save Results': {
         'task': 'predictor.tasks.fetch_results',
         'schedule': crontab(hour=20, minute=24, day_of_week=2),
+        'args': ['0']
     },
     'Reset Jokers': {
         'task': 'predictor.tasks.joker_reset',

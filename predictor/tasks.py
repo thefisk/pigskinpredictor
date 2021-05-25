@@ -219,7 +219,7 @@ def save_results():
 
 
 @shared_task
-def fetch_results():
+def fetch_results(fetchonly):
     week = os.environ['RESULTSWEEK']
     season = os.environ['PREDICTSEASON']
 
@@ -296,10 +296,13 @@ def fetch_results():
     s3path = 'data/'+filename
     s3.Object(bucket, s3path).upload_file(Filename=filename)
     
-    # Call Save Results once file is uploaded to S3
-    # 30 second delay to let S3 sort itself out and ensure file is ready
-    time.sleep(30)
-    save_results()
+    if int(fetchonly) == 1:
+        pass
+    elif int(fetchonly) == 0:
+        # Call Save Results once file is uploaded to S3
+        # 30 second delay to let S3 sort itself out and ensure file is ready
+        time.sleep(30)
+        save_results()
 
 @shared_task
 def joker_reset():
