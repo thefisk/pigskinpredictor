@@ -224,20 +224,28 @@ $(function() {
             else{
                 if(predarray.length == numberOfGames){
                     // Check Deadline First
-                    let joker = document.getElementById("Joker")
-                    if (joker.checked == true){
-                        // Only submit if OK is pressed at prompt
-                        if (confirm("Play 1 off Joker?")) {
+                    try {
+                        let joker = document.getElementById("Joker")
+                        if (joker.checked == true){
+                            // Only submit if OK is pressed at prompt
+                            if (confirm("Play 1 off Joker?")) {
+                                $('.hideme').hide();
+                                $('#submitted').html("<img src='https://pigskinpredictorpublic.s3.eu-west-2.amazonaws.com/loading.gif' class='loader'><br>"); // display loading spinner immediately
+                                deadline_checker();
+                                }
+                            else {
+                                // Return to screen if cancel pressed
+                            }
+                        }
+                        // Submit without a Joker prompt if Joker is deselected
+                        else {
                             $('.hideme').hide();
                             $('#submitted').html("<img src='https://pigskinpredictorpublic.s3.eu-west-2.amazonaws.com/loading.gif' class='loader'><br>"); // display loading spinner immediately
                             deadline_checker();
-                            }
-                        else {
-                            // Return to screen if cancel pressed
                         }
                     }
-                    // Submit without a Joker prompt if Joker is deselected
-                    else {
+                    catch(err) {
+                        // Joker checkbox doesn't exist (already used)
                         $('.hideme').hide();
                         $('#submitted').html("<img src='https://pigskinpredictorpublic.s3.eu-west-2.amazonaws.com/loading.gif' class='loader'><br>"); // display loading spinner immediately
                         deadline_checker();
