@@ -163,7 +163,7 @@ def ProfileView(request):
             template = "predictor/profile.html"
             try:
                 positions = requestor.Positions['data'][os.environ['PREDICTSEASON']]
-            except(TypeError):
+            except(TypeError, KeyError):
                 positions = None
             current = ScoresSeason.objects.get(User=requestor, Season=profileseason)
             seasonhigh = current.SeasonBest
