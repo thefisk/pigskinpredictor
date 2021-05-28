@@ -7,8 +7,6 @@ import os, requests, json, boto3, time
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from predictor.models import Team, Results, ScoresSeason, ScoresAllTime, ScoresWeek, Prediction, AvgScores
-from django.core.cache import cache
-from .cacheflushlist import cachestoflush
 
 @shared_task
 def email_confirmation(user, week, type):
@@ -225,11 +223,6 @@ def save_results():
             NewAvgs.save()
 
 
-        # Finally, clear the Redis caches
-        for c in cachestoflush:
-            cache.delete(c)
-
-
 @shared_task
 def fetch_results(fetchonly):
     week = os.environ['RESULTSWEEK']
@@ -317,6 +310,7 @@ def fetch_results(fetchonly):
         save_results()
 
 @shared_task
+# Configured to run in Celery config in settings.py on 1st April every year
 def joker_reset():
     for user in User.objects.all():
         user.JokerUsed = None

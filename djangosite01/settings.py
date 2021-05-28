@@ -233,7 +233,7 @@ CELERY_BEAT_SCHEDULE = {
     },
     'Reset Jokers': {
         'task': 'predictor.tasks.joker_reset',
-        'schedule': crontab(0, 0, day_of_month=1, month_of_year=3),
+        'schedule': crontab(0, 0, day_of_month=1, month_of_year=4),
     }
 }
 
