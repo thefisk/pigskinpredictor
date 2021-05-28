@@ -226,88 +226,80 @@ def save_results():
 @shared_task
 def fetch_results(fetchonly):
     week = os.environ['RESULTSWEEK']
-    season = os.environ['PREDICTSEASON']
-
-    if int(week) < 10:
-        filename = "resultsimport_"+season+"_0"+week+".json"
-    else:
-        filename = "resultsimport_"+season+"_"+week+"_.json"
-
-    outfile = open(filename, "w")
-
-    # Removed Thurs-Tues logic as below will produce a gameweek, no matter when it's requested
-    source = f"http://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates={season}&week={week}"
-
-    rawjson = requests.get(source).json()
-
-    results = []
-
-    for game in rawjson['events']:
-        team1 = {}
-        team1['team'] = game['competitions'][0]['competitors'][0]['team']['abbreviation']
-        team1['score'] = int(game['competitions'][0]['competitors'][0]['score'])
-        team1['location'] = game['competitions'][0]['competitors'][0]['homeAway']
-        team2 = {}
-        team2['team'] = game['competitions'][0]['competitors'][1]['team']['abbreviation']
-        team2['score'] = int(game['competitions'][0]['competitors'][1]['score'])
-        team2['location'] = game['competitions'][0]['competitors'][1]['homeAway']
-        innerdict = {}
-        innerdict["Week"] = int(week)
-        innerdict["Season"] = int(season)
-        if team1['location'] == "home":
-            innerdict["HomeTeam"] = team1['team']
-            innerdict["AwayTeam"] = team2['team']
-            innerdict["HomeScore"] = team1['score']
-            innerdict["AwayScore"] = team2['score']
-        else:
-            innerdict["HomeTeam"] = team2['team']
-            innerdict["AwayTeam"] = team1['team']
-            innerdict["HomeScore"] = team2['score']
-            innerdict["AwayScore"] = team1['score']
-        if team1['score'] == team2['score']:
-            innerdict["Winner"] = "Tie"
-        elif (team1['score']) > (team2['score']):
-            innerdict["Winner"] = "Home"
-        else:
-            innerdict["Winner"] = "Away"
-        outerdict = {}
-        outerdict["model"] = "predictor.results"
-        outerdict["pk"] = game['id']
-        outerdict["fields"] = innerdict
-        results.append(outerdict)
-
-    # ESPN Uses different short names for Washington and LA Rams to NFL.com
-    # Loop through and rename them to ensure they match our model
-    # Otherwise the import won't work!
-
-    for result in results:
-        if (result['fields']['HomeTeam']) == "WSH":
-            result['fields']['HomeTeam'] = "WAS"
-        if (result['fields']['HomeTeam']) == "LAR":
-            result['fields']['HomeTeam'] = "LA"
-        if (result['fields']['AwayTeam']) == "WSH":
-            result['fields']['AwayTeam'] = "WAS"
-        if (result['fields']['AwayTeam']) == "LAR":
-            result['fields']['AwayTeam'] = "LA"
-
-    sortedresults = sorted(results, key=lambda k: k['pk'])
-    jsonout = json.dumps(sortedresults)
-    outfile.write(jsonout)
-    outfile.close()
-
-    # Upload to S3
-    bucket = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-    s3 = boto3.resource('s3')
-    s3path = 'data/'+filename
-    s3.Object(bucket, s3path).upload_file(Filename=filename)
-    
-    if int(fetchonly) == 1:
+    if int(week) > 18:
         pass
-    elif int(fetchonly) == 0:
-        # Call Save Results once file is uploaded to S3
-        # 30 second delay to let S3 sort itself out and ensure file is ready
-        time.sleep(30)
-        save_results()
+    else:
+        season = os.environ['PREDICTSEASON']
+
+        if int(week) < 10:
+            filename = "resultsimport_"+season+"_0"+week+".json"
+        else:
+            filename = "resultsimport_"+season+"_"+week+"_.json"
+
+        outfile = open(filename, "w")
+
+        # Removed Thurs-Tues logic as below will produce a gameweek, no matter when it's requested
+        source = f"http://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates={season}&week={week}"
+
+        rawjson = requests.get(source).json()
+
+        results = []
+
+        for game in rawjson['events']:
+            team1 = {}
+            team1['team'] = game['competitions'][0]['competitors'][0]['team']['abbreviation']
+            team1['score'] = int(game['competitions'][0]['competitors'][0]['score'])
+            team1['location'] = game['competitions'][0]['competitors'][0]['homeAway']
+            team2 = {}
+            team2['team'] = game['competitions'][0]['competitors'][1]['team']['abbreviation']
+            team2['score'] = int(game['competitions'][0]['competitors'][1]['score'])
+            team2['location'] = game['competitions'][0]['competitors'][1]['homeAway']
+            innerdict = {}
+            innerdict["Week"] = int(week)
+            innerdict["Season"] = int(season)
+            if team1['location'] == "home":
+                innerdict["HomeTeam"] = team1['team']
+                innerdict["AwayTeam"] = team2['team']
+                innerdict["HomeScore"] = team1['score']
+                innerdict["AwayScore"] = team2['score']
+            else:
+                innerdict["HomeTeam"] = team2['team']
+                innerdict["AwayTeam"] = team1['team']
+                innerdict["HomeScore"] = team2['score']
+                innerdict["AwayScore"] = team1['score']
+            if team1['score'] == team2['score']:
+                innerdict["Winner"] = "Tie"
+            elif (team1['score']) > (team2['score']):
+                innerdict["Winner"] = "Home"
+            else:
+                innerdict["Winner"] = "Away"
+            outerdict = {}
+            outerdict["model"] = "predictor.results"
+            outerdict["pk"] = game['id']
+            outerdict["fields"] = innerdict
+            results.append(outerdict)
+
+        # Removed old WSH/WAS & LA/LAR Logic as 'new' teams with
+        # corresponding PKs will be added from 2021 season
+
+        sortedresults = sorted(results, key=lambda k: k['pk'])
+        jsonout = json.dumps(sortedresults)
+        outfile.write(jsonout)
+        outfile.close()
+
+        # Upload to S3
+        bucket = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+        s3 = boto3.resource('s3')
+        s3path = 'data/'+filename
+        s3.Object(bucket, s3path).upload_file(Filename=filename)
+        
+        if int(fetchonly) == 1:
+            pass
+        elif int(fetchonly) == 0:
+            # Call Save Results once file is uploaded to S3
+            # 30 second delay to let S3 sort itself out and ensure file is ready
+            time.sleep(30)
+            save_results()
 
 @shared_task
 # Configured to run in Celery config in settings.py on 1st April every year
