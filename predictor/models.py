@@ -14,6 +14,7 @@ class Team(models.Model):
     Division  = models.CharField(max_length=5, null=True, blank=True)
     ConfDiv = models.CharField(max_length=9, null=True, blank=True)
     Logo = models.ImageField(default='football.png', upload_to='logos')
+    Active = models.BooleanField(default=True)
 
     def __str__(self):
         return('{} {}'.format(self.Town, self.Nickname))
@@ -108,14 +109,14 @@ class Prediction(models.Model):
         else:
             ### Add Points to Weekly Scores ###
             try:
-                ScoresWeek.objects.get(User=self.User, Week=self.Game.Week)
+                ScoresWeek.objects.get(User=self.User, Week=self.Game.Week, Season=self.Game.Season)
             except ScoresWeek.DoesNotExist:
                 # create new weekly score entry if none already exists
                 addweekscore = ScoresWeek(User=self.User, Week=self.Game.Week, WeekScore=self.Points, Season=self.Game.Season)
                 addweekscore.save()
             else:
                 # if a weekly score object exists, add the points to it
-                weekscore = ScoresWeek.objects.get(User=self.User, Week=self.Game.Week)
+                weekscore = ScoresWeek.objects.get(User=self.User, Week=self.Game.Week, Season=self.Game.Season)
                 weekscore.WeekScore += self.Points
                 weekscore.save()
 
