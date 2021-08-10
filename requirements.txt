@@ -26,6 +26,7 @@ django-inlinecss==0.3.0
 django-material==1.6.0
 django-redirect-to-non-www==0.1.1
 django-redis==4.12.1
+django-ses==2.2.1
 django-storages==1.7.2
 django-timezone-field==4.1.2
 djangorestframework==3.11.2
