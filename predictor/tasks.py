@@ -21,7 +21,7 @@ def email_confirmation(user, week, type):
     emailweek = 'Week ' + shortweek
     address.append(User.objects.get(id = user).email)
     subject = type + " Predictions Confirmed | Week " + shortweek
-    from_email = "Pigskin Predictor"
+    from_email = "'Pigskin Predictor' <hello@pigskinpredictor.com>"
     msg = EmailMessage(
         subject, 
         get_template('email_confirmation.html').render(
@@ -74,8 +74,8 @@ def email_reminder(hours):
         
         subject = "Pigskin Predictor: " + hours + " hour reminder"
         plaintextmessage = "This is your " + hours + " reminder to submit your predictions for week " + week
-
-        msg = EmailMultiAlternatives(subject = subject, body = plaintextmessage, from_email = "Pigskin Predictor", to = ('Pigskin Predictor Users', "thepigskinpredictor@gmail.com"), bcc = email_list)
+        
+        msg = EmailMultiAlternatives(subject = subject, body = plaintextmessage, from_email = "'Pigskin Predictor' <hello@pigskinpredictor.com>", to = ["'Pigskin Predictor Users' <hello@pigskinpredictor.com>"], bcc = email_list)
         msg.attach_alternative(html_message, "text/html")
         msg.send()
 

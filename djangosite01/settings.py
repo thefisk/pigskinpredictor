@@ -124,13 +124,6 @@ LOGIN_URL= '/accounts/login'
 STATIC_ROOT = os.path.join(BASE_DIR, 'predictor/static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
-
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
@@ -164,9 +157,6 @@ DBBACKUP_STORAGE_OPTIONS = {'location': '~/djangodbbackup'}
 # New Email-based user auth
 AUTH_USER_MODEL = 'accounts.User'
 
-# AllAuth email login settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
     "django.contrib.auth.backends.ModelBackend",
@@ -177,11 +167,11 @@ AUTHENTICATION_BACKENDS = (
 
 SITE_ID = 2
 
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = 'thepigskinpredictor@gmail.com'
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+# Amazon SES Settings
+DEFAULT_FROM_EMAIL = "'Pigskin Predictor' <hello@pigskinpredictor.com>"
+EMAIL_BACKEND = 'django_ses.SESBackend'
+AWS_SES_REGION_NAME = 'eu-west-2'
+AWS_SES_REGION_ENDPOINT = 'email.eu-west-2.amazonaws.com'
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
