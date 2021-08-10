@@ -49,7 +49,7 @@
             <tr>
                 {% if pred.Winner == "Away" %}
                     {% if pred.Banker == True %}
-                        <td class="profile-banker table-left">{{pred.Game.AwayTeam}}</td><td class="table-center">@</td><td class="profile-notpicked table-right">{{pred.Game.HomeTeam}}</td>
+                        <td class="profile-banker bank-background table-left">{{pred.Game.AwayTeam}}</td><td class="table-center bank-background at-banker">@</td><td class="profile-notpicked-banker bank-background table-right">{{pred.Game.HomeTeam}}</td>
                     {% else %}
                         <td class="profile-picked table-left">{{pred.Game.AwayTeam}}</td><td class="table-center">@</td><td class="profile-notpicked table-right">{{pred.Game.HomeTeam}}</td>
                     {% endif %}
