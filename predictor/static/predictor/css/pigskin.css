@@ -806,3 +806,10 @@ h5 {
   width: 60px;
   height: 60px
 }
+
+.table-joker {
+  font-size: 80%;
+  font-weight:600;
+  color: rgba(40, 96, 138, 0.7)
+
+}

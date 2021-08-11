@@ -1,5 +1,6 @@
 import json, os, collections
 from django.core.cache import cache
+from .cacheflushlist import cachestoflush
 from django.views.decorators.cache import cache_page
 from .helpers import get_json_week_score
 from django.shortcuts import render, get_object_or_404, redirect
@@ -14,7 +15,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from blog.models import Post
 from django.urls import reverse, reverse_lazy
 from .forms import RecordsForm
-from .tasks import email_confirmation
+from .tasks import email_confirmation, joker_reset
 from .models import (
     AvgScores,
     Team,
@@ -88,6 +89,9 @@ def ProfileView(request):
         form = CustomUserChangeForm(request.POST, instance=request.user)
         if form.is_valid:
             form.save()
+            # Flush caches in case fave team changes and effects Divisional scoreboard
+            for c in cachestoflush:
+                cache.delete(c)
             return redirect('profile-amended')
     else:
         try:
@@ -564,6 +568,17 @@ def ScoreTableView(request):
 
     jsonstdscores = cache.get('jsonstdscorescache')
 
+    # Function to send Joker week's to scoretables only if they are used prior to the current week
+    def jokervalue(user):
+        joker = CustomUser.objects.get(id=user).JokerUsed
+        try:
+            if scoreweek >= joker:
+                return "Week "+str(joker)
+            else:
+                return None
+        except(TypeError):
+            return None
+
     if not jsonstdscores:
         jsonstdscores = {'std_scores' : [{
             'pos': i+1,
@@ -571,6 +586,7 @@ def ScoreTableView(request):
             'teamshort': s.User.FavouriteTeam.ShortName,
             'week': get_json_week_score(s.User, scoreweek, os.environ['PREDICTSEASON']),
             'seasonscore': s.SeasonScore,
+            'joker': jokervalue(s.User.id)
             }
             # enumerate needed to allow us to extract the index (position) using i,s
             for i,s in enumerate(ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']))]
@@ -626,6 +642,17 @@ def ScoreTableEnhancedView(request):
     lastweek = str(scoreweek)
     previousweek = str(scoreweek - 1)
 
+    # Function to send Joker week's to scoretables only if they are used prior to the current week
+    def jokervalue(user):
+        joker = CustomUser.objects.get(id=user).JokerUsed
+        try:
+            if scoreweek >= joker:
+                return "Week "+str(joker)
+            else:
+                return None
+        except(TypeError):
+            return None
+
     if not jsonpositions:
         season = os.environ['PREDICTSEASON']
         lastweek = str(scoreweek)
@@ -662,6 +689,7 @@ def ScoreTableEnhancedView(request):
             'seasonpercentage': float(s.SeasonPercentage),
             'seasonaverage': float(s.SeasonAverage),
             'bankeraverage': float(s.BankerAverage),
+            'joker': jokervalue(s.User.id)
             }
             # enumerate needed to allow us to extract the index (position) using i,s
             for i,s in enumerate(ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']))]
