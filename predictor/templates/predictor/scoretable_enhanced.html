@@ -57,8 +57,8 @@
                 <td v-else td class="enhanced clamp nopad"><i :class="score.user|direction|arrow"></i></td>
                 <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp pad-l table-logo"><img v-bind:src="score.teamshort | imgurl" :alt="score.teamshort" class="team_small"></img></td>
                 <td v-else td class="enhanced clamp pad-l table-logo"><img :src="score.teamshort | imgurl" :alt="score.teamshort" class="team_small"></img></td>
-                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp no-wrap">[[score.user]]</td>
-                <td v-else class="enhanced clamp no-wrap">[[score.user]]</td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp no-wrap">[[score.user]] &nbsp;<span class=table-joker><i v-if="score.joker !== null" class="fas fa-check" v-bind:title="score.joker"></i></span></td>
+                <td v-else class="enhanced clamp no-wrap">[[score.user]] &nbsp;<span class=table-joker><i v-if="score.joker !== null" class="fas fa-check" v-bind:title="score.joker"></i></span></td>
                 <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp">[[score.week]]</td>
                 <td v-else class="enhanced clamp">[[score.week]]</td>
                 <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp">[[score.seasoncorrect]]</td>
