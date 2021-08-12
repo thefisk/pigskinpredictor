@@ -29,7 +29,7 @@
                 <tbody>
                 {% for result in results %}
                     <tr class="results-table-row">
-                            <td class="results-table-dnp clamp"><img style="vertical-align:middle" src="{{ result.AwayTeam.Logo.url }}" class="team_small" alt="{{ result.AwayTeam }}">&nbsp; {{ result.AwayTeam.Nickname }}</td>
+                            <td class="results-table-dnp clamp pad-l"><img style="vertical-align:middle" src="{{ result.AwayTeam.Logo.url }}" class="team_small" alt="{{ result.AwayTeam }}">&nbsp; {{ result.AwayTeam.Nickname }}</td>
                             <td class="results-table-dnp clamp">{{ result.AwayScore }} - {{ result.HomeScore }}</td>
                             <td class="results-table-dnp clamp"><img style="vertical-align:middle" src="{{ result.HomeTeam.Logo.url }}" class="team_small" alt="{{ result.HomeTeam }}">&nbsp; {{ result.HomeTeam.Nickname }}</td>
                     </tr>

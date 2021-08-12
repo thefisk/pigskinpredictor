@@ -18,6 +18,14 @@ def has_group(user, group_name):
     group = Group.objects.get(name=group_name)
     return True if group in user.groups.all() else False
 
+@register.filter(name='pick_logo')
+def pick_logo(pred):
+    match = Match.objects.get(GameID = pred.Game.GameID)
+    if pred.Winner == 'Home':
+        return match.HomeTeam.Logo.url
+    else:
+        return match.AwayTeam.Logo.url
+
 @register.filter(name='corresponding_match')
 def corresponding_match(bankerteam):
     week = os.environ['PREDICTWEEK']
