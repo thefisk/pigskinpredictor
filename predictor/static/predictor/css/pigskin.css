@@ -6,10 +6,10 @@
 }
 
 .chosenbanker {
-  -webkit-box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2),
-    0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  background-color: orangered !important;
+  -webkit-box-shadow: 0 8px 17px 0 rgba(218, 165, 32, 0.6)
+    0 6px 20px 0 rgba(218, 165, 32, 0.6);
+  box-shadow: 0 8px 17px 0 rgba(218, 165, 32, 0.6), 0 6px 20px 0 rgba(218, 165, 32, 0.6);
+  background-color: rgba(218, 165, 32); !important;
 }
 
 .usedbanker {
