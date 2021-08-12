@@ -21,17 +21,17 @@
             <table class="striped" aria-describedby="Results Table">
                 <thead>
                     <tr class="table-secondary">
-                        <th class = "stats-table-header table-secondary-header">Away</th>
-                        <th class = "stats-table-header table-secondary-header">Score</th>
+                        <th class = "stats-table-header table-secondary-header table-left">Away</th>
+                        <th class = "stats-table-header table-secondary-header table-center">Score</th>
                         <th class = "stats-table-header table-secondary-header">Home</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for result in results %}
                     <tr class="results-table-row">
-                            <td class="results-table-dnp clamp pad-l"><img style="vertical-align:middle" src="{{ result.AwayTeam.Logo.url }}" class="team_small" alt="{{ result.AwayTeam }}">&nbsp; {{ result.AwayTeam.Nickname }}</td>
-                            <td class="results-table-dnp clamp">{{ result.AwayScore }} - {{ result.HomeScore }}</td>
-                            <td class="results-table-dnp clamp"><img style="vertical-align:middle" src="{{ result.HomeTeam.Logo.url }}" class="team_small" alt="{{ result.HomeTeam }}">&nbsp; {{ result.HomeTeam.Nickname }}</td>
+                            <td class="results-table-dnp clamp pad-l table-left">{{ result.AwayTeam.ShortName }}&nbsp; <img style="vertical-align:middle" src="{{ result.AwayTeam.Logo.url }}" class="team_small" alt="{{ result.AwayTeam }}"></td>
+                            <td class="results-table-dnp clamp table-center">{{ result.AwayScore }} - {{ result.HomeScore }}</td>
+                            <td class="results-table-dnp clamp"><img style="vertical-align:middle" src="{{ result.HomeTeam.Logo.url }}" class="team_small" alt="{{ result.HomeTeam }}">&nbsp; {{ result.HomeTeam.ShortName }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
