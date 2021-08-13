@@ -632,7 +632,7 @@ h5 {
   font-size: 120%;
   color: rgba(0, 0, 0, 0.30);
   text-transform: lowercase;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
 }
 
 .email-heading{
@@ -811,5 +811,8 @@ h5 {
   font-size: 80%;
   font-weight:600;
   color: rgba(40, 96, 138, 0.7)
+}
 
+#blog-title h5 {
+  letter-spacing: 1px;
 }

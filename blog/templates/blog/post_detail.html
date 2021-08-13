@@ -7,7 +7,9 @@
     });
 </script>
 <div class='container'>
-      <h5 class="article-title">{{ object.title }}</h4>
+      <div id="blog-title">
+      <h5 class="article-title blog-title">{{ object.title }}</h5>
+      </div>
       <P class="post-metadata">{{ object.author }} | {{ object.date_posted|date:"F d, Y" }}</p>
       <div class="divider"></div>  
       <div id ="pigskin-markdown">
