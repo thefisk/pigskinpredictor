@@ -6,7 +6,7 @@ from django.template.loader import get_template
 import os, requests, json, boto3, time
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from predictor.models import Team, Results, ScoresSeason, ScoresAllTime, ScoresWeek, Prediction, AvgScores
+from predictor.models import Team, Results, ScoresSeason, ScoresAllTime, ScoresWeek, Prediction, AvgScores, LiveGame
 
 @shared_task
 def email_confirmation(user, week, type):
@@ -222,6 +222,22 @@ def save_results():
             NewAvgs = AvgScores(Season=int(fileseason), AvgScores=NewDict)
             NewAvgs.save()
 
+@shared_task
+def get_livescores():
+    for livegame in LiveGame.objects.all():
+        url = f"http://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event={livegame.Game}"
+        gamejson = requests.get(url).json()
+        home = gamejson['header']['competitions'][0]['competitors'][0]['score']
+        livegame.HomeScore = home
+        away = gamejson['header']['competitions'][0]['competitors'][1]['score']
+        livegame.AwayScore = away
+        if home > away:
+            livegame.Winning = "Home"
+        elif away > home:
+            livegame.Winning = "Away"
+        else:
+            livegame.Winning = "Tie"
+        livegame.save()
 
 @shared_task
 def fetch_results(fetchonly):

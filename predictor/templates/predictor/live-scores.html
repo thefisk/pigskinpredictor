@@ -1,0 +1,183 @@
+<style>
+        body {
+          /* Set "my-sec-counter" to 0 */
+          counter-reset: my-sec-counter;
+        }
+        
+        .count::after {
+          /* Increment "my-sec-counter" by 1 */
+          counter-increment: my-sec-counter;
+          content: counter(my-sec-counter) ". ";
+        }
+        </style>
+
+{% extends "predictor/base.html" %}
+
+{% block content %}
+<!--Vue JS-->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!--script src="https://cdn.jsdelivr.net/npm/vue"></script-->
+<!--Axios-->>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+
+<script>
+    $('#leaderboard').each(function(){
+            $(this).toggleClass('active');
+        });
+</script>
+
+{{ jsonpreds|json_script:'preds' }}
+{{ points|json_script:'points' }}
+{{ jsonuser|json_script:'currentuser' }}
+{{ jsonurls|json_script:'logo_urls' }}
+
+<div class="container">
+<h5 class="mb-3">Sunday Live for week {{ titleweek }}</h5>
+    <div class="divider"></div>
+    <div id="vue-table">
+            <table class="striped table-top-pad" aria-describedby="Table Header">
+                <tr class="table-highlight">
+                    <td class = "stats-table-header col-100-l">Scores Update Every 30 seconds</td>
+                </tr>
+            </table>
+ <table class="striped" aria-describedby="Enhanced Scoretable">
+            <tbody>
+            <tr v-for="entry in points" :key="entry.User">
+                <td>[[entry.User]]</td>
+                <td>[[entry.Points]]<td>
+            </tr>
+            </tbody>
+            </table>
+
+            </tbody>
+            </table>
+</div>
+
+<script>
+    let preds = JSON.parse(document.getElementById('preds').textContent);
+    let points = JSON.parse(document.getElementById('points').textContent);
+    let currentUser = JSON.parse(document.getElementById('currentuser').textContent).user;
+    let logoUrls = JSON.parse(document.getElementById('logo_urls').textContent);
+</script>
+
+<script>
+    const getAPI = axios.create({
+        baseURL: 'http://127.0.0.1:8000',
+        timeout: 1000,
+    })
+</script>
+
+<script>
+    var app = new Vue({
+        delimiters: ['[[', ']]'],
+        el: '#vue-table',
+        data: {
+            points,
+            liveScores: [],
+            preds,
+            logoUrls,
+            currentUser,
+            tableHeadings: [
+                {
+                    "name": "Pos",
+                    "jsonfield": "pos",
+                    "sortAsc": true,
+                    "sortDesc": false,
+                    "sorting": true
+                },
+                {
+                    "name": "",
+                },
+                {
+                    "name": "",
+                },
+                {
+                    "name": "Player",
+                    "jsonfield": "user",
+                    "sortAsc": false,
+                    "sortDesc": false,
+                    "sorting": false
+                },
+                {
+                    "name": "Current Score",
+                    "jsonfield": "seasonscore",
+                    "sortAsc": false,
+                    "sortDesc": false,
+                    "sorting": false
+                }
+            ]
+        },
+        filters:{
+            imgurl: function(team) {
+                return logoUrls[team]
+            },
+            direction: function(user) {
+                return positions[user]
+            },
+            arrow: function(direction) {
+                    if (direction == "up") {
+                        return "lni lni-angle-double-up green-arrow"
+                    }
+                    else if (direction == "down") {
+                        return "lni lni-angle-double-down red-arrow"
+                    }
+                    else {
+                        return "lni lni-angle-double-right blue-arrow"
+                    }
+            },
+        },
+        methods: {
+            // below approximately correct.  not recognised as a function though!
+            findLivePts(game, winner) {
+                let matchedGame = this.liveScores.find( ({ Game }) => Game === game )
+                console.log(matchedGame)
+            },
+            updatePoints() {
+                for (user in points){
+                        let playerpreds = this.preds[user]
+                        playerpreds.forEach(function (pred) {
+                            var game = pred['game']
+                            var winner = pred['winner']
+                            let newPts = this.findLivePts(game, winner)
+                            console.log(user + ", " + pred['game'], + pred['pts'] + "pts ")
+                            })
+                        }
+            },
+            updateTotals() {
+                // Below will iterate through each user's pred pts and amend their total points for the live table
+                for (user in preds){
+                    console.log(user)
+                    let usertotal = 0
+                   for (pred in preds[user]) {
+                       usertotal += preds[user][pred]['pts']
+                       console.log(preds[user][pred]['pts'])
+                   }
+                   let userpts = this.points.find(x => x.User === user)
+                   userpts.Points = usertotal
+                }
+            },
+            getLiveScores() {
+                getAPI.get('/api/live-scores')
+                .then(response => {
+                    console.log('API received data')
+                    app.liveScores = response.data
+                    //this.updatePoints()
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            },
+        },
+        created() {
+            this.getLiveScores();
+            this.timer = setInterval(this.getLiveScores, 30000);
+            this.timer = setInterval(this.updateTotals, 5000)
+            }
+        })
+    
+</script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
+{% load static %}
+<script src="{% static "predictor/scripts/pigskin.js" %}"></script>
+{% endblock content %}
