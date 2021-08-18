@@ -1,3 +1,4 @@
+import datetime
 from celery import shared_task
 from .models import Prediction
 from accounts.models import User
@@ -6,7 +7,7 @@ from django.template.loader import get_template
 import os, requests, json, boto3, time
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from predictor.models import Team, Results, ScoresSeason, ScoresAllTime, ScoresWeek, Prediction, AvgScores, LiveGame
+from predictor.models import Team, Results, ScoresSeason, ScoresAllTime, ScoresWeek, Prediction, AvgScores, LiveGame, Match
 
 @shared_task
 def email_confirmation(user, week, type):
@@ -238,6 +239,18 @@ def get_livescores():
         else:
             livegame.Winning = "Tie"
         livegame.save()
+
+# Task to run on Saturdays to wipe old live games and add tomorrow's game in prep for Sunday's live games
+@shared_task
+def populate_live():
+    for livegame in LiveGame.objects.all():
+        livegame.delete()
+    tomorrow = datetime.date.today() + datetime.timedelta(days=1)
+    for game in Match.objects.filter(Season=int(os.environ['PREDICTSEASON'])):
+        if game.DateTime.date() == tomorrow:
+            newlive = LiveGame(Game=game.GameID, HomeTeam=game.HomeTeam.ShortName, AwayTeam=game.AwayTeam.ShortName)
+            newlive.save()
+
 
 @shared_task
 def fetch_results(fetchonly):

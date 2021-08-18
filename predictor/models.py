@@ -294,6 +294,8 @@ class AvgScores(models.Model):
 
 class LiveGame(models.Model):
     Game = models.IntegerField()
+    HomeTeam = models.CharField(null=True, blank=True, max_length=4)
+    AwayTeam = models.CharField(null=True, blank=True, max_length=4)
     HomeScore = models.IntegerField(null=True, blank=True)
     AwayScore = models.IntegerField(null=True, blank=True)
     winning_choices = (('Home','Home'), ('Away','Away'), ('Tie', 'Tie'))

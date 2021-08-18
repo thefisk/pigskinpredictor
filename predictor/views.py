@@ -1,4 +1,4 @@
-import json, os, collections
+import json, os, datetime
 from django.core.cache import cache
 from .cacheflushlist import cachestoflush
 from django.views.decorators.cache import cache_page
@@ -75,7 +75,9 @@ def ReportsView(request):
 @require_GET
 def HomeView(request):
     if request.user.is_authenticated:
-        if Post.objects.all().count() > 0:
+        if os.environ['SUNDAYLIVE'] == "TRUE":
+            return redirect('live-scores')
+        elif Post.objects.all().count() > 0:
             latest = Post.objects.all().first().pk
             return redirect('post-latest', latest)
         else:
@@ -1079,21 +1081,31 @@ def LiveScoresView(request):
         userlist[i.User] = i.User.Full_Name
 
     points = []
+
+    def findJoker(user):
+        pred = Prediction.objects.filter(PredWeek=scoreweek, User=user).first()
+        if pred.Joker:
+            return "Joker"
+        else:
+            return None
+
     for user in userlist:
-        points.append({'User':user.Full_Name, 'Points': None})
+        points.append({'User':user.Full_Name, 'FavTeam':user.FavouriteTeam.ShortName, 'Joker': findJoker(user), 'Points': None})
 
     if not jsonpredsforlive:
         jsonpredsforlive ={}
         for i in userlist:
             jsonpredsforlive[i.Full_Name]=[]
             for a in Prediction.objects.filter(PredWeek=scoreweek, User=i).select_related('Game'):
-                jsonpredsforlive[i.Full_Name].append({
-                'game': a.Game.GameID,
-                'winner': a.Winner,
-                'banker': a.Banker,
-                'joker': a.Joker,
-                'pts': 0
-                })
+                # Only add Sunday games to list
+                if a.DateTime.date() == datetime.date.today():
+                    jsonpredsforlive[i.Full_Name].append({
+                    'game': a.Game.GameID,
+                    'winner': a.Winner,
+                    'banker': a.Banker,
+                    'joker': a.Joker,
+                    'pts': 0
+                    })
         cache.set('jsonpredsforlive', jsonpredsforlive, CacheTTL_1Week)
 
     try:
@@ -1121,4 +1133,4 @@ def LiveScoresView(request):
         'title':'Live Scores'
     }
 
-    return render(request, 'predictor/live-scores.html', context)
+    return render(request, 'predictor/live-scores.html', context, {'title':'Sunday Live'})

@@ -20,12 +20,6 @@
 <!--Axios-->>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 
-<script>
-    $('#leaderboard').each(function(){
-            $(this).toggleClass('active');
-        });
-</script>
-
 {{ jsonpreds|json_script:'preds' }}
 {{ points|json_script:'points' }}
 {{ jsonuser|json_script:'currentuser' }}
@@ -34,30 +28,59 @@
 <div class="container">
 <h5 class="mb-3">Sunday Live for week {{ titleweek }}</h5>
     <div class="divider"></div>
-    <div id="vue-table">
+    <div class="row">
+        <div id="vue-table">
+            <div class="col s8">
+                <table class="striped table-top-pad" aria-describedby="Table Header">
+                    <tr class="table-highlight">
+                        <td class = "stats-table-header col-100-l">Scores Update Every 2 minutes</td>
+                    </tr>
+                </table>
+                <table class="striped" aria-describedby="Enhanced Scoretable">
+                <tbody name ="livescores-score-table" is="transition-group">
+                <tr v-for="entry in sortedTable" :key="entry.User">
+                    <td v-if="entry.user ===  currentUser" class = "table-highlight enhanced clamp pad-l table-logo"><img v-bind:src="entry.FavTeam | imgurl" :alt="entry.FavTeam" class="team_small"></img></td>
+                    <td v-else td class="enhanced clamp pad-l table-logo"><img :src="entry.FavTeam | imgurl" :alt="entry.FavTeam" class="team_small"></img></td>
+                    <td v-if="entry.user ===  currentUser" class = "table-highlight enhanced clamp no-wrap">[[entry.User]] &nbsp;<span class=table-joker><i v-if="entry.Joker !== null" class="fas fa-check" v-bind:title="entry.Joker"></i></span></td>
+                    <td v-else class="enhanced clamp no-wrap">[[entry.User]] &nbsp;<span class=table-joker><i v-if="entry.Joker !== null" class="fas fa-check" v-bind:title="entry.Joker"></i></span></td>
+                    <td>[[entry.Points]]<td>
+                </tr>
+                </tbody>
+                </table>
+
+            </div>
+        <div class="col s4">
             <table class="striped table-top-pad" aria-describedby="Table Header">
                 <tr class="table-highlight">
-                    <td class = "stats-table-header col-100-l">Scores Update Every 30 seconds</td>
+                    <td class = "stats-table-header col-100-l">Game Scores</td>
                 </tr>
             </table>
- <table class="striped" aria-describedby="Enhanced Scoretable">
-            <tbody>
-            <tr v-for="entry in points" :key="entry.User">
-                <td>[[entry.User]]</td>
-                <td>[[entry.Points]]<td>
-            </tr>
-            </tbody>
+            <table class="striped">
+                <thead>
+                    <tr class="table-secondary">
+                        <th class = "stats-header table-secondary-header pad-l table-left">Away</th>
+                        <th class = "stats-header table-secondary-header table-center">Score</th>
+                        <th class = "stats-header table-secondary-header">Home</th>
+                    </tr>
+                </thead>
+                <tbody name ="livegames-score-table" is="transition-group">
+                    <tr v-for="game in liveScores" :key="game.Game">
+                        <td class="table-left" :key="game.AwayTeam">[[game.AwayTeam]]&nbsp; <img v-bind:src="game.AwayTeam | imgurl" :alt="game.AwayTeam" style="vertical-align:middle" class="team_small"></td>
+                        <td class="table-center">[[game.AwayScore]] - [[game.HomeScore]]</td>
+                        <td :key="game.HomeTeam"><img v-bind:src="game.HomeTeam | imgurl" :alt="game.HomeTeam" style="vertical-align:middle" class="team_small">&nbsp; [[game.HomeTeam]]</td>
+                    </tr>
+                </tbody>
             </table>
-
-            </tbody>
-            </table>
-</div>
+        </div>
+        </div>
+        </div>
 
 <script>
     let preds = JSON.parse(document.getElementById('preds').textContent);
     let points = JSON.parse(document.getElementById('points').textContent);
     let currentUser = JSON.parse(document.getElementById('currentuser').textContent).user;
     let logoUrls = JSON.parse(document.getElementById('logo_urls').textContent);
+    let liveScores = []
 </script>
 
 <script>
@@ -74,95 +97,84 @@
         data: {
             points,
             liveScores: [],
+            sortedTable: [],
             preds,
             logoUrls,
-            currentUser,
-            tableHeadings: [
-                {
-                    "name": "Pos",
-                    "jsonfield": "pos",
-                    "sortAsc": true,
-                    "sortDesc": false,
-                    "sorting": true
-                },
-                {
-                    "name": "",
-                },
-                {
-                    "name": "",
-                },
-                {
-                    "name": "Player",
-                    "jsonfield": "user",
-                    "sortAsc": false,
-                    "sortDesc": false,
-                    "sorting": false
-                },
-                {
-                    "name": "Current Score",
-                    "jsonfield": "seasonscore",
-                    "sortAsc": false,
-                    "sortDesc": false,
-                    "sorting": false
-                }
-            ]
+            currentUser
         },
         filters:{
             imgurl: function(team) {
                 return logoUrls[team]
             },
-            direction: function(user) {
-                return positions[user]
-            },
-            arrow: function(direction) {
-                    if (direction == "up") {
-                        return "lni lni-angle-double-up green-arrow"
-                    }
-                    else if (direction == "down") {
-                        return "lni lni-angle-double-down red-arrow"
-                    }
-                    else {
-                        return "lni lni-angle-double-right blue-arrow"
-                    }
-            },
         },
         methods: {
-            // below approximately correct.  not recognised as a function though!
-            findLivePts(game, winner) {
-                let matchedGame = this.liveScores.find( ({ Game }) => Game === game )
-                console.log(matchedGame)
-            },
-            updatePoints() {
-                for (user in points){
-                        let playerpreds = this.preds[user]
-                        playerpreds.forEach(function (pred) {
-                            var game = pred['game']
-                            var winner = pred['winner']
-                            let newPts = this.findLivePts(game, winner)
-                            console.log(user + ", " + pred['game'], + pred['pts'] + "pts ")
-                            })
+            // Below will amend individual pred points
+            scoreGames() {
+                let scoreData = app.liveScores
+                for (i in scoreData){
+                    let gameid = scoreData[i].Game
+                    console.log("Processing game "+gameid)
+                    for (user in this.preds) {
+                        console.log("- Processing user "+user)
+                        let thisgame = this.preds[user].find(x => x.game === gameid)
+                        if (thisgame) {
+                            console.log("Found " + gameid + " in user " + user)
+                            console.log(thisgame)
+                            console.log(scoreData[i])
+                            if(thisgame.winner === scoreData[i].Winning) {
+                                let lookup = scoreData[i].Winning + "Score"
+                                let score = scoreData[i][lookup]
+                                let multiplier = 1
+                                if(thisgame.joker === true) {
+                                    multiplier *= 3
+                                }
+                                if(thisgame.banker === true) {
+                                    multiplier *= 2
+                                }
+                                thisgame.pts = score * multiplier
+                            }
+                            else {
+                                let lookup = scoreData[i].Winning + "Score"
+                                let score = scoreData[i][lookup]
+                                if(thisgame.banker === true) {
+                                    let multiplier = -2
+                                    if(thisgame.joker === true) {
+                                        multiplier *= 3
+                                    }
+                                    thisgame.pts = score * multiplier
+                                }
+                                else {
+                                    thisgame.pts = 0
+                                }
+                            }
                         }
+                    }
+                }
+                console.log("---scoreGames complete---")
+                this.updateTotals();
             },
             updateTotals() {
                 // Below will iterate through each user's pred pts and amend their total points for the live table
                 for (user in preds){
-                    console.log(user)
                     let usertotal = 0
-                   for (pred in preds[user]) {
+                    for (pred in preds[user]) {
                        usertotal += preds[user][pred]['pts']
-                       console.log(preds[user][pred]['pts'])
                    }
                    let userpts = this.points.find(x => x.User === user)
                    userpts.Points = usertotal
                 }
+                this.sortTable()
+            },
+            sortTable() {
+                this.sortedTable = (this.points.sort((a, b) => b.Points - a.Points));
             },
             getLiveScores() {
                 getAPI.get('/api/live-scores')
                 .then(response => {
-                    console.log('API received data')
+                    console.log('---API data received---')
                     app.liveScores = response.data
-                    //this.updatePoints()
                 })
+                .then(result => {app.scoreGames()})
                 .catch(err => {
                     console.log(err)
                 })
@@ -170,8 +182,7 @@
         },
         created() {
             this.getLiveScores();
-            this.timer = setInterval(this.getLiveScores, 30000);
-            this.timer = setInterval(this.updateTotals, 5000)
+            this.timer = setInterval(this.getLiveScores, 10000);
             }
         })
     

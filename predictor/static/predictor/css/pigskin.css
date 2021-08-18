@@ -816,3 +816,11 @@ h5 {
 #blog-title h5 {
   letter-spacing: 1px;
 }
+
+.livescores-score-table-move {
+  transition: transform 2s;
+}
+
+.enhanced-score-table-move {
+  transition: transform 1s;
+}
