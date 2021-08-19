@@ -824,3 +824,13 @@ h5 {
 .enhanced-score-table-move {
   transition: transform 1s;
 }
+
+.livegamesupdated {
+  background-color: #E5EEF5;
+  transition: background-color 1s linear
+}
+
+.livegamesnormal {
+  background-color: transparent !important;
+  transition: background-color 1s linear
+}

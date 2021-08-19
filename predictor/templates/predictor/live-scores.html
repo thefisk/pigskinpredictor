@@ -63,8 +63,8 @@
                         <th class = "stats-header table-secondary-header">Home</th>
                     </tr>
                 </thead>
-                <tbody name ="livegames-score-table" is="transition-group">
-                    <tr v-for="game in liveScores" :key="game.Game">
+                <tbody name ="livegames-score-table" is="transition-group" id="livegames-table">
+                    <tr v-for="game in sortedScores" :key="game.Game" v-bind:class="[game.Updated ? updatedClass : stdClass]">
                         <td class="table-left" :key="game.AwayTeam">[[game.AwayTeam]]&nbsp; <img v-bind:src="game.AwayTeam | imgurl" :alt="game.AwayTeam" style="vertical-align:middle" class="team_small"></td>
                         <td class="table-center">[[game.AwayScore]] - [[game.HomeScore]]</td>
                         <td :key="game.HomeTeam"><img v-bind:src="game.HomeTeam | imgurl" :alt="game.HomeTeam" style="vertical-align:middle" class="team_small">&nbsp; [[game.HomeTeam]]</td>
@@ -95,9 +95,12 @@
         delimiters: ['[[', ']]'],
         el: '#vue-table',
         data: {
+            stdClass: "livegamesnormal",
+            updatedClass: "livegamesupdated",
             points,
             liveScores: [],
             sortedTable: [],
+            sortedScores: [],
             preds,
             logoUrls,
             currentUser
@@ -163,10 +166,14 @@
                    let userpts = this.points.find(x => x.User === user)
                    userpts.Points = usertotal
                 }
-                this.sortTable()
+                this.sortScores();
             },
             sortTable() {
                 this.sortedTable = (this.points.sort((a, b) => b.Points - a.Points));
+            },
+            sortScores() {
+                this.sortedScores = (this.liveScores.sort((a,b) => a.Game - b.Game));
+                this.sortTable()
             },
             getLiveScores() {
                 getAPI.get('/api/live-scores')

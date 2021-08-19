@@ -229,16 +229,21 @@ def get_livescores():
         url = f"http://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event={livegame.Game}"
         gamejson = requests.get(url).json()
         home = gamejson['header']['competitions'][0]['competitors'][0]['score']
-        livegame.HomeScore = home
         away = gamejson['header']['competitions'][0]['competitors'][1]['score']
-        livegame.AwayScore = away
-        if home > away:
-            livegame.Winning = "Home"
-        elif away > home:
-            livegame.Winning = "Away"
+        if livegame.HomeScore == home and livegame.AwayScore == away:
+            livegame.Updated = False
+            livegame.save()
         else:
-            livegame.Winning = "Tie"
-        livegame.save()
+            livegame.HomeScore = home
+            livegame.AwayScore = away
+            if home > away:
+                livegame.Winning = "Home"
+            elif away > home:
+                livegame.Winning = "Away"
+            else:
+                livegame.Winning = "Tie"
+            livegame.Updated = True
+            livegame.save()
 
 # Task to run on Saturdays to wipe old live games and add tomorrow's game in prep for Sunday's live games
 @shared_task
