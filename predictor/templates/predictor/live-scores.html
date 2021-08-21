@@ -168,12 +168,18 @@
                 }
                 this.sortScores();
             },
-            sortTable() {
-                this.sortedTable = (this.points.sort((a, b) => b.Points - a.Points));
-            },
             sortScores() {
                 this.sortedScores = (this.liveScores.sort((a,b) => a.Game - b.Game));
                 this.sortTable()
+            },
+            sortTable() {
+                this.sortedTable = (this.points.sort((a, b) => b.Points - a.Points));
+                setTimeout(this.disableFlash,6000)
+            },
+            disableFlash() {
+                for (game in app.sortedScores) {
+                    app.sortedScores[game].Updated = false
+                }
             },
             getLiveScores() {
                 getAPI.get('/api/live-scores')
@@ -189,7 +195,7 @@
         },
         created() {
             this.getLiveScores();
-            this.timer = setInterval(this.getLiveScores, 10000);
+            this.timer = setInterval(this.getLiveScores, 120000);
             }
         })
     

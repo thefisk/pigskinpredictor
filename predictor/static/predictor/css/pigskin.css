@@ -831,6 +831,6 @@ h5 {
 }
 
 .livegamesnormal {
-  background-color: transparent !important;
+  
   transition: background-color 1s linear
 }

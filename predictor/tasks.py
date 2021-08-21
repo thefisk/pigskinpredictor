@@ -226,23 +226,31 @@ def save_results():
 @shared_task
 def get_livescores():
     for livegame in LiveGame.objects.all():
-        url = f"http://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event={livegame.Game}"
-        gamejson = requests.get(url).json()
-        home = gamejson['header']['competitions'][0]['competitors'][0]['score']
-        away = gamejson['header']['competitions'][0]['competitors'][1]['score']
-        if livegame.HomeScore == home and livegame.AwayScore == away:
-            livegame.Updated = False
-            livegame.save()
-        else:
-            livegame.HomeScore = home
-            livegame.AwayScore = away
-            if home > away:
-                livegame.Winning = "Home"
-            elif away > home:
-                livegame.Winning = "Away"
+        try:
+            url = f"http://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event={livegame.Game}"
+            gamejson = requests.get(url).json()
+            home = int(gamejson['header']['competitions'][0]['competitors'][0]['score'])
+            away = int(gamejson['header']['competitions'][0]['competitors'][1]['score'])
+            state = gamejson['header']['competitions'][0]['status']['type']['state']
+            if livegame.HomeScore == home and livegame.AwayScore == away and livegame.State == state:
+                # pre, in, post
+                livegame.Updated = False
+                livegame.save()
             else:
-                livegame.Winning = "Tie"
-            livegame.Updated = True
+                livegame.HomeScore = home
+                livegame.AwayScore = away
+                livegame.State = state
+                if home > away:
+                    livegame.Winning = "Home"
+                elif away > home:
+                    livegame.Winning = "Away"
+                else:
+                    livegame.Winning = "Tie"
+                livegame.Updated = True
+                livegame.save()
+        # Games will produce a KeyError for 'score' prior to kick-off
+        except(KeyError):
+            livegame.State = "pre"
             livegame.save()
 
 # Task to run on Saturdays to wipe old live games and add tomorrow's game in prep for Sunday's live games
