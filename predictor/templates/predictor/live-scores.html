@@ -169,7 +169,7 @@
                 this.sortScores();
             },
             sortScores() {
-                this.sortedScores = (this.liveScores.sort((a,b) => a.Game - b.Game));
+                this.sortedScores = (this.liveScores.sort((a,b) => a.KickOff - b.KickOff || a.TeamIndex - b.TeamIndex));
                 this.sortTable()
             },
             sortTable() {

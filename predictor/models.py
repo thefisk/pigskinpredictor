@@ -302,6 +302,8 @@ class LiveGame(models.Model):
     Winning = models.CharField(max_length=4, choices=winning_choices, null=True, blank=True)
     Updated = models.BooleanField(default=False)
     State = models.CharField(null=True, blank=True, max_length=8)
+    KickOff = models.IntegerField()
+    TeamIndex = models.IntegerField()
 
     def __str__(self):
         return(str(self.Game))

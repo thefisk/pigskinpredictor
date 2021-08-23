@@ -232,14 +232,15 @@ def get_livescores():
             home = int(gamejson['header']['competitions'][0]['competitors'][0]['score'])
             away = int(gamejson['header']['competitions'][0]['competitors'][1]['score'])
             state = gamejson['header']['competitions'][0]['status']['type']['state']
-            if livegame.HomeScore == home and livegame.AwayScore == away and livegame.State == state:
+            stateorder={'pre': 'a_pre', 'in': 'b_in', 'post': 'c_post'}
+            if livegame.HomeScore == home and livegame.AwayScore == away and livegame.State == stateorder[state]:
                 # pre, in, post
                 livegame.Updated = False
                 livegame.save()
             else:
                 livegame.HomeScore = home
                 livegame.AwayScore = away
-                livegame.State = state
+                livegame.State = stateorder[state]
                 if home > away:
                     livegame.Winning = "Home"
                 elif away > home:
@@ -256,12 +257,17 @@ def get_livescores():
 # Task to run on Saturdays to wipe old live games and add tomorrow's game in prep for Sunday's live games
 @shared_task
 def populate_live():
+    teamdict = {'ARI': 1, 'ATL': 2, 'BAL': 3, 'BUF': 4, 'CAR': 5, 'CHI': 6, 'CIN': 7, 'CLE': 8, 'DAL': 9, 'DEN': 10, 'DET': 11, 'GB': 12, 'HOU': 13, 'IND': 14, 'JAX': 15, 'KC': 16, 'LV': 17, 'LAC': 18, 'LAR': 19, 'MIA': 20, 'MIN': 21, 'NE': 22, 'NO': 23, 'NYG': 24, 'NYJ': 25, 'PHI': 26, 'PIT': 27, 'SF': 28, 'SEA': 29, 'TB': 30, 'TEN': 31, 'WSH': 32}
     for livegame in LiveGame.objects.all():
         livegame.delete()
     tomorrow = datetime.date.today() + datetime.timedelta(days=1)
-    for game in Match.objects.filter(Season=int(os.environ['PREDICTSEASON'])):
-        if game.DateTime.date() == tomorrow:
-            newlive = LiveGame(Game=game.GameID, HomeTeam=game.HomeTeam.ShortName, AwayTeam=game.AwayTeam.ShortName)
+    # test for week 1
+    tomorrow = datetime.datetime.fromisoformat('2021-09-12').date()
+    print(tomorrow)
+    # for game in Match.objects.filter(Season=int(os.environ['PREDICTSEASON'])):
+    for game in Match.objects.filter(Season=2021):
+        if game.DateTime.date() == tomorrow and game.DateTime.hour < 23:
+            newlive = LiveGame(Game=game.GameID, HomeTeam=game.HomeTeam.ShortName, AwayTeam=game.AwayTeam.ShortName, KickOff=game.DateTime.strftime("%H%M"), TeamIndex=teamdict[game.AwayTeam.ShortName])
             newlive.save()
 
 
