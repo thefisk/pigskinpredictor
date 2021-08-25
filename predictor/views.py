@@ -1072,7 +1072,8 @@ def LiveScoresView(request):
         liveseason = int(os.environ['PREDICTSEASON'])
         basescoreweek = int(os.environ['RESULTSWEEK'])
         if basescoreweek > 18:
-            return redirect('home')
+            latest = Post.objects.all().first().pk
+            return redirect('post-latest', latest)
         else:
             scoreweek = int(os.environ['PREDICTSEASON']+os.environ['RESULTSWEEK'])
 
