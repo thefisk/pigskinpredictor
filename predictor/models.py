@@ -291,3 +291,19 @@ class AvgScores(models.Model):
 
     def __str__(self):
         return("Average Weekly Scores")
+
+class LiveGame(models.Model):
+    Game = models.IntegerField()
+    HomeTeam = models.CharField(null=True, blank=True, max_length=4)
+    AwayTeam = models.CharField(null=True, blank=True, max_length=4)
+    HomeScore = models.IntegerField(null=True, blank=True)
+    AwayScore = models.IntegerField(null=True, blank=True)
+    winning_choices = (('Home','Home'), ('Away','Away'), ('Tie', 'Tie'))
+    Winning = models.CharField(max_length=4, choices=winning_choices, null=True, blank=True)
+    Updated = models.BooleanField(default=False)
+    State = models.CharField(null=True, blank=True, max_length=8)
+    KickOff = models.IntegerField()
+    TeamIndex = models.IntegerField()
+
+    def __str__(self):
+        return(str(self.Game))

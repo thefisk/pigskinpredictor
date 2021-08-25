@@ -16,8 +16,8 @@
 {% block content %}
 
 <!--Vue JS-->
-<!--script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script-->
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!--script src="https://cdn.jsdelivr.net/npm/vue"></script-->
 
 <script>
     $('#leaderboard').each(function(){
@@ -49,7 +49,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody name ="enhanced-score-table" is="transition-group">
             <tr v-for="score in sortedTable" :key="score.pos">
                 <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp pad-l">[[score.pos]] </td>
                 <td v-else td class="enhanced clamp pad-l">[[score.pos]] </td>

@@ -1,3 +1,4 @@
+import datetime
 from celery import shared_task
 from .models import Prediction
 from accounts.models import User
@@ -6,7 +7,7 @@ from django.template.loader import get_template
 import os, requests, json, boto3, time
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from predictor.models import Team, Results, ScoresSeason, ScoresAllTime, ScoresWeek, Prediction, AvgScores
+from predictor.models import Team, Results, ScoresSeason, ScoresAllTime, ScoresWeek, Prediction, AvgScores, LiveGame, Match
 
 @shared_task
 def email_confirmation(user, week, type):
@@ -221,6 +222,53 @@ def save_results():
             NewDict[str(resultsweek)] = latestavg
             NewAvgs = AvgScores(Season=int(fileseason), AvgScores=NewDict)
             NewAvgs.save()
+
+@shared_task
+def get_livescores():
+    for livegame in LiveGame.objects.all():
+        try:
+            url = f"http://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event={livegame.Game}"
+            gamejson = requests.get(url).json()
+            home = int(gamejson['header']['competitions'][0]['competitors'][0]['score'])
+            away = int(gamejson['header']['competitions'][0]['competitors'][1]['score'])
+            state = gamejson['header']['competitions'][0]['status']['type']['state']
+            stateorder={'pre': 'a_pre', 'in': 'b_in', 'post': 'c_post'}
+            if livegame.HomeScore == home and livegame.AwayScore == away and livegame.State == stateorder[state]:
+                # pre, in, post
+                livegame.Updated = False
+                livegame.save()
+            else:
+                livegame.HomeScore = home
+                livegame.AwayScore = away
+                livegame.State = stateorder[state]
+                if home > away:
+                    livegame.Winning = "Home"
+                elif away > home:
+                    livegame.Winning = "Away"
+                else:
+                    livegame.Winning = "Tie"
+                livegame.Updated = True
+                livegame.save()
+        # Games will produce a KeyError for 'score' prior to kick-off
+        except(KeyError):
+            livegame.State = "pre"
+            livegame.save()
+
+# Task to run on Saturdays to wipe old live games and add tomorrow's game in prep for Sunday's live games
+@shared_task
+def populate_live():
+    teamdict = {'ARI': 1, 'ATL': 2, 'BAL': 3, 'BUF': 4, 'CAR': 5, 'CHI': 6, 'CIN': 7, 'CLE': 8, 'DAL': 9, 'DEN': 10, 'DET': 11, 'GB': 12, 'HOU': 13, 'IND': 14, 'JAX': 15, 'KC': 16, 'LV': 17, 'LAC': 18, 'LAR': 19, 'MIA': 20, 'MIN': 21, 'NE': 22, 'NO': 23, 'NYG': 24, 'NYJ': 25, 'PHI': 26, 'PIT': 27, 'SF': 28, 'SEA': 29, 'TB': 30, 'TEN': 31, 'WSH': 32}
+    for livegame in LiveGame.objects.all():
+        livegame.delete()
+    tomorrow = datetime.date.today() + datetime.timedelta(days=1)
+    # test for week 1
+    tomorrow = datetime.datetime.fromisoformat('2021-09-12').date()
+    print(tomorrow)
+    # for game in Match.objects.filter(Season=int(os.environ['PREDICTSEASON'])):
+    for game in Match.objects.filter(Season=2021):
+        if game.DateTime.date() == tomorrow and game.DateTime.hour < 23:
+            newlive = LiveGame(Game=game.GameID, HomeTeam=game.HomeTeam.ShortName, AwayTeam=game.AwayTeam.ShortName, KickOff=game.DateTime.strftime("%H%M"), TeamIndex=teamdict[game.AwayTeam.ShortName])
+            newlive.save()
 
 
 @shared_task

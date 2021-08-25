@@ -1,4 +1,4 @@
-import json, os, collections
+import json, os, datetime
 from django.core.cache import cache
 from .cacheflushlist import cachestoflush
 from django.views.decorators.cache import cache_page
@@ -75,7 +75,9 @@ def ReportsView(request):
 @require_GET
 def HomeView(request):
     if request.user.is_authenticated:
-        if Post.objects.all().count() > 0:
+        if os.environ['SUNDAYLIVE'] == "TRUE":
+            return redirect('live-scores')
+        elif Post.objects.all().count() > 0:
             latest = Post.objects.all().first().pk
             return redirect('post-latest', latest)
         else:
@@ -1058,3 +1060,77 @@ class RecordDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def handle_no_permission(self):
         return redirect('home')
+
+### View to display live scores
+@require_GET
+def LiveScoresView(request):
+    # Below sets score week to 1 below current results week
+    # IE - to pull scores from last completed week 
+    liveseason = int(os.environ['PREDICTSEASON'])
+    basescoreweek = int(os.environ['RESULTSWEEK'])
+    if basescoreweek > 18:
+        return redirect('scoretable-preseason')
+    else:
+        scoreweek = int(os.environ['PREDICTSEASON']+os.environ['RESULTSWEEK'])
+
+    jsonpredsforlive = cache.get('jsonpredsforlive')
+
+    userlist = {}
+
+    for i in Banker.objects.filter(BankWeek=basescoreweek, BankSeason=liveseason).select_related('User'):
+        userlist[i.User] = i.User.Full_Name
+
+    points = []
+
+    def findJoker(user):
+        pred = Prediction.objects.filter(PredWeek=scoreweek, User=user).first()
+        if pred.Joker:
+            return "Joker"
+        else:
+            return None
+
+    for user in userlist:
+        points.append({'User':user.Full_Name, 'FavTeam':user.FavouriteTeam.ShortName, 'Joker': findJoker(user), 'Points': None})
+
+    if not jsonpredsforlive:
+        jsonpredsforlive ={}
+        for i in userlist:
+            jsonpredsforlive[i.Full_Name]=[]
+            for a in Prediction.objects.filter(PredWeek=scoreweek, User=i).select_related('Game'):
+                # Only add Sunday games to list
+                if a.Game.DateTime.date() == datetime.date.today():
+                    jsonpredsforlive[i.Full_Name].append({
+                    'game': a.Game.GameID,
+                    'winner': a.Winner,
+                    'banker': a.Banker,
+                    'joker': a.Joker,
+                    'pts': 0
+                    })
+        cache.set('jsonpredsforlive', jsonpredsforlive, CacheTTL_1Week)
+
+    try:
+        requestuser = request.user.Full_Name
+    except(AttributeError):
+        requestuser = "None"
+
+    jsonuser = {
+        'user': requestuser
+    }
+
+    jsonurls = {
+    }
+
+    for team in Team.objects.all():
+        jsonurls[team.pk] = team.Logo.url
+
+    context = {
+        'points': points,
+        'jsonurls': jsonurls,
+        'jsonpreds': jsonpredsforlive,
+        'jsonuser': jsonuser,
+        'week':scoreweek,
+        'titleweek':os.environ['PREDICTWEEK'],
+        'title':'Live Scores'
+    }
+
+    return render(request, 'predictor/live-scores.html', context, {'title':'Sunday Live'})

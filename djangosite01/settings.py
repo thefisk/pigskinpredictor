@@ -224,6 +224,18 @@ CELERY_BEAT_SCHEDULE = {
     'Reset Jokers': {
         'task': 'predictor.tasks.joker_reset',
         'schedule': crontab(0, 0, day_of_month=1, month_of_year=4),
+    },
+    'Populate Live Games List': {
+        'task': 'predictor.tasks.populate_live',
+        'schedule': crontab(hour=12, minute=00, day_of_week=6),
+    },
+    'Get Live Scores (Sun)': {
+        'task': 'predictor.tasks.get_livescores',
+        'schedule': crontab(minute='*/2', hour='18-23', day_of_week=0),
+    },
+    'Get Live Scores (Mon AM)': {
+        'task': 'predictor.tasks.get_livescores',
+        'schedule': crontab(minute='*/2', hour='00-01', day_of_week=1),
     }
 }
 
