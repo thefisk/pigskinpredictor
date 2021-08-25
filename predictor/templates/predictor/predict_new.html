@@ -8,11 +8,9 @@
        </script>
     <div class="container">
         
-        <h5 class="center-align hideme week-heading" id="{{ week }}">
-        New Predictions for week {{ week }}, {{ season }}
-        </h5>
-        <p><h6 class="center-align hideme"><em>Double click for away bankers, single click for all others</em></h6></p>
-        
+        <h5 class="hideme week-heading" id="{{ week }}">New Predictions <span class = "superlowlight">|</span> week {{ week }}</h5>
+        <div class="divider"></div>
+        <p><h6 class="hideme tip">Double click for away bankers, single click for all others</h6></p>
         <div id="predictioncards" class="row hideme">
             {% for match in matches %}
                 <div class="col s12 m6 l3">
@@ -20,24 +18,41 @@
                         <div class="card-content white-text" id="{{ match.GameID }}">
                             <span class="card-title red-text darken-4 center-align game-card">
                                 {{ match.AwayTeam.ShortName }} @ {{ match.HomeTeam.ShortName }}
+                                <div id="pred-date-div">
+                                <span class="pred-date">- {{ match.DateTime | date:"D dS, H:i" }} -</span>
+                                </div>
                             </span>
                             <div class="center-align" id="{{ match.Week }}">
-                                <img class="responsive-img hoverable team" src="{{ match.AwayTeam.Logo.url }}" id="Away" alt="{{ match.AwayTeam }}">  <img class="responsive-img hoverable team" src="{{ match.HomeTeam.Logo.url }}" id="Home" alt="{{ match.HomeTeam }}">
+                                <img class="responsive-img hoverable team" src="{{ match.AwayTeam.Logo.url }}" id="Away" alt="{{ match.AwayTeam }}"> &nbsp; <img class="responsive-img hoverable team" src="{{ match.HomeTeam.Logo.url }}" id="Home" alt="{{ match.HomeTeam }}">
                             </div>
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
+        {% if jokeravailable %}
+        <div class="hideme">
+            <label for = "Joker">
+                <input id="Joker" type="checkbox" class="filled-in"/>
+                <span>Play Joker <em>(triple pts, once per season)</em></span>
+            </label>
+            <P>
+        </div>
+        {% endif %}
         {% if week == "1" %}
-        <button id="predict-submit" class="waves-effect waves-light btn hideme" type="submit">Submit</button>
+        <button id="predict-submit" class="btn hideme" type="submit">Submit</button>
+        <!-- Lala alert section -->
+        <div id="lala-alert-container"><div id="lala-alert-wrapper"></div></div>
         <br>
         <div class="hideme"></div>
         </div>     
             <div id="submitted">
             </div>
         {% else %}
-        <button id="predict-submit" class="waves-effect waves-light btn hideme" type="submit">Submit</button>
+        <button id="predict-submit" class="btn hideme" type="submit">Submit</button>
+        <!-- Lala alert section -->
+        <div id="lala-alert-container"><div id="lala-alert-wrapper"></div></div>
+        <br>
         <div><br></div>
         <div class="divider hideme"></div>
         <div class = "section hideme" id="bankers">
@@ -53,4 +68,7 @@
     {% endif %}
     {% load static %}
     <script src="{% static "predictor/scripts/pigskin.js" %}"></script>
+    <link href="{% static "predictor/css/bootstrap.css" %}" rel="stylesheet">
+    <link href="{% static "predictor/css/lala-alert.css" %}" rel="stylesheet">
+    <script src="{% static "predictor/scripts/lala-alert.js" %}"></script>
 {% endblock content %}

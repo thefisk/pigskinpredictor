@@ -1,0 +1,48 @@
+{% extends "predictor/base.html" %}
+{% load material_form %}
+{% block content %}
+{% load predictor_custom_tags %}
+<script>
+ $('#records').each(function(){
+        $(this).toggleClass('active');
+    });
+</script>
+<div class='container'>
+    <h5>Record Books</h5>
+    <div class="divider"></div>
+    <div id="resultstable" class="">
+        <table class = "striped table-top-pad">
+            <tr class = "table-highlight">
+                <td class = "stats-table-header col-100-l">All Time Records</td>
+            </tr>
+        </table>
+        <table class="striped">
+            <thead>
+                <tr class="table-secondary">
+                    <th class = "stats-header table-secondary-header pad-l">Title</th>
+                    <th class = "stats-header table-secondary-header">Holder(s)</th>
+                    <th class = "stats-header table-secondary-header">Achieved</th>
+                    <th class = "stats-header table-secondary-header">Record</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for record in record_list %}
+                <tr class="results-table-row">
+                    {% if request.user|has_group:"SuperUser"%}
+                        <td class="table-value clamp pad-l"><a class="record-link" href="{% url 'amend-record' pk=record.pk %}">{{ record.Title }}</a></td>
+                    {% else %}
+                        <td class="table-value clamp pad-l">{{ record.Title }}</td>
+                    {% endif %}
+                    {% if record.Holders.count == 1 %}
+                        <td class="table-value clamp">{% for holder in record.Holders.all %}{{ holder }}{% endfor %}</td>
+                    {% else %}
+                        <td class="table-value clamp">{% for holder in record.Holders.all %}{{ holder }}<p class="records-p">{% endfor %}</td>
+                    {% endif %}
+                    <td class="table-value clamp">{% if record.Week %}Week {{record.Week}}, {% endif %}{{ record.Year }}</td>
+                    <td class="table-value clamp">{{ record.Record }}</td>
+            {% endfor %}
+            </tbody>
+        </table>            
+    </div>
+</div>
+{% endblock content %}

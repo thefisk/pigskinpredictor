@@ -1,6 +1,11 @@
 from rest_framework import serializers
-from predictor.models import Prediction, Banker
+from predictor.models import Prediction, Banker, LiveGame
 from accounts.models import User
+
+class LiveGameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LiveGame
+        fields = '__all__'
 
 class UserSerializer(serializers.ModelSerializer):
     FavouriteTeam = serializers.SlugRelatedField(
@@ -25,7 +30,7 @@ class PredictionSerializer(serializers.ModelSerializer):
     )
     class Meta:
         model = Prediction
-        fields = ('User','Game','PredWeek','Winner', 'Banker', 'Points')
+        fields = ('User','Game','PredWeek','Winner', 'Banker', 'Points', 'Joker')
 
 class BankerSerializer(serializers.ModelSerializer):
     User = serializers.SlugRelatedField(

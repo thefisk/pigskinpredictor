@@ -1,19 +1,32 @@
 import os
 from predictor.models import Prediction
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets, mixins, generics
 from accounts.models import User
 from .permissions import IsSuperUser
-from predictor.models import Prediction, Banker
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from predictor.models import Prediction, Banker, LiveGame
 from .serializers import (
 BankerSerializer,
 UserSerializer,
 PredictionSerializer,
+LiveGameSerializer
 )
 from rest_framework.settings import api_settings
 from rest_framework_csv import renderers as r
 from django_filters.rest_framework import DjangoFilterBackend
 from allauth.account.models import EmailAddress
 
+class LiveGamesAPIView(generics.RetrieveAPIView):
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        return LiveGame.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = LiveGameSerializer(queryset, many=True)
+        return Response(serializer.data)
 class UserAPIView(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsSuperUser]
     serializer_class = UserSerializer
@@ -38,7 +51,7 @@ class NoPredsAPIView(viewsets.ReadOnlyModelViewSet):
         return User.objects.exclude(id__in=haspicked)
 
 class PredictionCSVOrdering(r.CSVRenderer):
-    header = ['PredWeek', 'Game', 'User', 'Winner', 'Banker', 'Points']
+    header = ['PredWeek', 'Game', 'User', 'Winner', 'Banker', 'Joker', 'Points']
 
 class BankersCSVOrdering(r.CSVRenderer):
     header = ['BankSeason', 'BankWeek', 'User', 'BankerTeam']

@@ -14,48 +14,133 @@
 {% extends "predictor/base.html" %}
 
 {% block content %}
+<!--Vue JS-->
+<!--script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script-->
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
 <script>
-        $('#leaderboard').each(function(){
-               $(this).toggleClass('active');
-           });
-       </script>
+    $('#leaderboard').each(function(){
+            $(this).toggleClass('active');
+        });
+</script>
+
+{{ jsonstdscores|json_script:'stdscores' }}
+{{ jsonuser|json_script:'currentuser' }}
+{{ jsonurls|json_script:'logo_urls' }}
+{{ jsonpositions|json_script:'positions'}}
+
 <div class="container">
-<h5 class="mb-3">
-    Live Score Table</h5>
-    <a href="{% url 'scoretableenhanced' %}" class="smalllink">Enhanced Score Table</a>&nbsp;|&nbsp;<a href="{% url 'scoretable-division' %}" class="smalllink">Division Score Table</a>
-    <h6>Season {{ season }}<BR>
-    Including week {{ week }} games
-</h6>
-    <div id="scoretable" class="">
-        <table class="striped">
+<h5 class="mb-3">Leaderboards: <span class = "big-link-active">Standard</span> <span class = "superlowlight">|</span> <a href="{% url 'scoretableenhanced' %}" class = "big-link-inactive">Enhanced</a> <span class = "superlowlight">|</span> <a class = "big-link-inactive" href="{% url 'scoretable-division' %}">Division</a></h5>
+    <div class="divider"></div>
+    <div id="vue-table">
+            <table class="striped table-top-pad" aria-describedby="Table Header">
+                <tr class="table-highlight">
+                    <td class = "stats-table-header col-100-l">Standings after week {{ week }}</td>
+                </tr>
+            </table>
+            <table class="striped" aria-describedby="Enhanced Scoretable">
             <thead>
-                <tr>
-                    <th>Pos.</th>
-                    <th>Player</th>
-                    <th>Last Week</th>
-                    <th>Total Score</th>
+                <tr class = "table-secondary">
+                    <th v-for="header in tableHeadings" class="enhanced stats-header table-secondary-header">
+                        <span v-if="header.name === 'Pos'" class="pad-l5 icon-center locked-column-pos"><i class="fas fa-medal"></i></span>
+                        <span v-else>[[ header.name ]]</span>
+                    </th>
                 </tr>
             </thead>
             <tbody>
-        {% for seasonscore in seasonscores %}
-                <tr>
-                    <td class="count"></td>
-                    <td><img src="{{ seasonscore.User.FavouriteTeam.Logo.url }}" class="team_small"> &nbsp; {{ seasonscore.User.first_name }} {{ seasonscore.User.last_name }}</td>
-                    {% if seasonscore.User in nopreds %}
-                        <td>Did Not Play</td>
-                    {% else %}
-                        {% for weekscore in weekscores %}
-                            {% if seasonscore.User == weekscore.User %}
-                            <td>{{ weekscore.WeekScore }}</td>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                    <td>{{ seasonscore.SeasonScore }}</td>
-                </tr>
-        {% endfor %}
+            <tr v-for="score in stdScores" :key="score.pos">
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp pad-l table-small-l">[[score.pos]] </td>
+                <td v-else td class="enhanced clamp pad-l table-small-l">[[score.pos]] </td>
+                <td v-if="score.user ===  currentUser" class="table-highlight enhanced clamp nopad table-logo"><i :class="score.user|direction|arrow"></i></td>
+                <td v-else td class="enhanced clamp nopad table-logo"><i :class="score.user|direction|arrow"></i></td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp pad-l table-logo"><img v-bind:src="score.teamshort | imgurl" :alt="score.teamshort" class="team_small"></img></td>
+                <td v-else td class="enhanced clamp pad-l table-logo"><img :src="score.teamshort | imgurl" :alt="score.teamshort" class="team_small"></img></td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp no-wrap">[[score.user]] &nbsp;<span class=table-joker><i v-if="score.joker !== null" class="fas fa-check" v-bind:title="score.joker"></i></span></td>
+                <td v-else class="enhanced clamp no-wrap">[[score.user]] &nbsp;<span class=table-joker><i v-if="score.joker !== null" class="fas fa-check" v-bind:title="score.joker"></i></span></td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp">[[score.week]]</td>
+                <td v-else class="enhanced clamp">[[score.week]]</td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp">[[score.seasonscore]]</td>
+                <td v-else class="enhanced clamp">[[score.seasonscore]]</td>
+            </tr>
             </tbody>
-        </table>
-    </div>
+            </table>
+</div>
+
+<script>
+    let stdScores = JSON.parse(document.getElementById('stdscores').textContent).std_scores;
+    let currentUser = JSON.parse(document.getElementById('currentuser').textContent).user;
+    let logoUrls = JSON.parse(document.getElementById('logo_urls').textContent);
+    let positions = JSON.parse(document.getElementById('positions').textContent)
+</script>
+
+<script>
+    var app = new Vue({
+        delimiters: ['[[', ']]'],
+        el: '#vue-table',
+        data: {
+            positions,
+            stdScores,
+            logoUrls,
+            currentUser,
+            tableHeadings: [
+                {
+                    "name": "Pos",
+                    "jsonfield": "pos",
+                    "sortAsc": true,
+                    "sortDesc": false,
+                    "sorting": true
+                },
+                {
+                    "name": "",
+                },
+                {
+                    "name": "",
+                },
+                {
+                    "name": "Player",
+                    "jsonfield": "user",
+                    "sortAsc": false,
+                    "sortDesc": false,
+                    "sorting": false
+                },
+                {
+                    "name": "Last Week",
+                    "jsonfield": "week",
+                    "sortAsc": false,
+                    "sortDesc": false,
+                    "sorting": false
+                },
+                {
+                    "name": "Total Score",
+                    "jsonfield": "seasonscore",
+                    "sortAsc": false,
+                    "sortDesc": false,
+                    "sorting": false
+                }
+            ]
+        },
+        filters:{
+            imgurl: function(team) {
+                return logoUrls[team]
+            },
+            direction: function(user) {
+                return positions[user]
+            },
+            arrow: function(direction) {
+                    if (direction == "up") {
+                        return "lni lni-angle-double-up green-arrow"
+                    }
+                    else if (direction == "down") {
+                        return "lni lni-angle-double-down red-arrow"
+                    }
+                    else {
+                        return "lni lni-angle-double-right blue-arrow"
+                    }
+            },
+        },
+    })
+</script>
+
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
 {% load static %}
 <script src="{% static "predictor/scripts/pigskin.js" %}"></script>

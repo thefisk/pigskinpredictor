@@ -1,7 +1,7 @@
 from django.forms import ModelForm
-#from .models import Prediction
+from .models import Record
 
-#class testpredictionform(ModelForm):
- #   class Meta:
-  #      model = Prediction
-   #     fields = ['User','Game','Winner','Banker','PredWeek']
+class RecordsForm(ModelForm):
+   class Meta:
+        model = Record
+        fields = ('Title', 'Holders', 'Year', 'Week', 'Record', 'Priority')

@@ -1,22 +1,28 @@
 {% extends "predictor/base.html" %}
 {% block content %}
+{% load markdown_extras %}
 <script>
  $('#updates').each(function(){
         $(this).toggleClass('active');
     });
 </script>
 <div class='container'>
-      <h4 class="article-title">{{ object.title }}</h4>
+      <div id="blog-title">
+      <h5 class="article-title blog-title">{{ object.title }}</h5>
+      </div>
       <P class="post-metadata">{{ object.author }} | {{ object.date_posted|date:"F d, Y" }}</p>
       <div class="divider"></div>  
-      <p class="article-content">{{ object.content | linebreaks}}</p>
+      <div id ="pigskin-markdown">
+      <p class="article-content">{{ object.content | markdown | safe }}</p>
               {% if object.author == user %}
           <div>
             <div class="divider"></div>
             <br>
-            <a class="waves-effect waves-light btn-small" href="{% url 'post-update' object.id %}">Update</a>
-            <a class="waves-effect waves-light btn-small" href="{% url 'post-delete' object.id %}">Delete</a>
+            <a class="waves-effect waves-light btn-small btn-green" href="{% url 'post-update' object.id %}">Update</a> <span class = "superlowlight">|</span> 
+            <a class="waves-effect waves-light btn-small btn-red" href="{% url 'post-delete' object.id %}">Delete</a>
           </div>
+          </div>
+          
         {% endif %}
     </div>
   </article>

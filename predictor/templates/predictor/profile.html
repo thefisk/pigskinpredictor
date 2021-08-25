@@ -5,77 +5,135 @@
  $('#profile').each(function(){
         $(this).toggleClass('active');
     });
+
 </script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{{ positionsjson|json_script:'positions' }}
+{{ mypointsjson|json_script:'mypoints' }}
+{{ avgpointsjson|json_script:'avgpoints' }}
 <div class='container'>
+    {% if positionsjson %}
     <div class="row">
+        <div class ="col s12">
+            <h5>My Form</h5>
+            <div class="divider"></div>
+            <br>
+        </div>
         <div class="col s12 m6">
-            <h5>My Stats</h5>
-            <div class="divider"></div>         
-            <h6 class="stats-period">All Time</h6>
-            <table id="stats-table">
+            <table id="form-header" class="striped" aria-describedby="Current Form">
                 <thead>
-                    <tr>
-                        <th class="stats-header">Best Week</th>
-                        <th class="stats-header">Worst Week</th>
-                        <th class="stats-header">Overall Percentage</th>
+                    <tr class = "table-highlight">
+                        <td class = "stats-table-header col-100-l">Points Per Week</td>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ alltimehigh }}</td>
-                        <td>{{ alltimelow }}</td>
-                        <td>{{ alltimepct }}</td>
-                    </tr>
-                </tbody>
             </table>
-            <BR>
-            <h6 class="stats-period">{{ season }} Season</h6>
-            <table id="stats-table">
+            <table id="points-header" class="striped" aria-describedby="Points History">
                 <thead>
-                    <tr>
-                        <th class="stats-header">Best Week</th>
-                        <th class="stats-header">Worst Week</th>
-                        <th class="stats-header">Overall Percentage</th>
+                    <tr class = "table-secondary">
+                        <td class="stats-header table-secondary-header pad-l">Comparison with League Avg</td>
+                        <td class="stats-header table-secondary-header td-align-right">Me: <i class="lni lni-ruler bar-me"></i> &nbsp;&nbsp;Avg: <i class="lni lni-ruler bar-avg"></i></td>
+                    </tr>
+                </thead>
+            </table>
+            <div id="scoring-line" class = "profile-table-bg">
+                <canvas id="scoring-chart" height="75"></canvas>
+            </div>
+            </div>
+            <div class="col s12 m6">
+            <table id="form-header" class="striped" aria-describedby="Current Form">
+                <thead>
+                    <tr class = "table-highlight">
+                        <td class = "stats-table-header col-100-l">Positional Trending</td>
+                    </tr>
+                </thead>
+            </table>
+            <table id="form-header" class="striped" aria-describedby="Current Form">
+                <thead>
+                    <tr class = "table-secondary">
+                        <td class = "stats-header table-secondary-header pad-l">Recent league positions</td>
+                    </tr>
+                </thead>
+            </table>
+                <div id="positional-line" class = "profile-table-bg">
+                    <canvas id="positional-chart" height="75"></canvas>
+                </div>
+            </div>
+        {% endif %}
+        <div class = "row">
+        <div class ="col s12">
+            <h5>My Stats</h5>
+            <div class="divider"></div>
+            <br>
+        </div>
+        <div class="col s12 m6">
+            <table id="stats-table" class="striped" aria-describedby="Season Results Header">
+                <thead>
+                   <tr class = "table-highlight">
+                        <td class = "stats-table-header col-100-l">{{ season }} Season</td>
+                    </tr>
+                </thead>
+            </table>
+            <table id="stats-table" class="striped" aria-describedby="Season Results Data">
+                <thead>
+                    <tr class = "table-secondary">
+                        <th class="stats-header table-secondary-header pad-l">Best Week</th>
+                        <th class="stats-header table-secondary-header">Worst Week</th>
+                        <th class="stats-header table-secondary-header">Overall Pct.</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{ seasonhigh }}</td>
-                        <td>{{ seasonlow }}</td>
-                        <td>{{ seasonpct }}</td>
+                        <td class="stat-value pad-l">{{ seasonhigh }}<span class = "lowlight"> pts</span></td>
+                        <td class="stat-value">{{ seasonlow }}<span class = "lowlight"> pts</span></td>
+                        <td class="stat-value">{{ seasonpct }}<span class = "lowlight"> %</span></td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div class="col s12 m6">
-            <h5>Edit my Profile</h5>
-            <div class="divider"></div>
-            <div><br></div>
-            <form method="post">
-            {% csrf_token %}
-            {% form form=form %}
-            {% part form.first_name prefix %}<i class="material-icons prefix">face</i>{% endpart %}
-            {% part form.last_name prefix %}<i class="material-icons prefix">face</i>{% endpart %}
-            {% part form.FavouriteTeam prefix %}<i class="material-icons prefix">sports_football</i>{% endpart %}
-            {% endform %}
-            <br>
-            <button type="submit" style="float: right" class="btn waves-effect waves-light">update</button>
-            </form>
-            <br><br>
-            <span class="right-float"><i class="material-icons prefix centered-icon">lock_open</i><a class="reset" href="/accounts/password/reset">RESET PASSWORD</a></span>
+            <table id="stats-table" class="striped" aria-describedby="All Time Results Header">
+                <thead>
+                    <tr class = "table-highlight">
+                        <td class = "stats-table-header col-100-l">All Time</td>
+                    </tr>
+                </thead>
+                </table>
+                <table id="stats-table" class="striped" aria-describedby="All Time Results Data">
+                <thead>
+                    <tr class = "table-secondary">
+                        <th class="stats-header table-secondary-header pad-l">Best Week</th>
+                        <th class="stats-header table-secondary-header">Worst Week</th>
+                        <th class="stats-header table-secondary-header">Overall Pct.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="stat-value pad-l">{{ alltimehigh }}<span class = "lowlight"> pts</span></td>
+                        <td class="stat-value">{{ alltimelow }}<span class = "lowlight"> pts</span></td>
+                        <td class="stat-value">{{ alltimepct }}<span class = "lowlight"> %</span></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-    {% if preds == "yes" %}
-    <div class = "divider"></div>
+
         <div class="row">
-        <div class="col s12 m12">
-            <center><h5>My Week {{ mypredweek }} Predictions</h5><center>
-            <table class="striped results-table">
+        {% if preds == "yes" %}
+            <div class="col s12 m6">
+            <h5>My Predictions</h5>
+            <div class="divider"></div>
+            <br>
+            <table class="striped" aria-describedby="My Predictions">
+                    <tr class = "table-highlight">
+                        <td class = "stats-table-header col-100">Week {{ mypredweek }} Schedule</td>
+                    </tr>
+            </table>
+            <table class="striped results-table table-fixed">
                 <thead>
-                    <tr class="results-table-row">
-                        <th class="table-left">Road Team</th>
-                        <th></th>
-                        <th class="table-right">Home Team</th>
+                    <tr class="results-table-row table-secondary">
+                        <th class="table-left col-46 table-secondary-header">Road Team</th>
+                        <th class="col-8"></th>
+                        <th class="table-right col-46 table-secondary-header">Home Team</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -83,19 +141,250 @@
             <tr>
                 {% if pred.Winner == "Away" %}
                     {% if pred.Banker == True %}
-                        <td class="profile-banker table-left">{{pred.Game.AwayTeam}}</td><td class="table-center">@</td><td class="profile-notpicked table-right">{{pred.Game.HomeTeam}}</td>
+                        <td class="profile-banker bank-background table-left">{{pred.Game.AwayTeam}}</td><td class="table-center bank-background at-banker">@</td><td class="profile-notpicked-banker bank-background table-right">{{pred.Game.HomeTeam}}</td>
                     {% else %}
-                        <td class="profile-picked table-left">{{pred.Game.AwayTeam}}</td><td class="table-center">@</td><td class="profile-notpicked table-right">{{pred.Game.HomeTeam}}</td>
+                        <td class="profile-picked table-left">{{pred.Game.AwayTeam}}</td><td class="table-center at">@</td><td class="profile-notpicked table-right">{{pred.Game.HomeTeam}}</td>
                     {% endif %}
                 {% endif %}
                 {% if pred.Winner == "Home"%}
-                    <td class="profile-notpicked table-left">{{pred.Game.AwayTeam}}</td><td class="table-center">@</td><td class="profile-picked table-right">{{pred.Game.HomeTeam}}</td>
+                    <td class="profile-notpicked table-left">{{pred.Game.AwayTeam}}</td><td class="table-center at">@</td><td class="profile-picked table-right">{{pred.Game.HomeTeam}}</td>
                 {% endif %}
             {% endfor %}
             </tr>
             </table>
         </div>
-    </div>
     {% endif %}
+            <div class="col s12 m6">
+            <h5>My Settings</h5>
+            <div class="divider"></div>
+            <br>
+            <form method="post">
+            {% csrf_token %}
+            {% form form=form %}
+            <span class="profile-input-border">{% part form.first_name prefix %}<i class="material-icons prefix icongrey">face</i>{% endpart %}</span>
+            {% part form.last_name prefix %}<i class="material-icons prefix icongrey">face</i>{% endpart %}
+            {% part form.FavouriteTeam prefix %}<i class="material-icons prefix icongrey">sports_football</i>{% endpart %}
+            {% endform %}
+            <br>
+            <span class="left-float"><i class="material-icons prefix centered-icon">lock_open</i><a class="reset" href="/accounts/password/reset">RESET PASSWORD &nbsp;</a></span><button type="submit" style="float: right" class="btn waves-effect waves-light">update</button>
+            </form>
+            <br><br>
+            
+            </div>
+            
 </div>
+<script>
+        const labels = [];
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Position',
+                backgroundColor: '#285f8a',
+                borderColor: '#285f8a',
+                pointHitRadius: 14,
+                data: [],
+                }]
+            };
+       const positions = JSON.parse(document.getElementById('positions').textContent);
+       const mypoints = JSON.parse(document.getElementById('mypoints').textContent);
+       const avgpoints = JSON.parse(document.getElementById('avgpoints').textContent);
+       
+       var scoreData = {
+            datasets : [
+                {
+                label: 'me',
+                ill: true,
+                lineTension: 0.1,
+                backgroundColor: "rgba(1, 89, 157, 0.7)",
+                borderColor: "rgba(75,192,192,1)",
+                borderCapStyle: 'butt',
+                borderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'miter',
+                pointBorderColor: "rgba(75,192,192,1)",
+                pointBackgroundColor: "#fff",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+                data : mypoints,
+                },
+                {
+                label: 'avg',
+                ill: true,
+                lineTension: 0.1,
+                backgroundColor: "rgba(253, 153, 38, 0.7)",
+                borderColor: "rgb(40, 95, 138)",
+                borderCapStyle: 'butt',
+                borderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'miter',
+                pointBorderColor: "rgba(75,192,192,1)",
+                pointBackgroundColor: "#fff",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+                data : avgpoints,
+                spanGaps: false
+                },
+            ]
+            }
+
+        // Only chart last 6 weeks for Positions
+        let entries = Object.keys(positions).length
+        if (entries > 6) {
+            for (let [week, position] of Object.entries(positions)) {
+                if (week < (entries - 5)) {
+                    delete positions[week]
+                }
+            }
+        }
+
+        // Convert our Positions object to compatible arrray
+        let posArray = []
+        for (let [week, position] of Object.entries(positions)){
+            labels.push(week)
+            data.datasets[0].data.push(position)
+        }
+
+        const configForm = {
+            type: 'line',
+            data,
+            options: {
+                layout: {
+                    padding: 20,
+                },
+                scales: {
+                    yAxes: {
+                        grid: {
+                            drawBorder: false,
+                            display: false,
+                        },
+                        reverse: true,
+                        ticks: {
+                            display: false,
+                            stepSize: 1,
+                            fontColor: 'yellow'
+                        }
+                    },
+                    xAxes: {
+                        grid: {
+                            drawBorder: false,
+                            display: true,
+                        },
+                        ticks: {
+                            display: true,
+                            color: 'rgba(0, 0, 0, 0.35)'
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        backgroundColor: '#E5EEF5',
+                        titleColor: '#4485B7',
+                        bodyColor: '#4485B7'
+                    },
+                    legend: {
+                        display: false,
+                        labels: {
+                            font: {
+                                family: "roboto, sans-serif"
+                            }
+                        }
+                    }
+                },
+                elements: {
+                    point: {
+                        pointStyle: 'circle',
+                        pointRadius: 2
+                    },
+                    line: {
+                        borderWidth: 3
+                    }
+                }
+            }
+        };
+
+        const configScore = {
+            type: 'bar',
+            data: scoreData,
+                options: {
+                    layout: {
+                        padding: 10,
+                    },
+                    scales: {
+                        yAxes: {
+                            grid: {
+                                drawBorder: false,
+                                display: false,
+                                offset: false
+                            },
+                            ticks: {
+                                display: false,
+                                fontColor: 'yellow'
+                            }
+                        },
+                        xAxes: {
+                            title: {
+                                text: "week",
+                                display: false,
+                                padding: 0,
+                                color: 'rgba(0, 0, 0, 0.35)',
+                            },
+                            grid: {
+                                drawBorder: false,
+                                display: true,
+                            },
+                            ticks: {
+                                display: true,
+                                color: 'rgba(0, 0, 0, 0.35)'
+                            }
+                        }
+                },
+                    plugins: {
+                        tooltip: {
+                            backgroundColor: '#E5EEF5',
+                            titleColor: '#4485B7',
+                            bodyColor: '#4485B7'
+                        },
+                        legend: {
+                            align: 'start',
+                            display: false,
+                            labels: {
+                                usePointStyle: true,
+                                font: {
+                                    family: "roboto, sans-serif"
+                                }
+                            }
+                        }
+                },
+                elements: {
+                    point: {
+                        pointStyle: 'circle',
+                        pointRadius: 2
+                    },
+                    line: {
+                        borderWidth: 3
+                    }
+                }
+            }
+        };
+
+        var positionalChart = new Chart(
+            document.getElementById('positional-chart'),
+            configForm
+            );
+        
+        var scoreChart = new Chart(
+            document.getElementById('scoring-chart'),
+            configScore
+        )
+</script>
 {% endblock content %}

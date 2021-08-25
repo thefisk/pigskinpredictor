@@ -1,4 +1,5 @@
 {% extends "predictor/base.html" %}
+{% load markdown_extras %}
 {% load predictor_custom_tags %}
 {% block content %}
 <script>
@@ -10,11 +11,16 @@
     <div class="row">
         <div class="col s12 m12">
     {% for post in posts %}
+      <div id ="pigskin-markdown">
         <article class="media content-section">
-            <h5><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h4>
+            <div id="blog-title">
+            <h5><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h5>
+            </div>
             <small class="post-metadata">{{ post.author }} | {{ post.date_posted|date:"F d, Y" }}</small>
-            <a class="update-snippet" href="{% url 'post-detail' post.id %}">{{ post.short_content | linebreaks }}</a>
+            <a class="update-snippet" href="{% url 'post-detail' post.id %}">{{ post.short_content | markdown | safe}}</a>
         </article>
+      </div>
+      <br>
         <div class="divider"></div>   
     {% endfor %}
     <br>

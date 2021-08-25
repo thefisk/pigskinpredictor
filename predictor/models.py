@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.postgres.fields import JSONField
+from django.db.models.deletion import CASCADE
 from django.utils import timezone
 from accounts.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -12,6 +14,7 @@ class Team(models.Model):
     Division  = models.CharField(max_length=5, null=True, blank=True)
     ConfDiv = models.CharField(max_length=9, null=True, blank=True)
     Logo = models.ImageField(default='football.png', upload_to='logos')
+    Active = models.BooleanField(default=True)
 
     def __str__(self):
         return('{} {}'.format(self.Town, self.Nickname))
@@ -27,7 +30,7 @@ class Team(models.Model):
 
 class Match(models.Model):
     Season = models.IntegerField(validators=[MinValueValidator(2012), MaxValueValidator(2050)])
-    Week = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(17)])
+    Week = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(18)])
     GameID = models.IntegerField(primary_key=True,validators=[MinValueValidator(20120101)])
     HomeTeam = models.ForeignKey(Team, related_name='HomeTeam_Schedule_Set', on_delete=models.CASCADE)
     AwayTeam = models.ForeignKey(Team, related_name='AwayTeam_Schedule_Set', on_delete=models.CASCADE)
@@ -57,6 +60,7 @@ class Match(models.Model):
     
     class Meta:
         verbose_name_plural = "Matches"
+        ordering = ['DateTime', 'AwayTeam']
 
 class Banker(models.Model):
     UserSeasonKey = models.CharField(max_length=10, null=True, blank=True)
@@ -87,7 +91,7 @@ class Prediction(models.Model):
     Banker = models.BooleanField(default=False)
     PredWeek = models.IntegerField(blank=True, null=True)
     PredSeason = models.IntegerField(blank=True, null=True)
-
+    Joker = models.BooleanField(default=False)
     class Meta:
         unique_together = ("User", "Game"),
     
@@ -105,14 +109,14 @@ class Prediction(models.Model):
         else:
             ### Add Points to Weekly Scores ###
             try:
-                ScoresWeek.objects.get(User=self.User, Week=self.Game.Week)
+                ScoresWeek.objects.get(User=self.User, Week=self.Game.Week, Season=self.Game.Season)
             except ScoresWeek.DoesNotExist:
                 # create new weekly score entry if none already exists
                 addweekscore = ScoresWeek(User=self.User, Week=self.Game.Week, WeekScore=self.Points, Season=self.Game.Season)
                 addweekscore.save()
             else:
                 # if a weekly score object exists, add the points to it
-                weekscore = ScoresWeek.objects.get(User=self.User, Week=self.Game.Week)
+                weekscore = ScoresWeek.objects.get(User=self.User, Week=self.Game.Week, Season=self.Game.Season)
                 weekscore.WeekScore += self.Points
                 weekscore.save()
 
@@ -163,7 +167,7 @@ class Prediction(models.Model):
 
 class ScoresWeek(models.Model):
     User = models.ForeignKey(User, on_delete=models.CASCADE)
-    Week = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(17)])
+    Week = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(18)])
     WeekScore = models.IntegerField()
     Season = models.IntegerField(validators=[MinValueValidator(2012), MaxValueValidator(2050)])
 
@@ -211,7 +215,7 @@ class ScoresAllTime(models.Model):
 
 class Results(models.Model):
     Season = models.IntegerField(validators=[MinValueValidator(2012), MaxValueValidator(2050)])
-    Week = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(17)])
+    Week = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(18)])
     GameID = models.IntegerField(primary_key=True,validators=[MinValueValidator(20100101)])
     HomeTeam = models.ForeignKey(Team, related_name='HomeTeam_Results_Set', on_delete=models.CASCADE)
     AwayTeam = models.ForeignKey(Team, related_name='AwayTeam_Results_Set', on_delete=models.CASCADE)
@@ -240,6 +244,8 @@ class Results(models.Model):
             except:
                 if pred.Winner == self.Winner:
                     pred.Points = scored
+                    if pred.Joker == True:
+                        pred.Points = (pred.Points * 3)
                     pred.save()
                 else:
                     pred.Points = 0
@@ -248,9 +254,13 @@ class Results(models.Model):
             else:
                 if pred.Winner == self.Winner:
                     pred.Points = scored*2
+                    if pred.Joker == True:
+                        pred.Points = (pred.Points * 3)
                     pred.save()
                 else:
                     pred.Points = 0-(scored*2)
+                    if pred.Joker == True:
+                        pred.Points = (pred.Points * 3)
                     pred.save()
         super(Results, self).save(*args, **kwargs)
 
@@ -259,3 +269,41 @@ class Results(models.Model):
     
     class Meta:
         verbose_name_plural = "Results"
+
+class Record(models.Model):
+    Title = models.CharField(max_length=100, null=True, blank=True)
+    Holders = models.ManyToManyField(User)
+    Year = models.IntegerField(validators=[MinValueValidator(1990), MaxValueValidator(2100)])
+    Week = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(25)], blank=True, null=True)
+    Record = models.CharField(max_length=50, null=True, blank=True)
+    Priority = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(1000)])
+
+    def __str__(self):
+        return('{}: {}, in {}'.format(self.Title, self.Record, self.Year))
+
+    class Meta:
+        verbose_name_plural = "Records"
+        ordering = ['Priority']
+
+class AvgScores(models.Model):
+    Season = models.IntegerField(validators=[MinValueValidator(1990), MaxValueValidator(2100)])
+    AvgScores = JSONField(null=True)
+
+    def __str__(self):
+        return("Average Weekly Scores")
+
+class LiveGame(models.Model):
+    Game = models.IntegerField()
+    HomeTeam = models.CharField(null=True, blank=True, max_length=4)
+    AwayTeam = models.CharField(null=True, blank=True, max_length=4)
+    HomeScore = models.IntegerField(null=True, blank=True)
+    AwayScore = models.IntegerField(null=True, blank=True)
+    winning_choices = (('Home','Home'), ('Away','Away'), ('Tie', 'Tie'))
+    Winning = models.CharField(max_length=4, choices=winning_choices, null=True, blank=True)
+    Updated = models.BooleanField(default=False)
+    State = models.CharField(null=True, blank=True, max_length=8)
+    KickOff = models.IntegerField()
+    TeamIndex = models.IntegerField()
+
+    def __str__(self):
+        return(str(self.Game))

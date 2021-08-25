@@ -1,0 +1,19 @@
+{% extends "predictor/base.html" %}
+{% block content %}
+<script>
+ $('#records').each(function(){
+        $(this).toggleClass('active');
+    });
+</script>
+<div class='container'>
+        <form method="POST">
+            {% csrf_token %}
+                <h5>Confirm Deletion</h5>
+                <h6>{{ object }}</h6><p></p>
+            <div class="form-group">
+                <button class="btn btn-outline-danger btn-red" type="submit">Yes, Delete</button>
+                <a class="btn btn-outline-secondary btn-green" href="{% url 'amend-record' object.id %}">Cancel</a>
+            </div>
+        </form>
+</div>
+{% endblock content %}

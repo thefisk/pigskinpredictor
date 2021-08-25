@@ -8,10 +8,11 @@
 <div class='container'>
         <form method="POST">
             {% csrf_token %}
-                <h5>Are you sure you want to delete the post "{{ object.title }}?"</h5>
+                <h5>Confirm Deletion</h5>
+                <h6>{{ object.title }}</h6><p></p>
             <div class="form-group">
-                <button class="btn btn-outline-danger" type="submit">Yes, Delete</button>
-                <a class="btn btn-outline-secondary" href="{% url 'post-detail' object.id %}">Cancel</a>
+                <button class="btn btn-outline-danger btn-red" type="submit">Yes, Delete</button>
+                <a class="btn btn-outline-secondary btn-green" href="{% url 'post-detail' object.id %}">Cancel</a>
             </div>
         </form>
 </div>

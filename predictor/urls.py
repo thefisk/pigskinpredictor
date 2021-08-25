@@ -1,11 +1,10 @@
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf import settings
 from .views import (
-    HomeView,
+    HomeView, RecordDeleteView,
     ResultsView,
     ResultsPreSeasonView,
     ResultsDidNotPlayView,
-    ScheduleView,
     CreatePredictionsView, #New Predictions
     AmendPredictionsView, #Amend Predictions
     AjaxAddPredictionView, #AJAX
@@ -18,7 +17,7 @@ from .views import (
     ScoringView, #Scoring
     ReportsView, #Reports
     NewYearView, #AfterWeek17
-    Week17View, #LastWeek
+    Week18View, #LastWeek
     ProfileView,
     ProfileAmendedView,
     ProfileNewPlayerView,
@@ -26,19 +25,27 @@ from .views import (
     DivisionTableView,
     RobotsTXT,
     AjaxDeadlineVerification,
+    AddRecordView,
+    AmendRecordView,
+    RecordsView,
+    RecordDeleteView,
+    LiveScoresView
 )
 from . import views
 
 urlpatterns = [
     path('',HomeView,name='home'),
+    path('add-record', AddRecordView.as_view(extra_context={'title': 'Add Record'}), name="add-record"),
+    path('records/', RecordsView.as_view(extra_context={'title': 'Record Books'}), name="records"),
+    path('<int:pk>/delete/', RecordDeleteView.as_view(extra_context={'title': 'Delete Record'}), name='record-delete'),
+    re_path(r'^amend-record/(?P<pk>\d+)/$', AmendRecordView.as_view(extra_context={'title': 'Amend Record'}), name="amend-record"),
     path('robots.txt', RobotsTXT),
-    path('profile',ProfileView,name="profile"),
-    path('profile-amended', ProfileAmendedView,name="profile-amended"),
-    path('profile-newplayer', ProfileNewPlayerView,name="profile-newplayer"),
+    path('profile/',ProfileView,name="profile"),
+    path('profile-amended/', ProfileAmendedView,name="profile-amended"),
+    path('profile-newplayer/', ProfileNewPlayerView,name="profile-newplayer"),
     path('results/', ResultsView, name='results'),
     path('results-didnotplay/', ResultsDidNotPlayView, name='results-didnotplay'),
-    path('results-preseason', ResultsPreSeasonView, name='results-preseason'),
-    path('schedule/', ScheduleView.as_view(), name='schedule-view'), #!!!To Implement!!!
+    path('results-preseason/', ResultsPreSeasonView, name='results-preseason'),
     path('predict/', CreatePredictionsView, name='new-prediction-view'), #New Predictions
     path('amendpredictions/', AmendPredictionsView, name='amend-prediction-view'), #Amend Predictions
     path('ajaxaddprediction/',AjaxAddPredictionView, name='ajax-add-prediction'), #AJAX
@@ -47,14 +54,15 @@ urlpatterns = [
     path('ajaxamendbanker/',AjaxAmendBankerView, name='ajax-amend-banker'), #AJAX
     path('scoretable/',ScoreTableView, name='scoretable'), #Leaderboard
     path('scoretableenhanced/',ScoreTableEnhancedView, name='scoretableenhanced'), #Leaderboard
-    path('scoretable-preseason', ScoreTablePreSeasonView, name='scoretable-preseason'),
-    path('scoretable-division', DivisionTableView, name='scoretable-division'),
+    path('scoretable-preseason/', ScoreTablePreSeasonView, name='scoretable-preseason'),
+    path('scoretable-division/', DivisionTableView, name='scoretable-division'),
     path('about/',AboutView, name='about'), #About
     path('scoring/',ScoringView, name='scoring'), #Scoring
     path('report/',ReportsView, name='report'), #Reports
-    path('yearend/',NewYearView, name='new-year-view'), #After Week 17
-    path('week17/',Week17View, name='week-17-view'), #After Week 17
+    path('yearend/',NewYearView, name='new-year-view'), #After Week 18
+    path('week18/',Week18View, name='week-18-view'), #After Week 18
     path('ajaxdeadlineverification/',AjaxDeadlineVerification, name='report'), #AJAX
+    path('live-scores/', LiveScoresView, name='live-scores'),
 ]
 
 if settings.DEBUG:

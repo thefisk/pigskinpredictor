@@ -4,11 +4,14 @@
 ### but will only execute on a Tuesday
 
 import os, json, boto3, datetime
-from predictor.models import Team, Results, ScoresSeason, ScoresAllTime, ScoresWeek, Prediction
+from predictor.models import Team, Results, ScoresSeason, ScoresAllTime, ScoresWeek, Prediction, AvgScores
+from accounts.models import User
+from django.core.cache import cache
+from .cacheflushlist import cachestoflush
 
 def run():
-   # Loop to ensure script only executes on a Wednesday!
-   if datetime.datetime.today().isoweekday() == 3:
+   # Loop to ensure script only executes on a Tuesday!
+   if datetime.datetime.today().isoweekday() == 2:
       resultsweek = os.environ['RESULTSWEEK']
       if int(resultsweek) < 10:
          fileweek = '0'+resultsweek
@@ -90,5 +93,54 @@ def run():
                   alltimebanktotal += alltimebanker.Points
             alltime.AllTimeBankerAverage=alltimebanktotal/Prediction.objects.filter(User=alltime.User, Banker=True).exclude(Points__isnull=True).count()
             alltime.save()
+
+      # Add latest positional data to each user profile
+      scorecounter = 1
+      positiondict = {}
+      usercount = User.objects.all().count() -1
+      for i in ScoresSeason.objects.all():
+         positiondict[i.User.pk]=scorecounter
+         scorecounter += 1
+      if int(resultsweek) == 1:
+         for i in User.objects.all():
+            # Create season object before adding to it in week 1
+            i.Positions = {"data":{str(fileseason):{}}}
+            try:
+               i.Positions['data'][str(fileseason)][str(resultsweek)] = positiondict[i.pk]
+            except(KeyError):
+               # Make position bottom of table if they didn't play in week 1
+               i.Positions['data'][str(fileseason)][str(resultsweek)] = usercount
+               i.save()
+      else:
+         for i in User.objects.all():
+            try: 
+               i.Positions['data'][str(fileseason)][str(resultsweek)] = positiondict[i.pk]
+            except(KeyError):
+               # Make position bottom of table if they still didn't play
+               i.Positions['data'][str(fileseason)][str(resultsweek)] = usercount
+            i.save()
+
+      # Add latest AvgScores
+      totalscores = 0
+      count = 0
+      for i in ScoresWeek.objects.filter(Season=int(os.environ['PREDICTSEASON']), Week=int(os.environ['RESULTSWEEK'])):
+         totalscores += i.WeekScore
+         count +=1
+      latestavg = int(totalscores/count)
+      try:
+         Avgs = AvgScores.objects.get(Season=int(fileseason))
+         Avgs.AvgScores[str(resultsweek)] = latestavg
+         Avgs.save()
+      except AvgScores.DoesNotExist:
+         NewDict = {}
+         NewDict[str(resultsweek)] = latestavg
+         NewAvgs = AvgScores(Season=int(fileseason), AvgScores=NewDict)
+         NewAvgs.save()
+
+
+      # Finally, clear the Redis caches
+      for c in cachestoflush:
+         cache.delete(c)       
+
    else:
       pass

@@ -11,24 +11,27 @@
     <div class="row">
         <div class="col m2"></div>
         <div id="resultstable" class="col s12 m8">
-            <h5 class="mb-3">My Results</h5>
-            <h6>Looks like you didn't play in week {{ week }}
-            </h6>
-            <span class="throwaway">Nevermind; here are the results anyway</span>
-            <table class="striped results-table">
+            <h5 class="mb-3">Match Results</h5>
+            <div class="divider"></div>
+            <table class = "striped table-top-pad" aria-describedby="Table Header">
+            <tr class = "table-highlight">
+                <td class = "stats-table-header col-100-l">Week {{ week }}</td>
+            </tr>
+            </table>
+            <table class="striped" aria-describedby="Results Table">
                 <thead>
-                    <tr class="results-table-row">
-                        <th>Road Team</th>
-                        <th>Score</th>
-                        <th>Home Team</th>
+                    <tr class="table-secondary">
+                        <th class = "stats-table-header table-secondary-header table-left">Away</th>
+                        <th class = "stats-table-header table-secondary-header table-center">Score</th>
+                        <th class = "stats-table-header table-secondary-header">Home</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for result in results %}
                     <tr class="results-table-row">
-                            <td class="results-table-dnp"><img style="vertical-align:middle" src="{{ result.AwayTeam.Logo.url }}" class="team_small" alt="{{ result.AwayTeam }}">&nbsp; {{ result.AwayTeam.Nickname }}</td>
-                            <td class="results-table-dnp">{{ result.AwayScore }} - {{ result.HomeScore }}</td>
-                            <td class="results-table-dnp"><img style="vertical-align:middle" src="{{ result.HomeTeam.Logo.url }}" class="team_small" alt="{{ result.HomeTeam }}">&nbsp; {{ result.HomeTeam.Nickname }}</td>
+                            <td class="results-table-dnp clamp pad-l table-left">{{ result.AwayTeam.ShortName }}&nbsp; <img style="vertical-align:middle" src="{{ result.AwayTeam.Logo.url }}" class="team_small" alt="{{ result.AwayTeam }}"></td>
+                            <td class="results-table-dnp clamp table-center">{{ result.AwayScore }} - {{ result.HomeScore }}</td>
+                            <td class="results-table-dnp clamp"><img style="vertical-align:middle" src="{{ result.HomeTeam.Logo.url }}" class="team_small" alt="{{ result.HomeTeam }}">&nbsp; {{ result.HomeTeam.ShortName }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

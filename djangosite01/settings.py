@@ -1,4 +1,5 @@
 import os, django_heroku
+from celery.schedules import crontab
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -13,7 +14,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = (os.environ.get('DEBUG_VALUE') == ('True'))
 
-ALLOWED_HOSTS = ['pigskinpredictor.herokuapp.com','pigskin-dev.herokuapp.com','pigskinpredictor.com']
+ALLOWED_HOSTS = ['pigskinpredictor.herokuapp.com','pigskin-dev.herokuapp.com','pigskinpredictor.com', 'pigskin-2021.herokuapp.com']
 
 
 # Application definition
@@ -35,6 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'storages',
+    'django_celery_beat',
+    'django_inlinecss',
     'rest_framework',
     'django_filters',
     'dbbackup',
@@ -77,8 +80,12 @@ WSGI_APPLICATION = 'djangosite01.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('LOCALDBNAME'),
+        'USER': os.environ.get('LOCALDBUSER'),
+        'PASSWORD': os.environ.get('LOCALDBPASS'),
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -99,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/London'
 
 USE_I18N = True
 
@@ -114,16 +121,8 @@ LOGOUT_REDIRECT_URL = 'home'
 
 LOGIN_URL= '/accounts/login'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'predictor/static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-#MEDIA_URL = '/media/'
-
-EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
 
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
@@ -158,9 +157,6 @@ DBBACKUP_STORAGE_OPTIONS = {'location': '~/djangodbbackup'}
 # New Email-based user auth
 AUTH_USER_MODEL = 'accounts.User'
 
-# AllAuth email login settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
     "django.contrib.auth.backends.ModelBackend",
@@ -171,11 +167,11 @@ AUTHENTICATION_BACKENDS = (
 
 SITE_ID = 2
 
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = 'thepigskinpredictor@gmail.com'
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+# Amazon SES Settings
+DEFAULT_FROM_EMAIL = "'Pigskin Predictor' <hello@pigskinpredictor.com>"
+EMAIL_BACKEND = 'django_ses.SESBackend'
+AWS_SES_REGION_NAME = 'eu-west-2'
+AWS_SES_REGION_ENDPOINT = 'email.eu-west-2.amazonaws.com'
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
@@ -198,4 +194,58 @@ INTERNAL_IPS = ['127.0.0.1']
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES' : ('rest_framework.permissions.IsAuthenticated',)
+}
+
+CELERY_BROKER_URL = os.environ.get('REDIS_URL')
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Europe/London'
+CELERY_BEAT_SCHEDULE = {
+    '48hr Email Reminder': {
+        'task': 'predictor.tasks.email_reminder',
+        'schedule': crontab(hour=20, minute=00, day_of_week=2),
+        'args': ['48']
+    },
+    '24hr Email Reminder': {
+        'task': 'predictor.tasks.email_reminder',
+        'schedule': crontab(hour=20, minute=00, day_of_week=3),
+        'args': ['24']
+    },
+     '1hr Email Reminder': {
+        'task': 'predictor.tasks.email_reminder',
+        'schedule': crontab(hour=19, minute=00, day_of_week=4),
+        'args': ['1']
+    },
+    'Fetch and Save Results': {
+        'task': 'predictor.tasks.fetch_results',
+        'schedule': crontab(hour=20, minute=24, day_of_week=2),
+        'args': ['0']
+    },
+    'Reset Jokers': {
+        'task': 'predictor.tasks.joker_reset',
+        'schedule': crontab(0, 0, day_of_month=1, month_of_year=4),
+    },
+    'Populate Live Games List': {
+        'task': 'predictor.tasks.populate_live',
+        'schedule': crontab(hour=12, minute=00, day_of_week=6),
+    },
+    'Get Live Scores (Sun)': {
+        'task': 'predictor.tasks.get_livescores',
+        'schedule': crontab(minute='*/2', hour='18-23', day_of_week=0),
+    },
+    'Get Live Scores (Mon AM)': {
+        'task': 'predictor.tasks.get_livescores',
+        'schedule': crontab(minute='*/2', hour='00-01', day_of_week=1),
+    }
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": os.environ.get('REDIS_URL')+"/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+        "KEY_PREFIX": "pigskindjango",
+    }
 }

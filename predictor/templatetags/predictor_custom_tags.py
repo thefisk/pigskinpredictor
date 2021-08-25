@@ -1,8 +1,15 @@
 from django import template
+from django.core.cache import cache
 from django.contrib.auth.models import Group
 from predictor.models import Match, ScoresWeek, Results, Team, ScoresSeason, Prediction
 from accounts.models import User
 import os
+
+CacheTTL_1Week = 60 * 60 * 24 * 7
+CacheTTL_1Day = 60 * 60 * 24
+CacheTTL_1Hour = 60 * 60
+CacheTTL_3Hours = 60 * 60 * 3
+CacheTTL_5Mins = 60 *5
 
 register = template.Library()
 
@@ -10,6 +17,14 @@ register = template.Library()
 def has_group(user, group_name):
     group = Group.objects.get(name=group_name)
     return True if group in user.groups.all() else False
+
+@register.filter(name='pick_logo')
+def pick_logo(pred):
+    match = Match.objects.get(GameID = pred.Game.GameID)
+    if pred.Winner == 'Home':
+        return match.HomeTeam.Logo.url
+    else:
+        return match.AwayTeam.Logo.url
 
 @register.filter(name='corresponding_match')
 def corresponding_match(bankerteam):
@@ -42,27 +57,37 @@ def corresponding_away(predgameid):
 
 @register.filter(name='division_players')
 def division_players(div):
-    division = Team.objects.filter(ConfDiv=div)
-    try:
-        players = User.objects.filter(FavouriteTeam__in=division).count()
-    except:
-        return 0
-    else:
-        return players
+    cachename = div+'_Players'
+    players = cache.get(cachename)
+    if not players:
+        division = Team.objects.filter(ConfDiv=div)
+        try:
+            players = User.objects.filter(FavouriteTeam__in=division).count()
+        except:
+            players = 0
+            cache.set(cachename, 0)
+        else:
+            cache.set(cachename, players, CacheTTL_1Week)
+    return players
 
 @register.filter(name='division_total')
 def division_total(div):
-    division = Team.objects.filter(ConfDiv=div)
-    try:
-        players = User.objects.filter(FavouriteTeam__in=division)
-    except:
-        return 0
-    total = 0
-    for player in players:
+    cachename = div+'_Total'
+    total = cache.get(cachename)
+    if not total:
+        division = Team.objects.filter(ConfDiv=div)
         try:
-            total += ScoresSeason.objects.get(User=player, Season=int(os.environ['PREDICTSEASON'])).SeasonScore
+            players = User.objects.filter(FavouriteTeam__in=division)
         except:
-            pass
+            cache.set(cachename, 0)
+            total = 0
+        total = 0
+        for player in players:
+            try:
+                total += ScoresSeason.objects.get(User=player, Season=int(os.environ['PREDICTSEASON'])).SeasonScore
+            except:
+                pass
+        cache.set(cachename, total, CacheTTL_1Week)
     return total
 
 @register.filter(name='banker_class')

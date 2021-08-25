@@ -112,3 +112,7 @@ report*.json
 # Manual html imports
 
 /predictor/scripts/manual_html/*
+
+# MY local scripts
+local_*.py
+local_*.sh
