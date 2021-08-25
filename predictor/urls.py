@@ -28,7 +28,8 @@ from .views import (
     AddRecordView,
     AmendRecordView,
     RecordsView,
-    RecordDeleteView
+    RecordDeleteView,
+    LiveScoresView
 )
 from . import views
 
@@ -61,6 +62,7 @@ urlpatterns = [
     path('yearend/',NewYearView, name='new-year-view'), #After Week 18
     path('week18/',Week18View, name='week-18-view'), #After Week 18
     path('ajaxdeadlineverification/',AjaxDeadlineVerification, name='report'), #AJAX
+    path('live-scores/', LiveScoresView, name='live-scores'),
 ]
 
 if settings.DEBUG:
