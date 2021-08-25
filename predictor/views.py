@@ -1072,7 +1072,7 @@ def LiveScoresView(request):
         liveseason = int(os.environ['PREDICTSEASON'])
         basescoreweek = int(os.environ['RESULTSWEEK'])
         if basescoreweek > 18:
-            return redirect('scoretable-preseason')
+            return redirect('home')
         else:
             scoreweek = int(os.environ['PREDICTSEASON']+os.environ['RESULTSWEEK'])
 
