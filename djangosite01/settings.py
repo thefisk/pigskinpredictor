@@ -218,7 +218,7 @@ CELERY_BEAT_SCHEDULE = {
     },
     'Fetch and Save Results': {
         'task': 'predictor.tasks.fetch_results',
-        'schedule': crontab(hour=20, minute=24, day_of_week=2),
+        'schedule': crontab(hour=6, minute=00, day_of_week=3),
         'args': ['0']
     },
     'Reset Jokers': {
