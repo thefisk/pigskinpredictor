@@ -63,7 +63,7 @@
                         <th class = "stats-header table-secondary-header">Home</th>
                     </tr>
                 </thead>
-                <tbody name ="livegames-score-table" is="transition-group" id="livegames-table">
+                <tbody name ="livegames-score-table" is="transition-group">
                     <tr v-for="game in sortedScores" :key="game.Game" v-bind:class="[game.Updated ? updatedClass : stdClass]">
                         <td class="table-left" :key="game.AwayTeam">[[game.AwayTeam]]&nbsp; <img v-bind:src="game.AwayTeam | imgurl" :alt="game.AwayTeam" style="vertical-align:middle" class="team_small"></td>
                         <td class="table-center">[[game.AwayScore]] - [[game.HomeScore]]</td>
@@ -169,7 +169,7 @@
                 this.sortScores();
             },
             sortScores() {
-                this.sortedScores = (this.liveScores.sort((a,b) => a.KickOff - b.KickOff || a.TeamIndex - b.TeamIndex));
+                this.sortedScores = (this.liveScores.sort((a,b) => a.State - b.State || a.KickOff - b.KickOff || a.TeamIndex - b.TeamIndex));
                 this.sortTable()
             },
             sortTable() {
@@ -195,7 +195,7 @@
         },
         created() {
             this.getLiveScores();
-            this.timer = setInterval(this.getLiveScores, 120000);
+            this.timer = setInterval(this.getLiveScores, 10000);
             }
         })
     
