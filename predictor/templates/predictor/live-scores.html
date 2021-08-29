@@ -36,7 +36,7 @@
                         <td class = "stats-table-header col-100-l">Scores Update Every 2 minutes</td>
                     </tr>
                 </table>
-                <table class="striped" aria-describedby="Enhanced Scoretable">
+                <table class="striped" aria-describedby="Live Sunday Scoretable">
                 <tbody name ="livescores-score-table" is="transition-group">
                 <tr v-for="entry in sortedTable" :key="entry.User">
                     <td v-if="entry.user ===  currentUser" class = "table-highlight enhanced clamp pad-l table-logo"><img v-bind:src="entry.FavTeam | imgurl" :alt="entry.FavTeam" class="team_small"></img></td>
@@ -55,7 +55,7 @@
                     <td class = "stats-table-header col-100-l">Game Scores</td>
                 </tr>
             </table>
-            <table class="striped">
+            <table class="striped" aria-describedby="Live Sunday Games">
                 <thead>
                     <tr class="table-secondary">
                         <th class = "stats-header table-secondary-header pad-l table-left">Away</th>
@@ -65,9 +65,9 @@
                 </thead>
                 <tbody name ="livegames-score-table" is="transition-group">
                     <tr v-for="game in sortedScores" :key="game.Game" v-bind:class="[game.Updated ? updatedClass : stdClass]">
-                        <td class="table-left" :key="game.AwayTeam">[[game.AwayTeam]]&nbsp; <img v-bind:src="game.AwayTeam | imgurl" :alt="game.AwayTeam" style="vertical-align:middle" class="team_small"></td>
+                        <td class="table-left">[[game.AwayTeam]]&nbsp; <img v-bind:src="game.AwayTeam | imgurl" :alt="game.AwayTeam" style="vertical-align:middle" class="team_small"></td>
                         <td class="table-center">[[game.AwayScore]] - [[game.HomeScore]]</td>
-                        <td :key="game.HomeTeam"><img v-bind:src="game.HomeTeam | imgurl" :alt="game.HomeTeam" style="vertical-align:middle" class="team_small">&nbsp; [[game.HomeTeam]]</td>
+                        <td><img v-bind:src="game.HomeTeam | imgurl" :alt="game.HomeTeam" style="vertical-align:middle" class="team_small">&nbsp; [[game.HomeTeam]]</td>
                     </tr>
                 </tbody>
             </table>
