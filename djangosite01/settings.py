@@ -203,17 +203,17 @@ CELERY_TIMEZONE = 'Europe/London'
 CELERY_BEAT_SCHEDULE = {
     '48hr Email Reminder': {
         'task': 'predictor.tasks.email_reminder',
-        'schedule': crontab(hour=21, minute=00, day_of_week=2),
+        'schedule': crontab(hour=20, minute=00, day_of_week=2),
         'args': ['48']
     },
     '24hr Email Reminder': {
         'task': 'predictor.tasks.email_reminder',
-        'schedule': crontab(hour=21, minute=00, day_of_week=3),
+        'schedule': crontab(hour=20, minute=00, day_of_week=3),
         'args': ['24']
     },
      '1hr Email Reminder': {
         'task': 'predictor.tasks.email_reminder',
-        'schedule': crontab(hour=20, minute=00, day_of_week=4),
+        'schedule': crontab(hour=19, minute=00, day_of_week=4),
         'args': ['1']
     },
     'Fetch and Save Results': {
@@ -235,7 +235,7 @@ CELERY_BEAT_SCHEDULE = {
     },
     'Get Live Scores (Mon AM)': {
         'task': 'predictor.tasks.get_livescores',
-        'schedule': crontab(minute='*/2', hour='00-01', day_of_week=1),
+        'schedule': crontab(minute='*/1', hour='00-01', day_of_week=1),
     }
 }
 

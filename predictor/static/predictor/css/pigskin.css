@@ -821,12 +821,16 @@ h5 {
   transition: transform 2s;
 }
 
+.livegames-score-table-move {
+  transition: transform 2s;
+}
+
 .enhanced-score-table-move {
   transition: transform 1s;
 }
 
 .livegamesupdated {
-  background-color: #E5EEF5;
+  background-color: rgba(218, 165, 32, 0.3) !important;
   transition: background-color 1s linear
 }
 
