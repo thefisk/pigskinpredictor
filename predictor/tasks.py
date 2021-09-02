@@ -232,7 +232,7 @@ def get_livescores():
             home = int(gamejson['header']['competitions'][0]['competitors'][0]['score'])
             away = int(gamejson['header']['competitions'][0]['competitors'][1]['score'])
             state = gamejson['header']['competitions'][0]['status']['type']['state']
-            stateorder={'pre': 'a_pre', 'in': 'b_in', 'post': 'c_post'}
+            stateorder={'pre': 3, 'in': 1, 'post': 2}
             if livegame.HomeScore == home and livegame.AwayScore == away and livegame.State == stateorder[state]:
                 # pre, in, post
                 livegame.Updated = False

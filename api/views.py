@@ -91,7 +91,9 @@ class LastWeekCSVView(mixins.ListModelMixin,viewsets.GenericViewSet):
 class BankersCSVView(mixins.ListModelMixin,viewsets.GenericViewSet):
     permission_classes = [IsSuperUser]
     renderer_classes = (BankersCSVOrdering, ) + tuple(api_settings.DEFAULT_RENDERER_CLASSES)
-    queryset = Banker.objects.all()
     serializer_class = BankerSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['User', 'BankWeek', 'BankSeason']
+    def get_queryset(self):
+        season = int(os.environ['PREDICTSEASON'])
+        return Banker.objects.filter(BankSeason=season)

@@ -218,7 +218,7 @@ CELERY_BEAT_SCHEDULE = {
     },
     'Fetch and Save Results': {
         'task': 'predictor.tasks.fetch_results',
-        'schedule': crontab(hour=20, minute=24, day_of_week=2),
+        'schedule': crontab(hour=6, minute=00, day_of_week=3),
         'args': ['0']
     },
     'Reset Jokers': {
@@ -235,7 +235,7 @@ CELERY_BEAT_SCHEDULE = {
     },
     'Get Live Scores (Mon AM)': {
         'task': 'predictor.tasks.get_livescores',
-        'schedule': crontab(minute='*/2', hour='00-01', day_of_week=1),
+        'schedule': crontab(minute='*/1', hour='00-01', day_of_week=1),
     }
 }
 

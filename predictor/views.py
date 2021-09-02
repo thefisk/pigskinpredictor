@@ -1072,7 +1072,8 @@ def LiveScoresView(request):
         liveseason = int(os.environ['PREDICTSEASON'])
         basescoreweek = int(os.environ['RESULTSWEEK'])
         if basescoreweek > 18:
-            return redirect('scoretable-preseason')
+            latest = Post.objects.all().first().pk
+            return redirect('post-latest', latest)
         else:
             scoreweek = int(os.environ['PREDICTSEASON']+os.environ['RESULTSWEEK'])
 
@@ -1102,6 +1103,8 @@ def LiveScoresView(request):
                 for a in Prediction.objects.filter(PredWeek=scoreweek, User=i).select_related('Game'):
                     # Only add Sunday games to list
                     if a.Game.DateTime.date() == datetime.date.today():
+                    # Test 'if' for Sunday week 1
+                    #if a.Game.DateTime.date() == datetime.datetime.fromisoformat('2021-09-12').date():   
                         jsonpredsforlive[i.Full_Name].append({
                         'game': a.Game.GameID,
                         'winner': a.Winner,
@@ -1126,7 +1129,12 @@ def LiveScoresView(request):
         for team in Team.objects.all():
             jsonurls[team.pk] = team.Logo.url
 
+        apiroot = {
+            'root': os.environ['APIROOT']
+        }
+
         context = {
+            'apiroot': apiroot,
             'points': points,
             'jsonurls': jsonurls,
             'jsonpreds': jsonpredsforlive,
