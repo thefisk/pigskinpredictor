@@ -24,6 +24,7 @@
 {{ points|json_script:'points' }}
 {{ jsonuser|json_script:'currentuser' }}
 {{ jsonurls|json_script:'logo_urls' }}
+{{ apiroot|json_script:'apiroot' }}
 
 <div class="container">
 <h5 class="mb-3">Sunday Live for week {{ titleweek }}</h5>
@@ -33,7 +34,7 @@
             <div class="col s8">
                 <table class="striped table-top-pad" aria-describedby="Table Header">
                     <tr class="table-highlight">
-                        <td class = "stats-table-header col-100-l">Scores Update Every 2 minutes</td>
+                        <td class = "stats-table-header col-100-l">Scores Update Every 60 seconds</td>
                     </tr>
                 </table>
                 <table class="striped" aria-describedby="Live Sunday Scoretable">
@@ -77,6 +78,7 @@
 
 <script>
     let preds = JSON.parse(document.getElementById('preds').textContent);
+    let apiroot = JSON.parse(document.getElementById('apiroot').textContent);
     let points = JSON.parse(document.getElementById('points').textContent);
     let currentUser = JSON.parse(document.getElementById('currentuser').textContent).user;
     let logoUrls = JSON.parse(document.getElementById('logo_urls').textContent);
@@ -85,7 +87,7 @@
 
 <script>
     const getAPI = axios.create({
-        baseURL: 'http://127.0.0.1:8000',
+        baseURL: apiroot.root,
         timeout: 1000,
     })
 </script>
@@ -124,6 +126,7 @@
                             console.log("Found " + gameid + " in user " + user)
                             console.log(thisgame)
                             console.log(scoreData[i])
+                            // If predictred winner is winning
                             if(thisgame.winner === scoreData[i].Winning) {
                                 let lookup = scoreData[i].Winning + "Score"
                                 let score = scoreData[i][lookup]
@@ -136,19 +139,26 @@
                                 }
                                 thisgame.pts = score * multiplier
                             }
+                            // If predicted winner is not winning
                             else {
                                 let lookup = scoreData[i].Winning + "Score"
                                 let score = scoreData[i][lookup]
-                                if(thisgame.banker === true) {
-                                    let multiplier = -2
-                                    if(thisgame.joker === true) {
-                                        multiplier *= 3
+                                // Check if a score value exists (if game has started)
+                                if(score) {
+                                    if(thisgame.banker === true) {
+                                        let multiplier = -2
+                                        if(thisgame.joker === true) {
+                                            multiplier *= 3
+                                        }
+                                        thisgame.pts = score * multiplier
                                     }
-                                    thisgame.pts = score * multiplier
+                                    else {
+                                        thisgame.pts = 0
+                                    }
                                 }
                                 else {
-                                    thisgame.pts = 0
-                                }
+                                        thisgame.pts = 0
+                                    }
                             }
                         }
                     }
@@ -195,7 +205,7 @@
         },
         created() {
             this.getLiveScores();
-            this.timer = setInterval(this.getLiveScores, 10000);
+            this.timer = setInterval(this.getLiveScores, 60000);
             }
         })
     
