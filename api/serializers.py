@@ -15,7 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
     )
     class Meta:
         model = User
-        fields = ('id','Full_Name', 'FavouriteTeam')
+        fields = ('id','Full_Name', 'FavouriteTeam', 'is_active')
 
 class PredictionSerializer(serializers.ModelSerializer):
     Game = serializers.SlugRelatedField(

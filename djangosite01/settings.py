@@ -231,7 +231,7 @@ CELERY_BEAT_SCHEDULE = {
     },
     'Get Live Scores (Sun)': {
         'task': 'predictor.tasks.get_livescores',
-        'schedule': crontab(minute='*/2', hour='18-23', day_of_week=0),
+        'schedule': crontab(minute='*/1', hour='18-23', day_of_week=0),
     },
     'Get Live Scores (Mon AM)': {
         'task': 'predictor.tasks.get_livescores',
