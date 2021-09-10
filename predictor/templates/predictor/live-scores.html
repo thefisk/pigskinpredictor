@@ -15,8 +15,8 @@
 
 {% block content %}
 <!--Vue JS-->
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<!--script src="https://cdn.jsdelivr.net/npm/vue"></script-->
+<!--script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script-->
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <!--Axios-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 
@@ -128,14 +128,9 @@
                 let scoreData = app.liveScores
                 for (i in scoreData){
                     let gameid = scoreData[i].Game
-                    console.log("Processing game "+gameid)
                     for (user in this.preds) {
-                        console.log("- Processing user "+user)
                         let thisgame = this.preds[user].find(x => x.game === gameid)
                         if (thisgame) {
-                            console.log("Found " + gameid + " in user " + user)
-                            console.log(thisgame)
-                            console.log(scoreData[i])
                             // If predictred winner is winning
                             if(thisgame.winner === scoreData[i].Winning) {
                                 let lookup = scoreData[i].Winning + "Score"
@@ -173,7 +168,6 @@
                         }
                     }
                 }
-                console.log("---scoreGames complete---")
                 this.updateTotals();
             },
             updateTotals() {
