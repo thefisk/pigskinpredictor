@@ -48,6 +48,11 @@ class NoPredsAPIView(viewsets.ReadOnlyModelViewSet):
         for pred in Prediction.objects.filter(PredWeek=predweek):
             if pred.User.id not in haspicked:
                 haspicked.append(pred.User.id)
+        # Exclude Inactive Players
+        for user in User.objects.filter(is_active=False):
+            haspicked.append(user.id)
+        # Exclude admin from list
+        haspicked.append((User.objects.get(pk=1)).id)
         return User.objects.exclude(id__in=haspicked)
 
 class PredictionCSVOrdering(r.CSVRenderer):

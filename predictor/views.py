@@ -851,56 +851,56 @@ def DivisionTableView(request):
         AFCW = Team.objects.filter(ConfDiv='AFC West')
         AFCE = Team.objects.filter(ConfDiv='AFC East')
         try:
-            NFCNfans = CustomUser.objects.filter(FavouriteTeam__in=NFCN)
+            NFCNfans = CustomUser.objects.filter(FavouriteTeam__in=NFCN, is_active=True)
         except:
             NFCNcount = 0
             NFCNfans = []
         else:
             NFCNcount = NFCNfans.count()
         try:
-            NFCSfans = CustomUser.objects.filter(FavouriteTeam__in=NFCS)
+            NFCSfans = CustomUser.objects.filter(FavouriteTeam__in=NFCS, is_active=True)
         except:
             NFCScount = 0
             NFCSfans = []
         else:
             NFCScount = NFCSfans.count()
         try:
-            NFCWfans = CustomUser.objects.filter(FavouriteTeam__in=NFCW)
+            NFCWfans = CustomUser.objects.filter(FavouriteTeam__in=NFCW, is_active=True)
         except:
             NFCWcount = 0
             NFCWfans = []
         else:
             NFCWcount = NFCWfans.count()
         try:
-            NFCEfans = CustomUser.objects.filter(FavouriteTeam__in=NFCE)
+            NFCEfans = CustomUser.objects.filter(FavouriteTeam__in=NFCE, is_active=True)
         except:
             NFCEcount = 0
             NFCEfans = []
         else:
             NFCEcount = NFCEfans.count()
         try:
-            AFCNfans = CustomUser.objects.filter(FavouriteTeam__in=AFCN)
+            AFCNfans = CustomUser.objects.filter(FavouriteTeam__in=AFCN, is_active=True)
         except:
             AFCNcount = 0
             AFCNfans = []
         else:
             AFCNcount = AFCNfans.count()
         try:
-            AFCSfans = CustomUser.objects.filter(FavouriteTeam__in=AFCS)
+            AFCSfans = CustomUser.objects.filter(FavouriteTeam__in=AFCS, is_active=True)
         except:
             AFCScount = 0
             AFCSfans = []
         else:
             AFCScount = AFCSfans.count()
         try:
-            AFCWfans = CustomUser.objects.filter(FavouriteTeam__in=AFCW)
+            AFCWfans = CustomUser.objects.filter(FavouriteTeam__in=AFCW, is_active=True)
         except:
             AFCWcount = 0
             AFCWfans = []
         else:
             AFCWcount = AFCWfans.count()
         try:
-            AFCEfans = CustomUser.objects.filter(FavouriteTeam__in=AFCE)
+            AFCEfans = CustomUser.objects.filter(FavouriteTeam__in=AFCE, is_active=True)
         except:
             AFCEcount = 0
             AFCEfans = []
@@ -1102,9 +1102,9 @@ def LiveScoresView(request):
                 jsonpredsforlive[i.Full_Name]=[]
                 for a in Prediction.objects.filter(PredWeek=scoreweek, User=i).select_related('Game'):
                     # Only add Sunday games to list
-                    if a.Game.DateTime.date() == datetime.date.today():
+                    #if a.Game.DateTime.date() == datetime.date.today():
                     # Test 'if' for Sunday week 1
-                    #if a.Game.DateTime.date() == datetime.datetime.fromisoformat('2021-09-12').date():   
+                    if a.Game.DateTime.date() == datetime.datetime.fromisoformat('2021-09-12').date():   
                         jsonpredsforlive[i.Full_Name].append({
                         'game': a.Game.GameID,
                         'winner': a.Winner,
