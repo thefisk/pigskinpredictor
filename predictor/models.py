@@ -306,4 +306,4 @@ class LiveGame(models.Model):
     TeamIndex = models.IntegerField()
 
     def __str__(self):
-        return('{}@{}, {}'.format(self.AwayTeam, self.HomeTeam, self.KickOff))
+        return('{}@{}, {} ({})'.format(self.AwayTeam, self.HomeTeam, self.KickOff, self.Game))

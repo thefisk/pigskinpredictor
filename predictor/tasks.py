@@ -51,6 +51,11 @@ def email_reminder(hours):
         for pred in Prediction.objects.filter(PredWeek=predweek):
             if pred.User.id not in haspicked:
                 haspicked.append(pred.User.id)
+        # Add disabled users to exclusion list
+        for user in User.objects.filter(is_active=False):
+            haspicked.append(user.id)
+        # Add site admin to exclusion list
+        haspicked.append((User.objects.get(pk=1)).id)
         nopreds = User.objects.exclude(id__in=haspicked)
         email_list = []
         for user in nopreds:
