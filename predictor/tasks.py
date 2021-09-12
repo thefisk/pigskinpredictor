@@ -256,7 +256,7 @@ def get_livescores():
                 livegame.save()
         # Games will produce a KeyError for 'score' prior to kick-off
         except(KeyError):
-            livegame.State = "pre"
+            livegame.State = 3
             livegame.save()
 
 # Task to run on Saturdays to wipe old live games and add tomorrow's game in prep for Sunday's live games
