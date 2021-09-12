@@ -376,6 +376,16 @@ table#stats-table tbody tr td {
   padding-left: 10px;
 }
 
+.mobile-link a{
+  text-transform: uppercase !important;
+  text-decoration: underline !important;
+  font-size: 80%;
+  color: rgba(1, 89, 157, 0.5) !important;
+  padding-top: 10px;
+  padding-bottom: 3px;
+  padding-right: 10px;
+}
+
 .throwaway {
   font-weight: lighter;
   font-style: oblique;
@@ -729,7 +739,7 @@ h5 {
 
 .table-logo {
   text-align: center;
-  width: 22px;
+  width: 22px !important;
 }
 
 .card .card-content {
@@ -837,4 +847,16 @@ h5 {
 .livegamesnormal {
   
   transition: background-color 1s linear
+}
+
+@media screen and (min-width: 601) {
+  /* Hide mobile links on desktops: */
+  .mobile-only {
+    display: none;
+    pointer-events: none;
+  }
+  .mobile-link {
+    display: none;
+    pointer-events: none;
+  }
 }

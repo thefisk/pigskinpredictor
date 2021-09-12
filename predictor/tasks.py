@@ -272,7 +272,7 @@ def populate_live():
     # for game in Match.objects.filter(Season=int(os.environ['PREDICTSEASON'])):
     for game in Match.objects.filter(Season=2021):
         if game.DateTime.date() == tomorrow and game.DateTime.hour < 23:
-            newlive = LiveGame(Game=game.GameID, HomeTeam=game.HomeTeam.ShortName, AwayTeam=game.AwayTeam.ShortName, KickOff=game.DateTime.strftime("%H%M"), TeamIndex=teamdict[game.AwayTeam.ShortName])
+            newlive = LiveGame(Game=game.GameID, HomeTeam=game.HomeTeam.ShortName, AwayTeam=game.AwayTeam.ShortName, KickOff=game.DateTime.strftime("%H%M"), TeamIndex=teamdict[game.AwayTeam.ShortName], State=3)
             newlive.save()
 
 
