@@ -1140,7 +1140,7 @@ def LiveScoresView(request):
             'jsonpreds': jsonpredsforlive,
             'jsonuser': jsonuser,
             'week':scoreweek,
-            'titleweek':os.environ['PREDICTWEEK'],
+            'titleweek':os.environ['RESULTSWEEK'],
             'title':'Live Scores'
         }
 
