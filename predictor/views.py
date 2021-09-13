@@ -75,7 +75,7 @@ def ReportsView(request):
 @require_GET
 def HomeView(request):
     if request.user.is_authenticated:
-        if os.environ['SUNDAYLIVE'] == "TRUE":
+        if os.environ['SUNDAYLIVE'] == "TRUE" and request.user.SundayLive == True:
             return redirect('live-scores')
         elif Post.objects.all().count() > 0:
             latest = Post.objects.all().first().pk
