@@ -9,6 +9,7 @@ class User(AbstractUser):
     Full_Name = models.CharField(max_length=100, null=True, blank=True)
     Reminder48 = models.BooleanField(default=True, verbose_name='48 Hour Reminder Emails')
     PickConfirmation = models.BooleanField(default=False, verbose_name='Pick Confirmation Emails')
+    SundayLive = models.BooleanField(default=True, verbose_name='Show Sunday Live Scores')
     JokerUsed = models.IntegerField(null=True, blank=True, verbose_name='Joker Used')
     Positions = JSONField(null=True, blank=True)
     

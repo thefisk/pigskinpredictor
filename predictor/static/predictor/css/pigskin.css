@@ -845,7 +845,6 @@ h5 {
 }
 
 .livegamesnormal {
-  
   transition: background-color 1s linear
 }
 
@@ -859,4 +858,12 @@ h5 {
     display: none;
     pointer-events: none;
   }
+}
+
+#id_SundayLive_container {
+  padding-top: 10px;
+}
+
+#id_SundayLive + span {
+  padding-left: 42px;
 }
