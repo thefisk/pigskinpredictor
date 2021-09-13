@@ -21,7 +21,7 @@ class CustomUserChangeForm(UserChangeForm):
     password = ReadOnlyPasswordHashField(label="Password", widget=forms.HiddenInput())
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'FavouriteTeam', 'password', 'Reminder48', 'PickConfirmation')
+        fields = ('first_name', 'last_name', 'FavouriteTeam', 'password', 'Reminder48', 'PickConfirmation', 'SundayLive')
         exclude = ('username', 'email')
 
 class CustomSignupForm(SignupForm):
