@@ -301,9 +301,9 @@ class LiveGame(models.Model):
     winning_choices = (('Home','Home'), ('Away','Away'), ('Tie', 'Tie'))
     Winning = models.CharField(max_length=4, choices=winning_choices, null=True, blank=True)
     Updated = models.BooleanField(default=False)
-    State = models.CharField(null=True, blank=True, max_length=8)
+    State = models.IntegerField(null=True, blank=True)
     KickOff = models.IntegerField()
     TeamIndex = models.IntegerField()
 
     def __str__(self):
-        return(str(self.Game))
+        return('{}@{}, {} ({})'.format(self.AwayTeam, self.HomeTeam, self.KickOff, self.Game))

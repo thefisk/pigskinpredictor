@@ -51,6 +51,11 @@ def email_reminder(hours):
         for pred in Prediction.objects.filter(PredWeek=predweek):
             if pred.User.id not in haspicked:
                 haspicked.append(pred.User.id)
+        # Add disabled users to exclusion list
+        for user in User.objects.filter(is_active=False):
+            haspicked.append(user.id)
+        # Add site admin to exclusion list
+        haspicked.append((User.objects.get(pk=1)).id)
         nopreds = User.objects.exclude(id__in=haspicked)
         email_list = []
         for user in nopreds:
@@ -232,7 +237,7 @@ def get_livescores():
             home = int(gamejson['header']['competitions'][0]['competitors'][0]['score'])
             away = int(gamejson['header']['competitions'][0]['competitors'][1]['score'])
             state = gamejson['header']['competitions'][0]['status']['type']['state']
-            stateorder={'pre': 'a_pre', 'in': 'b_in', 'post': 'c_post'}
+            stateorder={'pre': 3, 'in': 1, 'post': 2}
             if livegame.HomeScore == home and livegame.AwayScore == away and livegame.State == stateorder[state]:
                 # pre, in, post
                 livegame.Updated = False
@@ -251,7 +256,7 @@ def get_livescores():
                 livegame.save()
         # Games will produce a KeyError for 'score' prior to kick-off
         except(KeyError):
-            livegame.State = "pre"
+            livegame.State = 3
             livegame.save()
 
 # Task to run on Saturdays to wipe old live games and add tomorrow's game in prep for Sunday's live games
@@ -267,7 +272,7 @@ def populate_live():
     # for game in Match.objects.filter(Season=int(os.environ['PREDICTSEASON'])):
     for game in Match.objects.filter(Season=2021):
         if game.DateTime.date() == tomorrow and game.DateTime.hour < 23:
-            newlive = LiveGame(Game=game.GameID, HomeTeam=game.HomeTeam.ShortName, AwayTeam=game.AwayTeam.ShortName, KickOff=game.DateTime.strftime("%H%M"), TeamIndex=teamdict[game.AwayTeam.ShortName])
+            newlive = LiveGame(Game=game.GameID, HomeTeam=game.HomeTeam.ShortName, AwayTeam=game.AwayTeam.ShortName, KickOff=game.DateTime.strftime("%H%M"), TeamIndex=teamdict[game.AwayTeam.ShortName], State=3)
             newlive.save()
 
 

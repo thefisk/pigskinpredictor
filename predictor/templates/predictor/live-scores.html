@@ -15,59 +15,68 @@
 
 {% block content %}
 <!--Vue JS-->
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<!--script src="https://cdn.jsdelivr.net/npm/vue"></script-->
-<!--Axios-->>
+<!--script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script-->
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<!--Axios-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 
 {{ jsonpreds|json_script:'preds' }}
 {{ points|json_script:'points' }}
 {{ jsonuser|json_script:'currentuser' }}
 {{ jsonurls|json_script:'logo_urls' }}
+{{ apiroot|json_script:'apiroot' }}
 
 <div class="container">
-<h5 class="mb-3">Sunday Live for week {{ titleweek }}</h5>
+<h5 class="mb-3">Sunday Live <span class = "superlowlight">|</span> week {{ titleweek }}</h5>
     <div class="divider"></div>
+    <p><h6 class="tip">Tables update every 60 secs</h6></p>
     <div class="row">
         <div id="vue-table">
-            <div class="col s8">
-                <table class="striped table-top-pad" aria-describedby="Table Header">
-                    <tr class="table-highlight">
-                        <td class = "stats-table-header col-100-l">Scores Update Every 2 minutes</td>
+            <div class="col m6 s12">
+                <table id="playerpoints" class="striped live-scores" aria-describedby="Live Sunday Scoretable">
+                <thead>
+                    <tr class="table-highlight striped table-top-pad">
+                        <td class = "stats-table-header col-100-l" colspan="2">Live Sunday Pts</td>
+                        <td class = "mobile-link"><a class="mobile-only" href="#livegames">Games</td>
                     </tr>
-                </table>
-                <table class="striped" aria-describedby="Enhanced Scoretable">
+                    <tr class="table-secondary">
+                        <th class = "stats-header table-secondary-header pad-l table-right" colspan="2">Player</th>
+                        <th class = "stats-header table-secondary-header table-right">Pts</th>
+                    </tr>
+                </thead>
                 <tbody name ="livescores-score-table" is="transition-group">
                 <tr v-for="entry in sortedTable" :key="entry.User">
-                    <td v-if="entry.user ===  currentUser" class = "table-highlight enhanced clamp pad-l table-logo"><img v-bind:src="entry.FavTeam | imgurl" :alt="entry.FavTeam" class="team_small"></img></td>
-                    <td v-else td class="enhanced clamp pad-l table-logo"><img :src="entry.FavTeam | imgurl" :alt="entry.FavTeam" class="team_small"></img></td>
+                    <td width="22px" v-if="entry.user ===  currentUser" class = "table-highlight enhanced clamp pad-l table-logo"><img v-bind:src="entry.FavTeam | imgurl" :alt="entry.FavTeam" class="team_small"></img></td>
+                    <td v-else td width="22px" class="enhanced clamp pad-l table-logo"><img :src="entry.FavTeam | imgurl" :alt="entry.FavTeam" class="team_small"></img></td>
                     <td v-if="entry.user ===  currentUser" class = "table-highlight enhanced clamp no-wrap">[[entry.User]] &nbsp;<span class=table-joker><i v-if="entry.Joker !== null" class="fas fa-check" v-bind:title="entry.Joker"></i></span></td>
                     <td v-else class="enhanced clamp no-wrap">[[entry.User]] &nbsp;<span class=table-joker><i v-if="entry.Joker !== null" class="fas fa-check" v-bind:title="entry.Joker"></i></span></td>
-                    <td>[[entry.Points]]<td>
+                    <td>[[entry.Points]]</td>
                 </tr>
                 </tbody>
                 </table>
 
             </div>
-        <div class="col s4">
-            <table class="striped table-top-pad" aria-describedby="Table Header">
-                <tr class="table-highlight">
-                    <td class = "stats-table-header col-100-l">Game Scores</td>
-                </tr>
-            </table>
-            <table class="striped">
+        <div class="col m6 s12">
+            <table id="livegames" class="striped" aria-describedby="Live Sunday Games">
                 <thead>
+                    <tr class="table-highlight striped table-top-pad">
+                        <td class = "stats-table-header col-100-l" colspan="4">Game Scores</td>
+                        <td class = "mobile-link"><a class="mobile-only" href="#playerpoints">Points</td>
+                    </tr>
                     <tr class="table-secondary">
-                        <th class = "stats-header table-secondary-header pad-l table-left">Away</th>
+                        <th class = "stats-header table-secondary-header pad-l table-left" colspan="2">Away</th>
                         <th class = "stats-header table-secondary-header table-center">Score</th>
-                        <th class = "stats-header table-secondary-header">Home</th>
+                        <th class = "stats-header table-secondary-header" colspan="2">Home</th>
                     </tr>
                 </thead>
-                <tbody name ="livegames-score-table" is="transition-group" id="livegames-table">
+                <tbody name ="livegames-score-table" is="transition-group">
                     <tr v-for="game in sortedScores" :key="game.Game" v-bind:class="[game.Updated ? updatedClass : stdClass]">
-                        <td class="table-left" :key="game.AwayTeam">[[game.AwayTeam]]&nbsp; <img v-bind:src="game.AwayTeam | imgurl" :alt="game.AwayTeam" style="vertical-align:middle" class="team_small"></td>
+                        <td class="table-left">[[game.AwayTeam]]</td>
+                        <td class="table-left"><img v-bind:src="game.AwayTeam | imgurl" :alt="game.AwayTeam" style="vertical-align:middle" class="team_small"></td>
                         <td class="table-center">[[game.AwayScore]] - [[game.HomeScore]]</td>
-                        <td :key="game.HomeTeam"><img v-bind:src="game.HomeTeam | imgurl" :alt="game.HomeTeam" style="vertical-align:middle" class="team_small">&nbsp; [[game.HomeTeam]]</td>
+                        <td><img v-bind:src="game.HomeTeam | imgurl" :alt="game.HomeTeam" style="vertical-align:middle" class="team_small"></td>
+                        <td>[[game.HomeTeam]]</td>
+
                     </tr>
                 </tbody>
             </table>
@@ -77,6 +86,7 @@
 
 <script>
     let preds = JSON.parse(document.getElementById('preds').textContent);
+    let apiroot = JSON.parse(document.getElementById('apiroot').textContent);
     let points = JSON.parse(document.getElementById('points').textContent);
     let currentUser = JSON.parse(document.getElementById('currentuser').textContent).user;
     let logoUrls = JSON.parse(document.getElementById('logo_urls').textContent);
@@ -85,7 +95,7 @@
 
 <script>
     const getAPI = axios.create({
-        baseURL: 'http://127.0.0.1:8000',
+        baseURL: apiroot.root,
         timeout: 1000,
     })
 </script>
@@ -116,14 +126,10 @@
                 let scoreData = app.liveScores
                 for (i in scoreData){
                     let gameid = scoreData[i].Game
-                    console.log("Processing game "+gameid)
                     for (user in this.preds) {
-                        console.log("- Processing user "+user)
                         let thisgame = this.preds[user].find(x => x.game === gameid)
                         if (thisgame) {
-                            console.log("Found " + gameid + " in user " + user)
-                            console.log(thisgame)
-                            console.log(scoreData[i])
+                            // If predictred winner is winning
                             if(thisgame.winner === scoreData[i].Winning) {
                                 let lookup = scoreData[i].Winning + "Score"
                                 let score = scoreData[i][lookup]
@@ -136,24 +142,30 @@
                                 }
                                 thisgame.pts = score * multiplier
                             }
+                            // If predicted winner is not winning
                             else {
                                 let lookup = scoreData[i].Winning + "Score"
                                 let score = scoreData[i][lookup]
-                                if(thisgame.banker === true) {
-                                    let multiplier = -2
-                                    if(thisgame.joker === true) {
-                                        multiplier *= 3
+                                // Check if a score value exists (if game has started)
+                                if(score) {
+                                    if(thisgame.banker === true) {
+                                        let multiplier = -2
+                                        if(thisgame.joker === true) {
+                                            multiplier *= 3
+                                        }
+                                        thisgame.pts = score * multiplier
                                     }
-                                    thisgame.pts = score * multiplier
+                                    else {
+                                        thisgame.pts = 0
+                                    }
                                 }
                                 else {
-                                    thisgame.pts = 0
-                                }
+                                        thisgame.pts = 0
+                                    }
                             }
                         }
                     }
                 }
-                console.log("---scoreGames complete---")
                 this.updateTotals();
             },
             updateTotals() {
@@ -169,7 +181,7 @@
                 this.sortScores();
             },
             sortScores() {
-                this.sortedScores = (this.liveScores.sort((a,b) => a.KickOff - b.KickOff || a.TeamIndex - b.TeamIndex));
+                this.sortedScores = (this.liveScores.sort((a,b) => a.State - b.State || a.KickOff - b.KickOff || a.TeamIndex - b.TeamIndex));
                 this.sortTable()
             },
             sortTable() {
@@ -195,7 +207,7 @@
         },
         created() {
             this.getLiveScores();
-            this.timer = setInterval(this.getLiveScores, 120000);
+            this.timer = setInterval(this.getLiveScores, 60000);
             }
         })
     
