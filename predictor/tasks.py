@@ -328,7 +328,7 @@ def fetch_results(fetchonly):
                 innerdict["Winner"] = "Away"
             outerdict = {}
             outerdict["model"] = "predictor.results"
-            outerdict["pk"] = game['id']
+            outerdict["pk"] = int(game['id'])
             outerdict["fields"] = innerdict
             results.append(outerdict)
 
