@@ -69,7 +69,7 @@ def email_reminder(hours):
             for i in email_list:
                 if i not in optedinemails:
                     email_list_copy.remove(i)
-            email_list = email_list_copy.copy
+            email_list = email_list_copy.copy()
         
         # Below print will show on Celery output as a 'warning'
         # Kept in as it is useful logging because addresses are BCCd
@@ -328,7 +328,7 @@ def fetch_results(fetchonly):
                 innerdict["Winner"] = "Away"
             outerdict = {}
             outerdict["model"] = "predictor.results"
-            outerdict["pk"] = game['id']
+            outerdict["pk"] = int(game['id'])
             outerdict["fields"] = innerdict
             results.append(outerdict)
 
