@@ -62,7 +62,7 @@ def division_players(div):
     if not players:
         division = Team.objects.filter(ConfDiv=div)
         try:
-            players = User.objects.filter(FavouriteTeam__in=division).count()
+            players = User.objects.filter(FavouriteTeam__in=division, is_active=True).count()
         except:
             players = 0
             cache.set(cachename, 0)
