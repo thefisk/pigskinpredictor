@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.postgres.fields import JSONField
 from django.contrib.auth.models import AbstractUser, UserManager, PermissionsMixin
-
+from .timezones import timezonelist
 
 
 class User(AbstractUser):
@@ -12,6 +12,7 @@ class User(AbstractUser):
     SundayLive = models.BooleanField(default=True, verbose_name='Show Sunday Live Scores')
     JokerUsed = models.IntegerField(null=True, blank=True, verbose_name='Joker Used')
     Positions = JSONField(null=True, blank=True)
+    Timezone = models.CharField(null=True, blank=True, choices=timezonelist, default="Europe/London", max_length=50)
     
     def save(self, *args, **kwargs):
         self.first_name = self.first_name.title()
