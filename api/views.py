@@ -3,7 +3,7 @@ from predictor.models import Prediction
 from rest_framework import viewsets, mixins, generics
 from accounts.models import User
 from .permissions import IsSuperUser
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from predictor.models import Prediction, Banker, LiveGame
 from .serializers import (
@@ -18,7 +18,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from allauth.account.models import EmailAddress
 
 class LiveGamesAPIView(generics.RetrieveAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return LiveGame.objects.all()
@@ -27,6 +27,7 @@ class LiveGamesAPIView(generics.RetrieveAPIView):
         queryset = self.get_queryset()
         serializer = LiveGameSerializer(queryset, many=True)
         return Response(serializer.data)
+        
 class UserAPIView(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsSuperUser]
     serializer_class = UserSerializer
