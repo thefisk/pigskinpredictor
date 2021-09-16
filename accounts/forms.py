@@ -10,7 +10,7 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'FavouriteTeam')
+        fields = ('username', 'email', 'FavouriteTeam', 'Timezone')
 
 class CustomUserChangeForm(UserChangeForm):
 
@@ -21,7 +21,7 @@ class CustomUserChangeForm(UserChangeForm):
     password = ReadOnlyPasswordHashField(label="Password", widget=forms.HiddenInput())
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'FavouriteTeam', 'password', 'Reminder48', 'PickConfirmation', 'SundayLive')
+        fields = ('first_name', 'last_name', 'FavouriteTeam', 'password', 'Timezone', 'Reminder48', 'PickConfirmation', 'SundayLive')
         exclude = ('username', 'email')
 
 class CustomSignupForm(SignupForm):

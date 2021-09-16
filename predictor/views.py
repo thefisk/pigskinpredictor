@@ -308,6 +308,7 @@ def CreatePredictionsView(request):
             return response
     context = {
         'jokeravailable':jokeravailable,
+        'mytimezone':request.user.Timezone,
         'bankers':Banker.objects.filter(User=request.user, BankSeason=season).select_related('BankerTeam'),
         'matches':Match.objects.filter(Week=week, Season=season).select_related('HomeTeam', 'AwayTeam'),
         'week':week,
@@ -353,6 +354,7 @@ def AmendPredictionsView(request):
         template = 'predictor/predict_amend.html'
     context = {
         'jokeravailable':jokeravailable,
+        'mytimezone':request.user.Timezone,
         'jokerchecked':jokerchecked,
         'classdict':ClassDict,
         'bankers':UserBankersAmend,

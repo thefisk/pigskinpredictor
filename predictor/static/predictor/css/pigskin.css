@@ -863,3 +863,7 @@ h5 {
 #id_SundayLive + span {
   padding-left: 42px;
 }
+
+#id_TimeZone_container {
+  padding-top: 10px;
+}
