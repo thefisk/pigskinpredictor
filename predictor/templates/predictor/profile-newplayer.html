@@ -20,9 +20,9 @@
             <form method="post">
             {% csrf_token %}
             {% form form=form %}
-            {% part form.first_name prefix %}<i class="material-icons prefix">face</i>{% endpart %}
-            {% part form.last_name prefix %}<i class="material-icons prefix">face</i>{% endpart %}
-            {% part form.FavouriteTeam prefix %}<i class="material-icons prefix">sports_football</i>{% endpart %}
+            {% part form.first_name prefix %}<i class="material-icons prefix icongrey">face</i>{% endpart %}
+            {% part form.last_name prefix %}<i class="material-icons prefix icongrey">face</i>{% endpart %}
+            {% part form.FavouriteTeam prefix %}<i class="material-icons prefix icongrey">sports_football</i>{% endpart %}
             {% part form.Timezone prefix %}<i class="material-icons prefix icongrey">language</i>{% endpart %}
             {% endform %}
             <br>
