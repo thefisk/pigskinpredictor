@@ -265,8 +265,7 @@ def populate_live():
     teamdict = {'ARI': 1, 'ATL': 2, 'BAL': 3, 'BUF': 4, 'CAR': 5, 'CHI': 6, 'CIN': 7, 'CLE': 8, 'DAL': 9, 'DEN': 10, 'DET': 11, 'GB': 12, 'HOU': 13, 'IND': 14, 'JAX': 15, 'KC': 16, 'LV': 17, 'LAC': 18, 'LAR': 19, 'MIA': 20, 'MIN': 21, 'NE': 22, 'NO': 23, 'NYG': 24, 'NYJ': 25, 'PHI': 26, 'PIT': 27, 'SF': 28, 'SEA': 29, 'TB': 30, 'TEN': 31, 'WSH': 32}
     for livegame in LiveGame.objects.all():
         livegame.delete()
-    #tomorrow = datetime.date.today() + datetime.timedelta(days=1)
-    tomorrow = datetime.date.today()
+    tomorrow = datetime.date.today() + datetime.timedelta(days=1)
     # test for week 1
     # tomorrow = datetime.datetime.fromisoformat('2021-09-12').date()
     print(tomorrow)
