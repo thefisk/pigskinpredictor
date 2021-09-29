@@ -871,3 +871,10 @@ h5 {
 #id_fav_team_container {
   padding-top: 10px;
 }
+
+.livegame-complete {
+  background-color: rgba(1, 89, 157, 0.065);
+  padding-left: 5px;
+  font-style: italic;
+  opacity: 0.65
+}
