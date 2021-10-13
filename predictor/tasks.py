@@ -267,7 +267,7 @@ def populate_live():
         livegame.delete()
     tomorrow = datetime.date.today() + datetime.timedelta(days=1)
     # test for week 1
-    tomorrow = datetime.datetime.fromisoformat('2021-09-12').date()
+    # tomorrow = datetime.datetime.fromisoformat('2021-09-12').date()
     print(tomorrow)
     # for game in Match.objects.filter(Season=int(os.environ['PREDICTSEASON'])):
     for game in Match.objects.filter(Season=2021):
@@ -360,3 +360,13 @@ def joker_reset():
     for user in User.objects.all():
         user.JokerUsed = None
         user.save()
+
+# Weekly job to run every Wednesday night prior to PredictWeek increment to update game k/o times as some games are flexed later in the season
+@shared_task
+def kickoff_time_checker():
+    for game in Match.objects.filter(Season=int(os.environ['PREDICTSEASON']), Week=int(os.environ['PREDICTWEEK'])+1):
+        url = f"http://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event={game.GameID}"
+        gamejson = requests.get(url).json()
+        jsondatetime = gamejson['header']['competitions'][0]['date']
+        game.DateTime = jsondatetime
+        game.save()

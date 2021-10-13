@@ -1104,9 +1104,9 @@ def LiveScoresView(request):
                 jsonpredsforlive[i.Full_Name]=[]
                 for a in Prediction.objects.filter(PredWeek=scoreweek, User=i).select_related('Game'):
                     # Only add Sunday games to list
-                    #if a.Game.DateTime.date() == datetime.date.today():
+                    if a.Game.DateTime.date() == datetime.date.today():
                     # Test 'if' for Sunday week 1
-                    if a.Game.DateTime.date() == datetime.datetime.fromisoformat('2021-09-12').date():   
+                    # if a.Game.DateTime.date() == datetime.datetime.fromisoformat('2021-09-12').date():   
                         jsonpredsforlive[i.Full_Name].append({
                         'game': a.Game.GameID,
                         'winner': a.Winner,
