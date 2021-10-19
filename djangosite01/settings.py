@@ -1,5 +1,6 @@
-import os, django_heroku
+import os, django_heroku, sentry_sdk
 from celery.schedules import crontab
+from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -253,3 +254,8 @@ CACHES = {
         "KEY_PREFIX": "pigskindjango",
     }
 }
+
+sentry_sdk.init(
+    dsn=os.environ['SENTRY_DSN'],
+    integrations=[DjangoIntegration()]
+)
