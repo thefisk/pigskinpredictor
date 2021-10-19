@@ -34,7 +34,11 @@ from .views import (
 from . import views
 from django.views.generic import RedirectView
 
+def trigger_error(request):
+    division_by_zero = 1 / 0
+
 urlpatterns = [
+    path('sentry-debug/', trigger_error),
     path('',HomeView,name='home'),
     path('add-record', AddRecordView.as_view(extra_context={'title': 'Add Record'}), name="add-record"),
     path('records/', RecordsView.as_view(extra_context={'title': 'Record Books'}), name="records"),
