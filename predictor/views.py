@@ -313,7 +313,7 @@ def CreatePredictionsView(request):
         'matches':Match.objects.filter(Week=week, Season=season).select_related('HomeTeam', 'AwayTeam'),
         'week':week,
         'season':season,
-        'title': 'Predictios'
+        'title': 'New Predictions'
     }
 
     return render(request, template, context)
