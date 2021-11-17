@@ -287,7 +287,7 @@ def fetch_results(fetchonly):
         if int(week) < 10:
             filename = "resultsimport_"+season+"_0"+week+".json"
         else:
-            filename = "resultsimport_"+season+"_"+week+"_.json"
+            filename = "resultsimport_"+season+"_"+week+".json"
 
         outfile = open(filename, "w")
 
