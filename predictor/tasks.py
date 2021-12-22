@@ -1,4 +1,4 @@
-import datetime
+import datetime, sys
 from celery import shared_task
 from .models import Prediction
 from accounts.models import User
@@ -103,6 +103,13 @@ def save_results():
         obj = s3.Object(bucket,filename)
         body = obj.get()['Body'].read().decode('utf-8')
         data = json.loads(body)
+
+        # Check gamecount is correct before continuing
+        resultscount = len(data)
+        gamescount = Match.objects.filter(Season=int(os.environ['PREDICTSEASON']), Week=int(resultsweek)).count()
+
+        if resultscount != gamescount:
+            sys.exit("Game count mismatch, aborting before scoring - please check import JSON file")
 
         # Save Results
         for result in data:
@@ -267,7 +274,7 @@ def populate_live():
         livegame.delete()
     tomorrow = datetime.date.today() + datetime.timedelta(days=1)
     # test for week 1
-    tomorrow = datetime.datetime.fromisoformat('2021-09-12').date()
+    # tomorrow = datetime.datetime.fromisoformat('2021-09-12').date()
     print(tomorrow)
     # for game in Match.objects.filter(Season=int(os.environ['PREDICTSEASON'])):
     for game in Match.objects.filter(Season=2021):
@@ -287,7 +294,7 @@ def fetch_results(fetchonly):
         if int(week) < 10:
             filename = "resultsimport_"+season+"_0"+week+".json"
         else:
-            filename = "resultsimport_"+season+"_"+week+"_.json"
+            filename = "resultsimport_"+season+"_"+week+".json"
 
         outfile = open(filename, "w")
 
@@ -360,3 +367,13 @@ def joker_reset():
     for user in User.objects.all():
         user.JokerUsed = None
         user.save()
+
+# Weekly job to run every Wednesday night prior to PredictWeek increment to update game k/o times as some games are flexed later in the season
+@shared_task
+def kickoff_time_checker():
+    for game in Match.objects.filter(Season=int(os.environ['PREDICTSEASON']), Week=int(os.environ['PREDICTWEEK'])+1):
+        url = f"http://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event={game.GameID}"
+        gamejson = requests.get(url).json()
+        jsondatetime = gamejson['header']['competitions'][0]['date']
+        game.DateTime = jsondatetime
+        game.save()

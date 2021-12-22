@@ -55,28 +55,34 @@
                 </tr>
                 </tbody>
                 </table>
-
+                <br>
             </div>
+  
         <div class="col m6 s12">
             <table id="livegames" class="striped" aria-describedby="Live Sunday Games">
                 <thead>
                     <tr class="table-highlight striped table-top-pad">
-                        <td class = "stats-table-header col-100-l" colspan="4">Game Scores</td>
-                        <td class = "mobile-link"><a class="mobile-only" href="#playerpoints">Points</td>
+                        <td class = "stats-table-header" colspan="3">Game Scores</td>
+                        <td class = "mobile-link table-left" colspan="2"><a class="mobile-only" href="#playerpoints">Points</td>
                     </tr>
                     <tr class="table-secondary">
                         <th class = "stats-header table-secondary-header pad-l table-left" colspan="2">Away</th>
                         <th class = "stats-header table-secondary-header table-center">Score</th>
-                        <th class = "stats-header table-secondary-header" colspan="2">Home</th>
+                        <th class = "stats-header table-secondary-header table-right" colspan="2">Home</th>
                     </tr>
                 </thead>
                 <tbody name ="livegames-score-table" is="transition-group">
                     <tr v-for="game in sortedScores" :key="game.Game" v-bind:class="[game.Updated ? updatedClass : stdClass]">
-                        <td class="table-left">[[game.AwayTeam]]</td>
-                        <td class="table-left"><img v-bind:src="game.AwayTeam | imgurl" :alt="game.AwayTeam" style="vertical-align:middle" class="team_small"></td>
-                        <td class="table-center">[[game.AwayScore]] - [[game.HomeScore]]</td>
-                        <td><img v-bind:src="game.HomeTeam | imgurl" :alt="game.HomeTeam" style="vertical-align:middle" class="team_small"></td>
-                        <td>[[game.HomeTeam]]</td>
+                        <td v-if="game.State === 2" class="table-left livegame-complete">[[game.AwayTeam]]</td>
+                        <td v-else class="table-left">[[game.AwayTeam]]</td>
+                        <td v-if="game.State === 2" class="table-logo livegame-complete"><img v-bind:src="game.AwayTeam | imgurl" :alt="game.AwayTeam" style="vertical-align:middle" class="team_small"></td>
+                        <td v-else class="table-logo"><img v-bind:src="game.AwayTeam | imgurl" :alt="game.AwayTeam" style="vertical-align:middle" class="team_small"></td>
+                        <td v-if="game.State === 2" class="table-center livegame-complete">[[game.AwayScore]] - [[game.HomeScore]]</td>
+                        <td v-else class="table-center">[[game.AwayScore]] - [[game.HomeScore]]</td>
+                        <td v-if="game.State === 2" class="table-logo livegame-complete"><img v-bind:src="game.HomeTeam | imgurl" :alt="game.HomeTeam" style="vertical-align:middle" class="team_small"></td>
+                        <td v-else class="table-logo"><img v-bind:src="game.HomeTeam | imgurl" :alt="game.HomeTeam" style="vertical-align:middle" class="team_small"></td>
+                        <td v-if="game.State === 2" class="table-right livegame-complete">[[game.HomeTeam]]</td>
+                        <td v-else class="table-right">[[game.HomeTeam]]</td>
 
                     </tr>
                 </tbody>

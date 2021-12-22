@@ -1,5 +1,6 @@
-import os, django_heroku
+import os, django_heroku, sentry_sdk
 from celery.schedules import crontab
+from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -236,6 +237,10 @@ CELERY_BEAT_SCHEDULE = {
     'Get Live Scores (Mon AM)': {
         'task': 'predictor.tasks.get_livescores',
         'schedule': crontab(minute='*/1', hour='00-01', day_of_week=1),
+    },
+    'KickOff Time Checker': {
+        'task': 'predictor.tasks.kickoff_time_checker',
+        'schedule': crontab(minute=00, hour=18, day_of_week=3),
     }
 }
 
@@ -249,3 +254,8 @@ CACHES = {
         "KEY_PREFIX": "pigskindjango",
     }
 }
+
+sentry_sdk.init(
+    dsn=os.environ['SENTRY_DSN'],
+    integrations=[DjangoIntegration()]
+)
