@@ -1,4 +1,4 @@
-import datetime
+import datetime, sys
 from celery import shared_task
 from .models import Prediction
 from accounts.models import User
@@ -103,6 +103,13 @@ def save_results():
         obj = s3.Object(bucket,filename)
         body = obj.get()['Body'].read().decode('utf-8')
         data = json.loads(body)
+
+        # Check gamecount is correct before continuing
+        resultscount = len(data)
+        gamescount = Match.objects.filter(Season=int(os.environ['PREDICTSEASON']), Week=int(resultsweek)).count()
+
+        if resultscount != gamescount:
+            sys.exit("Game count mismatch, aborting before scoring - please check import JSON file")
 
         # Save Results
         for result in data:
@@ -287,7 +294,7 @@ def fetch_results(fetchonly):
         if int(week) < 10:
             filename = "resultsimport_"+season+"_0"+week+".json"
         else:
-            filename = "resultsimport_"+season+"_"+week+"_.json"
+            filename = "resultsimport_"+season+"_"+week+".json"
 
         outfile = open(filename, "w")
 
