@@ -100,7 +100,7 @@
         </div>
         <div class="footer-copyright">
           <div class="container footer-text">
-          An <a href="https://github.com/thefisk/pigskinpredictor" target="_blank" rel="noopener" class="footer-link">open source</a> project by Nathan Fisk&nbsp; |&nbsp; <a href="{% url 'about' %}" class="footer-link">About this site</a>
+          An <a href="https://github.com/thefisk/pigskinpredictor" target="_blank" rel="noopener" class="footer-link">open source</a> project by <a href ="https://nathanfisk.co.uk" target="_blank" rel="noopener" class="footer-link">Nathan Fisk</a>&nbsp; |&nbsp; <a href="{% url 'about' %}" class="footer-link">About this site</a>
           &nbsp; |&nbsp; <a href="{% url 'scoring' %}" class="footer-link">Scoring</a>
           {% if request.user|has_group:"SuperUser" %}
           &nbsp; |&nbsp; <a href="{% url 'post-create' %}" class="footer-link">New Update</a>&nbsp; |&nbsp; <a href="{% url 'add-record' %}" class="footer-link">New Record</a>
