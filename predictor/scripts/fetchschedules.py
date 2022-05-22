@@ -3,10 +3,10 @@
 ### Means Game PKs will now match the results data source
 ### This will remove the need for messy dictionary lookups
 
-import requests
-import requests, json, boto3, os
+import requests, json, boto3, os, datetime
 
-season = 2021
+# Use datetime module to get current year
+season = datetime.datetime.now().year
 
 base_url = f'http://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates={season}'
 
