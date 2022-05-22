@@ -10,7 +10,10 @@ class User(AbstractUser):
     Reminder48 = models.BooleanField(default=True, verbose_name='48 Hour Reminder Emails')
     PickConfirmation = models.BooleanField(default=False, verbose_name='Pick Confirmation Emails')
     SundayLive = models.BooleanField(default=True, verbose_name='Show Sunday Live Scores')
+    # JokerUsed was in use in 2021 season - needs removing
     JokerUsed = models.IntegerField(null=True, blank=True, verbose_name='Joker Used')
+    # JokersPlayed introduced in 2022 to replace above
+    JokersPlayed = JSONField(null=True, blank=True)
     Positions = JSONField(null=True, blank=True)
     Timezone = models.CharField(null=True, blank=True, choices=timezonelist, default="Europe/London", max_length=50)
     

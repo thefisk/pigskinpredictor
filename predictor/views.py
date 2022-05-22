@@ -459,10 +459,10 @@ def AjaxAddPredictionView(request):
             response_data = {}
 
             if joker == True:
-                # Add JokerUsed week value if new predictions use Joker
-                if request.user.JokerUsed == None:
+                # Add JokersUsed week value if new predictions use Joker
+                if len(request.user.JokersPlayed) < 4:
                     updateuser = CustomUser.objects.get(pk = request.user.id)
-                    updateuser.JokerUsed = int(os.environ['PREDICTWEEK'])
+                    updateuser.JokersPlayed[len(updateuser.JokersPlayed)+1] = int(os.environ['PREDICTWEEK'])
                     updateuser.save()
         
             predictionentry = Prediction(User=pred_user, Game=pred_game, Winner=pred_winner, Joker=joker)
@@ -746,19 +746,21 @@ def AjaxAmendPredictionView(request):
             joker = bool(json_data['joker'])
             pred_game = Match.objects.get(GameID=pred_game_str)
             response_data = {}
+            updateuser = CustomUser.objects.get(pk = request.user.id)
 
             if joker == True:
-                # Change User JokerUsed to week number if selected on amend
-                if request.user.JokerUsed == None:
-                    updateuser = CustomUser.objects.get(pk = request.user.id)
-                    updateuser.JokerUsed = int(os.environ['PREDICTWEEK'])
-                    updateuser.save()
+                # Check if JokersPlayed value already set    
+                if int(os.environ['PREDICTWEEK']) in updateuser.JokersPlayed.values():
+                    pass
+                else:
+                    if len(request.user.JokersPlayed) < 4:
+                        updateuser.JokersPlayed[len(updateuser.JokersPlayed)+1] = int(os.environ['PREDICTWEEK'])
+                        updateuser.save()
             else:
-                # Reset User JokerUsed to blank if deselected on amend
-                if request.user.JokerUsed == int(os.environ['PREDICTWEEK']):
-                    updateuser = CustomUser.objects.get(pk = request.user.id)
-                    print(updateuser)
-                    updateuser.JokerUsed = None
+                # Check if JokersPlayed value was previously set and remove if so
+                if int(os.environ['PREDICTWEEK']) in updateuser.JokersPlayed.values():
+                    # Below will remove that last entry from the dictionary
+                    del updateuser.JokersPlayed[len(updateuser.JokersPlayed)]
                     updateuser.save()
 
             try:
