@@ -288,9 +288,9 @@ def ResultsPreSeasonView(request):
 def CreatePredictionsView(request):
     week = os.environ['PREDICTWEEK']
     season = os.environ['PREDICTSEASON']
-    if request.user.JokerUsed == int(week):
+    if len(request.user.JokersPlayed) < 3:
         jokeravailable = True
-    elif request.user.JokerUsed == None:
+    elif request.user.JokersPlayed == None:
         jokeravailable = True
     else:
         jokeravailable = False
@@ -324,10 +324,13 @@ def CreatePredictionsView(request):
 def AmendPredictionsView(request):
     week = os.environ['PREDICTWEEK']
     season = os.environ['PREDICTSEASON']
-    if request.user.JokerUsed == int(week):
+    if request.user.JokersPlayed[len(request.user.JokersPlayed)] == int(week):
         jokeravailable = True
         jokerchecked = True
-    elif request.user.JokerUsed == None:
+    elif request.user.JokersPlayed == None:
+        jokeravailable = True
+        jokerchecked = False
+    elif len(request.user.JokersPlayed) < 3:
         jokeravailable = True
         jokerchecked = False
     else:
@@ -464,7 +467,9 @@ def AjaxAddPredictionView(request):
                     updateuser = CustomUser.objects.get(pk = request.user.id)
                     updateuser.JokersPlayed[len(updateuser.JokersPlayed)+1] = int(os.environ['PREDICTWEEK'])
                     updateuser.save()
-        
+
+            # 2022 Joker updates - flag on all preds kept for simplicity/ease of reversion
+            # Points for non-bankers removed at Result save override
             predictionentry = Prediction(User=pred_user, Game=pred_game, Winner=pred_winner, Joker=joker)
             predictionentry.save()
 

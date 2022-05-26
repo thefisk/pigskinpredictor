@@ -208,7 +208,7 @@ $(function() {
                         let joker = document.getElementById("Joker")
                         if (joker.checked == true){
                             // Only submit if OK is pressed at prompt
-                            if (confirm("Play 1 off Joker?")) {
+                            if (confirm("Play Joker?")) {
                                 $('.hideme').hide();
                                 $('#submitted').html("<img src='https://pigskinpredictorpublic.s3.eu-west-2.amazonaws.com/loading.gif' class='loader'><br>"); // display loading spinner immediately
                                 deadline_checker();
