@@ -286,6 +286,8 @@ def ResultsPreSeasonView(request):
 @require_GET
 @login_required
 def CreatePredictionsView(request):
+    jokerforced = False
+    jokerchecked = False
     week = os.environ['PREDICTWEEK']
     season = os.environ['PREDICTSEASON']
     if len(request.user.JokersPlayed) < 3:
@@ -294,6 +296,13 @@ def CreatePredictionsView(request):
         jokeravailable = True
     else:
         jokeravailable = False
+    
+    # Logic to force user to play Joker on weeks 16-18 if not previously done so
+    if (int(week) == 16 and request.user.Jokersplayed == None) or (int(week) == 17 and len(request.user.Jokersplayed) == 1) or (int(week) == 18 and len(request.user.Jokersplayed) == 2):
+        jokeravailable = True
+        jokerforced = True
+        jokerchecked = True
+
     if int(week) > 18:
         if int(os.environ['RESULTSWEEK']) == 18:
             response = redirect('week-18-view')
@@ -308,6 +317,8 @@ def CreatePredictionsView(request):
             return response
     context = {
         'jokeravailable':jokeravailable,
+        'jokerchecked':jokerchecked,
+        'jokerforced': jokerforced,
         'mytimezone':request.user.Timezone,
         'bankers':Banker.objects.filter(User=request.user, BankSeason=season).select_related('BankerTeam'),
         'matches':Match.objects.filter(Week=week, Season=season).select_related('HomeTeam', 'AwayTeam'),
@@ -336,6 +347,13 @@ def AmendPredictionsView(request):
     else:
         jokeravailable = False
         jokerchecked = False
+
+    # Logic to force user to play Joker on weeks 16-18 if not previously done so
+    if (int(week) == 16 and request.user.Jokersplayed == None) or (int(week) == 17 and len(request.user.Jokersplayed) == 1) or (int(week) == 18 and len(request.user.Jokersplayed) == 2):
+        jokeravailable = True
+        jokerforced = True
+        jokerchecked = True
+
     UserPreds = Prediction.objects.filter(Game__Week=week, Game__Season=season, User=request.user)
     Unpredicted = []
     for i in UserPreds:
@@ -357,8 +375,9 @@ def AmendPredictionsView(request):
         template = 'predictor/predict_amend.html'
     context = {
         'jokeravailable':jokeravailable,
-        'mytimezone':request.user.Timezone,
         'jokerchecked':jokerchecked,
+        'jokerforced':jokerforced,
+        'mytimezone':request.user.Timezone,
         'classdict':ClassDict,
         'bankers':UserBankersAmend,
         'originalbanker':originalbanker,
