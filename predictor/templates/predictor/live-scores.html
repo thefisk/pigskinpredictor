@@ -141,7 +141,7 @@
                                 let lookup = scoreData[i].Winning + "Score"
                                 let score = scoreData[i][lookup]
                                 let multiplier = 1
-                                if(thisgame.joker === true) {
+                                if(thisgame.joker === true && thisgame.banker === true) {
                                     multiplier *= 3
                                 }
                                 if(thisgame.banker === true) {
