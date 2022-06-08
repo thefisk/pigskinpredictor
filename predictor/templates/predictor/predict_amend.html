@@ -50,18 +50,28 @@
         </div>
         {% if jokeravailable %}
             {% if jokerchecked %}
-                <div class="hideme">
-                    <label for = "Joker">
-                        <input id="Joker" type="checkbox" class="filled-in" checked/>
-                        <span>Play Joker <em>(triple pts, once per season)</em></span>
-                    </label>
-                    <P>
-                </div>
+                {% if jokerforced %}
+                    <div class="hideme">
+                        <label for = "Joker">
+                            <input id="Joker" type="checkbox" class="filled-in" checked disabled="disabled"/>
+                            <span>Play Joker <em>(double banker pts, enforced)</em></span>
+                        </label>
+                        <P>
+                    </div>
+                {% else %}
+                    <div class="hideme">
+                        <label for = "Joker">
+                            <input id="Joker" type="checkbox" class="filled-in" checked/>
+                            <span>Play Joker <em>(double banker pts, {{ jokersremaining }} left)</em></span>
+                        </label>
+                        <P>
+                    </div>
+                {% endif %}
             {% else %}
                 <div class="hideme">
                     <label for = "Joker">
                         <input id="Joker" type="checkbox" class="filled-in"/>
-                        <span>Play Joker <em>(triple pts, once per season)</em></span>
+                        <span>Play Joker <em>(double banker pts, {{ jokersremaining }} left)</em></span>
                     </label>
                     <P>
                 </div>

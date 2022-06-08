@@ -32,13 +32,23 @@
             {% endfor %}
         </div>
         {% if jokeravailable %}
-        <div class="hideme">
-            <label for = "Joker">
-                <input id="Joker" type="checkbox" class="filled-in"/>
-                <span>Play Joker <em>(triple pts, once per season)</em></span>
-            </label>
-            <P>
-        </div>
+            {% if jokerforced %}
+                <div class="hideme">
+                    <label for = "Joker">
+                        <input id="Joker" type="checkbox" class="filled-in" checked disabled="disabled"/>
+                        <span>Play Joker <em>(double banker pts, enforced)</em></span>
+                    </label>
+                    <P>
+                </div>
+            {% else %}
+                <div class="hideme">
+                    <label for = "Joker">
+                        <input id="Joker" type="checkbox" class="filled-in"/>
+                        <span>Play Joker <em>(double banker pts, {{ jokersremaining }} left)</em></span>
+                    </label>
+                    <P>
+                </div>
+            {% endif %}
         {% endif %}
         {% if week == "1" %}
         <button id="predict-submit" class="btn hideme" type="submit">Submit</button>

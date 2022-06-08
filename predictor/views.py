@@ -287,12 +287,16 @@ def ResultsPreSeasonView(request):
 @login_required
 def CreatePredictionsView(request):
     jokerforced = False
-    jokerchecked = False
     week = os.environ['PREDICTWEEK']
     season = os.environ['PREDICTSEASON']
-    if len(request.user.JokersPlayed) < 3:
+    try:
+        jokersplayedamount = len(request.user.JokersPlayed)
+    except TypeError:
+        jokersplayedamount = 0
+    jokersremaining = 3 - jokersplayedamount
+    if request.user.JokersPlayed == None:
         jokeravailable = True
-    elif request.user.JokersPlayed == None:
+    elif jokersplayedamount < 3:
         jokeravailable = True
     else:
         jokeravailable = False
@@ -301,7 +305,6 @@ def CreatePredictionsView(request):
     if (int(week) == 16 and request.user.Jokersplayed == None) or (int(week) == 17 and len(request.user.Jokersplayed) == 1) or (int(week) == 18 and len(request.user.Jokersplayed) == 2):
         jokeravailable = True
         jokerforced = True
-        jokerchecked = True
 
     if int(week) > 18:
         if int(os.environ['RESULTSWEEK']) == 18:
@@ -316,8 +319,8 @@ def CreatePredictionsView(request):
             response = redirect('amend-prediction-view')
             return response
     context = {
+        'jokersremaining':jokersremaining,
         'jokeravailable':jokeravailable,
-        'jokerchecked':jokerchecked,
         'jokerforced': jokerforced,
         'mytimezone':request.user.Timezone,
         'bankers':Banker.objects.filter(User=request.user, BankSeason=season).select_related('BankerTeam'),
@@ -335,13 +338,19 @@ def CreatePredictionsView(request):
 def AmendPredictionsView(request):
     week = os.environ['PREDICTWEEK']
     season = os.environ['PREDICTSEASON']
-    if request.user.JokersPlayed[len(request.user.JokersPlayed)] == int(week):
-        jokeravailable = True
-        jokerchecked = True
-    elif request.user.JokersPlayed == None:
+    jokerforced = False
+    try:
+        jokersplayedamount = len(request.user.JokersPlayed)
+    except TypeError:
+        jokersplayedamount = 0
+    jokersremaining = 3 - jokersplayedamount
+    if request.user.JokersPlayed == None:
         jokeravailable = True
         jokerchecked = False
-    elif len(request.user.JokersPlayed) < 3:
+    elif request.user.JokersPlayed[jokersplayedamount] == int(week):
+        jokeravailable = True
+        jokerchecked = True
+    elif jokersplayedamount < 3:
         jokeravailable = True
         jokerchecked = False
     else:
@@ -374,6 +383,7 @@ def AmendPredictionsView(request):
     else:
         template = 'predictor/predict_amend.html'
     context = {
+        'jokersremaining':jokersremaining,
         'jokeravailable':jokeravailable,
         'jokerchecked':jokerchecked,
         'jokerforced':jokerforced,
