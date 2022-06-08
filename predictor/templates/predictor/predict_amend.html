@@ -3,10 +3,11 @@
 {% load tz %}
 {% block content %}
 <script>
-        $('#predict').each(function(){
-               $(this).toggleClass('active');
-           });
-       </script>
+    $('#predict').each(function(){
+            $(this).toggleClass('active');
+        });
+</script>
+    {{ upcomingjoker|json_script:'upcomingjoker' }}
     <div class="container">
         
         <h5 class="hideme week-heading" id="{{ week }}">Amend Predictions <span class = "superlowlight">|</span> week {{ week }}</h5>

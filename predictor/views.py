@@ -44,6 +44,12 @@ CacheTTL_1Hour = 60 * 60
 CacheTTL_3Hours = 60 * 60 * 3
 CacheTTL_5Mins = 60 *5
 
+upcomingjokerdict = {
+    0: "first",
+    1: "second",
+    2: "final"
+}
+
 @require_GET
 def RobotsTXT(request):
     lines = [
@@ -300,6 +306,7 @@ def CreatePredictionsView(request):
         jokeravailable = True
     else:
         jokeravailable = False
+    upcomingjoker = upcomingjokerdict[jokersplayedamount]
     
     # Logic to force user to play Joker on weeks 16-18 if not previously done so
     if (int(week) == 16 and request.user.Jokersplayed == None) or (int(week) == 17 and len(request.user.Jokersplayed) == 1) or (int(week) == 18 and len(request.user.Jokersplayed) == 2):
@@ -319,6 +326,7 @@ def CreatePredictionsView(request):
             response = redirect('amend-prediction-view')
             return response
     context = {
+        'upcomingjoker': upcomingjoker,
         'jokersremaining':jokersremaining,
         'jokeravailable':jokeravailable,
         'jokerforced': jokerforced,
@@ -356,6 +364,7 @@ def AmendPredictionsView(request):
     else:
         jokeravailable = False
         jokerchecked = False
+    upcomingjoker = upcomingjokerdict[jokersplayedamount]
 
     # Logic to force user to play Joker on weeks 16-18 if not previously done so
     if (int(week) == 16 and request.user.Jokersplayed == None) or (int(week) == 17 and len(request.user.Jokersplayed) == 1) or (int(week) == 18 and len(request.user.Jokersplayed) == 2):
@@ -383,6 +392,7 @@ def AmendPredictionsView(request):
     else:
         template = 'predictor/predict_amend.html'
     context = {
+        'upcomingjoker': upcomingjoker,
         'jokersremaining':jokersremaining,
         'jokeravailable':jokeravailable,
         'jokerchecked':jokerchecked,

@@ -226,9 +226,9 @@ $(function() {
                     // Check Deadline First
                     try {
                         let joker = document.getElementById("Joker")
-                        if (joker.checked == true){
+                        if (joker.checked == true && joker.disabled == false){
                             // Only submit if OK is pressed at prompt
-                            if (confirm("Play 1 off Joker?")) {
+                            if (confirm(`Play ${upcomingjoker.text.slice(1,-1)} Joker?`)) {
                                 $('.hideme').hide();
                                 $('#submitted').html("<img src='https://pigskinpredictorpublic.s3.eu-west-2.amazonaws.com/loading.gif' class='loader'><br>"); // display loading spinner immediately
                                 deadline_checker();
@@ -237,7 +237,7 @@ $(function() {
                                 // Return to screen if cancel pressed
                             }
                         }
-                        // Submit without a Joker prompt if Joker is deselected
+                        // Submit without a Joker prompt if Joker is deselected/Joker is enforced
                         else {
                             $('.hideme').hide();
                             $('#submitted').html("<img src='https://pigskinpredictorpublic.s3.eu-west-2.amazonaws.com/loading.gif' class='loader'><br>"); // display loading spinner immediately
