@@ -863,7 +863,7 @@ def AjaxAmendBankerView(request):
                     jokers = updateuser.JokersPlayed.values()
                     if int(os.environ['PREDICTWEEK']) in updateuser.JokersPlayed.values():
                         # Below will remove that last entry from the dictionary
-                        del updateuser.JokersPlayed[len(updateuser.JokersPlayed)]
+                        del updateuser.JokersPlayed[str(len(updateuser.JokersPlayed))]
                         updateuser.save()
                 # No jokers set
                 except AttributeError:
