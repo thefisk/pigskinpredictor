@@ -502,7 +502,14 @@ def AjaxAddPredictionView(request):
 
             if joker == True:
                 # Add JokersUsed week value if new predictions use Joker
-                if len(request.user.JokersPlayed) < 4:
+                try:
+                    jokers = request.user.JokersPlayed
+                    if len(request.user.JokersPlayed) < 4:
+                        updateuser = CustomUser.objects.get(pk = request.user.id)
+                        updateuser.JokersPlayed[len(updateuser.JokersPlayed)+1] = int(os.environ['PREDICTWEEK'])
+                        updateuser.save()
+                # No jokers exist
+                except AttributeError:
                     updateuser = CustomUser.objects.get(pk = request.user.id)
                     updateuser.JokersPlayed[len(updateuser.JokersPlayed)+1] = int(os.environ['PREDICTWEEK'])
                     updateuser.save()
@@ -793,19 +800,29 @@ def AjaxAmendPredictionView(request):
             updateuser = CustomUser.objects.get(pk = request.user.id)
 
             if joker == True:
-                # Check if JokersPlayed value already set    
-                if int(os.environ['PREDICTWEEK']) in updateuser.JokersPlayed.values():
+                # Check if JokersPlayed value already set
+                try:
+                    jokers = updateuser.JokersPlayed.values()
+                    if int(os.environ['PREDICTWEEK']) in jokers:
+                        pass
+                    else:
+                        if len(request.user.JokersPlayed) < 4:
+                            updateuser.JokersPlayed[len(updateuser.JokersPlayed)+1] = int(os.environ['PREDICTWEEK'])
+                            updateuser.save()
+                # No jokers set yet
+                except AttributeError:
                     pass
-                else:
-                    if len(request.user.JokersPlayed) < 4:
-                        updateuser.JokersPlayed[len(updateuser.JokersPlayed)+1] = int(os.environ['PREDICTWEEK'])
-                        updateuser.save()
             else:
                 # Check if JokersPlayed value was previously set and remove if so
-                if int(os.environ['PREDICTWEEK']) in updateuser.JokersPlayed.values():
-                    # Below will remove that last entry from the dictionary
-                    del updateuser.JokersPlayed[len(updateuser.JokersPlayed)]
-                    updateuser.save()
+                try: 
+                    jokers = updateuser.JokersPlayed.values()
+                    if int(os.environ['PREDICTWEEK']) in updateuser.JokersPlayed.values():
+                        # Below will remove that last entry from the dictionary
+                        del updateuser.JokersPlayed[len(updateuser.JokersPlayed)]
+                        updateuser.save()
+                # No jokers set
+                except AttributeError:
+                    pass
 
             try:
                 oldprediction = Prediction.objects.get(User=pred_user, Game=pred_game)
