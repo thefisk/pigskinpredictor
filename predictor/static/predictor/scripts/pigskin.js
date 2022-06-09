@@ -316,6 +316,7 @@ $(function() {
                 var bankerobj = [];
                 bankerobj[0]= {};
                 bankerobj[0]['bank_game']=chosenbanker;
+                bankerobj[0]['joker']=document.getElementById("Joker").checked;
                 var jsonbanker = JSON.stringify(bankerobj[0]);
                     add_banker(jsonbanker);
                 }
