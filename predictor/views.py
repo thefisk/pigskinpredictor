@@ -626,7 +626,7 @@ def ScoreTableView(request):
                         move = "down"
                     else:
                         move = "same"
-                except(IndexError, TypeError):
+                except(IndexError, TypeError, KeyError):
                     move = "dnp"
             jsonpositions[i.Full_Name] = move
         cache.set('jsonpositionscache', jsonpositions, CacheTTL_1Week)
@@ -634,6 +634,7 @@ def ScoreTableView(request):
     jsonstdscores = cache.get('jsonstdscorescache')
 
     # Function to send Joker week's to scoretables only if they are used prior to the current week
+    # Not used as of 2022/23 but kept in in case of future joker changes
     def jokervalue(user):
         joker = CustomUser.objects.get(id=user).JokerUsed
         try:
@@ -644,6 +645,20 @@ def ScoreTableView(request):
         except(TypeError):
             return None
 
+    # Function to get a list of weeks Jokers have been played, excluding the current week
+    def getJokers(user):
+        jokers = CustomUser.objects.get(id=user).JokersPlayed
+        try:
+            # Scoreweek + 1 needed as that will be the week which hasn't yet been scored
+            if (scoreweek+1) in jokers.values():
+                jokers.pop(str(len(jokers)))
+            if len(jokers) > 0:
+                return jokers
+            else:
+                return None
+        except(AttributeError):
+            return None
+
     if not jsonstdscores:
         jsonstdscores = {'std_scores' : [{
             'pos': i+1,
@@ -651,7 +666,8 @@ def ScoreTableView(request):
             'teamshort': s.User.FavouriteTeam.ShortName,
             'week': get_json_week_score(s.User, scoreweek, os.environ['PREDICTSEASON']),
             'seasonscore': s.SeasonScore,
-            'joker': jokervalue(s.User.id)
+            #'joker': jokervalue(s.User.id),
+            'jokers': getJokers(s.User.id)
             }
             # enumerate needed to allow us to extract the index (position) using i,s
             for i,s in enumerate(ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']))]
@@ -707,7 +723,8 @@ def ScoreTableEnhancedView(request):
     lastweek = str(scoreweek)
     previousweek = str(scoreweek - 1)
 
-    # Function to send Joker week's to scoretables only if they are used prior to the current week
+    # Function to send 2021/22 single use Joker week's to scoretables only if they are used prior to the current week
+    # Not used as of 2022/23 but kept in in case of future joker changes
     def jokervalue(user):
         joker = CustomUser.objects.get(id=user).JokerUsed
         try:
@@ -716,6 +733,20 @@ def ScoreTableEnhancedView(request):
             else:
                 return None
         except(TypeError):
+            return None
+
+    # Function to get a list of weeks Jokers have been played, excluding the current week
+    def getJokers(user):
+        jokers = CustomUser.objects.get(id=user).JokersPlayed
+        try:
+            # Scoreweek + 1 needed as that will be the week which hasn't yet been scored
+            if (scoreweek+1) in jokers.values():
+                jokers.pop(str(len(jokers)))
+            if len(jokers) > 0:
+                return jokers
+            else:
+                return None
+        except(AttributeError):
             return None
 
     if not jsonpositions:
@@ -734,7 +765,7 @@ def ScoreTableEnhancedView(request):
                         move = "down"
                     else:
                         move = "same"
-                except(IndexError, TypeError):
+                except(IndexError, TypeError, KeyError):
                     move = "dnp"
             jsonpositions[i.Full_Name] = move
         cache.set('jsonpositionscache', jsonpositions, CacheTTL_1Week)
@@ -754,7 +785,8 @@ def ScoreTableEnhancedView(request):
             'seasonpercentage': float(s.SeasonPercentage),
             'seasonaverage': float(s.SeasonAverage),
             'bankeraverage': float(s.BankerAverage),
-            'joker': jokervalue(s.User.id)
+            #'joker': jokervalue(s.User.id),
+            'jokers': getJokers(s.User.id)
             }
             # enumerate needed to allow us to extract the index (position) using i,s
             for i,s in enumerate(ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']))]
