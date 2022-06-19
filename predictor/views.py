@@ -309,7 +309,7 @@ def CreatePredictionsView(request):
     upcomingjoker = upcomingjokerdict[jokersplayedamount]
     
     # Logic to force user to play Joker on weeks 16-18 if not previously done so
-    if (int(week) == 16 and request.user.Jokersplayed == None) or (int(week) == 17 and len(request.user.Jokersplayed) == 1) or (int(week) == 18 and len(request.user.Jokersplayed) == 2):
+    if (int(week) == 16 and request.user.JokersPlayed == None) or (int(week) == 17 and len(request.user.JokersPlayed) == 1) or (int(week) == 18 and len(request.user.JokersPlayed) == 2):
         jokeravailable = True
         jokerforced = True
 
@@ -370,10 +370,11 @@ def AmendPredictionsView(request):
     # For amending, 'first', 'second' etc need to ignore 'this week'
     if latestjoker == int(week):
         jokersplayedamount -= 1
+        jokersremaining += 1
     upcomingjoker = upcomingjokerdict[jokersplayedamount]
 
     # Logic to force user to play Joker on weeks 16-18 if not previously done so
-    if (int(week) == 16 and request.user.Jokersplayed == None) or (int(week) == 17 and len(request.user.Jokersplayed) == 1) or (int(week) == 18 and len(request.user.Jokersplayed) == 2):
+    if (int(week) == 16 and request.user.JokersPlayed == None) or (int(week) == 17 and len(request.user.JokersPlayed) == 1) or (int(week) == 18 and len(request.user.JokersPlayed) == 2):
         jokeravailable = True
         jokerforced = True
         jokerchecked = True
