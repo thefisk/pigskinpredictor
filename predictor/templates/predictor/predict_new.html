@@ -71,10 +71,11 @@
             <h5>Used Bankers</h5>
             <ul>
                 {% for banker in bankers %}
-                    <li id="{{ banker.BankerTeam|corresponding_match }}"><img src="{{ banker.BankerTeam.Logo.url }}" alt="{{ banker.BankerTeam.Nickname }}" class="team_small usedbanker"> {{ banker.BankerTeam }}</li>
+                    <li id="{{ banker.BankerTeam|corresponding_match }}"><img src="{{ banker.BankerTeam.Logo.url }}" alt="{{ banker.BankerTeam.Nickname }}" class="team_small usedbanker"> {{ banker.BankerTeam }}
                     {% if banker.BankWeek in jokerweeks.values%}
                         &nbsp;<i class="fas fa-check" style="color:rgb(40, 95, 138);"></i>
-                    {% endif %}</li>
+                    {% endif %}
+                    </li>
                 {% endfor %}
             </ul>
         </div>     
