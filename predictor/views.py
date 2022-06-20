@@ -292,26 +292,9 @@ def ResultsPreSeasonView(request):
 @require_GET
 @login_required
 def CreatePredictionsView(request):
-    jokerforced = False
+
     week = os.environ['PREDICTWEEK']
     season = os.environ['PREDICTSEASON']
-    try:
-        jokersplayedamount = len(request.user.JokersPlayed)
-    except TypeError:
-        jokersplayedamount = 0
-    jokersremaining = 3 - jokersplayedamount
-    if request.user.JokersPlayed == None:
-        jokeravailable = True
-    elif jokersplayedamount < 3:
-        jokeravailable = True
-    else:
-        jokeravailable = False
-    upcomingjoker = upcomingjokerdict[jokersplayedamount]
-    
-    # Logic to force user to play Joker on weeks 16-18 if not previously done so
-    if (int(week) == 16 and request.user.JokersPlayed == None) or (int(week) == 17 and len(request.user.JokersPlayed) == 1) or (int(week) == 18 and len(request.user.JokersPlayed) == 2):
-        jokeravailable = True
-        jokerforced = True
 
     if int(week) > 18:
         if int(os.environ['RESULTSWEEK']) == 18:
@@ -325,6 +308,31 @@ def CreatePredictionsView(request):
         else:
             response = redirect('amend-prediction-view')
             return response
+    
+    jokerforced = False
+    try:
+        jokersplayedamount = len(request.user.JokersPlayed)
+    except TypeError:
+        jokersplayedamount = 0
+    jokersremaining = 3 - jokersplayedamount
+    if request.user.JokersPlayed == None:
+        jokeravailable = True
+    elif jokersplayedamount < 3:
+        jokeravailable = True
+    else:
+        jokeravailable = False
+    
+    try:
+        upcomingjoker = upcomingjokerdict[jokersplayedamount]
+    except(KeyError):
+        upcomingjoker = None
+    
+    # Logic to force user to play Joker on weeks 16-18 if not previously done so
+    if (int(week) == 16 and request.user.JokersPlayed == None) or (int(week) == 17 and len(request.user.JokersPlayed) == 1) or (int(week) == 18 and len(request.user.JokersPlayed) == 2):
+        jokeravailable = True
+        jokerforced = True
+
+
     context = {
         'upcomingjoker': upcomingjoker,
         'jokersremaining':jokersremaining,
@@ -371,7 +379,11 @@ def AmendPredictionsView(request):
     if latestjoker == int(week):
         jokersplayedamount -= 1
         jokersremaining += 1
-    upcomingjoker = upcomingjokerdict[jokersplayedamount]
+    
+    try:
+        upcomingjoker = upcomingjokerdict[jokersplayedamount]
+    except(KeyError):
+        upcomingjoker = None
 
     # Logic to force user to play Joker on weeks 16-18 if not previously done so
     if (int(week) == 16 and request.user.JokersPlayed == None) or (int(week) == 17 and len(request.user.JokersPlayed) == 1) or (int(week) == 18 and len(request.user.JokersPlayed) == 2):
