@@ -568,7 +568,7 @@ def AjaxAddBankerView(request):
                         updateuser.JokersPlayed[len(updateuser.JokersPlayed)+1] = int(os.environ['PREDICTWEEK'])
                         updateuser.save()
                 # No jokers exist
-                except AttributeError:
+                except (AttributeError, TypeError):
                     updateuser = CustomUser.objects.get(pk = request.user.id)
                     updateuser.JokersPlayed = {1 : int(os.environ['PREDICTWEEK'])}
                     updateuser.save()
@@ -899,7 +899,7 @@ def AjaxAmendBankerView(request):
                             updateuser.JokersPlayed[len(updateuser.JokersPlayed)+1] = int(os.environ['PREDICTWEEK'])
                             updateuser.save()
                 # No jokers set yet
-                except AttributeError:
+                except (AttributeError, TypeError):
                     updateuser.JokersPlayed = {1 : int(os.environ['PREDICTWEEK'])}
                     updateuser.save()
             else:
