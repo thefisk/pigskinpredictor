@@ -241,6 +241,11 @@ CELERY_BEAT_SCHEDULE = {
     'KickOff Time Checker': {
         'task': 'predictor.tasks.kickoff_time_checker',
         'schedule': crontab(minute=00, hour=18, day_of_week=3),
+    },
+    'Save Results (No Fetch)': {
+        'task': 'predictor.tasks.save_results',
+        # 12:00 on Monday 29th Feb - i.e. a date that won't occur until 2044
+        'schedule': crontab(minute=00, hour=12, day_of_week=1, day_of_month=29, month_of_year=2,),
     }
 }
 
