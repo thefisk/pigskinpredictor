@@ -6,7 +6,12 @@ from celery import Celery
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'djangosite01.settings')
 
-app = Celery('djangosite01', CELERY_BROKER_URL="redis://127.0.0.1:6379")
+if os.environ['ENVIRONMENT'] == "Heroku":
+    CELERY_BROKER_URL = os.environ['REDIS_URL']
+else:
+    CELERY_BROKER_URL = "redis://127.0.0.1:6379"
+
+app = Celery('djangosite01', CELERY_BROKER_URL=CELERY_BROKER_URL)
 
 # Using a string here means the worker doesn't have to serialize
 # the configuration object to child processes.
