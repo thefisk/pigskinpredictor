@@ -315,7 +315,7 @@ def CreatePredictionsView(request):
     except (KeyError, TypeError):
         jokersplayedamount = 0
     jokersremaining = 3 - jokersplayedamount
-    if request.user.JokersPlayed == None:
+    if request.user.JokersPlayed == None or len(request.user.JokersPlayed) == 0:
         jokeravailable = True
     elif jokersplayedamount < 3:
         jokeravailable = True
@@ -363,7 +363,7 @@ def AmendPredictionsView(request):
         jokersplayedamount = 0
         latestjoker = 0
     jokersremaining = 3 - jokersplayedamount
-    if request.user.JokersPlayed == None:
+    if request.user.JokersPlayed == None or len(request.user.JokersPlayed) == 0:
         jokeravailable = True
         jokerchecked = False
     elif request.user.JokersPlayed[str(jokersplayedamount)] == int(week): # Keys are stored as strings
