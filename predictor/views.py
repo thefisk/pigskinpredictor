@@ -312,7 +312,7 @@ def CreatePredictionsView(request):
     jokerforced = False
     try:
         jokersplayedamount = len(request.user.JokersPlayed)
-    except TypeError:
+    except (KeyError, TypeError):
         jokersplayedamount = 0
     jokersremaining = 3 - jokersplayedamount
     if request.user.JokersPlayed == None:
@@ -359,7 +359,7 @@ def AmendPredictionsView(request):
     try:
         jokersplayedamount = len(request.user.JokersPlayed)
         latestjoker = request.user.JokersPlayed[str(jokersplayedamount)]
-    except TypeError:
+    except (KeyError, TypeError):
         jokersplayedamount = 0
         latestjoker = 0
     jokersremaining = 3 - jokersplayedamount
