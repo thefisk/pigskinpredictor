@@ -316,7 +316,12 @@ $(function() {
                 var bankerobj = [];
                 bankerobj[0]= {};
                 bankerobj[0]['bank_game']=chosenbanker;
-                bankerobj[0]['joker']=document.getElementById("Joker").checked;
+                // try/catch needed on Joker status because when all three are played, the Joker tickbox is never created on the DOM
+                try {
+                    bankerobj[0]['joker']=document.getElementById("Joker").checked;
+                } catch (typeError) {
+                    bankerobj[0]['joker']=false
+                }
                 var jsonbanker = JSON.stringify(bankerobj[0]);
                     add_banker(jsonbanker);
                 }
