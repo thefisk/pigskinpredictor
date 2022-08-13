@@ -363,7 +363,7 @@ def AmendPredictionsView(request):
         jokersplayedamount = 0
         latestjoker = 0
     jokersremaining = 3 - jokersplayedamount
-    if request.user.JokersPlayed == None or len(request.user.JokersPlayed) == 0:
+    if request.user.JokersPlayed == None or jokersplayedamount == 0:
         jokeravailable = True
         jokerchecked = False
     elif request.user.JokersPlayed[str(jokersplayedamount)] == int(week): # Keys are stored as strings
@@ -386,7 +386,8 @@ def AmendPredictionsView(request):
         upcomingjoker = None
 
     # Logic to force user to play Joker on weeks 16-18 if not previously done so
-    if (int(week) == 16 and request.user.JokersPlayed == None) or (int(week) == 17 and len(request.user.JokersPlayed) == 1) or (int(week) == 18 and len(request.user.JokersPlayed) == 2):
+    # Jokersplayedamount has 1 added because in line 380 we remove 1 because its primary function is for the 'first',, 'second' labels etc
+    if (int(week) == 16 and (request.user.JokersPlayed == None or jokersplayedamount+1 == 1 )) or (int(week) == 17 and jokersplayedamount+1 in (1,2)) or (int(week) == 18 and jokersplayedamount+1 in (2,3)):
         jokeravailable = True
         jokerforced = True
         jokerchecked = True
@@ -411,6 +412,7 @@ def AmendPredictionsView(request):
     else:
         template = 'predictor/predict_amend.html'
     context = {
+        'jokersplayedamount': jokersplayedamount,
         'upcomingjoker': upcomingjoker,
         'jokersremaining':jokersremaining,
         'jokeravailable':jokeravailable,
