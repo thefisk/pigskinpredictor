@@ -330,7 +330,6 @@ $(function() {
             // handle a successful response
             success : function(json) {
                 returnedresponses ++;
-                $('#submitted').append("<BR>Response number \""+returnedresponses+"\" received of \""+numberOfGames+"\" <BR>")
                 if(returnedresponses == numberOfGames){
                 // Initiate Banker Object
                 var bankerobj = [];
