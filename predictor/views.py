@@ -328,7 +328,7 @@ def CreatePredictionsView(request):
         upcomingjoker = None
     
     # Logic to force user to play Joker on weeks 16-18 if not previously done so
-    if (int(week) == 16 and request.user.JokersPlayed == None) or (int(week) == 17 and len(request.user.JokersPlayed) == 1) or (int(week) == 18 and len(request.user.JokersPlayed) == 2):
+    if (int(week) == 16 and (request.user.JokersPlayed == None or len(request.user.JokersPlayed) == 0)) or (int(week) == 17 and (len(request.user.JokersPlayed) in (0,1)) or request.user.JokersPlayed == None) or (int(week) == 18 and (len(request.user.JokersPlayed) in (0,1,2) or request.user.JokersPlayed == None)):
         jokeravailable = True
         jokerforced = True
 
