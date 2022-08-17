@@ -46,8 +46,8 @@
                 </thead>
                 <tbody name ="livescores-score-table" is="transition-group">
                 <tr v-for="entry in sortedTable" :key="entry.User">
-                    <td width="22px" v-if="entry.User ===  currentUser" class = "table-highlight enhanced clamp pad-l table-logo"><img v-bind:src="entry.FavTeam | imgurl" :alt="entry.FavTeam" class="team_small"></img></td>
-                    <td v-else td width="22px" class="enhanced clamp pad-l table-logo"><img :src="entry.FavTeam | imgurl" :alt="entry.FavTeam" class="team_small"></img></td>
+                    <td width="30px" v-if="entry.User ===  currentUser" class = "table-highlight enhanced clamp pad-l table-logo"><img v-bind:src="entry.FavTeam | imgurl" :alt="entry.FavTeam" class="team_small"></img></td>
+                    <td v-else td width="30px" class="enhanced clamp pad-l table-logo"><img :src="entry.FavTeam | imgurl" :alt="entry.FavTeam" class="team_small"></img></td>
                     <td v-if="entry.User ===  currentUser" class = "table-highlight enhanced clamp no-wrap">[[entry.User]] &nbsp;<span class=table-joker><i v-if="entry.Joker !== null" class="fas fa-check" v-bind:title="entry.Joker"></i></span></td>
                     <td v-else class="enhanced clamp no-wrap">[[entry.User]] &nbsp;<span class=table-joker><i v-if="entry.Joker !== null" class="fas fa-check" v-bind:title="entry.Joker"></i></span></td>
                     <td v-if="entry.User ===  currentUser" class = "table-highlight">[[entry.Points]]</td>

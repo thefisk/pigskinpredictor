@@ -58,8 +58,8 @@
                 <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp pad-l table-logo"><img v-bind:src="score.teamshort | imgurl" :alt="score.teamshort" class="team_small"></img></td>
                 <td v-else td class="enhanced clamp pad-l table-logo"><img :src="score.teamshort | imgurl" :alt="score.teamshort" class="team_small"></img></td>
                 
-                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp no-wrap">[[score.user]] &nbsp;<span class=table-joker><i v-for="joker in score.jokers" class="fas fa-check" v-bind:title="joker | jokerlabel"></i></span></td>
-                <td v-else class="enhanced clamp no-wrap">[[score.user]] &nbsp;<span class=table-joker><i v-for="joker in score.jokers" class="fas fa-check" v-bind:title="joker | jokerlabel"></i></span></td>
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp no-wrap">[[score.user | shortenSurname]] &nbsp;<span class=table-joker><i v-for="joker in score.jokers" class="fas fa-check" v-bind:title="joker | jokerlabel"></i></span></td>
+                <td v-else class="enhanced clamp no-wrap">[[score.user | shortenSurname]] &nbsp;<span class=table-joker><i v-for="joker in score.jokers" class="fas fa-check" v-bind:title="joker | jokerlabel"></i></span></td>
                 
                 <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp">[[score.week]]</td>
                 <td v-else class="enhanced clamp">[[score.week]]</td>
@@ -145,6 +145,12 @@
                         return "lni lni-angle-double-right blue-arrow"
                     }
             },
+            shortenSurname: function(name) {
+                let firstname = name.split(" ")[0]
+                let surname = name.split (" ")[1]
+                let initial = surname.substr(0,1)
+                return `${firstname} ${initial}`
+            }
         },
     })
 </script>
