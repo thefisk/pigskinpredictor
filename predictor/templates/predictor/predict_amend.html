@@ -29,12 +29,12 @@
                                     {% if match.GameID == game %}
                                         {% if winner == 'Away'%}
                                             {% if match.GameID == originalbanker %}
-                                                <img class="responsive-img hoverable team chosenbanker" src="{{ match.AwayTeam.Logo.url }}" id="Away" alt="{{ match.AwayTeam }}">  <img class="responsive-img hoverable team" src="{{ match.HomeTeam.Logo.url }}" id="Home" alt="{{ match.HomeTeam }}">
+                                                <img class="responsive-img hoverable team chosenbanker" src="{{ match.AwayTeam.Logo.url }}" id="Away" alt="{{ match.AwayTeam }}">  <img class="responsive-img hoverable team notchosen" src="{{ match.HomeTeam.Logo.url }}" id="Home" alt="{{ match.HomeTeam }}">
                                             {% else %}
-                                                <img class="responsive-img hoverable team chosenwinner" src="{{ match.AwayTeam.Logo.url }}" id="Away" alt="{{ match.AwayTeam }}">  <img class="responsive-img hoverable team" src="{{ match.HomeTeam.Logo.url }}" id="Home" alt="{{ match.HomeTeam }}">
+                                                <img class="responsive-img hoverable team chosenwinner" src="{{ match.AwayTeam.Logo.url }}" id="Away" alt="{{ match.AwayTeam }}">  <img class="responsive-img hoverable team notchosen" src="{{ match.HomeTeam.Logo.url }}" id="Home" alt="{{ match.HomeTeam }}">
                                             {% endif %}
                                         {% elif winner == 'Home' %}
-                                            <img class="responsive-img hoverable team" src="{{ match.AwayTeam.Logo.url }}" id="Away" alt="{{ match.AwayTeam }}">  <img class="responsive-img hoverable team chosenwinner" src="{{ match.HomeTeam.Logo.url }}" id="Home" alt="{{ match.HomeTeam }}">
+                                            <img class="responsive-img hoverable team notchosen" src="{{ match.AwayTeam.Logo.url }}" id="Away" alt="{{ match.AwayTeam }}">  <img class="responsive-img hoverable team chosenwinner" src="{{ match.HomeTeam.Logo.url }}" id="Home" alt="{{ match.HomeTeam }}">
                                         {% endif %}
                                     {% endif %}
                                 {% endfor %}

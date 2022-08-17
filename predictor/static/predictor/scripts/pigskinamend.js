@@ -33,6 +33,7 @@ $(function() {
                     event.stopPropagation();
                     
                     $(this).toggleClass('chosenbanker');
+                    $(this).siblings().addClass('notchosen');
                     // Turn off chosenwinnerclass if present
                     if($(this).hasClass('chosenwinner')){
                         $(this).removeClass('chosenwinner')
@@ -67,6 +68,8 @@ $(function() {
                     chosenbanker = $(this).parent().parent().attr('id');
                     // Change new Banker to orange class
                     $(this).toggleClass('chosenbanker');
+                    // Set notchosen on opponent if not already set
+                        $(this).siblings().addClass('notchosen');
                     // Turn off chosenwinnerclass if present
                     if($(this).hasClass('chosenwinner')){
                         $(this).removeClass('chosenwinner')
@@ -131,6 +134,7 @@ $(function() {
             if (predarray.length == 0){
                   // Add logic
                   $(this).toggleClass('chosenwinner');
+                  $(this).siblings().addClass('notchosen')
                   predarray[predindex] = {};
                   predarray[predindex]['pred_game'] = $(this).parent().parent().attr('id');
                   predarray[predindex]['pred_winner'] = $(this).attr('id');
@@ -152,6 +156,7 @@ $(function() {
                 if (gamecount == 0){
                     // Add logic
                     $(this).toggleClass('chosenwinner');
+                    $(this).siblings().toggleClass('notchosen');
                     predarray[predindex] = {};
                     predarray[predindex]['pred_game'] = $(this).parent().parent().attr('id');
                     predarray[predindex]['pred_winner'] = $(this).attr('id');
@@ -162,9 +167,10 @@ $(function() {
                 // If Game ID is found...
                 else{
                     
-                    // If same team is selected again
+                    // If same team is selected again,  deselect it
                     if(predarray[duplicategame].pred_winner == $(this).attr('id')){
                         $(this).toggleClass('chosenwinner');
+                        $(this).siblings().toggleClass('notchosen')
                         predarray.splice(duplicategame,1);
                         predindex -= 1;
                         
@@ -182,6 +188,8 @@ $(function() {
                             predarray.splice(duplicategame,1);
                             predindex -=1;
                             $(this).toggleClass('chosenwinner');
+                            $(this).toggleClass('notchosen');
+                            $(this).siblings().toggleClass('notchosen')
                             predarray[predindex] = {};
                             predarray[predindex]['pred_game'] = $(this).parent().parent().attr('id');
                             predarray[predindex]['pred_winner'] = $(this).attr('id');
@@ -195,6 +203,10 @@ $(function() {
                             predindex -=1;
                             // Add this entry to array
                             $(this).toggleClass('chosenwinner');
+                            if ($(this).hasClass('notchosen')) {
+                                $(this).toggleClass('notchosen')
+                            }
+                            $(this).siblings().toggleClass('notchosen')
                             predarray[predindex] = {};
                             predarray[predindex]['pred_game'] = $(this).parent().parent().attr('id');
                             predarray[predindex]['pred_winner'] = $(this).attr('id');

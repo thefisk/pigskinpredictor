@@ -1,15 +1,20 @@
-.chosenwinner {
-  -webkit-box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2),
-    0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  background-color: green !important;
+.chosenwinner-old {
+  background-color: rgba(40, 95, 138, 0.15) !important
 }
 
+.chosenwinner {
+  filter: drop-shadow(0 0 0.25rem rgb(130, 130, 130));
+}
+
+
 .chosenbanker {
-  -webkit-box-shadow: 0 8px 17px 0 rgba(218, 165, 32, 0.6)
-    0 6px 20px 0 rgba(218, 165, 32, 0.6);
-  box-shadow: 0 8px 17px 0 rgba(218, 165, 32, 0.6), 0 6px 20px 0 rgba(218, 165, 32, 0.6);
-  background-color: rgba(218, 165, 32); !important;
+  background-color: rgba(218, 165, 32, 0.5); !important;
+  filter: drop-shadow(0 0 0.3rem rgb(130, 130, 130))
+}
+
+.notchosen {
+  filter: grayscale(30%);
+  opacity: 30%;
 }
 
 .usedbanker {
