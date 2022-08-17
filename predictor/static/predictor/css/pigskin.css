@@ -886,3 +886,7 @@ h5 {
   font-style: italic;
   opacity: 0.65
 }
+
+#results img {
+  width: 35px;
+}
