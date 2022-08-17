@@ -2490,7 +2490,10 @@ nav,
 
 .hoverable:hover {
 	-webkit-box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
+	box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	opacity: 100;
+	filter: grayscale(0);
+	filter: drop-shadow(0 0 0.25rem rgb(130, 130, 130));
 }
 
 .divider {
@@ -8873,11 +8876,6 @@ input[type=range]::-ms-thumb {
 		text-align: center;
 		margin-top: 1.2rem
 	}
-}
-
-.chosenwinner {
-    -webkit-box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-    box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19)
 }
 
 .game-card {
