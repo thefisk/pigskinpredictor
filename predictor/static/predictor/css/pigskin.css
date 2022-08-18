@@ -890,3 +890,18 @@ h5 {
 #results img {
   width: 35px;
 }
+
+.table-firstname {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.7);
+  opacity: 70%;
+  letter-spacing: 2px;
+}
+
+.table-secondname {
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: rgba(0, 0, 0, 0.25);
+  letter-spacing: 2px;
+}
