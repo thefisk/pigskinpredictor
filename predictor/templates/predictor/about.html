@@ -10,8 +10,8 @@
         <blockquote><h5><em>
             Pigskin Predictor was born out of curiosity and built with passion
         </em></h5></blockquote>
-         As a Windows infrastructure support guy (I do a lot of Perfmon & Wireshark analysis, memory dumps etc), I set out
-         to expand my skillset in 2018 by taking, and completing, the edX course <a href="https://www.edx.org/course/6-00-1x-introduction-to-computer-science-and-programming-using-python-3" target="_blank" rel="noopener">
+         In 2018, while working as a Windows infrastructure support guy (I used to do a lot of Perfmon & Wireshark analysis, memory dumps etc), I set out
+         to expand my skillset by taking the edX course <a href="https://www.edx.org/course/6-00-1x-introduction-to-computer-science-and-programming-using-python-3" target="_blank" rel="noopener">
             "Introduction to Computer Science and Programming Using Python"</a> offered by MIT. Following on from this, I found out about <a href="https://www.djangoproject.com/" target="_blank" rel="noopener">Django</a> 
         and wondered what I could put together to take my Python skills further, and to start learning Django the best way; by making something.
         <br><br>
@@ -23,11 +23,14 @@
              That was the lightbulb moment - why not try to use Python and Django to make a fully automated predictions game? One that automatically pulls 
              in the schedule information from the NFL, pulls in the results week-by-week, updates the scores based on those results, and shows an accurate 
              score table at all times?<br><br>
-             That's what I've tried to build here and honestly, the process of putting this site together has been the most fun I've had with a 
+             That's what I've tried to build here and honestly, the process of putting this site together was the most fun I'd had with a 
              computer in a long time.<br><br>
-             As we head into the second season of Pigskin Predictor, I've added a raft of features and improvements including database performance tweaks,
-             caching pages and data in Redis, using Chart.JS to add form graphs to profile pages, and adding asynchronous scripts like email pick confirmations.<br><br>
-             // Thanks for reading - Nathan
+             As we head into the third season of Pigskin Predictor, I've added a raft of features and improvements including database performance tweaks,
+             caching pages and data in Redis, using Chart.JS to add form graphs to profile pages, and adding asynchronous scripts to do jobs like email pick confirmations.<br><br>
+             In 2021 a new 'Sunday Live' feature was added which polls the ESPN API every 60 seconds and provides a (more or less) live, moving scoretable for our predictions thanks 
+             to some VueJS magic.  The backend only calls ESPN once every minute, while page requests here call on our own API which holds the current scores and is able to flag when 
+             a game has been updated.  Building that was a lot of fun for a geek like me :)<br><br>
+             // Thanks for reading, and I hope you enjoy playing along - Nathan
 
         
     </P>

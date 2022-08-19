@@ -1,3 +1,4 @@
+from mimetypes import init
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, ReadOnlyPasswordHashField
 from django.forms.fields import ChoiceField
@@ -34,7 +35,7 @@ class CustomSignupForm(SignupForm):
 
     first_name = forms.CharField(max_length=30, label='First Name')
     last_name = forms.CharField(max_length=30, label='Last Name')
-    fav_team = forms.ModelChoiceField(queryset=Team.objects.filter(Active=True), empty_label=None, label='Favourite Team')
+    fav_team = forms.ModelChoiceField(queryset=Team.objects.filter(Active=True), label='Favourite Team', initial="NFL")
     timezone = forms.ChoiceField(choices = timezonelist, label='Timezone')
     layout = Layout('email',
                     Row('password1', 'password2'),
