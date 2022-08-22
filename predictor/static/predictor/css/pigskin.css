@@ -1,15 +1,20 @@
-.chosenwinner {
-  -webkit-box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2),
-    0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  background-color: green !important;
+.chosenwinner-old {
+  background-color: rgba(40, 95, 138, 0.15) !important
 }
 
+.chosenwinner {
+  filter: drop-shadow(0 0 0.25rem rgb(130, 130, 130));
+}
+
+
 .chosenbanker {
-  -webkit-box-shadow: 0 8px 17px 0 rgba(218, 165, 32, 0.6)
-    0 6px 20px 0 rgba(218, 165, 32, 0.6);
-  box-shadow: 0 8px 17px 0 rgba(218, 165, 32, 0.6), 0 6px 20px 0 rgba(218, 165, 32, 0.6);
-  background-color: rgba(218, 165, 32); !important;
+  background-color: rgba(218, 165, 32, 0.5); !important;
+  filter: drop-shadow(0 0 0.3rem rgb(130, 130, 130))
+}
+
+.notchosen {
+  filter: grayscale(30%);
+  opacity: 30%;
 }
 
 .usedbanker {
@@ -17,6 +22,7 @@
   position: relative;
   top: 5px;
   bottom: 5px;
+  width: 25px !important;
 }
 .game-card {
   font-size: 20px !important;
@@ -34,8 +40,11 @@
 }
 
 .team_small {
-  height: 20px;
-  width: 20px;
+  object-fit: contain;
+  height: 30px;
+  width: 30px;
+  opacity: 85%;
+  filter: grayscale(20%);
 }
 
 .error {
@@ -520,6 +529,10 @@ table#stats-table tbody tr td {
   text-align: center;
 }
 
+.vertical-centre {
+  vertical-align: middle;
+}
+
 .sort-column {
   text-transform: uppercase !important;
   color: rgba(1, 89, 157, 0.9) !important;
@@ -739,7 +752,7 @@ h5 {
 
 .table-logo {
   text-align: center;
-  width: 22px !important;
+  width: 30px !important;
 }
 
 .card .card-content {
@@ -877,4 +890,23 @@ h5 {
   padding-left: 5px;
   font-style: italic;
   opacity: 0.65
+}
+
+#results img {
+  width: 35px;
+}
+
+.table-firstname {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.7);
+  opacity: 70%;
+  letter-spacing: 1.5px;
+}
+
+.table-secondname {
+  font-weight: 400;
+  font-size: 1.1rem;
+  color: rgba(0, 0, 0, 0.25);
+  letter-spacing: 1.5px;
 }

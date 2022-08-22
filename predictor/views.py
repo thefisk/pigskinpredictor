@@ -44,6 +44,12 @@ CacheTTL_1Hour = 60 * 60
 CacheTTL_3Hours = 60 * 60 * 3
 CacheTTL_5Mins = 60 *5
 
+upcomingjokerdict = {
+    0: "first",
+    1: "second",
+    2: "final"
+}
+
 @require_GET
 def RobotsTXT(request):
     lines = [
@@ -286,14 +292,10 @@ def ResultsPreSeasonView(request):
 @require_GET
 @login_required
 def CreatePredictionsView(request):
+
     week = os.environ['PREDICTWEEK']
     season = os.environ['PREDICTSEASON']
-    if request.user.JokerUsed == int(week):
-        jokeravailable = True
-    elif request.user.JokerUsed == None:
-        jokeravailable = True
-    else:
-        jokeravailable = False
+
     if int(week) > 18:
         if int(os.environ['RESULTSWEEK']) == 18:
             response = redirect('week-18-view')
@@ -306,9 +308,38 @@ def CreatePredictionsView(request):
         else:
             response = redirect('amend-prediction-view')
             return response
+    
+    jokerforced = False
+    try:
+        jokersplayedamount = len(request.user.JokersPlayed)
+    except (KeyError, TypeError):
+        jokersplayedamount = 0
+    jokersremaining = 3 - jokersplayedamount
+    if request.user.JokersPlayed == None or len(request.user.JokersPlayed) == 0:
+        jokeravailable = True
+    elif jokersplayedamount < 3:
+        jokeravailable = True
+    else:
+        jokeravailable = False
+    
+    try:
+        upcomingjoker = upcomingjokerdict[jokersplayedamount]
+    except(KeyError):
+        upcomingjoker = None
+    
+    # Logic to force user to play Joker on weeks 16-18 if not previously done so
+    if (int(week) == 16 and (request.user.JokersPlayed == None or len(request.user.JokersPlayed) == 0)) or (int(week) == 17 and (len(request.user.JokersPlayed) in (0,1)) or request.user.JokersPlayed == None) or (int(week) == 18 and (len(request.user.JokersPlayed) in (0,1,2) or request.user.JokersPlayed == None)):
+        jokeravailable = True
+        jokerforced = True
+
+
     context = {
+        'upcomingjoker': upcomingjoker,
+        'jokersremaining':jokersremaining,
         'jokeravailable':jokeravailable,
+        'jokerforced': jokerforced,
         'mytimezone':request.user.Timezone,
+        'jokerweeks': request.user.JokersPlayed,
         'bankers':Banker.objects.filter(User=request.user, BankSeason=season).select_related('BankerTeam'),
         'matches':Match.objects.filter(Week=week, Season=season).select_related('HomeTeam', 'AwayTeam'),
         'week':week,
@@ -324,15 +355,43 @@ def CreatePredictionsView(request):
 def AmendPredictionsView(request):
     week = os.environ['PREDICTWEEK']
     season = os.environ['PREDICTSEASON']
-    if request.user.JokerUsed == int(week):
+    jokerforced = False
+    try:
+        jokersplayedamount = len(request.user.JokersPlayed)
+        latestjoker = request.user.JokersPlayed[str(jokersplayedamount)]
+    except (KeyError, TypeError):
+        jokersplayedamount = 0
+        latestjoker = 0
+    jokersremaining = 3 - jokersplayedamount
+    if request.user.JokersPlayed == None or jokersplayedamount == 0:
+        jokeravailable = True
+        jokerchecked = False
+    elif request.user.JokersPlayed[str(jokersplayedamount)] == int(week): # Keys are stored as strings
         jokeravailable = True
         jokerchecked = True
-    elif request.user.JokerUsed == None:
+    elif jokersplayedamount < 3:
         jokeravailable = True
         jokerchecked = False
     else:
         jokeravailable = False
         jokerchecked = False
+    # For amending, 'first', 'second' etc need to ignore 'this week'
+    if latestjoker == int(week):
+        jokersplayedamount -= 1
+        jokersremaining += 1
+    
+    try:
+        upcomingjoker = upcomingjokerdict[jokersplayedamount]
+    except(KeyError):
+        upcomingjoker = None
+
+    # Logic to force user to play Joker on weeks 16-18 if not previously done so
+    # Jokersplayedamount has 1 added because in line 380 we remove 1 because its primary function is for the 'first',, 'second' labels etc
+    if (int(week) == 16 and (request.user.JokersPlayed == None or jokersplayedamount+1 == 1 )) or (int(week) == 17 and jokersplayedamount+1 in (1,2)) or (int(week) == 18 and jokersplayedamount+1 in (2,3)):
+        jokeravailable = True
+        jokerforced = True
+        jokerchecked = True
+
     UserPreds = Prediction.objects.filter(Game__Week=week, Game__Season=season, User=request.user)
     Unpredicted = []
     for i in UserPreds:
@@ -353,13 +412,18 @@ def AmendPredictionsView(request):
     else:
         template = 'predictor/predict_amend.html'
     context = {
+        'jokersplayedamount': jokersplayedamount,
+        'upcomingjoker': upcomingjoker,
+        'jokersremaining':jokersremaining,
         'jokeravailable':jokeravailable,
-        'mytimezone':request.user.Timezone,
         'jokerchecked':jokerchecked,
+        'jokerforced':jokerforced,
+        'mytimezone':request.user.Timezone,
         'classdict':ClassDict,
         'bankers':UserBankersAmend,
         'originalbanker':originalbanker,
         'matches':Matches,
+        'jokerweeks': request.user.JokersPlayed,
         'week':week,
         'season':season,
         'title':'Amend Predictions',
@@ -458,13 +522,8 @@ def AjaxAddPredictionView(request):
             pred_game = Match.objects.get(GameID=pred_game_str)
             response_data = {}
 
-            if joker == True:
-                # Add JokerUsed week value if new predictions use Joker
-                if request.user.JokerUsed == None:
-                    updateuser = CustomUser.objects.get(pk = request.user.id)
-                    updateuser.JokerUsed = int(os.environ['PREDICTWEEK'])
-                    updateuser.save()
-        
+            # 2022 Joker updates - flag on all preds kept for simplicity/ease of reversion
+            # Points for non-bankers removed at Result save override
             predictionentry = Prediction(User=pred_user, Game=pred_game, Winner=pred_winner, Joker=joker)
             predictionentry.save()
 
@@ -486,6 +545,7 @@ def AjaxAddBankerView(request):
             banker_user = request.user
             json_data = json.loads(request.body.decode('utf-8'))
             jsongame = json_data['bank_game']
+            joker = json_data['joker']
             bankgame = Match.objects.get(GameID=jsongame)
             bankerteam = (Match.objects.get(GameID=jsongame)).AwayTeam
             bankweek = (Match.objects.get(GameID=jsongame)).Week
@@ -499,6 +559,21 @@ def AjaxAddBankerView(request):
             prediction = Prediction.objects.get(User=banker_user, Game=bankgame)
             prediction.Banker = True
             prediction.save()
+
+            # Joker setting moved to Banker AJAX call as this is only executed once per submission
+            if joker == True:
+                # Add JokersUsed week value if new predictions use Joker
+                try:
+                    jokers = request.user.JokersPlayed
+                    if len(jokers) < 4:
+                        updateuser = CustomUser.objects.get(pk = request.user.id)
+                        updateuser.JokersPlayed[len(updateuser.JokersPlayed)+1] = int(os.environ['PREDICTWEEK'])
+                        updateuser.save()
+                # No jokers exist
+                except (AttributeError, TypeError):
+                    updateuser = CustomUser.objects.get(pk = request.user.id)
+                    updateuser.JokersPlayed = {1 : int(os.environ['PREDICTWEEK'])}
+                    updateuser.save()
 
             response_data['result'] = 'Banker entry successful!'
             response_data['game'] = str(bankerentry.BankGame)
@@ -565,7 +640,7 @@ def ScoreTableView(request):
                         move = "down"
                     else:
                         move = "same"
-                except(IndexError, TypeError):
+                except(IndexError, TypeError, KeyError):
                     move = "dnp"
             jsonpositions[i.Full_Name] = move
         cache.set('jsonpositionscache', jsonpositions, CacheTTL_1Week)
@@ -573,6 +648,7 @@ def ScoreTableView(request):
     jsonstdscores = cache.get('jsonstdscorescache')
 
     # Function to send Joker week's to scoretables only if they are used prior to the current week
+    # Not used as of 2022/23 but kept in in case of future joker changes
     def jokervalue(user):
         joker = CustomUser.objects.get(id=user).JokerUsed
         try:
@@ -583,6 +659,20 @@ def ScoreTableView(request):
         except(TypeError):
             return None
 
+    # Function to get a list of weeks Jokers have been played, excluding the current week
+    def getJokers(user):
+        jokers = CustomUser.objects.get(id=user).JokersPlayed
+        try:
+            # Scoreweek + 1 needed as that will be the week which hasn't yet been scored
+            if (scoreweek+1) in jokers.values():
+                jokers.pop(str(len(jokers)))
+            if len(jokers) > 0:
+                return jokers
+            else:
+                return None
+        except(AttributeError):
+            return None
+
     if not jsonstdscores:
         jsonstdscores = {'std_scores' : [{
             'pos': i+1,
@@ -590,7 +680,8 @@ def ScoreTableView(request):
             'teamshort': s.User.FavouriteTeam.ShortName,
             'week': get_json_week_score(s.User, scoreweek, os.environ['PREDICTSEASON']),
             'seasonscore': s.SeasonScore,
-            'joker': jokervalue(s.User.id)
+            #'joker': jokervalue(s.User.id),
+            'jokers': getJokers(s.User.id)
             }
             # enumerate needed to allow us to extract the index (position) using i,s
             for i,s in enumerate(ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']))]
@@ -646,7 +737,8 @@ def ScoreTableEnhancedView(request):
     lastweek = str(scoreweek)
     previousweek = str(scoreweek - 1)
 
-    # Function to send Joker week's to scoretables only if they are used prior to the current week
+    # Function to send 2021/22 single use Joker week's to scoretables only if they are used prior to the current week
+    # Not used as of 2022/23 but kept in in case of future joker changes
     def jokervalue(user):
         joker = CustomUser.objects.get(id=user).JokerUsed
         try:
@@ -655,6 +747,20 @@ def ScoreTableEnhancedView(request):
             else:
                 return None
         except(TypeError):
+            return None
+
+    # Function to get a list of weeks Jokers have been played, excluding the current week
+    def getJokers(user):
+        jokers = CustomUser.objects.get(id=user).JokersPlayed
+        try:
+            # Scoreweek + 1 needed as that will be the week which hasn't yet been scored
+            if (scoreweek+1) in jokers.values():
+                jokers.pop(str(len(jokers)))
+            if len(jokers) > 0:
+                return jokers
+            else:
+                return None
+        except(AttributeError):
             return None
 
     if not jsonpositions:
@@ -673,7 +779,7 @@ def ScoreTableEnhancedView(request):
                         move = "down"
                     else:
                         move = "same"
-                except(IndexError, TypeError):
+                except(IndexError, TypeError, KeyError):
                     move = "dnp"
             jsonpositions[i.Full_Name] = move
         cache.set('jsonpositionscache', jsonpositions, CacheTTL_1Week)
@@ -693,7 +799,8 @@ def ScoreTableEnhancedView(request):
             'seasonpercentage': float(s.SeasonPercentage),
             'seasonaverage': float(s.SeasonAverage),
             'bankeraverage': float(s.BankerAverage),
-            'joker': jokervalue(s.User.id)
+            #'joker': jokervalue(s.User.id),
+            'jokers': getJokers(s.User.id)
             }
             # enumerate needed to allow us to extract the index (position) using i,s
             for i,s in enumerate(ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']))]
@@ -747,20 +854,6 @@ def AjaxAmendPredictionView(request):
             pred_game = Match.objects.get(GameID=pred_game_str)
             response_data = {}
 
-            if joker == True:
-                # Change User JokerUsed to week number if selected on amend
-                if request.user.JokerUsed == None:
-                    updateuser = CustomUser.objects.get(pk = request.user.id)
-                    updateuser.JokerUsed = int(os.environ['PREDICTWEEK'])
-                    updateuser.save()
-            else:
-                # Reset User JokerUsed to blank if deselected on amend
-                if request.user.JokerUsed == int(os.environ['PREDICTWEEK']):
-                    updateuser = CustomUser.objects.get(pk = request.user.id)
-                    print(updateuser)
-                    updateuser.JokerUsed = None
-                    updateuser.save()
-
             try:
                 oldprediction = Prediction.objects.get(User=pred_user, Game=pred_game)
             except Prediction.DoesNotExist:
@@ -788,11 +881,40 @@ def AjaxAmendBankerView(request):
             banker_user = request.user
             json_data = json.loads(request.body.decode('utf-8'))
             jsongame = json_data['bank_game']
+            joker = json_data['joker']
             bankgame = Match.objects.get(GameID=jsongame)
             bankerteam = (Match.objects.get(GameID=jsongame)).AwayTeam
             bankweek = (Match.objects.get(GameID=jsongame)).Week
             response_data = {}
             bankseason = os.environ['PREDICTSEASON']
+            updateuser = CustomUser.objects.get(pk = request.user.id)
+
+            # Joker setting moved to Banker AJAX call as this is only executed once per submission
+            if joker == True:
+                # Check if JokersPlayed value already set
+                try:
+                    jokers = updateuser.JokersPlayed.values()
+                    if int(os.environ['PREDICTWEEK']) in jokers:
+                        pass
+                    else:
+                        if len(request.user.JokersPlayed) < 4:
+                            updateuser.JokersPlayed[len(updateuser.JokersPlayed)+1] = int(os.environ['PREDICTWEEK'])
+                            updateuser.save()
+                # No jokers set yet
+                except (AttributeError, TypeError):
+                    updateuser.JokersPlayed = {1 : int(os.environ['PREDICTWEEK'])}
+                    updateuser.save()
+            else:
+                # Check if JokersPlayed value was previously set and remove if so
+                try: 
+                    jokers = updateuser.JokersPlayed.values()
+                    if int(os.environ['PREDICTWEEK']) in updateuser.JokersPlayed.values():
+                        # Below will remove that last entry from the dictionary
+                        del updateuser.JokersPlayed[str(len(updateuser.JokersPlayed))]
+                        updateuser.save()
+                # No jokers set
+                except AttributeError:
+                    pass
 
             try:
                 oldbanker = Banker.objects.get(User=banker_user, BankWeek=bankweek, BankSeason=bankseason)

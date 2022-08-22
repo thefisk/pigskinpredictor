@@ -16,7 +16,7 @@
 {% block content %}
 <!--Vue JS-->
 <!--script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script-->
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.2"></script>
 
 <script>
     $('#leaderboard').each(function(){
@@ -51,14 +51,19 @@
             <tr v-for="score in stdScores" :key="score.pos">
                 <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp pad-l table-small-l">[[score.pos]] </td>
                 <td v-else td class="enhanced clamp pad-l table-small-l">[[score.pos]] </td>
+                
                 <td v-if="score.user ===  currentUser" class="table-highlight enhanced clamp nopad table-logo"><i :class="score.user|direction|arrow"></i></td>
                 <td v-else td class="enhanced clamp nopad table-logo"><i :class="score.user|direction|arrow"></i></td>
+                
                 <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp pad-l table-logo"><img v-bind:src="score.teamshort | imgurl" :alt="score.teamshort" class="team_small"></img></td>
                 <td v-else td class="enhanced clamp pad-l table-logo"><img :src="score.teamshort | imgurl" :alt="score.teamshort" class="team_small"></img></td>
-                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp no-wrap">[[score.user]] &nbsp;<span class=table-joker><i v-if="score.joker !== null" class="fas fa-check" v-bind:title="score.joker"></i></span></td>
-                <td v-else class="enhanced clamp no-wrap">[[score.user]] &nbsp;<span class=table-joker><i v-if="score.joker !== null" class="fas fa-check" v-bind:title="score.joker"></i></span></td>
+                
+                <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp no-wrap"><span class="table-firstname">[[score.user | firstname]]</span><span class="table-secondname">[[score.user | secondname]]</span> &nbsp;<span class=table-joker><i v-for="joker in score.jokers" class="fas fa-check" v-bind:title="joker | jokerlabel"></i></span></td>
+                <td v-else class="enhanced clamp no-wrap"><span class="table-firstname">[[score.user | firstname]]</span><span class="table-secondname">[[score.user | secondname]]</span> &nbsp;<span class=table-joker><i v-for="joker in score.jokers" class="fas fa-check" v-bind:title="joker | jokerlabel"></i></span></td>
+                
                 <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp">[[score.week]]</td>
                 <td v-else class="enhanced clamp">[[score.week]]</td>
+                
                 <td v-if="score.user ===  currentUser" class = "table-highlight enhanced clamp">[[score.seasonscore]]</td>
                 <td v-else class="enhanced clamp">[[score.seasonscore]]</td>
             </tr>
@@ -123,6 +128,9 @@
             imgurl: function(team) {
                 return logoUrls[team]
             },
+            jokerlabel: function(week) {
+                return `Week ${week}`
+            },
             direction: function(user) {
                 return positions[user]
             },
@@ -136,6 +144,12 @@
                     else {
                         return "lni lni-angle-double-right blue-arrow"
                     }
+            },
+            firstname: function(name) {
+                return name.split(" ")[0].toLowerCase()
+            },
+            secondname: function(name) {
+                return name.split(" ")[1].toLowerCase()
             },
         },
     })

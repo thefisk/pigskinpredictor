@@ -33,6 +33,7 @@ $(function() {
                     event.stopPropagation();
                     
                     $(this).toggleClass('chosenbanker');
+                    $(this).siblings().addClass('notchosen');
                     // Turn off chosenwinnerclass if present
                     if($(this).hasClass('chosenwinner')){
                         $(this).removeClass('chosenwinner')
@@ -67,6 +68,8 @@ $(function() {
                     chosenbanker = $(this).parent().parent().attr('id');
                     // Change new Banker to orange class
                     $(this).toggleClass('chosenbanker');
+                    // Set notchosen on opponent if not already set
+                        $(this).siblings().addClass('notchosen');
                     // Turn off chosenwinnerclass if present
                     if($(this).hasClass('chosenwinner')){
                         $(this).removeClass('chosenwinner')
@@ -131,6 +134,7 @@ $(function() {
             if (predarray.length == 0){
                   // Add logic
                   $(this).toggleClass('chosenwinner');
+                  $(this).siblings().addClass('notchosen')
                   predarray[predindex] = {};
                   predarray[predindex]['pred_game'] = $(this).parent().parent().attr('id');
                   predarray[predindex]['pred_winner'] = $(this).attr('id');
@@ -152,6 +156,7 @@ $(function() {
                 if (gamecount == 0){
                     // Add logic
                     $(this).toggleClass('chosenwinner');
+                    $(this).siblings().toggleClass('notchosen');
                     predarray[predindex] = {};
                     predarray[predindex]['pred_game'] = $(this).parent().parent().attr('id');
                     predarray[predindex]['pred_winner'] = $(this).attr('id');
@@ -162,9 +167,10 @@ $(function() {
                 // If Game ID is found...
                 else{
                     
-                    // If same team is selected again
+                    // If same team is selected again,  deselect it
                     if(predarray[duplicategame].pred_winner == $(this).attr('id')){
                         $(this).toggleClass('chosenwinner');
+                        $(this).siblings().toggleClass('notchosen')
                         predarray.splice(duplicategame,1);
                         predindex -= 1;
                         
@@ -182,6 +188,8 @@ $(function() {
                             predarray.splice(duplicategame,1);
                             predindex -=1;
                             $(this).toggleClass('chosenwinner');
+                            $(this).toggleClass('notchosen');
+                            $(this).siblings().toggleClass('notchosen')
                             predarray[predindex] = {};
                             predarray[predindex]['pred_game'] = $(this).parent().parent().attr('id');
                             predarray[predindex]['pred_winner'] = $(this).attr('id');
@@ -195,6 +203,10 @@ $(function() {
                             predindex -=1;
                             // Add this entry to array
                             $(this).toggleClass('chosenwinner');
+                            if ($(this).hasClass('notchosen')) {
+                                $(this).toggleClass('notchosen')
+                            }
+                            $(this).siblings().toggleClass('notchosen')
                             predarray[predindex] = {};
                             predarray[predindex]['pred_game'] = $(this).parent().parent().attr('id');
                             predarray[predindex]['pred_winner'] = $(this).attr('id');
@@ -226,9 +238,9 @@ $(function() {
                     // Check Deadline First
                     try {
                         let joker = document.getElementById("Joker")
-                        if (joker.checked == true){
+                        if (joker.checked == true && joker.disabled == false){
                             // Only submit if OK is pressed at prompt
-                            if (confirm("Play 1 off Joker?")) {
+                            if (confirm(`Play ${upcomingjoker.text.slice(1,-1)} Joker?`)) {
                                 $('.hideme').hide();
                                 $('#submitted').html("<img src='https://pigskinpredictorpublic.s3.eu-west-2.amazonaws.com/loading.gif' class='loader'><br>"); // display loading spinner immediately
                                 deadline_checker();
@@ -237,7 +249,7 @@ $(function() {
                                 // Return to screen if cancel pressed
                             }
                         }
-                        // Submit without a Joker prompt if Joker is deselected
+                        // Submit without a Joker prompt if Joker is deselected/Joker is enforced
                         else {
                             $('.hideme').hide();
                             $('#submitted').html("<img src='https://pigskinpredictorpublic.s3.eu-west-2.amazonaws.com/loading.gif' class='loader'><br>"); // display loading spinner immediately
@@ -335,6 +347,12 @@ $(function() {
                 var bankerobj = [];
                 bankerobj[0]= {};
                 bankerobj[0]['bank_game']=chosenbanker;
+                // try/catch needed on Joker status because when all three are played, the Joker tickbox is never created on the DOM
+                try {
+                    bankerobj[0]['joker']=document.getElementById("Joker").checked;
+                } catch (typeError) {
+                    bankerobj[0]['joker']=false
+                }
                 var jsonbanker = JSON.stringify(bankerobj[0]);
                     add_banker(jsonbanker);
                 }

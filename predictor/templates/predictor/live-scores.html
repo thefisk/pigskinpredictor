@@ -16,7 +16,7 @@
 {% block content %}
 <!--Vue JS-->
 <!--script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script-->
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.2"></script>
 <!--Axios-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 
@@ -46,12 +46,12 @@
                 </thead>
                 <tbody name ="livescores-score-table" is="transition-group">
                 <tr v-for="entry in sortedTable" :key="entry.User">
-                    <td width="22px" v-if="entry.User ===  currentUser" class = "table-highlight enhanced clamp pad-l table-logo"><img v-bind:src="entry.FavTeam | imgurl" :alt="entry.FavTeam" class="team_small"></img></td>
-                    <td v-else td width="22px" class="enhanced clamp pad-l table-logo"><img :src="entry.FavTeam | imgurl" :alt="entry.FavTeam" class="team_small"></img></td>
-                    <td v-if="entry.User ===  currentUser" class = "table-highlight enhanced clamp no-wrap">[[entry.User]] &nbsp;<span class=table-joker><i v-if="entry.Joker !== null" class="fas fa-check" v-bind:title="entry.Joker"></i></span></td>
-                    <td v-else class="enhanced clamp no-wrap">[[entry.User]] &nbsp;<span class=table-joker><i v-if="entry.Joker !== null" class="fas fa-check" v-bind:title="entry.Joker"></i></span></td>
-                    <td v-if="entry.User ===  currentUser" class = "table-highlight">[[entry.Points]]</td>
-                    <td v-else>[[entry.Points]]</td>
+                    <td v-if="entry.User ===  currentUser" class = "table-highlight enhanced clamp no-wrap vertical-centre pad-l"><img v-bind:src="entry.FavTeam | imgurl" :alt="entry.FavTeam" class="vertical-centre team_small"></img><span class="vertical-centre table-firstname"> &nbsp;[[entry.User | firstname]]</span><span class="table-secondname vertical-centre">[[entry.User | secondname]]</span><span> &nbsp;<span class=table-joker><i v-if="entry.Joker !== null" class="fas fa-check" v-bind:title="entry.Joker"></i></span></td>
+                    <td v-else class="enhanced clamp no-wrap pad-l"><img :src="entry.FavTeam | imgurl" :alt="entry.FavTeam" class="vertical-centre team_small"></img><span class="vertical-centre table-firstname"> &nbsp;[[entry.User | firstname]]</span><span class="table-secondname vertical-centre">[[entry.User | secondname]]</span> &nbsp;<span class=table-joker><i v-if="entry.Joker !== null" class="fas fa-check" v-bind:title="entry.Joker"></i></span></td>
+                    <td width="30px" v-if="entry.User ===  currentUser" class = "table-highlight enhanced clamp pad-l table-logo"></td>
+                    <td v-else td width="30px" class="enhanced clamp pad-l table-logo"></td>
+                    <td v-if="entry.User ===  currentUser" class="table-highlight"><span class="table-firstname">[[entry.Points]]</span></td>
+                    <td v-else><span class="table-firstname">[[entry.Points]]</span></td>
                 </tr>
                 </tbody>
                 </table>
@@ -126,6 +126,12 @@
             imgurl: function(team) {
                 return logoUrls[team]
             },
+            firstname: function(name) {
+                return name.split(" ")[0].toLowerCase()
+            },
+            secondname: function(name) {
+                return name.split(" ")[1].toLowerCase()
+            },
         },
         methods: {
             // Below will amend individual pred points
@@ -141,7 +147,7 @@
                                 let lookup = scoreData[i].Winning + "Score"
                                 let score = scoreData[i][lookup]
                                 let multiplier = 1
-                                if(thisgame.joker === true) {
+                                if(thisgame.joker === true && thisgame.banker === true) {
                                     multiplier *= 3
                                 }
                                 if(thisgame.banker === true) {

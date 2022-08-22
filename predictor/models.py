@@ -239,13 +239,12 @@ class Results(models.Model):
         for pred in thisgamepreds:
             # Look for matching banker record
             try:
+                # Would be quicker to use pred.Banker than below query - look into why this wasn't done
                 Banker.objects.get(BankGame=pred.Game, User=pred.User)
             # If no matching banker record found
             except:
                 if pred.Winner == self.Winner:
                     pred.Points = scored
-                    if pred.Joker == True:
-                        pred.Points = (pred.Points * 3)
                     pred.save()
                 else:
                     pred.Points = 0

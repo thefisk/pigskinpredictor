@@ -3,10 +3,11 @@
 {% load tz %}
 {% block content %}
 <script>
-        $('#predict').each(function(){
-               $(this).toggleClass('active');
-           });
-       </script>
+    $('#predict').each(function(){
+            $(this).toggleClass('active');
+        });
+</script>
+    {{ upcomingjoker|json_script:'upcomingjoker' }}
     <div class="container">
         
         <h5 class="hideme week-heading" id="{{ week }}">Amend Predictions <span class = "superlowlight">|</span> week {{ week }}</h5>
@@ -28,18 +29,18 @@
                                     {% if match.GameID == game %}
                                         {% if winner == 'Away'%}
                                             {% if match.GameID == originalbanker %}
-                                                <img class="responsive-img hoverable team chosenbanker" src="{{ match.AwayTeam.Logo.url }}" id="Away" alt="{{ match.AwayTeam }}">  <img class="responsive-img hoverable team" src="{{ match.HomeTeam.Logo.url }}" id="Home" alt="{{ match.HomeTeam }}">
+                                                <img class="responsive-img team chosenbanker" src="{{ match.AwayTeam.Logo.url }}" id="Away" alt="{{ match.AwayTeam }}">  <img class="responsive-img team notchosen" src="{{ match.HomeTeam.Logo.url }}" id="Home" alt="{{ match.HomeTeam }}">
                                             {% else %}
-                                                <img class="responsive-img hoverable team chosenwinner" src="{{ match.AwayTeam.Logo.url }}" id="Away" alt="{{ match.AwayTeam }}">  <img class="responsive-img hoverable team" src="{{ match.HomeTeam.Logo.url }}" id="Home" alt="{{ match.HomeTeam }}">
+                                                <img class="responsive-img team chosenwinner" src="{{ match.AwayTeam.Logo.url }}" id="Away" alt="{{ match.AwayTeam }}">  <img class="responsive-img team notchosen" src="{{ match.HomeTeam.Logo.url }}" id="Home" alt="{{ match.HomeTeam }}">
                                             {% endif %}
                                         {% elif winner == 'Home' %}
-                                            <img class="responsive-img hoverable team" src="{{ match.AwayTeam.Logo.url }}" id="Away" alt="{{ match.AwayTeam }}">  <img class="responsive-img hoverable team chosenwinner" src="{{ match.HomeTeam.Logo.url }}" id="Home" alt="{{ match.HomeTeam }}">
+                                            <img class="responsive-img team notchosen" src="{{ match.AwayTeam.Logo.url }}" id="Away" alt="{{ match.AwayTeam }}">  <img class="responsive-img team chosenwinner" src="{{ match.HomeTeam.Logo.url }}" id="Home" alt="{{ match.HomeTeam }}">
                                         {% endif %}
                                     {% endif %}
                                 {% endfor %}
                                 {% for game in notpredicted %}
                                     {% if match.GameID == game.GameID %}
-                                        <img class="responsive-img hoverable team" src="{{ match.AwayTeam.Logo.url }}" id="Away" alt="{{ match.AwayTeam }}">  <img class="responsive-img hoverable team" src="{{ match.HomeTeam.Logo.url }}" id="Home" alt="{{ match.HomeTeam }}">
+                                        <img class="responsive-img team" src="{{ match.AwayTeam.Logo.url }}" id="Away" alt="{{ match.AwayTeam }}">  <img class="responsive-img team" src="{{ match.HomeTeam.Logo.url }}" id="Home" alt="{{ match.HomeTeam }}">
                                     {% endif %}
                                 {% endfor %}
                             </div>
@@ -50,18 +51,28 @@
         </div>
         {% if jokeravailable %}
             {% if jokerchecked %}
-                <div class="hideme">
-                    <label for = "Joker">
-                        <input id="Joker" type="checkbox" class="filled-in" checked/>
-                        <span>Play Joker <em>(triple pts, once per season)</em></span>
-                    </label>
-                    <P>
-                </div>
+                {% if jokerforced %}
+                    <div class="hideme">
+                        <label for = "Joker">
+                            <input id="Joker" type="checkbox" class="filled-in" checked disabled="disabled"/>
+                            <span>Play Joker <em>(triple banker pts, enforced)</em></span>
+                        </label>
+                        <P>
+                    </div>
+                {% else %}
+                    <div class="hideme">
+                        <label for = "Joker">
+                            <input id="Joker" type="checkbox" class="filled-in" checked/>
+                            <span>Play Joker <em>(triple banker pts, {{ jokersremaining }} left)</em></span>
+                        </label>
+                        <P>
+                    </div>
+                {% endif %}
             {% else %}
                 <div class="hideme">
                     <label for = "Joker">
                         <input id="Joker" type="checkbox" class="filled-in"/>
-                        <span>Play Joker <em>(triple pts, once per season)</em></span>
+                        <span>Play Joker <em>(triple banker pts, {{ jokersremaining }} left)</em></span>
                     </label>
                     <P>
                 </div>
@@ -86,7 +97,11 @@
             <h5>Used Bankers</h5>
             <ul>
                 {% for banker in bankers %}
-                    <li id="{{ banker.BankerTeam|corresponding_match }}"><img src="{{ banker.BankerTeam.Logo.url }}" alt="{{ banker.BankerTeam.Nickname }}" class="team_small usedbanker"> {{ banker.BankerTeam }}</li>
+                    <li id="{{ banker.BankerTeam|corresponding_match }}"><img src="{{ banker.BankerTeam.Logo.url }}" alt="{{ banker.BankerTeam.Nickname }}" class="team_small usedbanker"> {{ banker.BankerTeam }}
+                    {% if banker.BankWeek in jokerweeks.values%}
+                        &nbsp;<i class="fas fa-check" style="color:rgb(40, 95, 138);"></i>
+                    {% endif %}
+                    </li>
                 {% endfor %}
             </ul>
         </div>     
