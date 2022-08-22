@@ -41,7 +41,8 @@
 
 .team_small {
   object-fit: contain;
-  max-width: 100%;
+  height: 30px;
+  width: 30px;
   opacity: 85%;
   filter: grayscale(20%);
 }
@@ -526,6 +527,10 @@ table#stats-table tbody tr td {
 
 .table-center {
   text-align: center;
+}
+
+.vertical-centre {
+  vertical-align: middle;
 }
 
 .sort-column {
