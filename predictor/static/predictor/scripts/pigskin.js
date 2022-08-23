@@ -5,6 +5,14 @@
 
 $(function() {
 
+    // List of all game ids
+    let gameidlist = []
+    let cardcontent = [...document.getElementsByClassName("card-content")];
+    cardcontent.forEach(element => {
+        gameidlist.push(element.id)
+    });
+    console.log(gameidlist)
+
     // Initialise returnedresponses variable
     let returnedresponses = 0;
 
@@ -244,6 +252,17 @@ $(function() {
                     }
                 }
                 else {
+                    
+                    let pickedgames = []
+                    predarray.forEach(element => {
+                        pickedgames.push(element)
+                    })
+                    console.log(pickedgames)
+                    gameidlist.forEach(element => {
+                        if (pickedgames.includes(element) == false) {
+                            document.getElementById(element).addClass('notpicked')
+                        }
+                    })
                     createAlert('Please fill in all predictions', 'danger', 5000);
                     }
                 }

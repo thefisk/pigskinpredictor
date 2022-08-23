@@ -17,6 +17,16 @@
   opacity: 30%;
 }
 
+.gamepicked2 {
+  background-color: #ebeff5;
+}
+
+.gamenotpicked {
+  -webkit-box-shadow:0 0 10px #d41212; 
+  -moz-box-shadow: 0 0 10px #d41212; 
+  box-shadow:0 0 10px #d41212;
+}
+
 .usedbanker {
   margin-right: 5px;
   position: relative;

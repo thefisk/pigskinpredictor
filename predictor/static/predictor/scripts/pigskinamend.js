@@ -5,6 +5,14 @@
 
 $(function() {
 
+    // List of all game ids
+    let gameidlist = []
+    let cardcontent = [...document.getElementsByClassName("card-content")];
+    cardcontent.forEach(element => {
+        gameidlist.push(element.id)
+    });
+    console.log(gameidlist)
+
     // Initialise returnedresponses variable
     let returnedresponses = 0;
 
