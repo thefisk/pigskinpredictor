@@ -708,6 +708,7 @@ h5 {
 #pigskin-markdown li{
 	list-style-type: disc !important; 
 	list-style-position: inside !important;
+  margin: 5px 0;
 }
 
 #pigskin-markdown hr {
