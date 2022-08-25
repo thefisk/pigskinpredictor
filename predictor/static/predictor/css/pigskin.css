@@ -729,6 +729,12 @@ h5 {
 	;
 }
 
+.joker-input-label {
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+
 #id_content {
   height: 20rem !important;
 }

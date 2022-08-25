@@ -53,7 +53,7 @@
             {% if jokerchecked %}
                 {% if jokerforced %}
                     <div class="hideme">
-                        <label for = "Joker">
+                        <label for = "Joker" class="joker-input-label">
                             <input id="Joker" type="checkbox" class="filled-in" checked disabled="disabled"/>
                             <span>Play Joker <em>(triple banker pts, enforced)</em></span>
                         </label>
@@ -61,7 +61,7 @@
                     </div>
                 {% else %}
                     <div class="hideme">
-                        <label for = "Joker">
+                        <label for = "Joker" class="joker-input-label">
                             <input id="Joker" type="checkbox" class="filled-in" checked/>
                             <span>Play Joker <em>(triple banker pts, {{ jokersremaining }} left)</em></span>
                         </label>
@@ -70,7 +70,7 @@
                 {% endif %}
             {% else %}
                 <div class="hideme">
-                    <label for = "Joker">
+                    <label for = "Joker" class="joker-input-label">
                         <input id="Joker" type="checkbox" class="filled-in"/>
                         <span>Play Joker <em>(triple banker pts, {{ jokersremaining }} left)</em></span>
                     </label>
