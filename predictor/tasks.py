@@ -4,7 +4,7 @@ from .models import Prediction
 from accounts.models import User
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
-import os, requests, json, boto3, time
+import os, requests, json, boto3, time, sys
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from predictor.models import Team, Results, ScoresSeason, ScoresAllTime, ScoresWeek, Prediction, AvgScores, LiveGame, Match
@@ -302,6 +302,12 @@ def fetch_results(fetchonly):
         source = f"http://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates={season}&week={week}"
 
         rawjson = requests.get(source).json()
+
+        # Check to see if games have completed - sanity check in case it is run in week 1 before games have been played
+        # Because registrations open a couple of weeks before, if the scheduled task is not disabled, the script will
+        # Score all games as 0-0 without this check.  Address GitHub Issue #195.
+        if rawjson['events'][0]['status']['type']['completed'] != True:
+            sys.exit("Detected incomplete game on API - Please check gameweek and whether all games have completed")
 
         results = []
 
