@@ -275,7 +275,7 @@ def populate_live():
     tomorrow = datetime.date.today() + datetime.timedelta(days=1)
     # test for week 1
     # tomorrow = datetime.datetime.fromisoformat('2021-09-12').date()
-    print("tomorrow is "+tomorrow)
+    print("tomorrow is "+str(tomorrow))
     gamecount=0
     for game in Match.objects.filter(Season=int(os.environ['PREDICTSEASON'])):
         if game.DateTime.date() == tomorrow and game.DateTime.hour < 23:
