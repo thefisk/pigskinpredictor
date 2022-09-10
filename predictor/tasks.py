@@ -282,7 +282,7 @@ def populate_live():
             newlive = LiveGame(Game=game.GameID, HomeTeam=game.HomeTeam.ShortName, AwayTeam=game.AwayTeam.ShortName, KickOff=game.DateTime.strftime("%H%M"), TeamIndex=teamdict[game.AwayTeam.ShortName], State=3)
             newlive.save()
             gamecount += 1
-    print(gamecount+" live games imported")
+    print(str(gamecount)+" live games imported")
 
 
 @shared_task
