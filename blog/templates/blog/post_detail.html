@@ -14,7 +14,7 @@
       <div class="divider"></div>  
       <div id ="pigskin-markdown">
       <p class="article-content">{{ object.content | markdown | safe }}</p>
-              {% if object.author == user %}
+              {% if object.author == user or request.user|has_group:"SuperUser" %}
           <div>
             <div class="divider"></div>
             <br>
