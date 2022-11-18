@@ -663,7 +663,12 @@ def ScoreTableView(request):
     def getJokers(user):
         jokers = CustomUser.objects.get(id=user).JokersPlayed
         try:
-            # Scoreweek + 1 needed as that will be the week which hasn't yet been scored
+            # Scoreweek + 2 is needed as the week *after* Results week won't have been scored either
+            # ie week 12 predictions window opens when week 10 results are still displayed
+            if (scoreweek+2) in jokers.values():
+                jokers.pop(str(len(jokers)))
+            # Scoreweek + 1 needs to be removed as that will be the week which hasn't yet been scored
+            # ie ScoreTable shows up to week 10 results, we don't want to include week 11 ticks
             if (scoreweek+1) in jokers.values():
                 jokers.pop(str(len(jokers)))
             if len(jokers) > 0:
@@ -753,7 +758,12 @@ def ScoreTableEnhancedView(request):
     def getJokers(user):
         jokers = CustomUser.objects.get(id=user).JokersPlayed
         try:
-            # Scoreweek + 1 needed as that will be the week which hasn't yet been scored
+            # Scoreweek + 2 is needed as the week *after* Results week won't have been scored either
+            # ie week 12 predictions window opens when week 10 results are still displayed
+            if (scoreweek+2) in jokers.values():
+                jokers.pop(str(len(jokers)))
+            # Scoreweek + 1 needs to be removed as that will be the week which hasn't yet been scored
+            # ie ScoreTable shows up to week 10 results, we don't want to include week 11 ticks
             if (scoreweek+1) in jokers.values():
                 jokers.pop(str(len(jokers)))
             if len(jokers) > 0:
