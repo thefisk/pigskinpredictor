@@ -314,38 +314,41 @@ def fetch_results(fetchonly):
         results = []
 
         for game in rawjson['events']:
-            team1 = {}
-            team1['team'] = game['competitions'][0]['competitors'][0]['team']['abbreviation']
-            team1['score'] = int(game['competitions'][0]['competitors'][0]['score'])
-            team1['location'] = game['competitions'][0]['competitors'][0]['homeAway']
-            team2 = {}
-            team2['team'] = game['competitions'][0]['competitors'][1]['team']['abbreviation']
-            team2['score'] = int(game['competitions'][0]['competitors'][1]['score'])
-            team2['location'] = game['competitions'][0]['competitors'][1]['homeAway']
-            innerdict = {}
-            innerdict["Week"] = int(week)
-            innerdict["Season"] = int(season)
-            if team1['location'] == "home":
-                innerdict["HomeTeam"] = team1['team']
-                innerdict["AwayTeam"] = team2['team']
-                innerdict["HomeScore"] = team1['score']
-                innerdict["AwayScore"] = team2['score']
+            if game['status']['type']['completed'] != True:
+                pass
             else:
-                innerdict["HomeTeam"] = team2['team']
-                innerdict["AwayTeam"] = team1['team']
-                innerdict["HomeScore"] = team2['score']
-                innerdict["AwayScore"] = team1['score']
-            if team1['score'] == team2['score']:
-                innerdict["Winner"] = "Tie"
-            elif (team1['score']) > (team2['score']):
-                innerdict["Winner"] = "Home"
-            else:
-                innerdict["Winner"] = "Away"
-            outerdict = {}
-            outerdict["model"] = "predictor.results"
-            outerdict["pk"] = int(game['id'])
-            outerdict["fields"] = innerdict
-            results.append(outerdict)
+                team1 = {}
+                team1['team'] = game['competitions'][0]['competitors'][0]['team']['abbreviation']
+                team1['score'] = int(game['competitions'][0]['competitors'][0]['score'])
+                team1['location'] = game['competitions'][0]['competitors'][0]['homeAway']
+                team2 = {}
+                team2['team'] = game['competitions'][0]['competitors'][1]['team']['abbreviation']
+                team2['score'] = int(game['competitions'][0]['competitors'][1]['score'])
+                team2['location'] = game['competitions'][0]['competitors'][1]['homeAway']
+                innerdict = {}
+                innerdict["Week"] = int(week)
+                innerdict["Season"] = int(season)
+                if team1['location'] == "home":
+                    innerdict["HomeTeam"] = team1['team']
+                    innerdict["AwayTeam"] = team2['team']
+                    innerdict["HomeScore"] = team1['score']
+                    innerdict["AwayScore"] = team2['score']
+                else:
+                    innerdict["HomeTeam"] = team2['team']
+                    innerdict["AwayTeam"] = team1['team']
+                    innerdict["HomeScore"] = team2['score']
+                    innerdict["AwayScore"] = team1['score']
+                if team1['score'] == team2['score']:
+                    innerdict["Winner"] = "Tie"
+                elif (team1['score']) > (team2['score']):
+                    innerdict["Winner"] = "Home"
+                else:
+                    innerdict["Winner"] = "Away"
+                outerdict = {}
+                outerdict["model"] = "predictor.results"
+                outerdict["pk"] = int(game['id'])
+                outerdict["fields"] = innerdict
+                results.append(outerdict)
 
         # Removed old WSH/WAS & LA/LAR Logic as 'new' teams with
         # corresponding PKs will be added from 2021 season
