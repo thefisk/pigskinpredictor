@@ -42,7 +42,7 @@ def email_confirmation(user, week, type):
 @shared_task
 def email_reminder(hours):
     week = os.environ['PREDICTWEEK']
-    if int(week) > 18:
+    if int(week) > 18 or os.environ['REMINDERS_ON'].upper() != "TRUE":
         pass
     else:
         season = os.environ['PREDICTSEASON']
