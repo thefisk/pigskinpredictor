@@ -337,7 +337,9 @@ def CreatePredictionsView(request):
         'upcomingjoker': upcomingjoker,
         'jokersremaining':jokersremaining,
         'jokeravailable':jokeravailable,
-        'jokerforced': jokerforced,
+        #'jokerforced':jokerforced,
+        # Enforced Joker disabled for 2023 season but original logic retained in case we wanted to re-enable at any point
+        'jokerforced': False,
         'mytimezone':request.user.Timezone,
         'jokerweeks': request.user.JokersPlayed,
         'bankers':Banker.objects.filter(User=request.user, BankSeason=season).select_related('BankerTeam'),
@@ -417,7 +419,9 @@ def AmendPredictionsView(request):
         'jokersremaining':jokersremaining,
         'jokeravailable':jokeravailable,
         'jokerchecked':jokerchecked,
-        'jokerforced':jokerforced,
+        #'jokerforced':jokerforced,
+        # Enforced Joker disabled for 2023 season but original logic retained in case we wanted to re-enable at any point
+        'jokerforced': False,
         'mytimezone':request.user.Timezone,
         'classdict':ClassDict,
         'bankers':UserBankersAmend,
