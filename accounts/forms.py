@@ -8,6 +8,7 @@ from predictor.models import Team
 from django.contrib.auth import get_user_model
 from material import Layout, Row
 from .timezones import timezonelist
+from django.forms import ModelForm
 
 class CustomUserCreationForm(UserCreationForm):
 
@@ -53,3 +54,10 @@ class CustomSignupForm(SignupForm):
         user.Timezone = self.cleaned_data['timezone']
         user.save()
         return user
+    
+
+
+class RecordsForm(ModelForm):
+   class Meta:
+        model = User
+        fields = ('Full_Name', 'is_active')    
