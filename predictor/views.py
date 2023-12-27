@@ -328,7 +328,7 @@ def CreatePredictionsView(request):
         upcomingjoker = None
     
     # Logic to force user to play Joker on weeks 16-18 if not previously done so
-    if ( int(week) == 16 and (request.user.JokersPlayed == None or len(request.user.JokersPlayed) == 0) ) or ( int(week) == 17 and (len(request.user.JokersPlayed) in (0,1) or request.user.JokersPlayed == None) ) or ( int(week) == 18 and (len(request.user.JokersPlayed) in (0,1,2) or request.user.JokersPlayed == None) ):
+    if ( int(week) == 16 and (request.user.JokersPlayed == None or len(request.user.JokersPlayed) == 0) ) or ( int(week) == 17 and (request.user.JokersPlayed == None or len(request.user.JokersPlayed) in (0,1)) ) or ( int(week) == 18 and (request.user.JokersPlayed == None or len(request.user.JokersPlayed) in (0,1,2))):
         jokeravailable = True
         jokerforced = True
 
@@ -389,7 +389,7 @@ def AmendPredictionsView(request):
 
     # Logic to force user to play Joker on weeks 16-18 if not previously done so
     # Jokersplayedamount has 1 added because in line 380 we remove 1 because its primary function is for the 'first',, 'second' labels etc
-    if (int(week) == 16 and (request.user.JokersPlayed == None or jokersplayedamount+1 == 1 )) or (int(week) == 17 and jokersplayedamount+1 in (1,2)) or (int(week) == 18 and jokersplayedamount+1 in (2,3)):
+    if (int(week) == 16 and (request.user.JokersPlayed == None or jokersplayedamount+1 == 1 )) or (int(week) == 17 and (request.user.JokersPlayed == None or jokersplayedamount+1 in (1,2))) or (int(week) == 18 and (request.user.JokersPlayed == None or jokersplayedamount+1 in (2,3))):
         jokeravailable = True
         jokerforced = True
         jokerchecked = True
