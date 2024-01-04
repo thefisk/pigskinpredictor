@@ -388,3 +388,13 @@ def kickoff_time_checker():
         jsondatetime = gamejson['header']['competitions'][0]['date']
         game.DateTime = jsondatetime
         game.save()
+
+# One Off job to run for current week
+@shared_task
+def kickoff_time_checker_current_week():
+    for game in Match.objects.filter(Season=int(os.environ['PREDICTSEASON']), Week=int(os.environ['PREDICTWEEK'])):
+        url = f"http://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event={game.GameID}"
+        gamejson = requests.get(url).json()
+        jsondatetime = gamejson['header']['competitions'][0]['date']
+        game.DateTime = jsondatetime
+        game.save()
