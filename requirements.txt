@@ -29,7 +29,7 @@ django-redis==4.12.1
 django-ses==3.5.0
 django-storages==1.7.2
 django-timezone-field==4.1.2
-djangorestframework==3.15.2
+djangorestframework==3.12.4
 djangorestframework-csv==2.1.0
 docutils==0.15.2
 future==0.18.3
