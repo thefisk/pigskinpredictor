@@ -1,0 +1,2994 @@
+[
+  {
+    "model": "predictor.match",
+    "pk": 401671789,
+    "fields": {
+      "Week": 1,
+      "Season": 2024,
+      "HomeTeam": "KC",
+      "AwayTeam": "BAL",
+      "DateTime": "2024-09-06T00:20Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671805,
+    "fields": {
+      "Week": 1,
+      "Season": 2024,
+      "HomeTeam": "PHI",
+      "AwayTeam": "GB",
+      "DateTime": "2024-09-07T00:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671744,
+    "fields": {
+      "Week": 1,
+      "Season": 2024,
+      "HomeTeam": "ATL",
+      "AwayTeam": "PIT",
+      "DateTime": "2024-09-08T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671617,
+    "fields": {
+      "Week": 1,
+      "Season": 2024,
+      "HomeTeam": "BUF",
+      "AwayTeam": "ARI",
+      "DateTime": "2024-09-08T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671719,
+    "fields": {
+      "Week": 1,
+      "Season": 2024,
+      "HomeTeam": "CHI",
+      "AwayTeam": "TEN",
+      "DateTime": "2024-09-08T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671628,
+    "fields": {
+      "Week": 1,
+      "Season": 2024,
+      "HomeTeam": "CIN",
+      "AwayTeam": "NE",
+      "DateTime": "2024-09-08T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671861,
+    "fields": {
+      "Week": 1,
+      "Season": 2024,
+      "HomeTeam": "IND",
+      "AwayTeam": "HOU",
+      "DateTime": "2024-09-08T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671849,
+    "fields": {
+      "Week": 1,
+      "Season": 2024,
+      "HomeTeam": "MIA",
+      "AwayTeam": "JAX",
+      "DateTime": "2024-09-08T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671734,
+    "fields": {
+      "Week": 1,
+      "Season": 2024,
+      "HomeTeam": "NO",
+      "AwayTeam": "CAR",
+      "DateTime": "2024-09-08T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671712,
+    "fields": {
+      "Week": 1,
+      "Season": 2024,
+      "HomeTeam": "NYG",
+      "AwayTeam": "MIN",
+      "DateTime": "2024-09-08T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671659,
+    "fields": {
+      "Week": 1,
+      "Season": 2024,
+      "HomeTeam": "LAC",
+      "AwayTeam": "LV",
+      "DateTime": "2024-09-08T20:05Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671664,
+    "fields": {
+      "Week": 1,
+      "Season": 2024,
+      "HomeTeam": "SEA",
+      "AwayTeam": "DEN",
+      "DateTime": "2024-09-08T20:05Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671761,
+    "fields": {
+      "Week": 1,
+      "Season": 2024,
+      "HomeTeam": "CLE",
+      "AwayTeam": "DAL",
+      "DateTime": "2024-09-08T20:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671770,
+    "fields": {
+      "Week": 1,
+      "Season": 2024,
+      "HomeTeam": "TB",
+      "AwayTeam": "WSH",
+      "DateTime": "2024-09-08T20:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671792,
+    "fields": {
+      "Week": 1,
+      "Season": 2024,
+      "HomeTeam": "DET",
+      "AwayTeam": "LAR",
+      "DateTime": "2024-09-09T00:20Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671696,
+    "fields": {
+      "Week": 1,
+      "Season": 2024,
+      "HomeTeam": "SF",
+      "AwayTeam": "NYJ",
+      "DateTime": "2024-09-10T00:20Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671807,
+    "fields": {
+      "Week": 2,
+      "Season": 2024,
+      "HomeTeam": "MIA",
+      "AwayTeam": "BUF",
+      "DateTime": "2024-09-13T00:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671709,
+    "fields": {
+      "Week": 2,
+      "Season": 2024,
+      "HomeTeam": "DAL",
+      "AwayTeam": "NO",
+      "DateTime": "2024-09-15T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671721,
+    "fields": {
+      "Week": 2,
+      "Season": 2024,
+      "HomeTeam": "DET",
+      "AwayTeam": "TB",
+      "DateTime": "2024-09-15T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671723,
+    "fields": {
+      "Week": 2,
+      "Season": 2024,
+      "HomeTeam": "GB",
+      "AwayTeam": "IND",
+      "DateTime": "2024-09-15T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671636,
+    "fields": {
+      "Week": 2,
+      "Season": 2024,
+      "HomeTeam": "TEN",
+      "AwayTeam": "NYJ",
+      "DateTime": "2024-09-15T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671645,
+    "fields": {
+      "Week": 2,
+      "Season": 2024,
+      "HomeTeam": "MIN",
+      "AwayTeam": "SF",
+      "DateTime": "2024-09-15T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671702,
+    "fields": {
+      "Week": 2,
+      "Season": 2024,
+      "HomeTeam": "NE",
+      "AwayTeam": "SEA",
+      "DateTime": "2024-09-15T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671716,
+    "fields": {
+      "Week": 2,
+      "Season": 2024,
+      "HomeTeam": "WSH",
+      "AwayTeam": "NYG",
+      "DateTime": "2024-09-15T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671652,
+    "fields": {
+      "Week": 2,
+      "Season": 2024,
+      "HomeTeam": "CAR",
+      "AwayTeam": "LAC",
+      "DateTime": "2024-09-15T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671635,
+    "fields": {
+      "Week": 2,
+      "Season": 2024,
+      "HomeTeam": "JAX",
+      "AwayTeam": "CLE",
+      "DateTime": "2024-09-15T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671624,
+    "fields": {
+      "Week": 2,
+      "Season": 2024,
+      "HomeTeam": "BAL",
+      "AwayTeam": "LV",
+      "DateTime": "2024-09-15T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671754,
+    "fields": {
+      "Week": 2,
+      "Season": 2024,
+      "HomeTeam": "ARI",
+      "AwayTeam": "LAR",
+      "DateTime": "2024-09-15T20:05Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671668,
+    "fields": {
+      "Week": 2,
+      "Season": 2024,
+      "HomeTeam": "DEN",
+      "AwayTeam": "PIT",
+      "DateTime": "2024-09-15T20:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671670,
+    "fields": {
+      "Week": 2,
+      "Season": 2024,
+      "HomeTeam": "KC",
+      "AwayTeam": "CIN",
+      "DateTime": "2024-09-15T20:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671786,
+    "fields": {
+      "Week": 2,
+      "Season": 2024,
+      "HomeTeam": "HOU",
+      "AwayTeam": "CHI",
+      "DateTime": "2024-09-16T00:20Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671691,
+    "fields": {
+      "Week": 2,
+      "Season": 2024,
+      "HomeTeam": "PHI",
+      "AwayTeam": "ATL",
+      "DateTime": "2024-09-17T00:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671808,
+    "fields": {
+      "Week": 3,
+      "Season": 2024,
+      "HomeTeam": "NYJ",
+      "AwayTeam": "NE",
+      "DateTime": "2024-09-20T00:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671855,
+    "fields": {
+      "Week": 3,
+      "Season": 2024,
+      "HomeTeam": "CLE",
+      "AwayTeam": "NYG",
+      "DateTime": "2024-09-22T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671823,
+    "fields": {
+      "Week": 3,
+      "Season": 2024,
+      "HomeTeam": "TEN",
+      "AwayTeam": "GB",
+      "DateTime": "2024-09-22T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671865,
+    "fields": {
+      "Week": 3,
+      "Season": 2024,
+      "HomeTeam": "IND",
+      "AwayTeam": "CHI",
+      "DateTime": "2024-09-22T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671646,
+    "fields": {
+      "Week": 3,
+      "Season": 2024,
+      "HomeTeam": "MIN",
+      "AwayTeam": "HOU",
+      "DateTime": "2024-09-22T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671736,
+    "fields": {
+      "Week": 3,
+      "Season": 2024,
+      "HomeTeam": "NO",
+      "AwayTeam": "PHI",
+      "DateTime": "2024-09-22T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671632,
+    "fields": {
+      "Week": 3,
+      "Season": 2024,
+      "HomeTeam": "PIT",
+      "AwayTeam": "LAC",
+      "DateTime": "2024-09-22T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671741,
+    "fields": {
+      "Week": 3,
+      "Season": 2024,
+      "HomeTeam": "TB",
+      "AwayTeam": "DEN",
+      "DateTime": "2024-09-22T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671658,
+    "fields": {
+      "Week": 3,
+      "Season": 2024,
+      "HomeTeam": "LV",
+      "AwayTeam": "CAR",
+      "DateTime": "2024-09-22T20:05Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671662,
+    "fields": {
+      "Week": 3,
+      "Season": 2024,
+      "HomeTeam": "SEA",
+      "AwayTeam": "MIA",
+      "DateTime": "2024-09-22T20:05Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671763,
+    "fields": {
+      "Week": 3,
+      "Season": 2024,
+      "HomeTeam": "DAL",
+      "AwayTeam": "BAL",
+      "DateTime": "2024-09-22T20:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671772,
+    "fields": {
+      "Week": 3,
+      "Season": 2024,
+      "HomeTeam": "LAR",
+      "AwayTeam": "SF",
+      "DateTime": "2024-09-22T20:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671771,
+    "fields": {
+      "Week": 3,
+      "Season": 2024,
+      "HomeTeam": "ARI",
+      "AwayTeam": "DET",
+      "DateTime": "2024-09-22T20:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671793,
+    "fields": {
+      "Week": 3,
+      "Season": 2024,
+      "HomeTeam": "ATL",
+      "AwayTeam": "KC",
+      "DateTime": "2024-09-23T00:20Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671682,
+    "fields": {
+      "Week": 3,
+      "Season": 2024,
+      "HomeTeam": "BUF",
+      "AwayTeam": "JAX",
+      "DateTime": "2024-09-23T23:30Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671490,
+    "fields": {
+      "Week": 3,
+      "Season": 2024,
+      "HomeTeam": "CIN",
+      "AwayTeam": "WSH",
+      "DateTime": "2024-09-24T00:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671812,
+    "fields": {
+      "Week": 4,
+      "Season": 2024,
+      "HomeTeam": "NYG",
+      "AwayTeam": "DAL",
+      "DateTime": "2024-09-27T00:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671727,
+    "fields": {
+      "Week": 4,
+      "Season": 2024,
+      "HomeTeam": "ATL",
+      "AwayTeam": "NO",
+      "DateTime": "2024-09-29T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671871,
+    "fields": {
+      "Week": 4,
+      "Season": 2024,
+      "HomeTeam": "CHI",
+      "AwayTeam": "LAR",
+      "DateTime": "2024-09-29T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671643,
+    "fields": {
+      "Week": 4,
+      "Season": 2024,
+      "HomeTeam": "GB",
+      "AwayTeam": "MIN",
+      "DateTime": "2024-09-29T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671867,
+    "fields": {
+      "Week": 4,
+      "Season": 2024,
+      "HomeTeam": "IND",
+      "AwayTeam": "PIT",
+      "DateTime": "2024-09-29T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671622,
+    "fields": {
+      "Week": 4,
+      "Season": 2024,
+      "HomeTeam": "NYJ",
+      "AwayTeam": "DEN",
+      "DateTime": "2024-09-29T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671740,
+    "fields": {
+      "Week": 4,
+      "Season": 2024,
+      "HomeTeam": "TB",
+      "AwayTeam": "PHI",
+      "DateTime": "2024-09-29T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671745,
+    "fields": {
+      "Week": 4,
+      "Season": 2024,
+      "HomeTeam": "CAR",
+      "AwayTeam": "CIN",
+      "DateTime": "2024-09-29T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671857,
+    "fields": {
+      "Week": 4,
+      "Season": 2024,
+      "HomeTeam": "HOU",
+      "AwayTeam": "JAX",
+      "DateTime": "2024-09-29T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671755,
+    "fields": {
+      "Week": 4,
+      "Season": 2024,
+      "HomeTeam": "ARI",
+      "AwayTeam": "WSH",
+      "DateTime": "2024-09-29T20:05Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671758,
+    "fields": {
+      "Week": 4,
+      "Season": 2024,
+      "HomeTeam": "SF",
+      "AwayTeam": "NE",
+      "DateTime": "2024-09-29T20:05Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671672,
+    "fields": {
+      "Week": 4,
+      "Season": 2024,
+      "HomeTeam": "LV",
+      "AwayTeam": "CLE",
+      "DateTime": "2024-09-29T20:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671674,
+    "fields": {
+      "Week": 4,
+      "Season": 2024,
+      "HomeTeam": "LAC",
+      "AwayTeam": "KC",
+      "DateTime": "2024-09-29T20:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671783,
+    "fields": {
+      "Week": 4,
+      "Season": 2024,
+      "HomeTeam": "BAL",
+      "AwayTeam": "BUF",
+      "DateTime": "2024-09-30T00:20Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671683,
+    "fields": {
+      "Week": 4,
+      "Season": 2024,
+      "HomeTeam": "MIA",
+      "AwayTeam": "TEN",
+      "DateTime": "2024-09-30T23:30Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671491,
+    "fields": {
+      "Week": 4,
+      "Season": 2024,
+      "HomeTeam": "DET",
+      "AwayTeam": "SEA",
+      "DateTime": "2024-10-01T00:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671815,
+    "fields": {
+      "Week": 5,
+      "Season": 2024,
+      "HomeTeam": "ATL",
+      "AwayTeam": "TB",
+      "DateTime": "2024-10-04T00:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671804,
+    "fields": {
+      "Week": 5,
+      "Season": 2024,
+      "HomeTeam": "MIN",
+      "AwayTeam": "NYJ",
+      "DateTime": "2024-10-06T13:30Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671872,
+    "fields": {
+      "Week": 5,
+      "Season": 2024,
+      "HomeTeam": "CHI",
+      "AwayTeam": "CAR",
+      "DateTime": "2024-10-06T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671626,
+    "fields": {
+      "Week": 5,
+      "Season": 2024,
+      "HomeTeam": "CIN",
+      "AwayTeam": "BAL",
+      "DateTime": "2024-10-06T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671700,
+    "fields": {
+      "Week": 5,
+      "Season": 2024,
+      "HomeTeam": "NE",
+      "AwayTeam": "MIA",
+      "DateTime": "2024-10-06T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671718,
+    "fields": {
+      "Week": 5,
+      "Season": 2024,
+      "HomeTeam": "WSH",
+      "AwayTeam": "CLE",
+      "DateTime": "2024-10-06T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671633,
+    "fields": {
+      "Week": 5,
+      "Season": 2024,
+      "HomeTeam": "JAX",
+      "AwayTeam": "IND",
+      "DateTime": "2024-10-06T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671859,
+    "fields": {
+      "Week": 5,
+      "Season": 2024,
+      "HomeTeam": "HOU",
+      "AwayTeam": "BUF",
+      "DateTime": "2024-10-06T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671747,
+    "fields": {
+      "Week": 5,
+      "Season": 2024,
+      "HomeTeam": "DEN",
+      "AwayTeam": "LV",
+      "DateTime": "2024-10-06T20:05Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671756,
+    "fields": {
+      "Week": 5,
+      "Season": 2024,
+      "HomeTeam": "SF",
+      "AwayTeam": "ARI",
+      "DateTime": "2024-10-06T20:05Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671679,
+    "fields": {
+      "Week": 5,
+      "Season": 2024,
+      "HomeTeam": "LAR",
+      "AwayTeam": "GB",
+      "DateTime": "2024-10-06T20:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671680,
+    "fields": {
+      "Week": 5,
+      "Season": 2024,
+      "HomeTeam": "SEA",
+      "AwayTeam": "NYG",
+      "DateTime": "2024-10-06T20:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671784,
+    "fields": {
+      "Week": 5,
+      "Season": 2024,
+      "HomeTeam": "PIT",
+      "AwayTeam": "DAL",
+      "DateTime": "2024-10-07T00:20Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671687,
+    "fields": {
+      "Week": 5,
+      "Season": 2024,
+      "HomeTeam": "KC",
+      "AwayTeam": "NO",
+      "DateTime": "2024-10-08T00:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671819,
+    "fields": {
+      "Week": 6,
+      "Season": 2024,
+      "HomeTeam": "SEA",
+      "AwayTeam": "SF",
+      "DateTime": "2024-10-11T00:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671802,
+    "fields": {
+      "Week": 6,
+      "Season": 2024,
+      "HomeTeam": "CHI",
+      "AwayTeam": "JAX",
+      "DateTime": "2024-10-13T13:30Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671722,
+    "fields": {
+      "Week": 6,
+      "Season": 2024,
+      "HomeTeam": "GB",
+      "AwayTeam": "ARI",
+      "DateTime": "2024-10-13T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671820,
+    "fields": {
+      "Week": 6,
+      "Season": 2024,
+      "HomeTeam": "TEN",
+      "AwayTeam": "IND",
+      "DateTime": "2024-10-13T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671619,
+    "fields": {
+      "Week": 6,
+      "Season": 2024,
+      "HomeTeam": "NE",
+      "AwayTeam": "HOU",
+      "DateTime": "2024-10-13T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671735,
+    "fields": {
+      "Week": 6,
+      "Season": 2024,
+      "HomeTeam": "NO",
+      "AwayTeam": "TB",
+      "DateTime": "2024-10-13T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671714,
+    "fields": {
+      "Week": 6,
+      "Season": 2024,
+      "HomeTeam": "PHI",
+      "AwayTeam": "CLE",
+      "DateTime": "2024-10-13T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671625,
+    "fields": {
+      "Week": 6,
+      "Season": 2024,
+      "HomeTeam": "BAL",
+      "AwayTeam": "WSH",
+      "DateTime": "2024-10-13T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671655,
+    "fields": {
+      "Week": 6,
+      "Season": 2024,
+      "HomeTeam": "DEN",
+      "AwayTeam": "LAC",
+      "DateTime": "2024-10-13T20:05Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671657,
+    "fields": {
+      "Week": 6,
+      "Season": 2024,
+      "HomeTeam": "LV",
+      "AwayTeam": "PIT",
+      "DateTime": "2024-10-13T20:05Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671764,
+    "fields": {
+      "Week": 6,
+      "Season": 2024,
+      "HomeTeam": "DAL",
+      "AwayTeam": "DET",
+      "DateTime": "2024-10-13T20:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671769,
+    "fields": {
+      "Week": 6,
+      "Season": 2024,
+      "HomeTeam": "CAR",
+      "AwayTeam": "ATL",
+      "DateTime": "2024-10-13T20:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671791,
+    "fields": {
+      "Week": 6,
+      "Season": 2024,
+      "HomeTeam": "NYG",
+      "AwayTeam": "CIN",
+      "DateTime": "2024-10-14T00:20Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671684,
+    "fields": {
+      "Week": 6,
+      "Season": 2024,
+      "HomeTeam": "NYJ",
+      "AwayTeam": "BUF",
+      "DateTime": "2024-10-15T00:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671816,
+    "fields": {
+      "Week": 7,
+      "Season": 2024,
+      "HomeTeam": "NO",
+      "AwayTeam": "DEN",
+      "DateTime": "2024-10-18T00:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671801,
+    "fields": {
+      "Week": 7,
+      "Season": 2024,
+      "HomeTeam": "JAX",
+      "AwayTeam": "NE",
+      "DateTime": "2024-10-20T13:30Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671730,
+    "fields": {
+      "Week": 7,
+      "Season": 2024,
+      "HomeTeam": "ATL",
+      "AwayTeam": "SEA",
+      "DateTime": "2024-10-20T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671616,
+    "fields": {
+      "Week": 7,
+      "Season": 2024,
+      "HomeTeam": "BUF",
+      "AwayTeam": "TEN",
+      "DateTime": "2024-10-20T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671853,
+    "fields": {
+      "Week": 7,
+      "Season": 2024,
+      "HomeTeam": "CLE",
+      "AwayTeam": "CIN",
+      "DateTime": "2024-10-20T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671644,
+    "fields": {
+      "Week": 7,
+      "Season": 2024,
+      "HomeTeam": "GB",
+      "AwayTeam": "HOU",
+      "DateTime": "2024-10-20T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671864,
+    "fields": {
+      "Week": 7,
+      "Season": 2024,
+      "HomeTeam": "IND",
+      "AwayTeam": "MIA",
+      "DateTime": "2024-10-20T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671724,
+    "fields": {
+      "Week": 7,
+      "Season": 2024,
+      "HomeTeam": "MIN",
+      "AwayTeam": "DET",
+      "DateTime": "2024-10-20T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671710,
+    "fields": {
+      "Week": 7,
+      "Season": 2024,
+      "HomeTeam": "NYG",
+      "AwayTeam": "PHI",
+      "DateTime": "2024-10-20T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671663,
+    "fields": {
+      "Week": 7,
+      "Season": 2024,
+      "HomeTeam": "LAR",
+      "AwayTeam": "LV",
+      "DateTime": "2024-10-20T20:05Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671640,
+    "fields": {
+      "Week": 7,
+      "Season": 2024,
+      "HomeTeam": "WSH",
+      "AwayTeam": "CAR",
+      "DateTime": "2024-10-20T20:05Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671777,
+    "fields": {
+      "Week": 7,
+      "Season": 2024,
+      "HomeTeam": "SF",
+      "AwayTeam": "KC",
+      "DateTime": "2024-10-20T20:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671785,
+    "fields": {
+      "Week": 7,
+      "Season": 2024,
+      "HomeTeam": "PIT",
+      "AwayTeam": "NYJ",
+      "DateTime": "2024-10-21T00:20Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671695,
+    "fields": {
+      "Week": 7,
+      "Season": 2024,
+      "HomeTeam": "TB",
+      "AwayTeam": "BAL",
+      "DateTime": "2024-10-22T00:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671699,
+    "fields": {
+      "Week": 7,
+      "Season": 2024,
+      "HomeTeam": "ARI",
+      "AwayTeam": "LAC",
+      "DateTime": "2024-10-22T01:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671817,
+    "fields": {
+      "Week": 8,
+      "Season": 2024,
+      "HomeTeam": "LAR",
+      "AwayTeam": "MIN",
+      "DateTime": "2024-10-25T00:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671852,
+    "fields": {
+      "Week": 8,
+      "Season": 2024,
+      "HomeTeam": "CLE",
+      "AwayTeam": "BAL",
+      "DateTime": "2024-10-27T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671720,
+    "fields": {
+      "Week": 8,
+      "Season": 2024,
+      "HomeTeam": "DET",
+      "AwayTeam": "TEN",
+      "DateTime": "2024-10-27T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671850,
+    "fields": {
+      "Week": 8,
+      "Season": 2024,
+      "HomeTeam": "MIA",
+      "AwayTeam": "ARI",
+      "DateTime": "2024-10-27T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671618,
+    "fields": {
+      "Week": 8,
+      "Season": 2024,
+      "HomeTeam": "NE",
+      "AwayTeam": "NYJ",
+      "DateTime": "2024-10-27T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671739,
+    "fields": {
+      "Week": 8,
+      "Season": 2024,
+      "HomeTeam": "TB",
+      "AwayTeam": "ATL",
+      "DateTime": "2024-10-27T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671599,
+    "fields": {
+      "Week": 8,
+      "Season": 2024,
+      "HomeTeam": "WSH",
+      "AwayTeam": "CHI",
+      "DateTime": "2024-10-27T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671707,
+    "fields": {
+      "Week": 8,
+      "Season": 2024,
+      "HomeTeam": "JAX",
+      "AwayTeam": "GB",
+      "DateTime": "2024-10-27T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671856,
+    "fields": {
+      "Week": 8,
+      "Season": 2024,
+      "HomeTeam": "HOU",
+      "AwayTeam": "IND",
+      "DateTime": "2024-10-27T17:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671750,
+    "fields": {
+      "Week": 8,
+      "Season": 2024,
+      "HomeTeam": "LAC",
+      "AwayTeam": "NO",
+      "DateTime": "2024-10-27T20:05Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671760,
+    "fields": {
+      "Week": 8,
+      "Season": 2024,
+      "HomeTeam": "SEA",
+      "AwayTeam": "BUF",
+      "DateTime": "2024-10-27T20:05Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671667,
+    "fields": {
+      "Week": 8,
+      "Season": 2024,
+      "HomeTeam": "CIN",
+      "AwayTeam": "PHI",
+      "DateTime": "2024-10-27T20:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671600,
+    "fields": {
+      "Week": 8,
+      "Season": 2024,
+      "HomeTeam": "DEN",
+      "AwayTeam": "CAR",
+      "DateTime": "2024-10-27T20:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671671,
+    "fields": {
+      "Week": 8,
+      "Season": 2024,
+      "HomeTeam": "LV",
+      "AwayTeam": "KC",
+      "DateTime": "2024-10-27T20:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671795,
+    "fields": {
+      "Week": 8,
+      "Season": 2024,
+      "HomeTeam": "SF",
+      "AwayTeam": "DAL",
+      "DateTime": "2024-10-28T00:20Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671685,
+    "fields": {
+      "Week": 8,
+      "Season": 2024,
+      "HomeTeam": "PIT",
+      "AwayTeam": "NYG",
+      "DateTime": "2024-10-29T00:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671809,
+    "fields": {
+      "Week": 9,
+      "Season": 2024,
+      "HomeTeam": "NYJ",
+      "AwayTeam": "HOU",
+      "DateTime": "2024-11-01T00:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671728,
+    "fields": {
+      "Week": 9,
+      "Season": 2024,
+      "HomeTeam": "ATL",
+      "AwayTeam": "DAL",
+      "DateTime": "2024-11-03T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671493,
+    "fields": {
+      "Week": 9,
+      "Season": 2024,
+      "HomeTeam": "BUF",
+      "AwayTeam": "MIA",
+      "DateTime": "2024-11-03T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671704,
+    "fields": {
+      "Week": 9,
+      "Season": 2024,
+      "HomeTeam": "CIN",
+      "AwayTeam": "LV",
+      "DateTime": "2024-11-03T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671629,
+    "fields": {
+      "Week": 9,
+      "Season": 2024,
+      "HomeTeam": "CLE",
+      "AwayTeam": "LAC",
+      "DateTime": "2024-11-03T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671822,
+    "fields": {
+      "Week": 9,
+      "Season": 2024,
+      "HomeTeam": "TEN",
+      "AwayTeam": "NE",
+      "DateTime": "2024-11-03T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671647,
+    "fields": {
+      "Week": 9,
+      "Season": 2024,
+      "HomeTeam": "MIN",
+      "AwayTeam": "IND",
+      "DateTime": "2024-11-03T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671711,
+    "fields": {
+      "Week": 9,
+      "Season": 2024,
+      "HomeTeam": "NYG",
+      "AwayTeam": "WSH",
+      "DateTime": "2024-11-03T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671650,
+    "fields": {
+      "Week": 9,
+      "Season": 2024,
+      "HomeTeam": "CAR",
+      "AwayTeam": "NO",
+      "DateTime": "2024-11-03T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671623,
+    "fields": {
+      "Week": 9,
+      "Season": 2024,
+      "HomeTeam": "BAL",
+      "AwayTeam": "DEN",
+      "DateTime": "2024-11-03T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671661,
+    "fields": {
+      "Week": 9,
+      "Season": 2024,
+      "HomeTeam": "ARI",
+      "AwayTeam": "CHI",
+      "DateTime": "2024-11-03T21:05Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671767,
+    "fields": {
+      "Week": 9,
+      "Season": 2024,
+      "HomeTeam": "GB",
+      "AwayTeam": "DET",
+      "DateTime": "2024-11-03T21:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671776,
+    "fields": {
+      "Week": 9,
+      "Season": 2024,
+      "HomeTeam": "SEA",
+      "AwayTeam": "LAR",
+      "DateTime": "2024-11-03T21:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671797,
+    "fields": {
+      "Week": 9,
+      "Season": 2024,
+      "HomeTeam": "PHI",
+      "AwayTeam": "JAX",
+      "DateTime": "2024-11-04T01:20Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671688,
+    "fields": {
+      "Week": 9,
+      "Season": 2024,
+      "HomeTeam": "KC",
+      "AwayTeam": "TB",
+      "DateTime": "2024-11-05T01:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671810,
+    "fields": {
+      "Week": 10,
+      "Season": 2024,
+      "HomeTeam": "BAL",
+      "AwayTeam": "CIN",
+      "DateTime": "2024-11-08T01:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671803,
+    "fields": {
+      "Week": 10,
+      "Season": 2024,
+      "HomeTeam": "CAR",
+      "AwayTeam": "NYG",
+      "DateTime": "2024-11-10T14:30Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671873,
+    "fields": {
+      "Week": 10,
+      "Season": 2024,
+      "HomeTeam": "CHI",
+      "AwayTeam": "NE",
+      "DateTime": "2024-11-10T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671863,
+    "fields": {
+      "Week": 10,
+      "Season": 2024,
+      "HomeTeam": "IND",
+      "AwayTeam": "BUF",
+      "DateTime": "2024-11-10T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671637,
+    "fields": {
+      "Week": 10,
+      "Season": 2024,
+      "HomeTeam": "KC",
+      "AwayTeam": "DEN",
+      "DateTime": "2024-11-10T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671733,
+    "fields": {
+      "Week": 10,
+      "Season": 2024,
+      "HomeTeam": "NO",
+      "AwayTeam": "ATL",
+      "DateTime": "2024-11-10T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671742,
+    "fields": {
+      "Week": 10,
+      "Season": 2024,
+      "HomeTeam": "TB",
+      "AwayTeam": "SF",
+      "DateTime": "2024-11-10T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671641,
+    "fields": {
+      "Week": 10,
+      "Season": 2024,
+      "HomeTeam": "WSH",
+      "AwayTeam": "PIT",
+      "DateTime": "2024-11-10T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671708,
+    "fields": {
+      "Week": 10,
+      "Season": 2024,
+      "HomeTeam": "JAX",
+      "AwayTeam": "MIN",
+      "DateTime": "2024-11-10T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671751,
+    "fields": {
+      "Week": 10,
+      "Season": 2024,
+      "HomeTeam": "LAC",
+      "AwayTeam": "TEN",
+      "DateTime": "2024-11-10T21:05Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671676,
+    "fields": {
+      "Week": 10,
+      "Season": 2024,
+      "HomeTeam": "DAL",
+      "AwayTeam": "PHI",
+      "DateTime": "2024-11-10T21:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671678,
+    "fields": {
+      "Week": 10,
+      "Season": 2024,
+      "HomeTeam": "ARI",
+      "AwayTeam": "NYJ",
+      "DateTime": "2024-11-10T21:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671787,
+    "fields": {
+      "Week": 10,
+      "Season": 2024,
+      "HomeTeam": "HOU",
+      "AwayTeam": "DET",
+      "DateTime": "2024-11-11T01:20Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671693,
+    "fields": {
+      "Week": 10,
+      "Season": 2024,
+      "HomeTeam": "LAR",
+      "AwayTeam": "MIA",
+      "DateTime": "2024-11-12T01:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671813,
+    "fields": {
+      "Week": 11,
+      "Season": 2024,
+      "HomeTeam": "PHI",
+      "AwayTeam": "WSH",
+      "DateTime": "2024-11-15T01:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671869,
+    "fields": {
+      "Week": 11,
+      "Season": 2024,
+      "HomeTeam": "CHI",
+      "AwayTeam": "GB",
+      "DateTime": "2024-11-17T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671642,
+    "fields": {
+      "Week": 11,
+      "Season": 2024,
+      "HomeTeam": "DET",
+      "AwayTeam": "JAX",
+      "DateTime": "2024-11-17T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671824,
+    "fields": {
+      "Week": 11,
+      "Season": 2024,
+      "HomeTeam": "TEN",
+      "AwayTeam": "MIN",
+      "DateTime": "2024-11-17T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671851,
+    "fields": {
+      "Week": 11,
+      "Season": 2024,
+      "HomeTeam": "MIA",
+      "AwayTeam": "LV",
+      "DateTime": "2024-11-17T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671701,
+    "fields": {
+      "Week": 11,
+      "Season": 2024,
+      "HomeTeam": "NE",
+      "AwayTeam": "LAR",
+      "DateTime": "2024-11-17T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671746,
+    "fields": {
+      "Week": 11,
+      "Season": 2024,
+      "HomeTeam": "NO",
+      "AwayTeam": "CLE",
+      "DateTime": "2024-11-17T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671630,
+    "fields": {
+      "Week": 11,
+      "Season": 2024,
+      "HomeTeam": "PIT",
+      "AwayTeam": "BAL",
+      "DateTime": "2024-11-17T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671748,
+    "fields": {
+      "Week": 11,
+      "Season": 2024,
+      "HomeTeam": "DEN",
+      "AwayTeam": "ATL",
+      "DateTime": "2024-11-17T21:05Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671757,
+    "fields": {
+      "Week": 11,
+      "Season": 2024,
+      "HomeTeam": "SF",
+      "AwayTeam": "SEA",
+      "DateTime": "2024-11-17T21:05Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671665,
+    "fields": {
+      "Week": 11,
+      "Season": 2024,
+      "HomeTeam": "BUF",
+      "AwayTeam": "KC",
+      "DateTime": "2024-11-17T21:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671675,
+    "fields": {
+      "Week": 11,
+      "Season": 2024,
+      "HomeTeam": "LAC",
+      "AwayTeam": "CIN",
+      "DateTime": "2024-11-17T21:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671782,
+    "fields": {
+      "Week": 11,
+      "Season": 2024,
+      "HomeTeam": "NYJ",
+      "AwayTeam": "IND",
+      "DateTime": "2024-11-18T01:20Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671694,
+    "fields": {
+      "Week": 11,
+      "Season": 2024,
+      "HomeTeam": "DAL",
+      "AwayTeam": "HOU",
+      "DateTime": "2024-11-19T01:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671875,
+    "fields": {
+      "Week": 12,
+      "Season": 2024,
+      "HomeTeam": "CLE",
+      "AwayTeam": "PIT",
+      "DateTime": "2024-11-22T01:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671870,
+    "fields": {
+      "Week": 12,
+      "Season": 2024,
+      "HomeTeam": "CHI",
+      "AwayTeam": "MIN",
+      "DateTime": "2024-11-24T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671866,
+    "fields": {
+      "Week": 12,
+      "Season": 2024,
+      "HomeTeam": "IND",
+      "AwayTeam": "DET",
+      "DateTime": "2024-11-24T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671847,
+    "fields": {
+      "Week": 12,
+      "Season": 2024,
+      "HomeTeam": "MIA",
+      "AwayTeam": "NE",
+      "DateTime": "2024-11-24T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671638,
+    "fields": {
+      "Week": 12,
+      "Season": 2024,
+      "HomeTeam": "NYG",
+      "AwayTeam": "TB",
+      "DateTime": "2024-11-24T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671715,
+    "fields": {
+      "Week": 12,
+      "Season": 2024,
+      "HomeTeam": "WSH",
+      "AwayTeam": "DAL",
+      "DateTime": "2024-11-24T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671651,
+    "fields": {
+      "Week": 12,
+      "Season": 2024,
+      "HomeTeam": "CAR",
+      "AwayTeam": "KC",
+      "DateTime": "2024-11-24T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671858,
+    "fields": {
+      "Week": 12,
+      "Season": 2024,
+      "HomeTeam": "HOU",
+      "AwayTeam": "TEN",
+      "DateTime": "2024-11-24T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671656,
+    "fields": {
+      "Week": 12,
+      "Season": 2024,
+      "HomeTeam": "LV",
+      "AwayTeam": "DEN",
+      "DateTime": "2024-11-24T21:05Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671768,
+    "fields": {
+      "Week": 12,
+      "Season": 2024,
+      "HomeTeam": "GB",
+      "AwayTeam": "SF",
+      "DateTime": "2024-11-24T21:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671775,
+    "fields": {
+      "Week": 12,
+      "Season": 2024,
+      "HomeTeam": "SEA",
+      "AwayTeam": "ARI",
+      "DateTime": "2024-11-24T21:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671794,
+    "fields": {
+      "Week": 12,
+      "Season": 2024,
+      "HomeTeam": "LAR",
+      "AwayTeam": "PHI",
+      "DateTime": "2024-11-25T01:20Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671689,
+    "fields": {
+      "Week": 12,
+      "Season": 2024,
+      "HomeTeam": "LAC",
+      "AwayTeam": "BAL",
+      "DateTime": "2024-11-26T01:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671492,
+    "fields": {
+      "Week": 13,
+      "Season": 2024,
+      "HomeTeam": "DET",
+      "AwayTeam": "CHI",
+      "DateTime": "2024-11-28T17:30Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671779,
+    "fields": {
+      "Week": 13,
+      "Season": 2024,
+      "HomeTeam": "DAL",
+      "AwayTeam": "NYG",
+      "DateTime": "2024-11-28T21:30Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671798,
+    "fields": {
+      "Week": 13,
+      "Season": 2024,
+      "HomeTeam": "GB",
+      "AwayTeam": "MIA",
+      "DateTime": "2024-11-29T01:20Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671806,
+    "fields": {
+      "Week": 13,
+      "Season": 2024,
+      "HomeTeam": "KC",
+      "AwayTeam": "LV",
+      "DateTime": "2024-11-29T20:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671649,
+    "fields": {
+      "Week": 13,
+      "Season": 2024,
+      "HomeTeam": "ATL",
+      "AwayTeam": "LAC",
+      "DateTime": "2024-12-01T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671627,
+    "fields": {
+      "Week": 13,
+      "Season": 2024,
+      "HomeTeam": "CIN",
+      "AwayTeam": "PIT",
+      "DateTime": "2024-12-01T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671726,
+    "fields": {
+      "Week": 13,
+      "Season": 2024,
+      "HomeTeam": "MIN",
+      "AwayTeam": "ARI",
+      "DateTime": "2024-12-01T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671620,
+    "fields": {
+      "Week": 13,
+      "Season": 2024,
+      "HomeTeam": "NE",
+      "AwayTeam": "IND",
+      "DateTime": "2024-12-01T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671703,
+    "fields": {
+      "Week": 13,
+      "Season": 2024,
+      "HomeTeam": "NYJ",
+      "AwayTeam": "SEA",
+      "DateTime": "2024-12-01T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671743,
+    "fields": {
+      "Week": 13,
+      "Season": 2024,
+      "HomeTeam": "WSH",
+      "AwayTeam": "TEN",
+      "DateTime": "2024-12-01T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671705,
+    "fields": {
+      "Week": 13,
+      "Season": 2024,
+      "HomeTeam": "JAX",
+      "AwayTeam": "HOU",
+      "DateTime": "2024-12-01T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671753,
+    "fields": {
+      "Week": 13,
+      "Season": 2024,
+      "HomeTeam": "NO",
+      "AwayTeam": "LAR",
+      "DateTime": "2024-12-01T21:05Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671752,
+    "fields": {
+      "Week": 13,
+      "Season": 2024,
+      "HomeTeam": "CAR",
+      "AwayTeam": "TB",
+      "DateTime": "2024-12-01T21:05Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671666,
+    "fields": {
+      "Week": 13,
+      "Season": 2024,
+      "HomeTeam": "BAL",
+      "AwayTeam": "PHI",
+      "DateTime": "2024-12-01T21:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671781,
+    "fields": {
+      "Week": 13,
+      "Season": 2024,
+      "HomeTeam": "BUF",
+      "AwayTeam": "SF",
+      "DateTime": "2024-12-02T01:20Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671686,
+    "fields": {
+      "Week": 13,
+      "Season": 2024,
+      "HomeTeam": "DEN",
+      "AwayTeam": "CLE",
+      "DateTime": "2024-12-03T01:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671814,
+    "fields": {
+      "Week": 14,
+      "Season": 2024,
+      "HomeTeam": "DET",
+      "AwayTeam": "GB",
+      "DateTime": "2024-12-06T01:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671821,
+    "fields": {
+      "Week": 14,
+      "Season": 2024,
+      "HomeTeam": "TEN",
+      "AwayTeam": "JAX",
+      "DateTime": "2024-12-08T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671848,
+    "fields": {
+      "Week": 14,
+      "Season": 2024,
+      "HomeTeam": "MIA",
+      "AwayTeam": "NYJ",
+      "DateTime": "2024-12-08T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671648,
+    "fields": {
+      "Week": 14,
+      "Season": 2024,
+      "HomeTeam": "MIN",
+      "AwayTeam": "ATL",
+      "DateTime": "2024-12-08T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671601,
+    "fields": {
+      "Week": 14,
+      "Season": 2024,
+      "HomeTeam": "NYG",
+      "AwayTeam": "NO",
+      "DateTime": "2024-12-08T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671713,
+    "fields": {
+      "Week": 14,
+      "Season": 2024,
+      "HomeTeam": "PHI",
+      "AwayTeam": "CAR",
+      "DateTime": "2024-12-08T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671631,
+    "fields": {
+      "Week": 14,
+      "Season": 2024,
+      "HomeTeam": "PIT",
+      "AwayTeam": "CLE",
+      "DateTime": "2024-12-08T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671654,
+    "fields": {
+      "Week": 14,
+      "Season": 2024,
+      "HomeTeam": "TB",
+      "AwayTeam": "LV",
+      "DateTime": "2024-12-08T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671660,
+    "fields": {
+      "Week": 14,
+      "Season": 2024,
+      "HomeTeam": "ARI",
+      "AwayTeam": "SEA",
+      "DateTime": "2024-12-08T21:05Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671773,
+    "fields": {
+      "Week": 14,
+      "Season": 2024,
+      "HomeTeam": "LAR",
+      "AwayTeam": "BUF",
+      "DateTime": "2024-12-08T21:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671774,
+    "fields": {
+      "Week": 14,
+      "Season": 2024,
+      "HomeTeam": "SF",
+      "AwayTeam": "CHI",
+      "DateTime": "2024-12-08T21:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671788,
+    "fields": {
+      "Week": 14,
+      "Season": 2024,
+      "HomeTeam": "KC",
+      "AwayTeam": "LAC",
+      "DateTime": "2024-12-09T01:20Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671690,
+    "fields": {
+      "Week": 14,
+      "Season": 2024,
+      "HomeTeam": "DAL",
+      "AwayTeam": "CIN",
+      "DateTime": "2024-12-10T01:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671818,
+    "fields": {
+      "Week": 15,
+      "Season": 2024,
+      "HomeTeam": "SF",
+      "AwayTeam": "LAR",
+      "DateTime": "2024-12-13T01:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671854,
+    "fields": {
+      "Week": 15,
+      "Season": 2024,
+      "HomeTeam": "CLE",
+      "AwayTeam": "KC",
+      "DateTime": "2024-12-15T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671825,
+    "fields": {
+      "Week": 15,
+      "Season": 2024,
+      "HomeTeam": "TEN",
+      "AwayTeam": "CIN",
+      "DateTime": "2024-12-15T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671737,
+    "fields": {
+      "Week": 15,
+      "Season": 2024,
+      "HomeTeam": "NO",
+      "AwayTeam": "WSH",
+      "DateTime": "2024-12-15T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671639,
+    "fields": {
+      "Week": 15,
+      "Season": 2024,
+      "HomeTeam": "NYG",
+      "AwayTeam": "BAL",
+      "DateTime": "2024-12-15T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671731,
+    "fields": {
+      "Week": 15,
+      "Season": 2024,
+      "HomeTeam": "CAR",
+      "AwayTeam": "DAL",
+      "DateTime": "2024-12-15T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671706,
+    "fields": {
+      "Week": 15,
+      "Season": 2024,
+      "HomeTeam": "JAX",
+      "AwayTeam": "NYJ",
+      "DateTime": "2024-12-15T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671860,
+    "fields": {
+      "Week": 15,
+      "Season": 2024,
+      "HomeTeam": "HOU",
+      "AwayTeam": "MIA",
+      "DateTime": "2024-12-15T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671669,
+    "fields": {
+      "Week": 15,
+      "Season": 2024,
+      "HomeTeam": "DEN",
+      "AwayTeam": "IND",
+      "DateTime": "2024-12-15T21:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671681,
+    "fields": {
+      "Week": 15,
+      "Season": 2024,
+      "HomeTeam": "DET",
+      "AwayTeam": "BUF",
+      "DateTime": "2024-12-15T21:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671766,
+    "fields": {
+      "Week": 15,
+      "Season": 2024,
+      "HomeTeam": "PHI",
+      "AwayTeam": "PIT",
+      "DateTime": "2024-12-15T21:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671677,
+    "fields": {
+      "Week": 15,
+      "Season": 2024,
+      "HomeTeam": "ARI",
+      "AwayTeam": "NE",
+      "DateTime": "2024-12-15T21:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671762,
+    "fields": {
+      "Week": 15,
+      "Season": 2024,
+      "HomeTeam": "LAC",
+      "AwayTeam": "TB",
+      "DateTime": "2024-12-15T21:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671796,
+    "fields": {
+      "Week": 15,
+      "Season": 2024,
+      "HomeTeam": "SEA",
+      "AwayTeam": "GB",
+      "DateTime": "2024-12-16T01:20Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671489,
+    "fields": {
+      "Week": 15,
+      "Season": 2024,
+      "HomeTeam": "MIN",
+      "AwayTeam": "CHI",
+      "DateTime": "2024-12-17T01:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671697,
+    "fields": {
+      "Week": 15,
+      "Season": 2024,
+      "HomeTeam": "LV",
+      "AwayTeam": "ATL",
+      "DateTime": "2024-12-17T01:30Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671811,
+    "fields": {
+      "Week": 16,
+      "Season": 2024,
+      "HomeTeam": "CIN",
+      "AwayTeam": "CLE",
+      "DateTime": "2024-12-20T01:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671780,
+    "fields": {
+      "Week": 16,
+      "Season": 2024,
+      "HomeTeam": "KC",
+      "AwayTeam": "HOU",
+      "DateTime": "2024-12-21T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671778,
+    "fields": {
+      "Week": 16,
+      "Season": 2024,
+      "HomeTeam": "BAL",
+      "AwayTeam": "PIT",
+      "DateTime": "2024-12-21T21:30Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671729,
+    "fields": {
+      "Week": 16,
+      "Season": 2024,
+      "HomeTeam": "ATL",
+      "AwayTeam": "NYG",
+      "DateTime": "2024-12-22T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671494,
+    "fields": {
+      "Week": 16,
+      "Season": 2024,
+      "HomeTeam": "BUF",
+      "AwayTeam": "NE",
+      "DateTime": "2024-12-22T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671868,
+    "fields": {
+      "Week": 16,
+      "Season": 2024,
+      "HomeTeam": "CHI",
+      "AwayTeam": "DET",
+      "DateTime": "2024-12-22T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671862,
+    "fields": {
+      "Week": 16,
+      "Season": 2024,
+      "HomeTeam": "IND",
+      "AwayTeam": "TEN",
+      "DateTime": "2024-12-22T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671621,
+    "fields": {
+      "Week": 16,
+      "Season": 2024,
+      "HomeTeam": "NYJ",
+      "AwayTeam": "LAR",
+      "DateTime": "2024-12-22T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671717,
+    "fields": {
+      "Week": 16,
+      "Season": 2024,
+      "HomeTeam": "WSH",
+      "AwayTeam": "PHI",
+      "DateTime": "2024-12-22T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671732,
+    "fields": {
+      "Week": 16,
+      "Season": 2024,
+      "HomeTeam": "CAR",
+      "AwayTeam": "ARI",
+      "DateTime": "2024-12-22T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671749,
+    "fields": {
+      "Week": 16,
+      "Season": 2024,
+      "HomeTeam": "LAC",
+      "AwayTeam": "DEN",
+      "DateTime": "2024-12-22T21:05Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671759,
+    "fields": {
+      "Week": 16,
+      "Season": 2024,
+      "HomeTeam": "SEA",
+      "AwayTeam": "MIN",
+      "DateTime": "2024-12-22T21:05Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671673,
+    "fields": {
+      "Week": 16,
+      "Season": 2024,
+      "HomeTeam": "LV",
+      "AwayTeam": "JAX",
+      "DateTime": "2024-12-22T21:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671874,
+    "fields": {
+      "Week": 16,
+      "Season": 2024,
+      "HomeTeam": "MIA",
+      "AwayTeam": "SF",
+      "DateTime": "2024-12-22T21:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671790,
+    "fields": {
+      "Week": 16,
+      "Season": 2024,
+      "HomeTeam": "DAL",
+      "AwayTeam": "TB",
+      "DateTime": "2024-12-23T01:20Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671692,
+    "fields": {
+      "Week": 16,
+      "Season": 2024,
+      "HomeTeam": "GB",
+      "AwayTeam": "NO",
+      "DateTime": "2024-12-24T01:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671799,
+    "fields": {
+      "Week": 17,
+      "Season": 2024,
+      "HomeTeam": "PIT",
+      "AwayTeam": "KC",
+      "DateTime": "2024-12-25T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671800,
+    "fields": {
+      "Week": 17,
+      "Season": 2024,
+      "HomeTeam": "HOU",
+      "AwayTeam": "BAL",
+      "DateTime": "2024-12-25T21:30Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671876,
+    "fields": {
+      "Week": 17,
+      "Season": 2024,
+      "HomeTeam": "CHI",
+      "AwayTeam": "SEA",
+      "DateTime": "2024-12-27T01:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671835,
+    "fields": {
+      "Week": 17,
+      "Season": 2024,
+      "HomeTeam": "CIN",
+      "AwayTeam": "DEN",
+      "DateTime": "2024-12-29T05:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671829,
+    "fields": {
+      "Week": 17,
+      "Season": 2024,
+      "HomeTeam": "LAR",
+      "AwayTeam": "ARI",
+      "DateTime": "2024-12-29T05:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671832,
+    "fields": {
+      "Week": 17,
+      "Season": 2024,
+      "HomeTeam": "NE",
+      "AwayTeam": "LAC",
+      "DateTime": "2024-12-29T05:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671846,
+    "fields": {
+      "Week": 17,
+      "Season": 2024,
+      "HomeTeam": "NYG",
+      "AwayTeam": "IND",
+      "DateTime": "2024-12-29T05:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671842,
+    "fields": {
+      "Week": 17,
+      "Season": 2024,
+      "HomeTeam": "WSH",
+      "AwayTeam": "ATL",
+      "DateTime": "2024-12-29T05:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671495,
+    "fields": {
+      "Week": 17,
+      "Season": 2024,
+      "HomeTeam": "BUF",
+      "AwayTeam": "NYJ",
+      "DateTime": "2024-12-29T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671725,
+    "fields": {
+      "Week": 17,
+      "Season": 2024,
+      "HomeTeam": "MIN",
+      "AwayTeam": "GB",
+      "DateTime": "2024-12-29T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671738,
+    "fields": {
+      "Week": 17,
+      "Season": 2024,
+      "HomeTeam": "NO",
+      "AwayTeam": "LV",
+      "DateTime": "2024-12-29T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671653,
+    "fields": {
+      "Week": 17,
+      "Season": 2024,
+      "HomeTeam": "TB",
+      "AwayTeam": "CAR",
+      "DateTime": "2024-12-29T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671634,
+    "fields": {
+      "Week": 17,
+      "Season": 2024,
+      "HomeTeam": "JAX",
+      "AwayTeam": "TEN",
+      "DateTime": "2024-12-29T18:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671765,
+    "fields": {
+      "Week": 17,
+      "Season": 2024,
+      "HomeTeam": "PHI",
+      "AwayTeam": "DAL",
+      "DateTime": "2024-12-29T21:25Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671877,
+    "fields": {
+      "Week": 17,
+      "Season": 2024,
+      "HomeTeam": "CLE",
+      "AwayTeam": "MIA",
+      "DateTime": "2024-12-30T01:20Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671698,
+    "fields": {
+      "Week": 17,
+      "Season": 2024,
+      "HomeTeam": "SF",
+      "AwayTeam": "DET",
+      "DateTime": "2024-12-31T01:15Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671827,
+    "fields": {
+      "Week": 18,
+      "Season": 2024,
+      "HomeTeam": "ATL",
+      "AwayTeam": "CAR",
+      "DateTime": "2025-01-05T05:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671840,
+    "fields": {
+      "Week": 18,
+      "Season": 2024,
+      "HomeTeam": "DAL",
+      "AwayTeam": "WSH",
+      "DateTime": "2025-01-05T05:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671838,
+    "fields": {
+      "Week": 18,
+      "Season": 2024,
+      "HomeTeam": "DEN",
+      "AwayTeam": "KC",
+      "DateTime": "2025-01-05T05:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671843,
+    "fields": {
+      "Week": 18,
+      "Season": 2024,
+      "HomeTeam": "DET",
+      "AwayTeam": "MIN",
+      "DateTime": "2025-01-05T05:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671844,
+    "fields": {
+      "Week": 18,
+      "Season": 2024,
+      "HomeTeam": "GB",
+      "AwayTeam": "CHI",
+      "DateTime": "2025-01-05T05:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671826,
+    "fields": {
+      "Week": 18,
+      "Season": 2024,
+      "HomeTeam": "TEN",
+      "AwayTeam": "HOU",
+      "DateTime": "2025-01-05T05:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671837,
+    "fields": {
+      "Week": 18,
+      "Season": 2024,
+      "HomeTeam": "IND",
+      "AwayTeam": "JAX",
+      "DateTime": "2025-01-05T05:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671839,
+    "fields": {
+      "Week": 18,
+      "Season": 2024,
+      "HomeTeam": "LV",
+      "AwayTeam": "LAC",
+      "DateTime": "2025-01-05T05:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671830,
+    "fields": {
+      "Week": 18,
+      "Season": 2024,
+      "HomeTeam": "LAR",
+      "AwayTeam": "SEA",
+      "DateTime": "2025-01-05T05:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671831,
+    "fields": {
+      "Week": 18,
+      "Season": 2024,
+      "HomeTeam": "NE",
+      "AwayTeam": "BUF",
+      "DateTime": "2025-01-05T05:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671833,
+    "fields": {
+      "Week": 18,
+      "Season": 2024,
+      "HomeTeam": "NYJ",
+      "AwayTeam": "MIA",
+      "DateTime": "2025-01-05T05:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671841,
+    "fields": {
+      "Week": 18,
+      "Season": 2024,
+      "HomeTeam": "PHI",
+      "AwayTeam": "NYG",
+      "DateTime": "2025-01-05T05:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671845,
+    "fields": {
+      "Week": 18,
+      "Season": 2024,
+      "HomeTeam": "ARI",
+      "AwayTeam": "SF",
+      "DateTime": "2025-01-05T05:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671836,
+    "fields": {
+      "Week": 18,
+      "Season": 2024,
+      "HomeTeam": "PIT",
+      "AwayTeam": "CIN",
+      "DateTime": "2025-01-05T05:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671828,
+    "fields": {
+      "Week": 18,
+      "Season": 2024,
+      "HomeTeam": "TB",
+      "AwayTeam": "NO",
+      "DateTime": "2025-01-05T05:00Z"
+    }
+  },
+  {
+    "model": "predictor.match",
+    "pk": 401671834,
+    "fields": {
+      "Week": 18,
+      "Season": 2024,
+      "HomeTeam": "BAL",
+      "AwayTeam": "CLE",
+      "DateTime": "2025-01-05T05:00Z"
+    }
+  }
+]
