@@ -73,16 +73,11 @@
                 </thead>
                 <tbody name ="livegames-score-table" is="transition-group">
                     <tr v-for="game in sortedScores" :key="game.Game" v-bind:class="[game.Updated ? updatedClass : stdClass]">
-                        <td v-if="game.State === 2" class="table-left livegame-complete">[[game.AwayTeam]]</td>
-                        <td v-else class="table-left">[[game.AwayTeam]]</td>
-                        <td v-if="game.State === 2" class="table-logo livegame-complete"><img v-bind:src="game.AwayTeam | imgurl" :alt="game.AwayTeam" style="vertical-align:middle" class="team_small"></td>
-                        <td v-else class="table-logo"><img v-bind:src="game.AwayTeam | imgurl" :alt="game.AwayTeam" style="vertical-align:middle" class="team_small"></td>
-                        <td v-if="game.State === 2" class="table-center livegame-complete">[[game.AwayScore]] - [[game.HomeScore]]</td>
-                        <td v-else class="table-center">[[game.AwayScore]] - [[game.HomeScore]]</td>
-                        <td v-if="game.State === 2" class="table-logo livegame-complete"><img v-bind:src="game.HomeTeam | imgurl" :alt="game.HomeTeam" style="vertical-align:middle" class="team_small"></td>
-                        <td v-else class="table-logo"><img v-bind:src="game.HomeTeam | imgurl" :alt="game.HomeTeam" style="vertical-align:middle" class="team_small"></td>
-                        <td v-if="game.State === 2" class="table-right livegame-complete">[[game.HomeTeam]]</td>
-                        <td v-else class="table-right">[[game.HomeTeam]]</td>
+                        <td v-bind:class="[tableLeftClass, game.State === 2 ? gameCompleteClass : '', predictedWinner(game.Game) == 'Away' ? selectedWinnerTextClass : notSelectedWinnerTextClass]">[[game.AwayTeam]]</td>
+                        <td v-bind:class="[tableLogoClass, game.State === 2 ? gameCompleteClass : '', predictedWinner(game.Game) == 'Away' ? selectedWinnerLogoClass : notSelectedWinnerLogoClass]"><img v-bind:src="game.AwayTeam | imgurl" :alt="game.AwayTeam" style="vertical-align:middle" class="team_small"></td>
+                        <td v-bind:class="[tableCenterClass, game.State === 2 ? gameCompleteClass : '']"><span v-bind:class="[predictedWinner(game.Game) == 'Away' ? selectedWinnerTextClass : notSelectedWinnerTextClass]">[[game.AwayScore]]</span> · <span v-bind:class="[predictedWinner(game.Game) == 'Home' ? selectedWinnerTextClass : notSelectedWinnerTextClass]">[[game.HomeScore]]</span></td>
+                        <td v-bind:class="[tableLogoClass, game.State === 2 ? gameCompleteClass : '', predictedWinner(game.Game) == 'Home' ? selectedWinnerLogoClass : notSelectedWinnerLogoClass]"><img v-bind:src="game.HomeTeam | imgurl" :alt="game.HomeTeam" style="vertical-align:middle" class="team_small"></td>
+                        <td v-bind:class="[tableRightClass, game.State === 2 ? gameCompleteClass : '', predictedWinner(game.Game) == 'Home' ? selectedWinnerTextClass : notSelectedWinnerTextClass]">[[game.HomeTeam]]</td>
 
                     </tr>
                 </tbody>
@@ -114,6 +109,15 @@
         data: {
             stdClass: "livegamesnormal",
             updatedClass: "livegamesupdated",
+            tableLeftClass: "table-left",
+            tableCenterClass: "table-center",
+            tableRightClass: "table-right",
+            tableLogoClass: "table-logo",
+            gameCompleteClass: "livegame-complete",
+            selectedWinnerLogoClass: "chosenlivelogo",
+            notSelectedWinnerLogoClass: "notchosenlivelogo",
+            selectedWinnerTextClass: "chosenlivetext",
+            notSelectedWinnerTextClass: "notchosenlivetext",
             points,
             liveScores: [],
             sortedTable: [],
@@ -180,6 +184,9 @@
                     }
                 }
                 this.updateTotals();
+            },
+            predictedWinner(gameid) {
+                return preds[currentUser].find(obj => obj.game === gameid).winner
             },
             updateTotals() {
                 // Below will iterate through each user's pred pts and amend their total points for the live table

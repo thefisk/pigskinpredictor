@@ -6,15 +6,38 @@
   filter: drop-shadow(0 0 0.25rem rgb(130, 130, 130));
 }
 
-
 .chosenbanker {
-  background-color: rgba(218, 165, 32, 0.5); !important;
+  background-color: rgba(218, 165, 32, 0.5) !important;
   filter: drop-shadow(0 0 0.3rem rgb(130, 130, 130))
 }
 
 .notchosen {
   filter: grayscale(30%);
   opacity: 30%;
+}
+
+.chosenlivelogo {
+  filter: drop-shadow(0 0 0.30rem rgb(160, 160, 160));
+}
+
+.notchosenlivelogo {
+  filter: grayscale(100%);
+  opacity: 80%;
+}
+
+.chosenlivetext {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.6);
+  opacity: 70%;
+  /* letter-spacing: 1.5px; */
+}
+
+.notchosenlivetext {
+  font-weight: 400;
+  font-size: 1.1rem;
+  color: rgba(0, 0, 0, 0.25);
+  /* letter-spacing: 1.5px; */
 }
 
 .usedbanker {
