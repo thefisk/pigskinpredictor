@@ -1283,3 +1283,88 @@ def LiveScoresView(request):
         }
 
         return render(request, 'predictor/live-scores.html', context, {'title':'Sunday Live'})
+    
+### View to display live scores
+@require_GET
+def LiveScoresTestView(request):
+    if os.environ['SUNDAYLIVE'] == "FALSE":
+        return redirect('home')
+    else:
+        # Below sets score week to 1 below current results week
+        # IE - to pull scores from last completed week 
+        liveseason = int(os.environ['PREDICTSEASON'])
+        basescoreweek = int(os.environ['RESULTSWEEK'])
+        if basescoreweek > 18:
+            latest = Post.objects.all().first().pk
+            return redirect('post-latest', latest)
+        else:
+            scoreweek = int(os.environ['PREDICTSEASON']+os.environ['RESULTSWEEK'])
+
+        jsonpredsforlive = cache.get('jsonpredsforlive')
+
+        userlist = {}
+
+        for i in Banker.objects.filter(BankWeek=basescoreweek, BankSeason=liveseason).select_related('User'):
+            userlist[i.User] = i.User.Full_Name
+
+        points = []
+
+        def findJoker(user):
+            pred = Prediction.objects.filter(PredWeek=scoreweek, User=user).first()
+            if pred.Joker:
+                return "Joker"
+            else:
+                return None
+
+        for user in userlist:
+            points.append({'User':user.Full_Name, 'FavTeam':user.FavouriteTeam.ShortName, 'Joker': findJoker(user), 'Points': None})
+
+        if not jsonpredsforlive:
+            jsonpredsforlive ={}
+            for i in userlist:
+                jsonpredsforlive[i.Full_Name]=[]
+                for a in Prediction.objects.filter(PredWeek=scoreweek, User=i).select_related('Game'):
+                    # Only add Sunday games to list
+                    if a.Game.DateTime.date() == datetime.date.today():
+                    # Test 'if' for Sunday week 1
+                    # if a.Game.DateTime.date() == datetime.datetime.fromisoformat('2021-09-12').date():   
+                        jsonpredsforlive[i.Full_Name].append({
+                        'game': a.Game.GameID,
+                        'winner': a.Winner,
+                        'banker': a.Banker,
+                        'joker': a.Joker,
+                        'pts': 0
+                        })
+            cache.set('jsonpredsforlive', jsonpredsforlive, CacheTTL_1Week)
+
+        try:
+            requestuser = request.user.Full_Name
+        except(AttributeError):
+            requestuser = "None"
+
+        jsonuser = {
+            'user': requestuser
+        }
+
+        jsonurls = {
+        }
+
+        for team in Team.objects.all():
+            jsonurls[team.pk] = team.Logo.url
+
+        apiroot = {
+            'root': os.environ['APIROOT']
+        }
+
+        context = {
+            'apiroot': apiroot,
+            'points': points,
+            'jsonurls': jsonurls,
+            'jsonpreds': jsonpredsforlive,
+            'jsonuser': jsonuser,
+            'week':scoreweek,
+            'titleweek':os.environ['RESULTSWEEK'],
+            'title':'Live Scores'
+        }
+
+        return render(request, 'predictor/live-scores-test.html', context, {'title':'Sunday Live'})

@@ -29,7 +29,8 @@ from .views import (
     AmendRecordView,
     RecordsView,
     RecordDeleteView,
-    LiveScoresView
+    LiveScoresView,
+    LiveScoresTestView
 )
 from . import views
 from django.views.generic import RedirectView
@@ -64,6 +65,7 @@ urlpatterns = [
     path('week18/',Week18View, name='week-18-view'), #After Week 18
     path('ajaxdeadlineverification/',AjaxDeadlineVerification, name='report'), #AJAX
     path('live-scores/', LiveScoresView, name='live-scores'),
+    path('live-scores-test/', LiveScoresTestView, name='live-scores-test'),
     re_path(r'^favicon', RedirectView.as_view(url='https://pigskinpredictor.s3.eu-west-2.amazonaws.com/static/favicon.ico')) #Favicon Redirect
 ]
 
