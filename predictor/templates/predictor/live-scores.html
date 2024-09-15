@@ -186,8 +186,7 @@
                 this.updateTotals();
             },
             predictedWinner(gameid) { 
-                let winner = preds[currentUser].find(obj => obj.game === gameid).winner
-                return winner
+                return this.preds[currentUser].find(obj => obj.game === gameid).winner
             },
             updateTotals() {
                 // Below will iterate through each user's pred pts and amend their total points for the live table
