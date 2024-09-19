@@ -39,6 +39,7 @@ from django.views.generic import (
 )
 
 CacheTTL_1Week = 60 * 60 * 24 * 7
+CacheTTL_3Days = 60 * 60 * 24 * 3
 CacheTTL_1Day = 60 * 60 * 24
 CacheTTL_1Hour = 60 * 60
 CacheTTL_3Hours = 60 * 60 * 3
@@ -1250,7 +1251,7 @@ def LiveScoresView(request):
                         'joker': a.Joker,
                         'pts': 0
                         })
-            cache.set('jsonpredsforlive', jsonpredsforlive, CacheTTL_1Week)
+            cache.set('jsonpredsforlive', jsonpredsforlive, CacheTTL_3Days)
 
         try:
             requestuser = request.user.Full_Name
@@ -1335,7 +1336,7 @@ def LiveScoresTestView(request):
                         'joker': a.Joker,
                         'pts': 0
                         })
-            cache.set('jsonpredsforlive', jsonpredsforlive, CacheTTL_1Week)
+            cache.set('jsonpredsforlive', jsonpredsforlive, CacheTTL_3Days)
 
         try:
             requestuser = request.user.Full_Name
