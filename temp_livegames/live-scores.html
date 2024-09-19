@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Roboto|Sriracha" rel="stylesheet">
+    <link href= "pigskin.css" rel="stylesheet">
+    <link href= "materialize.pigskin.min.css" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="{% static "favicon.ico" %}"/>
+    <link href="https://cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://kit.fontawesome.com/1dfcb13660.js" crossorigin="anonymous"></script>
+    <script>
+            document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('select');
+            var instances = M.FormSelect.init(elems);
+        });
+        </script>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.sidenav');
+        var instances = M.Sidenav.init(elems);
+        });
+      </script>
+
+    <title>Pigskin Predictor</title>
+
+</head>
+
+<style>
+        body {
+          /* Set "my-sec-counter" to 0 */
+          counter-reset: my-sec-counter;
+        }
+        
+        .count::after {
+          /* Increment "my-sec-counter" by 1 */
+          counter-increment: my-sec-counter;
+          content: counter(my-sec-counter) ". ";
+        }
+        </style>
+
+<!--Vue JS-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.2/dist/vue.js"></script>
+<!--script src="https://cdn.jsdelivr.net/npm/vue@2.6.2"></script-->
+<!--Axios-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+
+<div class="container">
+<h5 class="mb-3">Sunday Live <span class = "superlowlight">|</span> week {{ titleweek }}</h5>
+    <div class="divider"></div>
+    <p><h6 class="tip">Tables update every 60 secs</h6></p>
+    <div class="row">
+        <div id="vue-table">
+            <div class="col m6 s12">
+                <table id="playerpoints" class="striped live-scores" aria-describedby="Live Sunday Scoretable">
+                <thead>
+                    <tr class="table-highlight striped table-top-pad">
+                        <td class = "stats-table-header col-100-l" colspan="2">Live Sunday Pts</td>
+                        <td class = "mobile-link"><a class="mobile-only" href="#livegames">Games</td>
+                    </tr>
+                    <tr class="table-secondary">
+                        <th class = "stats-header table-secondary-header pad-l table-right" colspan="2">Player</th>
+                        <th class = "stats-header table-secondary-header table-right">Pts</th>
+                    </tr>
+                </thead>
+                <tbody name ="livescores-score-table" is="transition-group">
+                <tr v-for="entry in points" :key="entry.User">
+                    <td v-if="entry.User ===  currentUser" class = "table-highlight enhanced clamp no-wrap vertical-centre pad-l"><img v-bind:src="entry.FavTeam | imgurl" :alt="entry.FavTeam" class="vertical-centre team_small"></img><span class="vertical-centre table-firstname"> &nbsp;[[entry.User | firstname]]</span><span class="table-secondname vertical-centre">[[entry.User | secondname]]</span><span> &nbsp;<span class=table-joker><i v-if="entry.Joker !== null" class="fas fa-check" v-bind:title="entry.Joker"></i></span></td>
+                    <td v-else class="enhanced clamp no-wrap pad-l"><img :src="entry.FavTeam | imgurl" :alt="entry.FavTeam" class="vertical-centre team_small"></img><span class="vertical-centre table-firstname"> &nbsp;[[entry.User | firstname]]</span><span class="table-secondname vertical-centre">[[entry.User | secondname]]</span> &nbsp;<span class=table-joker><i v-if="entry.Joker !== null" class="fas fa-check" v-bind:title="entry.Joker"></i></span></td>
+                    <td width="30px" v-if="entry.User ===  currentUser" class = "table-highlight enhanced clamp pad-l table-logo"></td>
+                    <td v-else td width="30px" class="enhanced clamp pad-l table-logo"></td>
+                    <td v-if="entry.User ===  currentUser" class="table-highlight"><span class="table-firstname">[[entry.Points]]</span></td>
+                    <td v-else><span class="table-firstname">[[entry.Points]]</span></td>
+                </tr>
+                </tbody>
+                </table>
+                <br>
+            </div>
+  
+        <div class="col m6 s12">
+            <table id="livegames" class="striped" aria-describedby="Live Sunday Games">
+                <thead>
+                    <tr class="table-highlight striped table-top-pad">
+                        <td class = "stats-table-header" colspan="3">Game Scores</td>
+                        <td class = "mobile-link table-left" colspan="2"><a class="mobile-only" href="#playerpoints">Points</td>
+                    </tr>
+                    <tr class="table-secondary">
+                        <th class = "stats-header table-secondary-header pad-l table-left" colspan="2">Away</th>
+                        <th class = "stats-header table-secondary-header table-center">Score</th>
+                        <th class = "stats-header table-secondary-header table-right" colspan="2">Home</th>
+                    </tr>
+                </thead>
+                <tbody name ="livegames-score-table" is="transition-group">
+                    <tr v-for="game in liveScores" :key="game.Game" v-bind:class="[game.Updated ? updatedClass : stdClass]">
+                        <!-- Away Team Name -->
+                        <td v-bind:class="[tableLeftClass, game.State === 2 ? gameCompleteClass : '']"><span v-bind:class = "[predictedWinner(game.Game) == 'Away' ? selectedWinnerTextClass : notSelectedWinnerTextClass]">[[game.AwayTeam]]</span></td>
+                        <!-- Away Team Logo -->
+                        <td v-bind:class="[tableLogoClass, game.State === 2 ? gameCompleteClass : '', predictedWinner(game.Game) == 'Away' ? selectedWinnerLogoClass : notSelectedWinnerLogoClass]"><img v-bind:src="game.AwayTeam | imgurl" :alt="game.AwayTeam" style="vertical-align:middle" class="team_small"></td>
+                        <!-- Score -->
+                        <td v-bind:class="[tableCenterClass, game.State === 2 ? gameCompleteClass : '', game.Winning === predictedWinner(game.Game) ? liveScoreCorrectClass : liveScoreIncorrectClass ]">[[game.AwayScore]] · [[game.HomeScore]]</td>
+                        <!-- Home Team Logo -->
+                        <td v-bind:class="[tableLogoClass, game.State === 2 ? gameCompleteClass : '', predictedWinner(game.Game) == 'Home' ? selectedWinnerLogoClass : notSelectedWinnerLogoClass]"><img v-bind:src="game.HomeTeam | imgurl" :alt="game.HomeTeam" style="vertical-align:middle" class="team_small"></td>
+                        <!-- Home Team Name -->
+                        <td v-bind:class="[tableRightClass, game.State === 2 ? gameCompleteClass : '']"><span v-bind:class = "[predictedWinner(game.Game) == 'Home' ? selectedWinnerTextClass : notSelectedWinnerTextClass]">[[game.HomeTeam]]</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        </div>
+        </div>
+
+<script>
+    let preds = {
+    "Nathan Fisk":
+    [
+        {
+            "banker": false,
+            "game": 123,
+            "joker": false,
+            "pts": 16,
+            "winner": "Home"
+        },
+        {
+            "banker": false,
+            "game": 124,
+            "joker": false,
+            "pts": 12,
+            "winner": "Home"
+        }
+    ]
+};
+    let apiroot = "https://test.com";
+    let points = [
+        {
+            "User": "Nathan Fisk",
+            "FavTeam": "Chi",
+            "Joker": false,
+            "Points": 14
+        },
+        {
+            "User": "Oli Child",
+            "FavTeam": "Chi",
+            "Joker": false,
+            "Points": 24
+        },
+    ]
+    let currentUser = "Nathan Fisk";
+    let logoUrls = {
+        "Chi": "CHI.png",
+        "Den": "DEN.png",
+        "Sea": "SEA.png",
+        "Atl": "ATL.png"
+     }
+    let liveScores = [
+    {
+        "AwayScore": 13,
+        "AwayTeam": "Den",
+        "Game": 123,
+        "HomeScore": 16,
+        "HomeTeam": "Sea",
+        "KickOff": 2005,
+        "State": 1,
+        "TeamIndex": 10,
+        "Updated": false,
+        "Winning": "Home",
+        "id": 723
+    },
+    {
+        "AwayScore": 14,
+        "AwayTeam": "Chi",
+        "Game": 124,
+        "HomeScore": 10,
+        "HomeTeam": "Atl",
+        "KickOff": 2005,
+        "State": 2,
+        "TeamIndex": 11,
+        "Updated": false,
+        "Winning": "Away",
+        "id": 724
+    }
+]
+</script>
+
+<script>
+    const getAPI = axios.create({
+        baseURL: apiroot.root,
+        timeout: 1000,
+    })
+</script>
+
+<script>
+    var app = new Vue({
+        delimiters: ['[[', ']]'],
+        el: '#vue-table',
+        data: {
+            stdClass: "livegamesnormal",
+            updatedClass: "livegamesupdated",
+            tableLeftClass: "table-left",
+            tableCenterClass: "table-center",
+            tableRightClass: "table-right",
+            tableLogoClass: "table-logo",
+            gameCompleteClass: "livegame-complete",
+            selectedWinnerLogoClass: "chosenlivelogo",
+            notSelectedWinnerLogoClass: "notchosenlivelogo",
+            selectedWinnerTextClass: "chosenlivetext",
+            notSelectedWinnerTextClass: "notchosenlivetext",
+            liveScoreCorrectClass: "livescorecorrect",
+            liveScoreIncorrectClass: "livescoreincorrect",
+            points,
+            liveScores,
+            sortedTable: [],
+            sortedScores: [],
+            preds,
+            logoUrls,
+            currentUser
+        },
+        filters:{
+            imgurl: function(team) {
+                return logoUrls[team]
+            },
+            firstname: function(name) {
+                return name.split(" ")[0].toLowerCase()
+            },
+            secondname: function(name) {
+                return name.split(" ")[1].toLowerCase()
+            },
+        },
+        computed:{
+        },
+        methods: {
+            // Below will amend individual pred points
+            scoreGames() {
+                let scoreData = app.liveScores
+                for (i in scoreData){
+                    let gameid = scoreData[i].Game
+                    for (user in this.preds) {
+                        let thisgame = this.preds[user].find(x => x.game === gameid)
+                        if (thisgame) {
+                            // If predictred winner is winning
+                            if(thisgame.winner === scoreData[i].Winning) {
+                                let lookup = scoreData[i].Winning + "Score"
+                                let score = scoreData[i][lookup]
+                                let multiplier = 1
+                                if(thisgame.joker === true && thisgame.banker === true) {
+                                    multiplier *= 3
+                                }
+                                if(thisgame.banker === true) {
+                                    multiplier *= 2
+                                }
+                                thisgame.pts = score * multiplier
+                            }
+                            // If predicted winner is not winning
+                            else {
+                                let lookup = scoreData[i].Winning + "Score"
+                                let score = scoreData[i][lookup]
+                                // Check if a score value exists (if game has started)
+                                if(score) {
+                                    if(thisgame.banker === true) {
+                                        let multiplier = -2
+                                        if(thisgame.joker === true) {
+                                            multiplier *= 3
+                                        }
+                                        thisgame.pts = score * multiplier
+                                    }
+                                    else {
+                                        thisgame.pts = 0
+                                    }
+                                }
+                                else {
+                                        thisgame.pts = 0
+                                    }
+                            }
+                        }
+                    }
+                }
+                this.updateTotals();
+            },
+            predictedWinner(gameid) {
+                return preds[currentUser].find(obj => obj.game === gameid).winner
+            },
+            updateTotals() {
+                // Below will iterate through each user's pred pts and amend their total points for the live table
+                for (user in preds){
+                    let usertotal = 0
+                    for (pred in preds[user]) {
+                       usertotal += preds[user][pred]['pts']
+                   }
+                   let userpts = this.points.find(x => x.User === user)
+                   userpts.Points = usertotal
+                }
+                this.sortScores();
+            },
+            sortScores() {
+                this.sortedScores = (this.liveScores.sort((a,b) => a.State - b.State || a.KickOff - b.KickOff || a.TeamIndex - b.TeamIndex));
+                this.sortTable()
+            },
+            sortTable() {
+                this.sortedTable = (this.points.sort((a, b) => b.Points - a.Points));
+                setTimeout(this.disableFlash,6000)
+            },
+            disableFlash() {
+                for (game in app.sortedScores) {
+                    app.sortedScores[game].Updated = false
+                }
+            },
+            getLiveScores() {
+                getAPI.get('/api/live-scores')
+                .then(response => {
+                    console.log('---API data received---')
+                    app.liveScores = response.data
+                })
+                .then(result => {app.scoreGames()})
+                .catch(err => {
+                    console.log(err)
+                })
+            },
+        },
+        created() {
+            // this.getLiveScores();
+            // this.timer = setInterval(this.getLiveScores, 60000);
+            //this.scoreGames();
+            //this.timer = setInterval(this.scoreGames, 60000);
+            }
+        })
+    
+</script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
+
+<script src="{% static "predictor/scripts/pigskin.js" %}"></script>

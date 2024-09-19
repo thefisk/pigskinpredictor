@@ -72,13 +72,17 @@
                 </tr>
             </thead>
             <tbody name ="livegames-score-table" is="transition-group">
-                <tr v-for="game in sortedScores" :key="game.Game" v-bind:class="[game.Updated ? updatedClass : stdClass]">
-                    <td v-bind:class="[tableLeftClass, game.State === 2 ? gameCompleteClass : '', predictedWinner(game.Game) == 'Away' ? selectedWinnerTextClass : notSelectedWinnerTextClass]">[[game.AwayTeam]]</td>
+                <tr v-for="game in liveScores" :key="game.Game" v-bind:class="[game.Updated ? updatedClass : stdClass]">
+                    <!-- Away Team Name -->
+                    <td v-bind:class="[tableLeftClass, game.State === 2 ? gameCompleteClass : '']"><span v-bind:class = "[predictedWinner(game.Game) == 'Away' ? selectedWinnerTextClass : notSelectedWinnerTextClass]">[[game.AwayTeam]]</span></td>
+                    <!-- Away Team Logo -->
                     <td v-bind:class="[tableLogoClass, game.State === 2 ? gameCompleteClass : '', predictedWinner(game.Game) == 'Away' ? selectedWinnerLogoClass : notSelectedWinnerLogoClass]"><img v-bind:src="game.AwayTeam | imgurl" :alt="game.AwayTeam" style="vertical-align:middle" class="team_small"></td>
-                    <td v-bind:class="[tableCenterClass, game.State === 2 ? gameCompleteClass : '']"><span v-bind:class="[predictedWinner(game.Game) == 'Away' ? selectedWinnerTextClass : notSelectedWinnerTextClass]">[[game.AwayScore]]</span> · <span v-bind:class="[predictedWinner(game.Game) == 'Home' ? selectedWinnerTextClass : notSelectedWinnerTextClass]">[[game.HomeScore]]</span></td>
+                    <!-- Score -->
+                    <td v-bind:class="[tableCenterClass, game.State === 2 ? gameCompleteClass : '', game.Winning === predictedWinner(game.Game) ? liveScoreCorrectClass : liveScoreIncorrectClass ]">[[game.AwayScore]] · [[game.HomeScore]]</td>
+                    <!-- Home Team Logo -->
                     <td v-bind:class="[tableLogoClass, game.State === 2 ? gameCompleteClass : '', predictedWinner(game.Game) == 'Home' ? selectedWinnerLogoClass : notSelectedWinnerLogoClass]"><img v-bind:src="game.HomeTeam | imgurl" :alt="game.HomeTeam" style="vertical-align:middle" class="team_small"></td>
-                    <td v-bind:class="[tableRightClass, game.State === 2 ? gameCompleteClass : '', predictedWinner(game.Game) == 'Home' ? selectedWinnerTextClass : notSelectedWinnerTextClass]">[[game.HomeTeam]]</td>
-
+                    <!-- Home Team Name -->
+                    <td v-bind:class="[tableRightClass, game.State === 2 ? gameCompleteClass : '']"><span v-bind:class = "[predictedWinner(game.Game) == 'Home' ? selectedWinnerTextClass : notSelectedWinnerTextClass]">[[game.HomeTeam]]</span></td>
                 </tr>
             </tbody>
         </table>
@@ -118,6 +122,8 @@ var app = new Vue({
         notSelectedWinnerLogoClass: "notchosenlivelogo",
         selectedWinnerTextClass: "chosenlivetext",
         notSelectedWinnerTextClass: "notchosenlivetext",
+        liveScoreCorrectClass: "livescorecorrect",
+        liveScoreIncorrectClass: "livescoreincorrect",
         points,
         liveScores: [],
         sortedTable: [],
