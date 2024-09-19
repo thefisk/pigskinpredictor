@@ -17,27 +17,36 @@
 }
 
 .chosenlivelogo {
-  filter: drop-shadow(0 0 0.30rem rgb(160, 160, 160));
+  filter: drop-shadow(0 0 0.30rem rgb(160, 160, 160)) !important;
 }
 
 .notchosenlivelogo {
-  filter: grayscale(100%);
-  opacity: 80%;
+  filter: grayscale(0%);
+  opacity: 70%;
+}
+
+.livescoreincorrect {
+  color: rgba(140, 15, 15, 0.70);
+}
+
+.livescorecorrect {
+  color: rgba(15, 100, 15, 0.70);
 }
 
 .chosenlivetext {
+  border: solid 2px rgba(1, 89, 157, 0.20);
+  padding: 2px 5px 3px 5px;
+  border-radius: 10px;
   font-size: 1.1rem;
   font-weight: 600;
   color: rgba(0, 0, 0, 0.6);
   opacity: 70%;
-  /* letter-spacing: 1.5px; */
 }
 
 .notchosenlivetext {
   font-weight: 400;
   font-size: 1.1rem;
-  color: rgba(0, 0, 0, 0.25);
-  /* letter-spacing: 1.5px; */
+  color: rgba(0, 0, 0, 0.4);
 }
 
 .usedbanker {
