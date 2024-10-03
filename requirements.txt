@@ -36,7 +36,7 @@ future==0.18.3
 gunicorn==22.0.0
 idna==3.7
 jmespath==0.9.4
-kombu==5..4
+kombu==5.3.4
 lxml==4.9.1
 Markdown==3.3.4
 oauthlib==3.1.0
