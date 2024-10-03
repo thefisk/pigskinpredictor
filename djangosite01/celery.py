@@ -7,7 +7,8 @@ from celery import Celery
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'djangosite01.settings')
 
 try:
-    CELERY_BROKER_URL = os.environ['REDIS_URL']
+
+    CELERY_BROKER_URL = os.environ['REDIS_URL']+"?ssl_cert_reqs=CERT_NONE"
 except:
     CELERY_BROKER_URL = "redis://127.0.0.1:6379"
 
