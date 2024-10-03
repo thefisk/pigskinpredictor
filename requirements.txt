@@ -46,7 +46,7 @@ psycopg2==2.8.4
 psycopg2-binary==2.8.5
 pynliner==0.8.0
 python-crontab==2.5.1
-python-dateutil==2.8.0
+python-dateutil==2.8.2
 python3-openid==3.1.0
 pytz==2019.3
 redis==3.5.3
