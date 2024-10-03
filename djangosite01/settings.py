@@ -257,8 +257,9 @@ CELERY_BEAT_SCHEDULE = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": os.environ.get('REDIS_URL')+"?ssl_cert_reqs=CERT_NONE",
+        "LOCATION": os.environ.get('REDIS_URL')+"/1",
         "OPTIONS": {
+            "CONNECTION_POOL_KWARGS": {"ssl_cert_reqs": None},
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
         "KEY_PREFIX": "pigskindjango",
