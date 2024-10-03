@@ -197,7 +197,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES' : ('rest_framework.permissions.IsAuthenticated',)
 }
 
-CELERY_BROKER_URL = os.environ.get('REDIS_TEMPORARY_URL')
+CELERY_BROKER_URL = os.environ.get('REDIS_URL')+"?ssl_cert_reqs=CERT_NONE"
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Europe/London'
@@ -257,7 +257,7 @@ CELERY_BEAT_SCHEDULE = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": os.environ.get('REDIS_URL')+"/1",
+        "LOCATION": os.environ.get('REDIS_URL')+"?ssl_cert_reqs=CERT_NONE"+"/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
