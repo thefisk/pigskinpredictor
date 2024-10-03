@@ -197,7 +197,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES' : ('rest_framework.permissions.IsAuthenticated',)
 }
 
-CELERY_BROKER_URL = os.environ.get('REDIS_URL')+"?ssl_cert_reqs=CERT_NONE"
+CELERY_BROKER_URL = os.environ.get('REDIS_URL')+"?ssl_cert_reqs=none"
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Europe/London'
