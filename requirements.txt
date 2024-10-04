@@ -28,7 +28,7 @@ django-redirect-to-non-www==0.1.1
 django-redis==4.12.1
 django-ses==3.5.0
 django-storages==1.7.2
-django-timezone-field==4.1.2
+django-timezone-field==5.1.0
 djangorestframework==3.12.4
 djangorestframework-csv==2.1.0
 docutils==0.15.2
