@@ -5,7 +5,6 @@ from sentry_sdk.integrations.django import DjangoIntegration
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -17,6 +16,8 @@ DEBUG = (os.environ.get('DEBUG_VALUE') == ('True'))
 
 ALLOWED_HOSTS = ['pigskinpredictor.herokuapp.com','pigskin-dev.herokuapp.com','pigskinpredictor.com', 'pigskin-2021.herokuapp.com', 'pigskin-2022.herokuapp.com']
 
+# Check if we're in a local dev environment (which might not always have debug)
+IS_LOCALDEV = (os.environ.get('IS_LOCALDEV') == ('True'))
 
 # Application definition
 
@@ -79,14 +80,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'djangosite01.wsgi.application'
 
+try:
+    dbhost = os.environ["POSTGRES_HOST"]
+except KeyError:
+    dbhost = "localhost"
+
+try:
+    dbport = os.environ["POSTGRES_PORT"]
+except KeyError:
+    dbport = ""
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.environ.get('LOCALDBNAME'),
         'USER': os.environ.get('LOCALDBUSER'),
         'PASSWORD': os.environ.get('LOCALDBPASS'),
-        'HOST': 'localhost',
-        'PORT': '',
+        'HOST': dbhost,
+        'PORT': dbport,
     }
 }
 
@@ -197,7 +208,15 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES' : ('rest_framework.permissions.IsAuthenticated',)
 }
 
-CELERY_BROKER_URL = os.environ.get('REDIS_URL')+"?ssl_cert_reqs=CERT_NONE"
+# Check if in Local Dev - Heroku now needs extra arg in URL
+if bool(os.environ["IS_LOCALDEV"]) == True:
+    CELERY_BROKER_URL = os.environ['REDIS_URL']
+else: 
+    try:
+        CELERY_BROKER_URL = os.environ['REDIS_URL']+"?ssl_cert_reqs=CERT_NONE"
+    except:
+        CELERY_BROKER_URL = "redis://127.0.0.1:6379"
+
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Europe/London'
@@ -254,19 +273,32 @@ CELERY_BEAT_SCHEDULE = {
     }
 }
 
+if IS_LOCALDEV:
+    CONNECTION_POOL_KWARGS = {}
+else:
+    CONNECTION_POOL_KWARGS = {"ssl_cert_reqs": None}
+
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": os.environ.get('REDIS_URL')+"/1",
         "OPTIONS": {
-            "CONNECTION_POOL_KWARGS": {"ssl_cert_reqs": None},
+            "CONNECTION_POOL_KWARGS": CONNECTION_POOL_KWARGS,
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
         "KEY_PREFIX": "pigskindjango",
     }
 }
 
-sentry_sdk.init(
-    dsn=os.environ['SENTRY_DSN'],
-    integrations=[DjangoIntegration()]
-)
+
+# Only initialise Sentry if Env Var present - omitted for local testing
+try:
+    SentryPresent = os.environ['SENTRY_DSN']
+except KeyError:
+    SentryAbsent = True
+    
+if SentryAbsent == False:
+    sentry_sdk.init(
+        dsn=os.environ['SENTRY_DSN'],
+        integrations=[DjangoIntegration()]
+    )
