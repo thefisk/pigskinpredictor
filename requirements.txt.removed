@@ -23,7 +23,7 @@ python-dateutil==2.8.0 # Dateutil - doesn't seem to be needed?
 python3-openid==3.1.0 # OpenID - doesn't seem to be needed?
 requests-oauthlib==1.3.0 # Oauth for Requests - doesn't seem to be needed?
 s3transfer==0.5.0 # S3 Transfer - Boto is used instead?
-six==1.13.0 # Python 2 & 3 Bridge utility - doesn't seem to be needed?
+six==1.13.0 # Python 2 & 3 Bridge utility - formerly used by django-dbbackup & django-storages - defunct in Django since 3.0
 soupsieve==2.0.1 # Beautiful Soup CSS Selector
 sqlparse==0.5.0 # SQL Parser - not sure why this would be needed?
 unicodecsv==0.14.1 # Not sure this is needed?  Poorly documented

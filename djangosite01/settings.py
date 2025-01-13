@@ -302,3 +302,6 @@ if SentryAbsent == False:
         dsn=os.environ['SENTRY_DSN'],
         integrations=[DjangoIntegration()]
     )
+
+# Setting Required for Models from Django 3.2 onwards
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"

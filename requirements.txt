@@ -1,23 +1,23 @@
-celery==5.2.2 # Period and async tasks
+celery==5.4.0 # Period and async tasks
 boto3==1.20.11 # Used for Results JSON Uploads to S3
 botocore==1.23.11 # Pre-req for Above
 certifi==2024.7.4 # Used by Requests, Mozilla's CA Bundle
-Django==2.2.28 # Django
+Django==3.2.0 # Django
 django-allauth==0.54.0 # Auth and 3rd party login support
-django-celery-beat==2.2.0 # Allows storing periodic task schedule in the database, passed as an arg to Celery worker
+django-celery-beat==2.3.0 # Allows storing periodic task schedule in the database, passed as an arg to Celery worker
 django-crispy-forms==1.8.0 # Easier Forms
-django-dbbackup==3.2.0 # Util to enable easy backups from the CLI - Probably not used?
+django-dbbackup==4.0.1 # Util to enable easy backups from the CLI - Used by Celery
 django-debug-toolbar==2.2.1 # Debug Toolbar
 django-extensions==2.2.5 # Extra admin CLI tools
 django-filter==2.4.0 # Filter QuerySets with URL Query Params
 django-heroku==0.3.1 # Archived - Consider removing
 django-inlinecss==0.3.0 # Inlince CSS needed for email generation with Django template language
-django-material==1.6.0 # Archived - Move to ViewFlow?
+django-material==1.9.0 # Archived - Move to ViewFlow?
 django-redirect-to-non-www==0.1.1 # Might Not Be Needed?
 django-redis==4.12.1 # Enables Redis as a cache backend for Django
 django-ses==3.5.0 # Django Email Backend for Amazon SES
-django-storages==1.7.2 # Storage backend, support for S3 through Boto
-django-timezone-field==4.1.2 # Timezone Model Field
+django-storages==1.8.0 # Storage backend, support for S3 through Boto
+django-timezone-field==5.0.0 # Timezone Model Field
 djangorestframework==3.12.4 # DRF
 djangorestframework-csv==2.1.0 #CSV Output for DRF
 gunicorn==22.0.0 # Webserver
