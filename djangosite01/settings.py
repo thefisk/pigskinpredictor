@@ -209,7 +209,7 @@ REST_FRAMEWORK = {
 }
 
 # Check if in Local Dev - Heroku now needs extra arg in URL
-if bool(os.environ["IS_LOCALDEV"]) == True:
+if IS_LOCALDEV:
     CELERY_BROKER_URL = os.environ['REDIS_URL']
 else: 
     try:

@@ -6,8 +6,11 @@ from celery import Celery
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'djangosite01.settings')
 
+# Check if we're in a local dev environment (which might not always have debug)
+IS_LOCALDEV = (os.environ.get('IS_LOCALDEV') == ('True'))
+
 # Check if in Local Dev - Heroku now needs extra arg in URL
-if bool(os.environ["IS_LOCALDEV"]) == True:
+if IS_LOCALDEV:
     CELERY_BROKER_URL = os.environ['REDIS_URL']
 else: 
     try:
