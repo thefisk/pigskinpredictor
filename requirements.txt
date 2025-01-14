@@ -2,24 +2,23 @@ celery==5.4.0 # Period and async tasks
 boto3==1.20.11 # Used for Results JSON Uploads to S3
 botocore==1.23.11 # Pre-req for Above
 certifi==2024.7.4 # Used by Requests, Mozilla's CA Bundle
-Django==3.2.0 # Django
-django-allauth==0.54.0 # Auth and 3rd party login support
-django-celery-beat==2.3.0 # Allows storing periodic task schedule in the database, passed as an arg to Celery worker
-django-crispy-forms==1.8.0 # Easier Forms
+Django~=4.2.0 # Django
+django-allauth==65.3.1 # Auth and 3rd party login support
+django-celery-beat==2.5.0 # Allows storing periodic task schedule in the database, passed as an arg to Celery worker
+django-crispy-forms==2.3.0 # Easier Forms
 django-dbbackup==4.0.1 # Util to enable easy backups from the CLI - Used by Celery
-django-debug-toolbar==2.2.1 # Debug Toolbar
-django-extensions==2.2.5 # Extra admin CLI tools
+django-debug-toolbar==4.4.6 # Debug Toolbar
+django-extensions==3.2.3 # Extra admin CLI tools
 django-filter==2.4.0 # Filter QuerySets with URL Query Params
 django-heroku==0.3.1 # Archived - Consider removing
-django-inlinecss==0.3.0 # Inlince CSS needed for email generation with Django template language
-django-material==1.9.0 # Archived - Move to ViewFlow?
+django-inlinecss-redux==0.4.0 # Fork of original Inline CSS - Used for Email Generation
 django-redirect-to-non-www==0.1.1 # Might Not Be Needed?
 django-redis==4.12.1 # Enables Redis as a cache backend for Django
 django-ses==3.5.0 # Django Email Backend for Amazon SES
-django-storages==1.8.0 # Storage backend, support for S3 through Boto
+django-storages==1.14.4 # Storage backend, support for S3 through Boto
 django-timezone-field==5.0.0 # Timezone Model Field
-djangorestframework==3.12.4 # DRF
-djangorestframework-csv==2.1.0 #CSV Output for DRF
+djangorestframework==3.15.2 # DRF
+djangorestframework-csv==3.0.2 #CSV Output for DRF
 gunicorn==22.0.0 # Webserver
 Markdown==3.3.4 # Markdown Support - Used by Blog
 Pillow==10.3.0 # Needed for ImageField Support on Models
@@ -30,4 +29,5 @@ redis==3.5.3 # Caching and Celery Brokerage
 requests==2.32.2 # HTTP Client Used by Django
 sentry-sdk==2.8.0 # Sentry Logging
 urllib3==1.26.19 # Dependency for Requests - might not be needed?
+django-viewflow==2.2.9 # Replaces Material Library, which used "smart_text" (unsupported as of Django 4.0)
 whitenoise==4.1.4 # Enable Static Files from Webserver

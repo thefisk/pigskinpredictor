@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.postgres.fields import JSONField
 from django.contrib.auth.models import AbstractUser, UserManager, PermissionsMixin
 from .timezones import timezonelist
 
@@ -13,8 +12,8 @@ class User(AbstractUser):
     # JokerUsed was in use in 2021 season - needs removing
     JokerUsed = models.IntegerField(null=True, blank=True, verbose_name='Joker Used')
     # JokersPlayed introduced in 2022 to replace above
-    JokersPlayed = JSONField(null=True, blank=True)
-    Positions = JSONField(null=True, blank=True)
+    JokersPlayed = models.JSONField(null=True, blank=True)
+    Positions = models.JSONField(null=True, blank=True)
     Timezone = models.CharField(null=True, blank=True, choices=timezonelist, default="Europe/London", max_length=50)
     
     def save(self, *args, **kwargs):

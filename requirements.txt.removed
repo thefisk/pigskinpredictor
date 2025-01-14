@@ -8,6 +8,8 @@ click-plugins==1.1.1 # For Above
 click-repl==0.2.0 # For Above
 cssutils==2.2.0 # Parse and build CSS
 defusedxml==0.6.0 # PAckage for parsing potentially unsafe XML
+django-inlinecss==0.3.0 # Original Inline CSS library - abandoned project, no longer works with Django 4.0+ (uses smart_text)
+django-material==1.9.0 # Archived - Moved to ViewFlow as of Django 4.0
 dj-database-url==0.5.0 # Implements DATABASE_URL env var
 docutils==0.15.2 # Turns plaintext docs into other formsats
 future==0.18.3 # Python 2 & 3 Bridge Util - absolute_imported imported but probably not used

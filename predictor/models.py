@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.postgres.fields import JSONField
 from django.db.models.deletion import CASCADE
 from django.utils import timezone
 from accounts.models import User
@@ -286,7 +285,7 @@ class Record(models.Model):
 
 class AvgScores(models.Model):
     Season = models.IntegerField(validators=[MinValueValidator(1990), MaxValueValidator(2100)])
-    AvgScores = JSONField(null=True)
+    AvgScores = models.JSONField(null=True)
 
     def __str__(self):
         return("Average Weekly Scores")

@@ -1,5 +1,4 @@
 {% extends "predictor/base.html" %}
-{% load material_form %}
 {% block content %}
 <script>
  $('#profile').each(function(){
@@ -160,12 +159,12 @@
             <br>
             <form method="post">
             {% csrf_token %}
-            {% form form=form %}
+            {% comment %} {% form form=form %}
             <span class="profile-input-border">{% part form.first_name prefix %}<i class="material-icons prefix icongrey">face</i>{% endpart %}</span>
             {% part form.last_name prefix %}<i class="material-icons prefix icongrey">face</i>{% endpart %}
             {% part form.FavouriteTeam prefix %}<i class="material-icons prefix icongrey">sports_football</i>{% endpart %}
             {% part form.Timezone prefix %}<i class="material-icons prefix icongrey">language</i>{% endpart %}
-            {% endform %}
+            {% endform %} {% endcomment %}
             <br>
             <span class="left-float"><i class="material-icons prefix centered-icon">lock_open</i><a class="reset" href="/accounts/password/reset">RESET PASSWORD &nbsp;</a></span><button type="submit" style="float: right" class="btn waves-effect waves-light">update</button>
             </form>

@@ -25,7 +25,6 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'api',
     'blog',
-    'material',
     'predictor.apps.PredictorConfig',
     'accounts.apps.AccountsConfig',
     'crispy_forms',
@@ -45,7 +44,9 @@ INSTALLED_APPS = [
     'dbbackup',
     'allauth',
     'allauth.account',
-    'allauth.socialaccount'
+    'allauth.socialaccount',
+    'viewflow',
+    'viewflow.workflow'
 ]
 
 MIDDLEWARE = [
@@ -58,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'redirect_to_non_www.middleware.RedirectToNonWww',
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = 'djangosite01.urls'
