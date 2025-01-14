@@ -7,7 +7,9 @@ from celery import Celery
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'djangosite01.settings')
 
 # Check if we're in a local dev environment (which might not always have debug)
-IS_LOCALDEV = (os.environ.get('IS_LOCALDEV') == ('True'))
+IS_LOCALDEV = (os.environ.get('ENVIRONMENT').lower() == ('localdev'))
+IS_HEROKU = (os.environ.get('ENVIRONMENT').lower() == ('heroku'))
+IS_APPLIKU = (os.environ.get('ENVIRONMENT').lower() == ('appliku'))
 
 # Check if in Local Dev - Heroku now needs extra arg in URL
 if IS_LOCALDEV:

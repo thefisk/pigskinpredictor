@@ -30,4 +30,4 @@ requests==2.32.2 # HTTP Client Used by Django
 sentry-sdk==2.8.0 # Sentry Logging
 urllib3==1.26.19 # Dependency for Requests - might not be needed?
 django-viewflow==2.2.9 # Replaces Material Library, which used "smart_text" (unsupported as of Django 4.0)
-whitenoise==4.1.4 # Enable Static Files from Webserver
+whitenoise==6.8.2 # Enable Static Files from Webserver

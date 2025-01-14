@@ -17,11 +17,14 @@ DEBUG = (os.environ.get('DEBUG_VALUE') == ('True'))
 ALLOWED_HOSTS = ['pigskinpredictor.herokuapp.com','pigskin-dev.herokuapp.com','pigskinpredictor.com', 'pigskin-2021.herokuapp.com', 'pigskin-2022.herokuapp.com']
 
 # Check if we're in a local dev environment (which might not always have debug)
-IS_LOCALDEV = (os.environ.get('IS_LOCALDEV') == ('True'))
+IS_LOCALDEV = (os.environ.get('ENVIRONMENT').lower() == ('localdev'))
+IS_HEROKU = (os.environ.get('ENVIRONMENT').lower() == ('heroku'))
+IS_APPLIKU = (os.environ.get('ENVIRONMENT').lower() == ('appliku'))
 
 # Application definition
 
 INSTALLED_APPS = [
+    "whitenoise.runserver_nostatic",
     'debug_toolbar',
     'api',
     'blog',
@@ -52,6 +55,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -135,7 +139,10 @@ LOGOUT_REDIRECT_URL = 'home'
 
 LOGIN_URL= '/accounts/login'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'predictor/static')
+# Static Root is the path where static files are stored after deployment
+# and is where collected static files are placed by collectstatic
+STATIC_ROOT = os.path.join(BASE_DIR, '/static')
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
