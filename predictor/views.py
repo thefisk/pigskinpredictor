@@ -105,7 +105,7 @@ def ProfileView(request):
     else:
         try:
             requestor = request.user
-            alltime = ScoresAllTime.objects.get(User=requestor)
+            alltime = ScoresAllTime.objects.get(User=requestor.id)
         except ScoresAllTime.DoesNotExist:
             return redirect('profile-newplayer')
         else:
