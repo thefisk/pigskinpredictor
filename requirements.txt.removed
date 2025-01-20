@@ -19,6 +19,8 @@ kombu==5.2.4 # Interface for AMQP, used by Celery?
 lxml==4.9.1 # XML/HTML parsing - used in old result import scripts prior to ESPN API
 oauthlib==3.1.0 # Oauth support - doesn't seem to be used
 prompt-toolkit==3.0.18 # Tool for building CLI apps
+# psycopg2==2.9.10 # Replaced by v3 | Postgres Support - MUST be < 2.9 for Django 2.2, so will need bumping for Django 5
+# psycopg2-binary==2.9.10 # Replaced by v3 | Postgres Support - MUST be < 2.9 for Django 2.2, so will need bumping for Django 5
 pynliner==0.8.0 # Convert CSS to inline HTML - might be used by django-inlinecss?
 python-crontab==2.5.1 # Doesn't seem to be needed - Celery uses its own Crontab implementation?
 python-dateutil==2.8.0 # Dateutil - doesn't seem to be needed?

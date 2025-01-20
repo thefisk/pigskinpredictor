@@ -8,6 +8,7 @@ django-celery-beat==2.5.0 # Allows storing periodic task schedule in the databa
 django-crispy-forms==2.3.0 # Easier Forms
 django-dbbackup==4.0.1 # Util to enable easy backups from the CLI - Used by Celery
 django-debug-toolbar==4.4.6 # Debug Toolbar
+django-environ==0.12.0 # Easy config of things like DB from Env Vars
 django-extensions==3.2.3 # Extra admin CLI tools
 django-filter==2.4.0 # Filter QuerySets with URL Query Params
 django-heroku==0.3.1 # Archived - Consider removing
@@ -22,8 +23,7 @@ djangorestframework-csv==3.0.2 #CSV Output for DRF
 gunicorn==22.0.0 # Webserver
 Markdown==3.3.4 # Markdown Support - Used by Blog
 Pillow==10.3.0 # Needed for ImageField Support on Models
-psycopg2==2.8.4 # Postgres Support - MUST be < 2.9 for Django 2.2, so will need bumping for Django 5
-psycopg2-binary==2.8.5 # Postgres Support - MUST be < 2.9 for Django 2.2, so will need bumping for Django 5
+psycopg[binary]==3.2.3 # Python PostGres support, used by Django ORM
 pytz==2019.3 # Timezones <- Depracated, Switch to zoneinfo for Django 5 onwards
 redis==3.5.3 # Caching and Celery Brokerage
 requests==2.32.2 # HTTP Client Used by Django

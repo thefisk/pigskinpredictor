@@ -1,6 +1,11 @@
-import os, django_heroku, sentry_sdk
+import os, sentry_sdk, environ
 from celery.schedules import crontab
 from sentry_sdk.integrations.django import DjangoIntegration
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -9,12 +14,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = env("SECRET_KEY", default="change_me")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = (os.environ.get('DEBUG_VALUE') == ('True'))
+DEBUG = env("DEBUG", default=False)
 
-ALLOWED_HOSTS = ['pigskinpredictor.herokuapp.com','pigskin-dev.herokuapp.com','pigskinpredictor.com', 'pigskin-2021.herokuapp.com', 'pigskin-2022.herokuapp.com']
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*"])
 
 # Check if we're in a local dev environment (which might not always have debug)
 IS_LOCALDEV = (os.environ.get('ENVIRONMENT').lower() == ('localdev'))
@@ -86,26 +91,36 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'djangosite01.wsgi.application'
 
-try:
-    dbhost = os.environ["POSTGRES_HOST"]
-except KeyError:
-    dbhost = "localhost"
+INITIAL_DB = env.db(default="sqlite:///db.sqlite3")
 
-try:
-    dbport = os.environ["POSTGRES_PORT"]
-except KeyError:
-    dbport = ""
+# if DEBUG:
+#     DATABASE = INITIAL_DB | { 'OPTIONS': {
+#         'sslmode' : 'allow'
+#         }
+#     }
+# else:
+#     DATABASE = INITIAL_DB
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('LOCALDBNAME'),
-        'USER': os.environ.get('LOCALDBUSER'),
-        'PASSWORD': os.environ.get('LOCALDBPASS'),
-        'HOST': dbhost,
-        'PORT': dbport,
-    }
+    "default": env.db(default="sqlite:///db.sqlite3")
 }
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": "default",
+#         "USER": "postgres",
+#         "PASSWORD": "PG_password",
+#         "HOST": "pigskinpredictor-database-1234567",
+#         "PORT": "5432",
+#         "OPTIONS": {"sslmode": "allow"}
+#     }
+# }
+
+# if DEBUG:
+    # env.db seems to disregard query param and set sslmode to required, even in debug mode
+    # this tweak should allow local environment to connect to PostGres without SSL
+# DATABASES["default"]["OPTIONS"]["sslmode"] = "allow"
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -209,7 +224,7 @@ ACCOUNT_FORMS = {
 }
 
 # staticfiles=False added so Heroku will use S3.  Without, it uses local!
-django_heroku.settings(locals(), staticfiles=False)
+# django_heroku.settings(locals(), staticfiles=False, databases=False)
 
 INTERNAL_IPS = ['127.0.0.1']
 
@@ -282,6 +297,7 @@ CELERY_BEAT_SCHEDULE = {
     }
 }
 
+# This setting is used by Django-Redis
 if IS_LOCALDEV:
     CONNECTION_POOL_KWARGS = {}
 else:
@@ -314,3 +330,12 @@ if SentryAbsent == False:
 
 # Setting Required for Models from Django 3.2 onwards
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {"console": {"class": "logging.StreamHandler"}},
+    "loggers": {"": {"handlers": ["console"], "level": "DEBUG"}},
+}
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

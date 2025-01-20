@@ -15,14 +15,14 @@ services:
        - 8001:8001 
 
    database:
-     image: postgres:13
+     image: postgres:16
      restart: unless-stopped
      environment:
        - POSTGRES_USER=postgres
        - POSTGRES_PASSWORD=PG_password
        - POSTGRES_DB=default
      volumes:
-       - ./postgres-data:/var/lib/postgresql/default
+       - ./postgres-data:/var/lib/postgresql/data
      ports:
        - 5432:5432
     
