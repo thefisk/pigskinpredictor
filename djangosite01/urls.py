@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views 
 from django.urls import path, include
 from django.conf import settings
+from debug_toolbar.toolbar import debug_toolbar_urls
 from django.conf.urls.static import static
 
 urlpatterns = [
@@ -16,6 +17,6 @@ urlpatterns = [
     path('password-reset/done', auth_views.PasswordResetDoneView.as_view(template_name='users/password_reset_done.html'), name='password_reset_done'), #this is a 'class based view', by default logout will return the admin screen login screen (not desirable)
     path('password-reset-confirm/<uidb64>/<token>', auth_views.PasswordResetConfirmView.as_view(template_name='users/password_reset_confirm.html'), name='password_reset_confirm'), #this is a 'class based view', by default logout will return the admin screen login screen (not desirable)
     path('password-reset-complete/', auth_views.PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'), name='password_reset_complete'), #this is a 'class based view', by default logout will return the admin screen login screen (not desirable)
-]
+] + debug_toolbar_urls()
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,5 +1,6 @@
 {% extends "predictor/base.html" %}
-{% load material_form %}
+{% load crispy_forms_tags %}
+{% crispy form login_form.helper %}
 {% block content %}
 <script>
         $('#login').each(function(){
@@ -13,17 +14,13 @@
         <div class="col s8 m8 l8">
             <h5>Login</h5>
             <form method="post">
-            {% csrf_token %}
-            {% form form=form %}
-            {% part form.login prefix %}<i class="material-icons prefix">email</i>{% endpart %}
-            {% part form.password prefix %}<i class="material-icons prefix">lock_open</i>{% endpart %}
-            {% endform %}
+                {% csrf_token %}
+                {% crispy form %}
             <button class="btn waves-effect waves-light" type="submit" name="action">Login
             <i class="material-icons right">send</i>
             </button>
             </form>
             <p>Not registered?  Join <a href="/accounts/signup/">here</a>.</p>
-            <p>Forgotten your password?  Reset it <a href="/accounts/password/reset">here</a>.</p>
         </div>
     <div class="col s2 m2 l2"></div>
     </div>

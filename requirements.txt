@@ -2,8 +2,10 @@ celery==5.4.0 # Period and async tasks
 boto3==1.20.11 # Used for Results JSON Uploads to S3
 botocore==1.23.11 # Pre-req for Above
 certifi==2024.7.4 # Used by Requests, Mozilla's CA Bundle
+crispy-bootstrap5==2024.10 # Bootstrap Template Pack for Crispy Forms
 Django~=4.2.0 # Django
 django-allauth==65.3.1 # Auth and 3rd party login support
+django-bootstrap-v5==1.0.11 # Bootstrap 5
 django-celery-beat==2.5.0 # Allows storing periodic task schedule in the database, passed as an arg to Celery worker
 django-crispy-forms==2.3.0 # Easier Forms
 django-dbbackup==4.0.1 # Util to enable easy backups from the CLI - Used by Celery

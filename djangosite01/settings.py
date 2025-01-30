@@ -32,10 +32,12 @@ INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     'debug_toolbar',
     'api',
+    'bootstrap5',
     'blog',
     'predictor.apps.PredictorConfig',
     'accounts.apps.AccountsConfig',
     'crispy_forms',
+    'crispy_bootstrap5',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -147,7 +149,8 @@ USE_L10N = True
 
 USE_TZ = True
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
@@ -221,12 +224,17 @@ ACCOUNT_ADAPTER = "accounts.adapters.AccountAdapter"
 
 ACCOUNT_FORMS = {
 'signup': 'accounts.forms.CustomSignupForm',
+'login': 'accounts.forms.CustomLoginForm'
+
 }
 
 # staticfiles=False added so Heroku will use S3.  Without, it uses local!
 # django_heroku.settings(locals(), staticfiles=False, databases=False)
 
-INTERNAL_IPS = ['127.0.0.1']
+INTERNAL_IPS = [
+    '127.0.0.1',
+    '172.18.0.5'
+    ]
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES' : ('rest_framework.permissions.IsAuthenticated',)
