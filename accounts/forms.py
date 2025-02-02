@@ -8,7 +8,8 @@ from predictor.models import Team
 from django.contrib.auth import get_user_model
 from .timezones import timezonelist
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, Submit, Div, Field
+from crispy_bulma.layout import Layout, Submit, Field
+from crispy_forms.layout import Fieldset, Div
 
 class Row(Div):
     css_class = 'row g-3 form-floating mb-3'
@@ -22,6 +23,7 @@ class CustomLoginForm(LoginForm):
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
         self.helper.form_action = 'submit_survey'
+        self.form.render_hidden_fields = False
 
     def login(self, *args, **kwargs):
         return super(CustomLoginForm, self).login(*args, **kwargs)
@@ -67,25 +69,18 @@ class CustomSignupForm(SignupForm):
             #     'fav_team',
             #     'timezone'
             # ),
-            Row(
-                Field('email', wrapper_class='form-group col-md-12 mb-0'),
-            ),
-            Row(
-                Field('password1', wrapper_class='form-group col-md-6 mb-0'),
-                Field('password2', wrapper_class='form-group col-md-6 mb-0')
-            ), 
-            Row(
-                Field('first_name', wrapper_class='form-group col-md-6 mb-0'),
-                Field('last_name', wrapper_class='form-group col-md-6 mb-0')
-            ),   
-            Row(
-                Field('fav_team', wrapper_class='form-group col-md-6 mb-0'),
-                Field('timezone', wrapper_class='form-group col-md-6 mb-0')
-            ),  
+
+            Field('email'),
+            Field('password1'),
+            Field('password2'),
+            Field('first_name'),
+            Field('last_name'),
+            Field('fav_team', css_class='my_test'),
+            Field('timezone'),
             Submit('action', 'Register', css_class='button blue')
         )
         self.helper.form_id = 'id-signup'
-        self.helper.form_class = 'blueForms'
+        self.helper.form_class = 'fisk_form_class'
         self.helper.form_method = 'post'
         self.helper.form_action = 'register'
     

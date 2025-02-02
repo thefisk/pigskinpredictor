@@ -32,12 +32,11 @@ INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     'debug_toolbar',
     'api',
-    'bootstrap5',
     'blog',
     'predictor.apps.PredictorConfig',
     'accounts.apps.AccountsConfig',
     'crispy_forms',
-    'crispy_bootstrap5',
+    'crispy_bulma',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -149,8 +148,8 @@ USE_L10N = True
 
 USE_TZ = True
 
-CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
-CRISPY_TEMPLATE_PACK = 'bootstrap5'
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bulma'
+CRISPY_TEMPLATE_PACK = 'bulma'
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'

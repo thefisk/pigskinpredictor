@@ -3,10 +3,20 @@
 {% crispy form signup_form.helper %}
 {% block content %}
 <script>
-        $('#register').each(function(){
-               $(this).toggleClass('active');
-           });
-       </script>
+    $('#register').each(function(){
+            $(this).toggleClass('active');
+    });
+</script>
+
+<style>
+    .asterisk {
+        display: none;
+    }
+    input {
+        display: none;
+    }
+</style>
+
 <div class="container">
             <h5>Register</h5>
             {% crispy form %}
