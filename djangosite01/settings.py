@@ -226,7 +226,10 @@ ACCOUNT_FORMS = {
 # staticfiles=False added so Heroku will use S3.  Without, it uses local!
 # django_heroku.settings(locals(), staticfiles=False, databases=False)
 
-INTERNAL_IPS = ['127.0.0.1']
+INTERNAL_IPS = [
+    '127.0.0.1',
+    '172.18.0.5'
+    ]
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES' : ('rest_framework.permissions.IsAuthenticated',)
