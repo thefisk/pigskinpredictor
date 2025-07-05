@@ -301,10 +301,10 @@ CELERY_BEAT_SCHEDULE = {
 }
 
 # This setting is used by Django-Redis
-if IS_LOCALDEV:
-    CONNECTION_POOL_KWARGS = {}
-else:
+if IS_HEROKU:
     CONNECTION_POOL_KWARGS = {"ssl_cert_reqs": None}
+else:
+    CONNECTION_POOL_KWARGS = {}
 
 CACHES = {
     "default": {
