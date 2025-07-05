@@ -17,5 +17,9 @@ class AccountAdapter(DefaultAccountAdapter):
         return user
 
     def is_open_for_signup(self, request):
-        return (os.environ['REGISTRATION_OPEN'] == "True")
+        try:
+            isopen = os.environ.get('REGISTRATION_OPEN').lower()
+        except:
+            isopen = 'regopenvarmissing'
+        return isopen == "true"
         # Returns True or False to manage registration status

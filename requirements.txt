@@ -1,4 +1,5 @@
 celery==5.4.0 # Period and async tasks
+crispy-bootstrap5==2024.10 # Template pack for Crispy forms
 boto3==1.20.11 # Used for Results JSON Uploads to S3
 botocore==1.23.11 # Pre-req for Above
 certifi==2024.7.4 # Used by Requests, Mozilla's CA Bundle
