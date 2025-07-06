@@ -22,9 +22,14 @@ DEBUG = env("DEBUG", default=False)
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*"])
 
 # Check if we're in a local dev environment (which might not always have debug)
-IS_LOCALDEV = (os.environ.get('ENVIRONMENT').lower() == ('localdev'))
-IS_HEROKU = (os.environ.get('ENVIRONMENT').lower() == ('heroku'))
-IS_APPLIKU = (os.environ.get('ENVIRONMENT').lower() == ('appliku'))
+try:
+    myenv = os.environ.get('ENVIRONMENT').lower()
+except:
+    myenv = 'environmentmissing'
+    
+IS_LOCALDEV = myenv == ('localdev')
+IS_HEROKU = myenv == ('heroku')
+IS_APPLIKU = myenv == ('appliku')
 
 # Application definition
 
