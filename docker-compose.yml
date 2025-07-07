@@ -36,7 +36,18 @@ services:
 
    celery:
      build: .
-     command: celery -A djangosite01 worker --beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+     command: celery -A djangosite01 worker -l INFO --max-memory-per-child=512000 --concurrency=1
+     restart: unless-stopped
+     volumes:
+      - $PWD:/app
+     env_file:
+      - app.env
+     depends_on:
+      - redis
+
+   beat:
+     build: .
+     command: celery -A djangosite01 beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
      restart: unless-stopped
      volumes:
       - $PWD:/app
