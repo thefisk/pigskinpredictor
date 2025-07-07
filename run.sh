@@ -1,3 +1,3 @@
 #!/bin/sh
 set -e
-gunicorn project.wsgi --log-file -
+gunicorn djangosite01.wsgi --log-file -
