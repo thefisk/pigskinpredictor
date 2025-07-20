@@ -1,4 +1,4 @@
-import os, json, requests
+import os, json, requests, sys
 from django.core.management.base import BaseCommand
 
 # Below custom managament command added in Appliku migration
@@ -10,6 +10,7 @@ class Command(BaseCommand):
     
     def add_arguments(self, parser):
         # Positional arguments
+        parser.add_argument("weektype", type=str)
         parser.add_argument("utctime", type=int)
     
     def handle(self, *args, **kwargs):
@@ -18,8 +19,20 @@ class Command(BaseCommand):
         id               = os.environ['APPLIKUAPPID']
         applikuapikey    = os.environ['APPLIKUAPIKEY']
         timezonedbapikey = os.environ['TIMEZONEDBAPIKEY']
-        currentweek      = os.environ['PREDICTWEEK']
         utctime          = kwargs['utctime']
+        weektype         = kwargs['weektype'].lower()
+
+        match weektype:
+            case "predict":
+                varweek = "PREDICTWEEK"
+            case "results":
+                varweek = "RESULTSWEEK"
+            case _:
+                sys.exit("Invalid week type argument provided - exiting.")
+
+        currentweek      = os.environ[varweek]
+
+        print(f"Type was declared as {weektype}")
         
         # UTC Checks
         # Script will be called at both 8pm and 9pm UTC by Cronjob
@@ -39,10 +52,10 @@ class Command(BaseCommand):
         print(f"Discovered timezone is {discoveredtimezone}")
         print(f"This script was called at {utctime}PM UTC")
         if discoveredtimezone == changeontz:
-            print("Local Time in Europe/London is 21:00 so incrementing PREDICTWEEK variable")
+            print(f"Local Time in Europe/London is 21:00 so incrementing {varweek} variable")
             increment = True
         else:
-            print("Local Time in Europe/London is NOT 21:00 so PREDICTWEEK variable will not increment")
+            print(f"Local Time in Europe/London is NOT 21:00 so {varweek} variable will not increment")
             increment = False
         # Conditionally Update PredictWeek Env Var
         if increment:
@@ -53,7 +66,7 @@ class Command(BaseCommand):
             print("Current week is "+currentweek)
             body = r.json()
             for var in body['env_vars']:
-                if var['name'] == 'PREDICTWEEK':
+                if var['name'] == varweek:
                     weekobj = var
             weekobj['value'] = str(int(weekobj['value'])+1)
             envvars = { 'env_vars' : [ weekobj ] }
@@ -63,4 +76,4 @@ class Command(BaseCommand):
             if update.status_code != 200:
                 print(f"Error: {update.reason}")
             else:
-                print(f"Successfully updated PREDICTWEEK to {weekobj['value']}")
+                print(f"Successfully updated {varweek} to {weekobj['value']}")
