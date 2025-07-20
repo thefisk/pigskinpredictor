@@ -28,37 +28,50 @@ class Command(BaseCommand):
         match weektype:
             case "predict":
                 varweek = "PREDICTWEEK"
+                correcttime = "21:00"
             case "results":
                 varweek = "RESULTSWEEK"
+                correcttime = "08:00"
             case _:
                 sys.exit("Invalid week type argument provided - exiting.")
 
         currentweek      = os.environ[varweek]
-
-        print(f"Type was declared as {weektype}")
         
         # UTC Checks
-        # Script will be called at both 8pm and 9pm UTC by Cronjob
-        # We want local time to always be 9PM
+        # Script will be called at 8pm and 9pm (for predictweek deadline) & 7am and 8am (for resultsweek table updates) UTC by Cronjob
+        # We want local time to always be 9PM/8AM
         # When local time is BST, 9pm BST is 8PM UTC
         # When local time is GMT, 9pm GMT is 9pm UTC
         changeondict = {
-            8: 'BST',
-            9: 'GMT'
+            'predict' : {
+                20: 'BST',
+                21: 'GMT'
+                },
+            'results': {
+                7: 'BST',
+                8: 'GMT'
+                }
             }
         
-        changeontz = changeondict[utctime]
+        if not utctime in changeondict[weektype]:
+            sys.exit("Incorrect UTC time provided - exiting.")
+
+        
+        print(f"Type was declared as {weektype}")
+        
+        # changeontz provides the string timezone that this invocation should increment on
+        changeontz = changeondict[weektype][utctime]
         # Timezone Check
         apiparams = {"key" : timezonedbapikey, "by" : "zone", "zone" : "Europe/London", "format" : "json"}
         zonereq = requests.get(url="http://api.timezonedb.com/v2.1/get-time-zone", params=apiparams)
         discoveredtimezone = zonereq.json()['abbreviation']
         print(f"Discovered timezone is {discoveredtimezone}")
-        print(f"This script was called at {utctime}PM UTC")
+        print(f"This script was called at {utctime}:00 UTC")
         if discoveredtimezone == changeontz:
-            print(f"Local Time in Europe/London is 21:00 so incrementing {varweek} variable")
+            print(f"Local Time in Europe/London is {correcttime} so incrementing {varweek} variable")
             increment = True
         else:
-            print(f"Local Time in Europe/London is NOT 21:00 so {varweek} variable will not increment")
+            print(f"Local Time in Europe/London is NOT {correcttime} so {varweek} variable will not increment")
             increment = False
         # Conditionally Update PredictWeek Env Var
         if increment:
