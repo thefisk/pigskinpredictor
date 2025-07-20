@@ -1,10 +1,13 @@
 import os, json, requests, sys
 from django.core.management.base import BaseCommand
 
-# Below custom managament command added in Appliku migration
+# Below custom management command added in Appliku migration
 # Moved from ./predictor/apps.py because we need to run this
 # AFTER the app has started in Appliku - this is triggered
-# byy release.sh
+# by release.sh
+
+# should be invoked by 'python manage.py updateweek predict 8' etc
+# the above would be the invocation command to run at 8pm utc for the PREDICTWEEK variable
 
 class Command(BaseCommand):
     
