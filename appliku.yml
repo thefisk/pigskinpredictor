@@ -72,7 +72,7 @@ databases:
   redis:
     type: redis_7
 cronjobs:
-  increment_predictweek_2100:
+  increment_predictweek_2000:
     schedule: "0 20 * * 4" # 20:00 every Thursday - for BST
     command: python manage.py updateweek predict 20
   increment_predictweek_2100:
@@ -81,6 +81,6 @@ cronjobs:
   increment_resultsweek_0700:
     schedule: "0 7 * * 3" # 07:00 every Wednesday - for GMT
     command: python manage.py updateweek results 7
-  increment_resultsweek_0700:
+  increment_resultsweek_0800:
     schedule: "0 8 * * 3" # 08:00 every Wednesday - for BST
     command: python manage.py updateweek results 8
