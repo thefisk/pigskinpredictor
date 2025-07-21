@@ -6,7 +6,7 @@ from django.core.management.base import BaseCommand
 # AFTER the app has started in Appliku - this is triggered
 # by release.sh
 
-# should be invoked by 'python manage.py updateweek predict 8' etc
+# should be invoked by 'python manage.py updateweek predict 20' etc
 # the above would be the invocation command to run at 8pm utc for the PREDICTWEEK variable
 
 class Command(BaseCommand):
