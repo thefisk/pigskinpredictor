@@ -1,0 +1,73 @@
+build_settings:
+  build_image: python-3.10
+  environment_variables:
+    - name: DATABASE_URL
+      from_database:
+        name: db
+        property: private_connection_url
+    - name: APPLIKUTEAM
+      source: manual
+    - name: APPLIKUAPPID
+      source: manual
+    - name: APPLIKUAPIKEY
+      source: manual
+    - name: TIMEZONEDBAPIKEY
+      source: manual
+    - name: PREDICTSEASON
+      value: '2024'
+    - name: PREDICTWEEK
+      source: manual
+    - name: RESULTSWEEK
+      source: manual
+    - name: REMINDERS_ON
+      source: manual
+    - name: REGISTRATION_OPEN
+      source: manual
+    - name: SUNDAYLIVE
+      source: manual
+    - name: SENTRY_KEY
+      source: manual
+    - name: SENTRY_DSN
+      source: manual
+    - name: ENVIRONMENT
+      value: Appliku
+    - name: SECRET_KEY
+      source: manual
+    - name: AWS_ACCESS_KEY_ID
+      vsource: manual
+    - name: AWS_SECRET_ACCESS_KEY
+      source: manual
+    - name: AWS_STORAGE_BUCKET_NAME
+      source: manual
+    - name: APIROOT
+      value: pigskinpredictor.com
+    - name: DEBUG_VALUE
+      value: FALSE
+    - name: EMAIL_PASSWORD
+      source: manual
+    - name: MAINTENANCE_PAGE_URL
+      source: manual
+    - name: PIGENV
+      value: pigskinpredictor
+    - name: REDIS_URL
+      from_database:
+        name: redis
+        property: private_connection_url
+services:
+  beat:
+    command: celery -A djangosite01 beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    scale: 1
+  celery:
+    command: celery -A djangosite01 worker -l INFO --max-memory-per-child=512000 --concurrency=1
+    scale: 1
+  release:
+    command: bash release.sh
+    scale: 1
+  web:
+    command: bash run.sh
+    scale: 1
+databases:
+  db:
+    type: postgresql_16
+  redis:
+    type: redis_7
