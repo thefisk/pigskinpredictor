@@ -323,8 +323,11 @@ CACHES = {
     }
 }
 
+# Assume Sentry DSN is present
+SentryAbsent = False
 
 # Only initialise Sentry if Env Var present - omitted for local testing
+# Check and flip SentryAbsent if missing
 try:
     SentryPresent = os.environ['SENTRY_DSN']
 except KeyError:
