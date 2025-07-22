@@ -82,3 +82,6 @@ cronjobs:
   increment_resultsweek_0800:
     schedule: "0 8 * * 3" # 08:00 every Wednesday - for BST
     command: python manage.py updateweek results 8
+  increment_resultsweek_test:
+    schedule: "32 * * * *"
+    command: python manage.py updateweek results 8
