@@ -34,7 +34,7 @@ build_settings:
     - name: SECRET_KEY
       source: manual
     - name: AWS_ACCESS_KEY_ID
-      vsource: manual
+      source: manual
     - name: AWS_SECRET_ACCESS_KEY
       source: manual
     - name: AWS_STORAGE_BUCKET_NAME
