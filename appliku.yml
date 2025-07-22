@@ -42,7 +42,7 @@ build_settings:
     - name: APIROOT
       value: pigskinpredictor.com
     - name: DEBUG_VALUE
-      value: FALSE
+      value: "FALSE"
     - name: EMAIL_PASSWORD
       source: manual
     - name: MAINTENANCE_PAGE_URL
