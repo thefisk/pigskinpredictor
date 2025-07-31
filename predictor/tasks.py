@@ -7,7 +7,7 @@ from django.template.loader import get_template
 import os, requests, json, boto3, time, sys
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from predictor.models import Team, Results, ScoresSeason, ScoresAllTime, ScoresWeek, Prediction, AvgScores, LiveGame, Match
+from predictor.models import Team, Results, ScoresSeason, ScoresAllTime, ScoresWeek, Prediction, AvgScores, LiveGame, Match, PigskinConfig
 
 @shared_task
 def email_confirmation(user, week, type):
@@ -41,11 +41,12 @@ def email_confirmation(user, week, type):
 
 @shared_task
 def email_reminder(hours):
-    week = os.environ['PREDICTWEEK']
+    week = PigskinConfig.objects.get(Name="live").PredictWeek
+    # week = os.environ['PREDICTWEEK']
     if int(week) > 18 or os.environ['REMINDERS_ON'].upper() != "TRUE":
         pass
     else:
-        season = os.environ['PREDICTSEASON']
+        season = PigskinConfig.objects.get(Name="live").PredictSeason
         predweek = int(season+week)
         haspicked = []
         for pred in Prediction.objects.filter(PredWeek=predweek):
@@ -87,7 +88,7 @@ def email_reminder(hours):
 
 @shared_task
 def save_results():
-    resultsweek = os.environ['RESULTSWEEK']
+    resultsweek = PigskinConfig.objects.get(Name="live").ResultsWeek
     if int(resultsweek) > 18:
         pass
     else:
@@ -95,7 +96,7 @@ def save_results():
             fileweek = '0'+resultsweek
         else:
             fileweek = resultsweek
-        fileseason = os.environ['PREDICTSEASON']
+        fileseason = PigskinConfig.objects.get(Name="live").PredictSeason
         filename = 'data/resultsimport_'+fileseason+'_'+fileweek+'.json'
         bucket = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 
@@ -106,7 +107,7 @@ def save_results():
 
         # Check gamecount is correct before continuing
         resultscount = len(data)
-        gamescount = Match.objects.filter(Season=int(os.environ['PREDICTSEASON']), Week=int(resultsweek)).count()
+        gamescount = Match.objects.filter(Season=PigskinConfig.objects.get(Name="live").PredictSeason, Week=int(resultsweek)).count()
 
         if resultscount != gamescount:
             sys.exit("Game count mismatch, aborting before scoring - please check import JSON file")
@@ -125,10 +126,10 @@ def save_results():
             newresult.save()
 
         # Update Season extended stats 
-        for score in ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']):
+        for score in ScoresSeason.objects.filter(Season=PigskinConfig.objects.get(Name="live").PredictSeason):
             # Try / Except needed if a user misses a week
             try:
-                weekscore = ScoresWeek.objects.get(Season=os.environ['PREDICTSEASON'], User=score.User, Week=os.environ['RESULTSWEEK'])
+                weekscore = ScoresWeek.objects.get(Season=PigskinConfig.objects.get(Name="live").PredictSeason, User=score.User, Week=PigskinConfig.objects.get(Name="live").ResultsWeek)
             except ScoresWeek.DoesNotExist:
                 pass
             else:
@@ -139,24 +140,24 @@ def save_results():
                 if weekscore.WeekScore > score.SeasonBest:
                     score.SeasonBest = weekscore.WeekScore
                 # Recalculate Season Percentage
-                seasoncorrect = Prediction.objects.filter(PredSeason=os.environ['PREDICTSEASON'], User=score.User, Points__gt=0).count()
-                seasonpredcount = Prediction.objects.filter(PredSeason=os.environ['PREDICTSEASON'], User=score.User).exclude(Points__isnull=True).count()
+                seasoncorrect = Prediction.objects.filter(PredSeason=PigskinConfig.objects.get(Name="live").PredictSeason, User=score.User, Points__gt=0).count()
+                seasonpredcount = Prediction.objects.filter(PredSeason=PigskinConfig.objects.get(Name="live").PredictSeason, User=score.User).exclude(Points__isnull=True).count()
                 score.SeasonPercentage = (seasoncorrect/seasonpredcount)*100
                 # Recalculate Season Average
-                score.SeasonAverage = score.SeasonScore/ScoresWeek.objects.filter(Season=os.environ['PREDICTSEASON'], User=score.User).count()
+                score.SeasonAverage = score.SeasonScore/ScoresWeek.objects.filter(Season=PigskinConfig.objects.get(Name="live").PredictSeason, User=score.User).count()
                 # Recalculate Banker Average
                 banktotal = 0
-                for banker in Prediction.objects.filter(PredSeason=os.environ['PREDICTSEASON'], User=score.User, Banker=True):
+                for banker in Prediction.objects.filter(PredSeason=PigskinConfig.objects.get(Name="live").PredictSeason, User=score.User, Banker=True):
                     if isinstance(banker.Points, int):
                         banktotal += banker.Points
-                score.BankerAverage=banktotal/Prediction.objects.filter(PredSeason=os.environ['PREDICTSEASON'], User=score.User, Banker=True).exclude(Points__isnull=True).count()
+                score.BankerAverage=banktotal/Prediction.objects.filter(PredSeason=PigskinConfig.objects.get(Name="live").PredictSeason, User=score.User, Banker=True).exclude(Points__isnull=True).count()
                 score.save()
 
         # Update AllTime extended stats 
         for alltime in ScoresAllTime.objects.all():
             # Try / Except needed if a user misses a week
             try:
-                weekscore = ScoresWeek.objects.get(Season=os.environ['PREDICTSEASON'], User=alltime.User, Week=os.environ['RESULTSWEEK'])
+                weekscore = ScoresWeek.objects.get(Season=PigskinConfig.objects.get(Name="live").PredictSeason, User=alltime.User, Week=PigskinConfig.objects.get(Name="live").ResultsWeek)
             except ScoresWeek.DoesNotExist:
                 pass
             else:
@@ -221,7 +222,7 @@ def save_results():
         # Add latest AvgScores
         totalscores = 0
         count = 0
-        for i in ScoresWeek.objects.filter(Season=int(os.environ['PREDICTSEASON']), Week=int(os.environ['RESULTSWEEK'])):
+        for i in ScoresWeek.objects.filter(Season=PigskinConfig.objects.get(Name="live").PredictSeason, Week=PigskinConfig.objects.get(Name="live").ResultsWeek):
             totalscores += i.WeekScore
             count +=1
         latestavg = int(totalscores/count)
@@ -277,7 +278,7 @@ def populate_live():
     # tomorrow = datetime.datetime.fromisoformat('2021-09-12').date()
     print("tomorrow is "+str(tomorrow))
     gamecount=0
-    for game in Match.objects.filter(Season=int(os.environ['PREDICTSEASON'])):
+    for game in Match.objects.filter(Season=PigskinConfig.objects.get(Name="live").PredictSeason):
         if game.DateTime.date() == tomorrow and game.DateTime.hour < 23:
             newlive = LiveGame(Game=game.GameID, HomeTeam=game.HomeTeam.ShortName, AwayTeam=game.AwayTeam.ShortName, KickOff=game.DateTime.strftime("%H%M"), TeamIndex=teamdict[game.AwayTeam.ShortName], State=3)
             newlive.save()
@@ -287,11 +288,11 @@ def populate_live():
 
 @shared_task
 def fetch_results(fetchonly):
-    week = os.environ['RESULTSWEEK']
+    week = PigskinConfig.objects.get(Name="live").ResultsWeek
     if int(week) > 18:
         pass
     else:
-        season = os.environ['PREDICTSEASON']
+        season = PigskinConfig.objects.get(Name="live").PredictSeason
 
         if int(week) < 10:
             filename = "resultsimport_"+season+"_0"+week+".json"
@@ -382,7 +383,8 @@ def joker_reset():
 # Weekly job to run every Wednesday night prior to PredictWeek increment to update game k/o times as some games are flexed later in the season
 @shared_task
 def kickoff_time_checker():
-    for game in Match.objects.filter(Season=int(os.environ['PREDICTSEASON']), Week=int(os.environ['PREDICTWEEK'])+1):
+    # for game in Match.objects.filter(Season=PigskinConfig.objects.get(Name="live").PredictSeason, Week=int(os.environ['PREDICTWEEK'])+1):
+    for game in Match.objects.filter(Season=PigskinConfig.objects.get(Name="live").PredictSeason, Week=(PigskinConfig.objects.get(Name="live").PredictWeek)+1):
         url = f"http://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event={game.GameID}"
         gamejson = requests.get(url).json()
         jsondatetime = gamejson['header']['competitions'][0]['date']
@@ -392,7 +394,7 @@ def kickoff_time_checker():
 # One Off job to run for current week
 @shared_task
 def kickoff_time_checker_current_week():
-    for game in Match.objects.filter(Season=int(os.environ['PREDICTSEASON']), Week=int(os.environ['PREDICTWEEK'])):
+    for game in Match.objects.filter(Season=PigskinConfig.objects.get(Name="live").PredictSeason, Week=PigskinConfig.objects.get(Name="live").PredictWeek):
         url = f"http://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event={game.GameID}"
         gamejson = requests.get(url).json()
         jsondatetime = gamejson['header']['competitions'][0]['date']

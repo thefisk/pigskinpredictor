@@ -1,4 +1,5 @@
 from allauth.account.adapter import DefaultAccountAdapter
+from predictor.models import PigskinConfig
 import os
 
 class AccountAdapter(DefaultAccountAdapter):
@@ -18,7 +19,7 @@ class AccountAdapter(DefaultAccountAdapter):
 
     def is_open_for_signup(self, request):
         try:
-            isopen = os.environ.get('REGISTRATION_OPEN').lower()
+            isopen = str(PigskinConfig.objects.get(Name="live").RegistrationOpen).lower()
         except:
             isopen = 'regopenvarmissing'
         return isopen == "true"

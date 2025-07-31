@@ -5,6 +5,15 @@ from accounts.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.urls import reverse
 
+class PigskinConfig(models.Model):
+    Name             = models.CharField(max_length=12, primary_key=True, default="live")
+    PredictWeek      = models.IntegerField(default=1)
+    ResultsWeek      = models.IntegerField(default=1)
+    PredictSeason    = models.IntegerField(default=2025)
+    SundayLive       = models.BooleanField(default=False)
+    RegistrationOpen = models.BooleanField(default=False)
+    
+
 class Team(models.Model):
     ShortName = models.CharField(max_length=4, primary_key=True)
     Town = models.CharField(max_length=20)
