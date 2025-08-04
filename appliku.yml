@@ -13,17 +13,7 @@ build_settings:
       source: manual
     - name: TIMEZONEDBAPIKEY
       source: manual
-    - name: PREDICTSEASON
-      value: '2024'
-    - name: PREDICTWEEK
-      source: manual
-    - name: RESULTSWEEK
-      source: manual
     - name: REMINDERS_ON
-      source: manual
-    - name: REGISTRATION_OPEN
-      source: manual
-    - name: SUNDAYLIVE
       source: manual
     - name: SENTRY_DSN
       source: manual
