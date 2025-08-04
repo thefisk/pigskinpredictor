@@ -400,3 +400,104 @@ def kickoff_time_checker_current_week():
         jsondatetime = gamejson['header']['competitions'][0]['date']
         game.DateTime = jsondatetime
         game.save()
+
+# Task to Update Predict/Results Week
+@shared_task
+def update_week(weektype):
+    weektype = weektype.lower()
+
+    match weektype:
+        case "predict":
+            currentweek = PigskinConfig.objects.get(Name="live").PredictWeek
+        case "results":
+            currentweek = PigskinConfig.objects.get(Name="live").ResultsWeek
+        case _:
+            sys.exit("Invalid week type argument provided - exiting.")
+    
+    print(f"Type was declared as {weektype}")
+    
+    print("Current week is "+str(currentweek))
+    newweek = currentweek + 1
+    print("Updating to " +str(newweek))
+    
+    config = PigskinConfig.objects.get(Name="live")
+    match weektype:
+        case "predict":
+            config.PredictWeek += 1
+            config.save()
+        case "results":
+            config.ResultsWeek += 1
+            config.save()
+
+# Task to Update Predict/Results Week
+# UTC Check Version not currently in use
+# Celery is configured as Europe/London
+# So check functionality shouldn't be needed
+@shared_task
+def update_week_with_utc_check(weektype, utctime):
+    timezonedbapikey = os.environ['TIMEZONEDBAPIKEY']
+    weektype         = weektype.lower()
+
+    match weektype:
+        case "predict":
+            varweek = "PredictWeek"
+            correcttime = "21:00"
+            currentweek = PigskinConfig.objects.get(Name="live").PredictWeek
+        case "results":
+            varweek = "ResultsWeek"
+            correcttime = "08:00"
+            currentweek = PigskinConfig.objects.get(Name="live").ResultsWeek
+        case _:
+            sys.exit("Invalid week type argument provided - exiting.")
+
+    
+    # UTC Checks
+    # Script will be called at 8pm and 9pm (for predictweek deadline) & 7am and 8am (for resultsweek table updates) UTC by Cronjob
+    # We want local time to always be 9PM/8AM
+    # When local time is BST, 9pm BST is 8PM UTC
+    # When local time is GMT, 9pm GMT is 9pm UTC
+    changeondict = {
+        'predict' : {
+            20: 'BST',
+            21: 'GMT'
+            },
+        'results': {
+            7: 'BST',
+            8: 'GMT'
+            }
+        }
+    
+    if not utctime in changeondict[weektype]:
+        sys.exit("Incorrect UTC time provided - exiting.")
+
+    
+    print(f"Type was declared as {weektype}")
+    
+    # changeontz provides the string timezone that this invocation should increment on
+    changeontz = changeondict[weektype][utctime]
+    # Timezone Check
+    apiparams = {"key" : timezonedbapikey, "by" : "zone", "zone" : "Europe/London", "format" : "json"}
+    zonereq = requests.get(url="http://api.timezonedb.com/v2.1/get-time-zone", params=apiparams)
+    discoveredtimezone = zonereq.json()['abbreviation']
+    print(f"Discovered timezone is {discoveredtimezone}")
+    print(f"This script was called at {utctime}:00 UTC")
+    if discoveredtimezone == changeontz:
+        print(f"Local Time in Europe/London is {correcttime} so incrementing {varweek} variable")
+        increment = True
+    else:
+        print(f"Local Time in Europe/London is NOT {correcttime} so {varweek} variable will not increment")
+        increment = False
+        
+    # Conditionally Update PredictWeek Env Var
+    if increment:
+        print("Current week is "+str(currentweek))
+        newweek = currentweek + 1
+        print("Updating to " +str(newweek))
+        config = PigskinConfig.objects.get(Name="live")
+        match weektype:
+            case "predict":
+                config.PredictWeek += 1
+                config.save()
+            case "results":
+                config.ResultsWeek += 1
+                config.save()

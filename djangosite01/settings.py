@@ -302,6 +302,16 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'predictor.tasks.save_results',
         # 12:00 on Monday 29th Feb - i.e. a date that won't occur until 2044
         'schedule': crontab(minute=00, hour=12, day_of_week=1, day_of_month=29, month_of_year=2,),
+    },
+    'Update Predict Week': {
+        'task': 'predictor.tasks.update_week',
+        'schedule': crontab(minute=00, hour=21, day_of_week=4),
+        'args': [ 'predict' ]
+    },
+    'Update Results Week': {
+        'task': 'predictor.tasks.update_week',
+        'schedule': crontab(minute=00, hour=8, day_of_week=3),
+        'args': [ 'results' ]
     }
 }
 
