@@ -6726,14 +6726,14 @@ textarea.materialize-textarea {
 	border-color: #949494
 }
 
-[type="checkbox"]:not(:checked),
+/* [type="checkbox"]:not(:checked),
 [type="checkbox"]:checked {
 	position: absolute;
 	opacity: 0;
 	pointer-events: none
-}
+} */
 
-[type="checkbox"]+span:not(.lever) {
+/* [type="checkbox"]+span:not(.lever) {
 	position: relative;
 	padding-left: 35px;
 	cursor: pointer;
@@ -6915,7 +6915,7 @@ textarea.materialize-textarea {
 
 [type="checkbox"].filled-in:disabled:checked+span:not(.lever):after {
 	background-color: #949494;
-	border-color: #949494
+	border-color: #949494 */
 }
 
 .switch,

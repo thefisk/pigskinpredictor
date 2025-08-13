@@ -5186,14 +5186,14 @@ textarea {
 /* Checkboxes
    ========================================================================== */
 /* Remove default checkbox */
-[type="checkbox"]:not(:checked),
+/* [type="checkbox"]:not(:checked),
 [type="checkbox"]:checked {
   position: absolute;
   opacity: 0;
-  pointer-events: none; }
+  pointer-events: none; } */
 
-[type="checkbox"] {
-  /* checkbox aspect */ }
+/* [type="checkbox"] {
+  /* checkbox aspect }
   [type="checkbox"] + span:not(.lever) {
     position: relative;
     padding-left: 35px;
@@ -5254,9 +5254,9 @@ textarea {
 
 [type="checkbox"]:checked:disabled + span:before {
   border-right: 2px solid rgba(0, 0, 0, 0.42);
-  border-bottom: 2px solid rgba(0, 0, 0, 0.42); }
+  border-bottom: 2px solid rgba(0, 0, 0, 0.42); } */
 
-/* Indeterminate checkbox */
+/* Indeterminate checkbox
 [type="checkbox"]:indeterminate + span:not(.lever):before {
   top: -11px;
   left: -12px;
@@ -5354,7 +5354,7 @@ textarea {
 
 [type="checkbox"].filled-in:disabled:checked + span:not(.lever):after {
   background-color: #949494;
-  border-color: #949494; }
+  border-color: #949494; } */
 
 /* Switch
    ========================================================================== */
