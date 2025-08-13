@@ -5285,10 +5285,10 @@ textarea {
   content: '';
   left: 0;
   position: absolute;
-  /* .1s delay is for check animation */
+  /* .1s delay is for check animation
   -webkit-transition: border .25s, background-color .25s, width .20s .1s, height .20s .1s, top .20s .1s, left .20s .1s;
   transition: border .25s, background-color .25s, width .20s .1s, height .20s .1s, top .20s .1s, left .20s .1s;
-  z-index: 1; }
+  z-index: 1; } */
 
 [type="checkbox"].filled-in:not(:checked) + span:not(.lever):before {
   width: 0;

@@ -6915,8 +6915,8 @@ textarea.materialize-textarea {
 
 [type="checkbox"].filled-in:disabled:checked+span:not(.lever):after {
 	background-color: #949494;
-	border-color: #949494 */
-}
+	border-color: #949494
+} */
 
 .switch,
 .switch * {
