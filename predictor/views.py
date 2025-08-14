@@ -177,7 +177,7 @@ def ProfileView(request):
             form = CustomUserChangeForm(instance=request.user)
             template = "predictor/profile.html"
             try:
-                positions = requestor.Positions['data'][PigskinConfig.objects.get(Name="live").PredictSeason]
+                positions = requestor.Positions['data'][str(PigskinConfig.objects.get(Name="live").PredictSeason)]
             except(TypeError, KeyError):
                 positions = None
             current = ScoresSeason.objects.get(User=requestor, Season=profileseason)
