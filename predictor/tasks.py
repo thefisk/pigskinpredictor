@@ -501,3 +501,11 @@ def update_week_with_utc_check(weektype, utctime):
             case "results":
                 config.ResultsWeek += 1
                 config.save()
+
+@shared_task
+def disable_sunday_live():
+    TO DO
+
+@shared_task
+def enable_sunday_live():
+    TO DO

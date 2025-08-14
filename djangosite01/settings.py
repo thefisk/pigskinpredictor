@@ -312,7 +312,15 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'predictor.tasks.update_week',
         'schedule': crontab(minute=00, hour=8, day_of_week=3),
         'args': [ 'results' ]
-    }
+    },
+    'Enable Sunday Live': {
+        'task': 'predictor.tasks.enable_sunday_live',
+        'schedule': crontab(minute=30, hour=17, day_of_week=7)
+    },
+    'Disable Sunday Live': {
+        'task': 'predictor.tasks.disable_sunday_live',
+        'schedule': crontab(minute=00, hour=2, day_of_week=1)
+    },
 }
 
 # This setting is used by Django-Redis
