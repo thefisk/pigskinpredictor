@@ -1218,7 +1218,7 @@ def LiveScoresView(request):
             latest = Post.objects.all().first().pk
             return redirect('post-latest', latest)
         else:
-            scoreweek = int(PigskinConfig.objects.get(Name="live").PredictSeason+PigskinConfig.objects.get(Name="live").ResultsWeek)
+            scoreweek = int(str(PigskinConfig.objects.get(Name="live").PredictSeason)+str(PigskinConfig.objects.get(Name="live").ResultsWeek))
 
         jsonpredsforlive = cache.get('jsonpredsforlive')
 
