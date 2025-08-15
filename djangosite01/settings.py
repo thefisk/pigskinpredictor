@@ -321,6 +321,11 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'predictor.tasks.disable_sunday_live',
         'schedule': crontab(minute=00, hour=2, day_of_week=1)
     },
+    'Populate Live for Preseason Testing': {
+        'task': 'predictor.tasks.populate_live_preseason_for_testing',
+        # 12:00 on Monday 29th Feb - i.e. a date that won't occur until 2044
+        'schedule': crontab(minute=00, hour=12, day_of_week=1, day_of_month=29, month_of_year=2,),
+    },
 }
 
 # This setting is used by Django-Redis

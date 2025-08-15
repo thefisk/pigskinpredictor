@@ -285,6 +285,19 @@ def populate_live():
             gamecount += 1
     print(str(gamecount)+" live games imported")
 
+# Version of above without date and time constraints to be used for testing pre-season so we can populate the live games table outside of the season
+@shared_task
+def populate_live_preseason_for_testing():
+    teamdict = {'ARI': 1, 'ATL': 2, 'BAL': 3, 'BUF': 4, 'CAR': 5, 'CHI': 6, 'CIN': 7, 'CLE': 8, 'DAL': 9, 'DEN': 10, 'DET': 11, 'GB': 12, 'HOU': 13, 'IND': 14, 'JAX': 15, 'KC': 16, 'LV': 17, 'LAC': 18, 'LAR': 19, 'MIA': 20, 'MIN': 21, 'NE': 22, 'NO': 23, 'NYG': 24, 'NYJ': 25, 'PHI': 26, 'PIT': 27, 'SF': 28, 'SEA': 29, 'TB': 30, 'TEN': 31, 'WSH': 32}
+    for livegame in LiveGame.objects.all():
+        livegame.delete()
+    gamecount=0
+    for game in Match.objects.filter(Season=PigskinConfig.objects.get(Name="live").PredictSeason):
+        if game.DateTime.hour < 23:
+            newlive = LiveGame(Game=game.GameID, HomeTeam=game.HomeTeam.ShortName, AwayTeam=game.AwayTeam.ShortName, KickOff=game.DateTime.strftime("%H%M"), TeamIndex=teamdict[game.AwayTeam.ShortName], State=3)
+            newlive.save()
+            gamecount += 1
+    print(str(gamecount)+" live games imported")
 
 @shared_task
 def fetch_results(fetchonly):
