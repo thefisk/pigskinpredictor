@@ -59,3 +59,13 @@ databases:
     type: postgresql_16
   redis:
     type: redis_7
+cronjobs:
+  fetch_schedules:
+    schedule: "0 2 10 7 *"
+    command: python manage.py fetchschedules
+  import_schedules:
+    schedule: "0 3 10 7 *"
+    command: python manage.py loaddata schedule.json
+  tidyup_schedule_json:
+    schedule: "0 4 10 7 *"
+    command: rm schedule.json
