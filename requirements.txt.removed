@@ -1,0 +1,35 @@
+amqp==5.1.1 # Queue protocol used by Celery?
+beautifulsoup4==4.9.1 # Web scraper, used in v2 imports prior to ESPN API
+billiard==3.6.4.0 # Fork of Multiprocessing
+chardet==3.0.4 # Character enconding detector, probably installed to debug something once
+click==8.0.0 # CLI Cresation Util
+click-didyoumean==0.0.3 # For Above
+click-plugins==1.1.1 # For Above
+click-repl==0.2.0 # For Above
+cssutils==2.2.0 # Parse and build CSS
+defusedxml==0.6.0 # PAckage for parsing potentially unsafe XML
+django-inlinecss==0.3.0 # Original Inline CSS library - abandoned project, no longer works with Django 4.0+ (uses smart_text)
+django-material==1.9.0 # Archived - Moved to ViewFlow as of Django 4.0
+dj-database-url==0.5.0 # Implements DATABASE_URL env var
+docutils==0.15.2 # Turns plaintext docs into other formsats
+future==0.18.3 # Python 2 & 3 Bridge Util - absolute_imported imported but probably not used
+idna==3.7 # Internationalised Domain Names in Apps - for encoding and decoding non-Latin alphabetised domain names
+jmespath==0.9.4 # JSON doc parsing library 
+kombu==5.2.4 # Interface for AMQP, used by Celery?
+lxml==4.9.1 # XML/HTML parsing - used in old result import scripts prior to ESPN API
+oauthlib==3.1.0 # Oauth support - doesn't seem to be used
+prompt-toolkit==3.0.18 # Tool for building CLI apps
+# psycopg2==2.9.10 # Replaced by v3 | Postgres Support - MUST be < 2.9 for Django 2.2, so will need bumping for Django 5
+# psycopg2-binary==2.9.10 # Replaced by v3 | Postgres Support - MUST be < 2.9 for Django 2.2, so will need bumping for Django 5
+pynliner==0.8.0 # Convert CSS to inline HTML - might be used by django-inlinecss?
+python-crontab==2.5.1 # Doesn't seem to be needed - Celery uses its own Crontab implementation?
+python-dateutil==2.8.0 # Dateutil - doesn't seem to be needed?
+python3-openid==3.1.0 # OpenID - doesn't seem to be needed?
+requests-oauthlib==1.3.0 # Oauth for Requests - doesn't seem to be needed?
+s3transfer==0.5.0 # S3 Transfer - Boto is used instead?
+six==1.13.0 # Python 2 & 3 Bridge utility - formerly used by django-dbbackup & django-storages - defunct in Django since 3.0
+soupsieve==2.0.1 # Beautiful Soup CSS Selector
+sqlparse==0.5.0 # SQL Parser - not sure why this would be needed?
+unicodecsv==0.14.1 # Not sure this is needed?  Poorly documented
+vine==5.0.0 # Library for Promises - doesn't seem to be used
+wcwidth==0.2.5 # CLI Utility tool - not sure why this would be needed?

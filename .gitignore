@@ -20,6 +20,7 @@ eggs/
 lib/
 lib64/
 parts/
+postgres-data/
 sdist/
 var/
 wheels/

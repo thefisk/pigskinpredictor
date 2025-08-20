@@ -1,5 +1,5 @@
 {% extends "predictor/base.html" %}
-{% load material_form %}
+{% load crispy_forms_tags %}
 {% block content %}
 <script>
  $('#profile').each(function(){
@@ -19,12 +19,7 @@
             <div><br></div>
             <form method="post">
             {% csrf_token %}
-            {% form form=form %}
-            {% part form.first_name prefix %}<i class="material-icons prefix icongrey">face</i>{% endpart %}
-            {% part form.last_name prefix %}<i class="material-icons prefix icongrey">face</i>{% endpart %}
-            {% part form.FavouriteTeam prefix %}<i class="material-icons prefix icongrey">sports_football</i>{% endpart %}
-            {% part form.Timezone prefix %}<i class="material-icons prefix icongrey">language</i>{% endpart %}
-            {% endform %}
+            {{ form | crispy }}
             <br>
             <button type="submit" style="float: right" class="btn waves-effect waves-light">update</button>
             </form>

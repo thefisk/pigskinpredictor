@@ -1,5 +1,6 @@
 {% extends "predictor/base.html" %}
-{% load material_form %}
+{% load crispy_forms_tags %}
+
 {% block content %}
 <script>
  $('#records').each(function(){
@@ -12,8 +13,7 @@
             <h5>New Record</h5>
             <form method="post">
             {% csrf_token %}
-            {% form form=form %}
-            {% endform %}
+            {{ form | crispy}}
             <br>
             <button type="submit" style="float: right" class="btn waves-effect waves-light">Add Record</button>
         </div>

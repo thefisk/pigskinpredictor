@@ -1,5 +1,6 @@
 {% extends "predictor/base.html" %}
-{% load material_form %}
+{% load crispy_forms_tags %}
+
 {% block content %}
 <script>
  $('#records').each(function(){
@@ -12,8 +13,7 @@
             <h5>Amend Record</h5>
             <form method="post">
             {% csrf_token %}
-            {% form form=form %}
-            {% endform %}
+            {{ form | crispy }}
             <br>
             <button type="submit" style="float: right" class="btn waves-effect waves-light btn-green">Amend</button>
             <a class="waves-effect waves-light btn-small btn-red" href="{% url 'record-delete' object.id %}">Delete</a>

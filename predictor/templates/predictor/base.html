@@ -1,10 +1,8 @@
+<!DOCTYPE html>
 {% load static %}
 {% load cache %}
 {% load predictor_custom_tags %}
-{% include 'material/includes/material_css.html' %}
-{% include 'material/includes/material_js.html' %}
 {% cache 600 header request.user.username %}
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,8 +10,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Roboto|Sriracha" rel="stylesheet">
-    <link href="{% static "predictor/css/pigskin.css" %}" rel="stylesheet">
-    <link href="{% static "predictor/css/materialize.pigskin.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/pigskin.css" %}" rel="stylesheet">
+    <link href="{% static "css/materialize.css" %}" rel="stylesheet">
+    <link href="{% static "css/materialize.forms.css" %}" rel="stylesheet">
+    <link href="{% static "css/materialize.pigskin.min.css" %}" rel="stylesheet">
     <link rel="shortcut icon" type="image/png" href="{% static "favicon.ico" %}"/>
     <link href="https://cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet">
     <!-- Compiled and minified CSS -->
@@ -46,7 +46,7 @@
     <nav>
         <div class="nav-wrapper">
           <a href="{% url 'home' %}" class="brand-logo hide-on-med-and-down pigskin-logo">Pigskin Predictor</a>
-          <a href="{% url 'home' %}"><img class="logoimg brand-logo center logo-pad" src="{% static "predictor/img/piglogo.png" %}" alt="logo"></a>
+          <a href="{% url 'home' %}"><img class="logoimg brand-logo center logo-pad" src="{% static "img/piglogo.png" %}" alt="logo"></a>
           
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
           <ul class="right hide-on-med-and-down">
@@ -108,8 +108,7 @@
         </div>
       </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    {% block javascript %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>    {% block javascript %}
     {% endblock javascript %}
   </body>
 </html>

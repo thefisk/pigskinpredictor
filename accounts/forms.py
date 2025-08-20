@@ -6,7 +6,7 @@ from .models import User
 from allauth.account.forms import SignupForm
 from predictor.models import Team
 from django.contrib.auth import get_user_model
-from material import Layout, Row
+from crispy_forms.layout import Layout, Row
 from .timezones import timezonelist
 
 class CustomUserCreationForm(UserCreationForm):

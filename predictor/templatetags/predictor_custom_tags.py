@@ -1,7 +1,7 @@
 from django import template
 from django.core.cache import cache
 from django.contrib.auth.models import Group
-from predictor.models import Match, ScoresWeek, Results, Team, ScoresSeason, Prediction
+from predictor.models import Match, ScoresWeek, Results, Team, ScoresSeason, Prediction, PigskinConfig
 from accounts.models import User
 import os
 
@@ -28,8 +28,9 @@ def pick_logo(pred):
 
 @register.filter(name='corresponding_match')
 def corresponding_match(bankerteam):
-    week = os.environ['PREDICTWEEK']
-    season = os.environ['PREDICTSEASON']
+    week = PigskinConfig.objects.get(Name="live").PredictWeek
+    # week = os.environ['PREDICTWEEK']
+    season = PigskinConfig.objects.get(Name="live").PredictSeason
     try:
         matched_game = Match.objects.get(Season=season, Week=week, AwayTeam=bankerteam)
     except Match.DoesNotExist:
@@ -84,7 +85,7 @@ def division_total(div):
         total = 0
         for player in players:
             try:
-                total += ScoresSeason.objects.get(User=player, Season=int(os.environ['PREDICTSEASON'])).SeasonScore
+                total += ScoresSeason.objects.get(User=player, Season=PigskinConfig.objects.get(Name="live").PredictSeason).SeasonScore
             except:
                 pass
         cache.set(cachename, total, CacheTTL_1Week)
@@ -100,7 +101,7 @@ def banker_class(banker):
 #@register.filter(name='seasonhigh')
 #def seasonhigh(user):
 #    high = 0
-#    for weekscore in ScoresWeek.objects.filter(User=user, Season=os.environ['PREDICTSEASON']):
+#    for weekscore in ScoresWeek.objects.filter(User=user, Season=PigskinConfig.objects.get(Name="live").PredictSeason):
 #        if weekscore.WeekScore > high:
 #            high = weekscore.WeekScore
 #        else:

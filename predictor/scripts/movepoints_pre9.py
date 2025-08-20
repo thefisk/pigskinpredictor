@@ -6,7 +6,7 @@ from predictor.models import ScoresWeek, Prediction, Match
 import os
 
 def run(*args):
-    week = int(os.environ['RESULTSWEEK'])
+    week = PigskinConfig.objects.get(Name="live").ResultsWeek
     season = int(os.environ['PREDICTSEASON'])
     for gameid in args:
         match = Match.objects.get(GameID=int(gameid))

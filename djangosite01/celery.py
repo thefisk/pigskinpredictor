@@ -6,11 +6,24 @@ from celery import Celery
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'djangosite01.settings')
 
+# Check if we're in a local dev environment (which might not always have debug)
 try:
-
-    CELERY_BROKER_URL = os.environ['REDIS_URL']+"?ssl_cert_reqs=CERT_NONE"
+    myenv = os.environ.get('ENVIRONMENT').lower()
 except:
-    CELERY_BROKER_URL = "redis://127.0.0.1:6379"
+    myenv = 'environmentmissing'
+    
+IS_LOCALDEV = myenv == ('localdev')
+IS_HEROKU = myenv == ('heroku')
+IS_APPLIKU = myenv == ('appliku')
+
+# Check if in Local Dev - Heroku now needs extra arg in URL
+if IS_LOCALDEV:
+    CELERY_BROKER_URL = os.environ['REDIS_URL']
+else: 
+    try:
+        CELERY_BROKER_URL = os.environ['REDIS_URL']+"?ssl_cert_reqs=CERT_NONE"
+    except:
+        CELERY_BROKER_URL = "redis://127.0.0.1:6379"
 
 app = Celery('djangosite01', CELERY_BROKER_URL=CELERY_BROKER_URL)
 

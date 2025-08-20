@@ -1,10 +1,18 @@
 from django.db import models
-from django.contrib.postgres.fields import JSONField
 from django.db.models.deletion import CASCADE
 from django.utils import timezone
 from accounts.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.urls import reverse
+
+class PigskinConfig(models.Model):
+    Name             = models.CharField(max_length=12, primary_key=True, default="live")
+    PredictWeek      = models.IntegerField(default=1)
+    ResultsWeek      = models.IntegerField(default=1)
+    PredictSeason    = models.IntegerField(default=2025)
+    SundayLive       = models.BooleanField(default=False)
+    RegistrationOpen = models.BooleanField(default=False)
+    
 
 class Team(models.Model):
     ShortName = models.CharField(max_length=4, primary_key=True)
@@ -286,7 +294,7 @@ class Record(models.Model):
 
 class AvgScores(models.Model):
     Season = models.IntegerField(validators=[MinValueValidator(1990), MaxValueValidator(2100)])
-    AvgScores = JSONField(null=True)
+    AvgScores = models.JSONField(null=True)
 
     def __str__(self):
         return("Average Weekly Scores")

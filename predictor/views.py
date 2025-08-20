@@ -26,7 +26,8 @@ from .models import (
     ScoresSeason,
     ScoresAllTime,
     Banker,
-    Record
+    Record,
+    PigskinConfig
 )
 from .mixins import AjaxFormMixin
 from django.views.generic import (
@@ -66,8 +67,9 @@ def is_superuser(user):
 @user_passes_test(is_superuser, login_url='home')
 @login_required
 def ReportsView(request):
-    reportweek = os.environ['PREDICTWEEK']
-    season = os.environ['PREDICTSEASON']
+    # reportweek = os.environ['PREDICTWEEK']
+    reportweek = PigskinConfig.objects.get(Name="live").PredictWeek
+    season = PigskinConfig.objects.get(Name="live").PredictSeason
     reportweekseason = season+str(reportweek)
 
     context = {
@@ -82,7 +84,7 @@ def ReportsView(request):
 @require_GET
 def HomeView(request):
     if request.user.is_authenticated:
-        if os.environ['SUNDAYLIVE'] == "TRUE" and request.user.SundayLive == True and int(os.environ['PREDICTWEEK']) < 20:
+        if PigskinConfig.objects.get(Name="live").SundayLive == True and request.user.SundayLive == True and PigskinConfig.objects.get(Name="live").PredictWeek < 20:
             return redirect('live-scores')
         elif Post.objects.all().count() > 0:
             latest = Post.objects.all().first().pk
@@ -105,24 +107,24 @@ def ProfileView(request):
     else:
         try:
             requestor = request.user
-            alltime = ScoresAllTime.objects.get(User=requestor)
+            alltime = ScoresAllTime.objects.get(User=requestor.id)
         except ScoresAllTime.DoesNotExist:
             return redirect('profile-newplayer')
         else:
             # if week one, show best from last season
-            if int(os.environ['RESULTSWEEK']) == 1:
-                profileseason = str((int(os.environ['PREDICTSEASON'])) -1)
+            if PigskinConfig.objects.get(Name="live").ResultsWeek == 1:
+                profileseason = str((PigskinConfig.objects.get(Name="live").PredictSeason) -1)
             else:
-                profileseason = os.environ['PREDICTSEASON']
-            if int(os.environ['RESULTSWEEK']) < 19:
-                predweek = int(os.environ['PREDICTSEASON']+os.environ['RESULTSWEEK'])
+                profileseason = PigskinConfig.objects.get(Name="live").PredictSeason
+            if PigskinConfig.objects.get(Name="live").ResultsWeek < 19:
+                predweek = int(PigskinConfig.objects.get(Name="live").PredictSeason+PigskinConfig.objects.get(Name="live").ResultsWeek)
                 try:
                     mypreds = Prediction.objects.filter(User=request.user, PredWeek=predweek)
                     if mypreds.count() > 0:
                         preds = "yes"
                     else:
                         preds="no"
-                    mypredweek = os.environ['RESULTSWEEK']
+                    mypredweek = PigskinConfig.objects.get(Name="live").ResultsWeek
                 except Prediction.DoesNotExist:
                     mypreds = []
                     preds = "no"
@@ -134,13 +136,13 @@ def ProfileView(request):
             # Points dict for Season Score Chart
             mypoints = {}
             try:
-                for i in ScoresWeek.objects.filter(Season=int(os.environ['PREDICTSEASON']), User=request.user.pk).order_by('Week'):
+                for i in ScoresWeek.objects.filter(Season=PigskinConfig.objects.get(Name="live").PredictSeason, User=request.user.pk).order_by('Week'):
                     mypoints[str(i.Week)] = i.WeekScore
                 # Return only latest 6 points
                 if len(mypoints) > 6:
                     mypoints = dict(list(mypoints.items())[len(mypoints)-6:])
                 # Fill in zero points for bar chart for missed weeks
-                rw = int(os.environ['RESULTSWEEK'])
+                rw = PigskinConfig.objects.get(Name="live").ResultsWeek
                 if rw > 19:
                     limit = 19
                 else:
@@ -164,7 +166,7 @@ def ProfileView(request):
             avgpoints = cache.get('AvgPointsCache')
             if not avgpoints:
                 try:
-                    avgpoints = AvgScores.objects.get(Season=int(os.environ['PREDICTSEASON'])).AvgScores
+                    avgpoints = AvgScores.objects.get(Season=PigskinConfig.objects.get(Name="live").PredictSeason).AvgScores
                     # Return only latest 6 points
                     if len(avgpoints) > 6:
                         avgpoints = dict(list(avgpoints.items())[len(avgpoints)-6:])
@@ -175,7 +177,7 @@ def ProfileView(request):
             form = CustomUserChangeForm(instance=request.user)
             template = "predictor/profile.html"
             try:
-                positions = requestor.Positions['data'][os.environ['PREDICTSEASON']]
+                positions = requestor.Positions['data'][str(PigskinConfig.objects.get(Name="live").PredictSeason)]
             except(TypeError, KeyError):
                 positions = None
             current = ScoresSeason.objects.get(User=requestor, Season=profileseason)
@@ -213,15 +215,15 @@ def ProfileNewPlayerView(request):
             return redirect('profile-amended')
     else:    
         form = CustomUserChangeForm(instance=request.user)
-        if int(os.environ['RESULTSWEEK']) < 19:
-            predweek = int(os.environ['PREDICTSEASON']+os.environ['RESULTSWEEK'])
+        if PigskinConfig.objects.get(Name="live").ResultsWeek < 19:
+            predweek = int(PigskinConfig.objects.get(Name="live").PredictSeason+PigskinConfig.objects.get(Name="live").ResultsWeek)
             try:
                 mypreds = Prediction.objects.filter(User=request.user, PredWeek=predweek)
                 if mypreds.count() > 0:
                     preds = "yes"
                 else:
                     preds="no"
-                mypredweek = os.environ['RESULTSWEEK']
+                mypredweek = PigskinConfig.objects.get(Name="live").ResultsWeek
             except Prediction.DoesNotExist:
                 mypreds = []
                 preds = "no"
@@ -245,7 +247,7 @@ def ProfileAmendedView(request):
 @require_GET
 @login_required
 def ResultsView(request):
-    basescoreweek = int(os.environ['RESULTSWEEK']) - 1
+    basescoreweek = PigskinConfig.objects.get(Name="live").ResultsWeek - 1
     if basescoreweek < 1:
         return redirect('results-preseason')
     elif basescoreweek > 18:
@@ -253,23 +255,23 @@ def ResultsView(request):
     else:
         scoreweek = basescoreweek
     template = 'predictor/results.html'
-    PredWeek = int(str(os.environ['PREDICTSEASON'])+str(scoreweek))
+    PredWeek = int(str(PigskinConfig.objects.get(Name="live").PredictSeason)+str(scoreweek))
     if (Prediction.objects.filter(User=request.user, PredWeek=PredWeek)).count() == 0:
         return redirect('results-didnotplay')   
     else:
         context = {
-        'season': os.environ['PREDICTSEASON'],
+        'season': PigskinConfig.objects.get(Name="live").PredictSeason,
         'week': scoreweek,
         'title': 'Results',
-        'weekscore': ScoresWeek.objects.get(User=request.user, Season=os.environ['PREDICTSEASON'], Week=scoreweek).WeekScore,
+        'weekscore': ScoresWeek.objects.get(User=request.user, Season=PigskinConfig.objects.get(Name="live").PredictSeason, Week=scoreweek).WeekScore,
         'predictions':Prediction.objects.filter(User=request.user, PredWeek=PredWeek),
-        'results':Results.objects.filter(Season=os.environ['PREDICTSEASON'], Week=scoreweek)
+        'results':Results.objects.filter(Season=PigskinConfig.objects.get(Name="live").PredictSeason, Week=scoreweek)
         }
         return render(request, template, context)
 
 @require_GET
 def ResultsDidNotPlayView(request):
-    basescoreweek = int(os.environ['RESULTSWEEK']) - 1
+    basescoreweek = PigskinConfig.objects.get(Name="live").ResultsWeek - 1
     if basescoreweek < 1:
         return redirect('results-preseason')
     elif basescoreweek > 18:
@@ -278,9 +280,9 @@ def ResultsDidNotPlayView(request):
         scoreweek = basescoreweek
     template = 'predictor/results-didnotplay.html'
     context = {
-        'season': os.environ['PREDICTSEASON'],
+        'season': PigskinConfig.objects.get(Name="live").PredictSeason,
         'week':scoreweek,
-        'results':Results.objects.filter(Season=os.environ['PREDICTSEASON'], Week=scoreweek)
+        'results':Results.objects.filter(Season=PigskinConfig.objects.get(Name="live").PredictSeason, Week=scoreweek)
     }
     return render(request, template, context)
 
@@ -294,11 +296,12 @@ def ResultsPreSeasonView(request):
 @login_required
 def CreatePredictionsView(request):
 
-    week = os.environ['PREDICTWEEK']
-    season = os.environ['PREDICTSEASON']
+    # week = os.environ['PREDICTWEEK']
+    week = PigskinConfig.objects.get(Name="live").PredictWeek
+    season = PigskinConfig.objects.get(Name="live").PredictSeason
 
     if int(week) > 18:
-        if int(os.environ['RESULTSWEEK']) == 18:
+        if PigskinConfig.objects.get(Name="live").ResultsWeek == 18:
             response = redirect('week-18-view')
         else:
             response = redirect('new-year-view')
@@ -356,8 +359,9 @@ def CreatePredictionsView(request):
 @require_GET
 @login_required
 def AmendPredictionsView(request):
-    week = os.environ['PREDICTWEEK']
-    season = os.environ['PREDICTSEASON']
+    # week = os.environ['PREDICTWEEK']
+    week = PigskinConfig.objects.get(Name="live").PredictWeek
+    season = PigskinConfig.objects.get(Name="live").PredictSeason
     jokerforced = False
     try:
         jokersplayedamount = len(request.user.JokersPlayed)
@@ -441,15 +445,15 @@ def AmendPredictionsView(request):
 @require_GET
 @login_required
 def NewYearView(request):
-    nextyear = int(os.environ['PREDICTSEASON'])+1
+    nextyear = PigskinConfig.objects.get(Name="live").PredictSeason+1
     player = CustomUser.objects.get(username = request.user.username).first_name
     try:
-        score = ScoresSeason.objects.get(User=request.user, Season=os.environ['PREDICTSEASON']).SeasonScore
+        score = ScoresSeason.objects.get(User=request.user, Season=PigskinConfig.objects.get(Name="live").PredictSeason).SeasonScore
     except ScoresSeason.DoesNotExist:
         template = "predictor/newplayer_yearend.html"
         context = {
         'nextyear':nextyear,
-        'year':os.environ['PREDICTSEASON'],
+        'year':PigskinConfig.objects.get(Name="live").PredictSeason,
         'title':'Thanks For Registering',
         'player':player
         }
@@ -458,7 +462,7 @@ def NewYearView(request):
         template = 'predictor/year_end.html'
         context = {
             'nextyear':nextyear,
-            'year':os.environ['PREDICTSEASON'],
+            'year':PigskinConfig.objects.get(Name="live").PredictSeason,
             'score':score,
             'title':'Thanks For Playing',
             'player':player
@@ -469,15 +473,15 @@ def NewYearView(request):
 @require_GET
 @login_required
 def Week18View(request):
-    nextyear = int(os.environ['PREDICTSEASON'])+1
+    nextyear = PigskinConfig.objects.get(Name="live").PredictSeason+1
     player = CustomUser.objects.get(username = request.user.username).first_name
     try:
-        score = ScoresSeason.objects.get(User=request.user, Season=os.environ['PREDICTSEASON']).SeasonScore
+        score = ScoresSeason.objects.get(User=request.user, Season=PigskinConfig.objects.get(Name="live").PredictSeason).SeasonScore
     except ScoresSeason.DoesNotExist:
         template = "predictor/newplayer_yearend.html"
         context = {
         'nextyear':nextyear,
-        'year':os.environ['PREDICTSEASON'],
+        'year':PigskinConfig.objects.get(Name="live").PredictSeason,
         'title':'Thanks For Registering',
         'player':player
         }
@@ -486,7 +490,7 @@ def Week18View(request):
         template = 'predictor/week_18.html'
         context = {
             'nextyear':nextyear,
-            'year':os.environ['PREDICTSEASON'],
+            'year':PigskinConfig.objects.get(Name="live").PredictSeason,
             'score':score,
             'title':'Thanks For Playing',
             'player':player
@@ -555,7 +559,7 @@ def AjaxAddBankerView(request):
             bankerteam = (Match.objects.get(GameID=jsongame)).AwayTeam
             bankweek = (Match.objects.get(GameID=jsongame)).Week
             response_data = {}
-            bankseason = os.environ['PREDICTSEASON']
+            bankseason = PigskinConfig.objects.get(Name="live").PredictSeason
         
             bankerentry = Banker(User=banker_user, BankWeek=bankweek, BankSeason=bankseason, BankGame=bankgame, BankerTeam=bankerteam)
             bankerentry.save()
@@ -572,12 +576,12 @@ def AjaxAddBankerView(request):
                     jokers = request.user.JokersPlayed
                     if len(jokers) < 4:
                         updateuser = CustomUser.objects.get(pk = request.user.id)
-                        updateuser.JokersPlayed[len(updateuser.JokersPlayed)+1] = int(os.environ['PREDICTWEEK'])
+                        updateuser.JokersPlayed[len(updateuser.JokersPlayed)+1] = PigskinConfig.objects.get(Name="live").PredictWeek
                         updateuser.save()
                 # No jokers exist
                 except (AttributeError, TypeError):
                     updateuser = CustomUser.objects.get(pk = request.user.id)
-                    updateuser.JokersPlayed = {1 : int(os.environ['PREDICTWEEK'])}
+                    updateuser.JokersPlayed = {1 : PigskinConfig.objects.get(Name="live").PredictWeek}
                     updateuser.save()
 
             response_data['result'] = 'Banker entry successful!'
@@ -598,7 +602,7 @@ def AjaxAddBankerView(request):
 def AjaxDeadlineVerification(request):
         if request.method == 'POST':
             json_data = json.loads(request.body.decode('utf-8'))
-            actualpredweek = int(os.environ['PREDICTWEEK'])
+            actualpredweek = PigskinConfig.objects.get(Name="live").PredictWeek
             postedpredweek = int(json_data['pred-week'])
             if postedpredweek == actualpredweek:
                 response_data = {}
@@ -616,7 +620,7 @@ def AjaxDeadlineVerification(request):
 def ScoreTableView(request):
     # Below sets score week to 1 below current results week
     # IE - to pull scores from last completed week 
-    basescoreweek = int(os.environ['RESULTSWEEK']) - 1
+    basescoreweek = PigskinConfig.objects.get(Name="live").ResultsWeek - 1
     if basescoreweek < 1:
         return redirect('scoretable-preseason')
     elif basescoreweek > 18:
@@ -630,7 +634,7 @@ def ScoreTableView(request):
     previousweek = str(scoreweek - 1)
 
     if not jsonpositions:
-        season = os.environ['PREDICTSEASON']
+        season = PigskinConfig.objects.get(Name="live").PredictSeason
         lastweek = str(scoreweek)
         previousweek = str(scoreweek - 1)
         jsonpositions = {}
@@ -688,13 +692,13 @@ def ScoreTableView(request):
             'pos': i+1,
             'user': s.User.Full_Name,
             'teamshort': s.User.FavouriteTeam.ShortName,
-            'week': get_json_week_score(s.User, scoreweek, os.environ['PREDICTSEASON']),
+            'week': get_json_week_score(s.User, scoreweek, PigskinConfig.objects.get(Name="live").PredictSeason),
             'seasonscore': s.SeasonScore,
             #'joker': jokervalue(s.User.id),
             'jokers': getJokers(s.User.id)
             }
             # enumerate needed to allow us to extract the index (position) using i,s
-            for i,s in enumerate(ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']))]
+            for i,s in enumerate(ScoresSeason.objects.filter(Season=PigskinConfig.objects.get(Name="live").PredictSeason))]
         }
         cache.set('jsonstdscorescache', jsonstdscores, CacheTTL_1Week)
     
@@ -719,7 +723,7 @@ def ScoreTableView(request):
         'jsonstdscores': jsonstdscores,
         'jsonuser': jsonuser,
         'week':scoreweek,
-        'season':os.environ['PREDICTSEASON'],
+        'season':PigskinConfig.objects.get(Name="live").PredictSeason,
         'title':'Leaderboard'
     }
 
@@ -731,7 +735,7 @@ def ScoreTableEnhancedView(request):
     # Below sets score week to 1 below current results week
     # IE - to pull scores from last completed week
     
-    basescoreweek = int(os.environ['RESULTSWEEK']) - 1
+    basescoreweek = PigskinConfig.objects.get(Name="live").ResultsWeek - 1
     if basescoreweek < 1:
         return redirect('scoretable-preseason')
     elif basescoreweek > 18:
@@ -739,7 +743,7 @@ def ScoreTableEnhancedView(request):
     else:
         scoreweek = basescoreweek
 
-    weekscores = ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON'])   
+    weekscores = ScoresWeek.objects.filter(Week=scoreweek,Season=PigskinConfig.objects.get(Name="live").PredictSeason)   
     nopreds = CustomUser.objects.all().exclude(id__in=weekscores.values('User'))
 
     jsonpositions = cache.get('jsonpositionscache')
@@ -779,7 +783,7 @@ def ScoreTableEnhancedView(request):
             return None
 
     if not jsonpositions:
-        season = os.environ['PREDICTSEASON']
+        season = PigskinConfig.objects.get(Name="live").PredictSeason
         lastweek = str(scoreweek)
         previousweek = str(scoreweek - 1)
         jsonpositions = {}
@@ -806,7 +810,7 @@ def ScoreTableEnhancedView(request):
             'pos': i+1,
             'user': s.User.Full_Name,
             'teamshort': s.User.FavouriteTeam.ShortName,
-            'week': get_json_week_score(s.User, scoreweek, os.environ['PREDICTSEASON']),
+            'week': get_json_week_score(s.User, scoreweek, PigskinConfig.objects.get(Name="live").PredictSeason),
             'seasonscore': s.SeasonScore,
             'seasonworst': s.SeasonWorst,
             'seasonbest': s.SeasonBest,
@@ -818,7 +822,7 @@ def ScoreTableEnhancedView(request):
             'jokers': getJokers(s.User.id)
             }
             # enumerate needed to allow us to extract the index (position) using i,s
-            for i,s in enumerate(ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']))]
+            for i,s in enumerate(ScoresSeason.objects.filter(Season=PigskinConfig.objects.get(Name="live").PredictSeason))]
         }
         cache.set('jsonseasonscorescache', jsonseasonscores, CacheTTL_1Week)
 
@@ -843,10 +847,10 @@ def ScoreTableEnhancedView(request):
         'jsonseasonscores': jsonseasonscores,
         'jsonuser': jsonuser,
         'nopreds': nopreds,
-        'seasonscores': ScoresSeason.objects.filter(Season=os.environ['PREDICTSEASON']),
-        'weekscores': ScoresWeek.objects.filter(Week=scoreweek,Season=os.environ['PREDICTSEASON']),
+        'seasonscores': ScoresSeason.objects.filter(Season=PigskinConfig.objects.get(Name="live").PredictSeason),
+        'weekscores': ScoresWeek.objects.filter(Week=scoreweek,Season=PigskinConfig.objects.get(Name="live").PredictSeason),
         'week':scoreweek,
-        'season':os.environ['PREDICTSEASON'],
+        'season':PigskinConfig.objects.get(Name="live").PredictSeason,
         'title':'Leaderboard'
     }
 
@@ -901,7 +905,7 @@ def AjaxAmendBankerView(request):
             bankerteam = (Match.objects.get(GameID=jsongame)).AwayTeam
             bankweek = (Match.objects.get(GameID=jsongame)).Week
             response_data = {}
-            bankseason = os.environ['PREDICTSEASON']
+            bankseason = PigskinConfig.objects.get(Name="live").PredictSeason
             updateuser = CustomUser.objects.get(pk = request.user.id)
 
             # Joker setting moved to Banker AJAX call as this is only executed once per submission
@@ -909,21 +913,21 @@ def AjaxAmendBankerView(request):
                 # Check if JokersPlayed value already set
                 try:
                     jokers = updateuser.JokersPlayed.values()
-                    if int(os.environ['PREDICTWEEK']) in jokers:
+                    if PigskinConfig.objects.get(Name="live").PredictWeek in jokers:
                         pass
                     else:
                         if len(request.user.JokersPlayed) < 4:
-                            updateuser.JokersPlayed[len(updateuser.JokersPlayed)+1] = int(os.environ['PREDICTWEEK'])
+                            updateuser.JokersPlayed[len(updateuser.JokersPlayed)+1] = PigskinConfig.objects.get(Name="live").PredictWeek
                             updateuser.save()
                 # No jokers set yet
                 except (AttributeError, TypeError):
-                    updateuser.JokersPlayed = {1 : int(os.environ['PREDICTWEEK'])}
+                    updateuser.JokersPlayed = {1 : PigskinConfig.objects.get(Name="live").PredictWeek}
                     updateuser.save()
             else:
                 # Check if JokersPlayed value was previously set and remove if so
                 try: 
                     jokers = updateuser.JokersPlayed.values()
-                    if int(os.environ['PREDICTWEEK']) in updateuser.JokersPlayed.values():
+                    if PigskinConfig.objects.get(Name="live").PredictWeek in updateuser.JokersPlayed.values():
                         # Below will remove that last entry from the dictionary
                         del updateuser.JokersPlayed[str(len(updateuser.JokersPlayed))]
                         updateuser.save()
@@ -966,7 +970,7 @@ def AjaxAmendBankerView(request):
 
 @require_GET
 def DivisionTableView(request):
-    basescoreweek = int(os.environ['RESULTSWEEK']) - 1
+    basescoreweek = PigskinConfig.objects.get(Name="live").ResultsWeek - 1
     if basescoreweek < 1:
         return redirect('scoretable-preseason')
     elif basescoreweek > 18:
@@ -1055,7 +1059,7 @@ def DivisionTableView(request):
         AFCWTotal = 0
         for fan in NFCNfans:
             try:
-                NFCNTotal += ScoresSeason.objects.get(Season=int(os.environ['PREDICTSEASON']), User=fan).SeasonScore
+                NFCNTotal += ScoresSeason.objects.get(Season=PigskinConfig.objects.get(Name="live").PredictSeason, User=fan).SeasonScore
             except ScoresSeason.DoesNotExist:
                 pass
         try:
@@ -1065,7 +1069,7 @@ def DivisionTableView(request):
 
         for fan in NFCSfans:
             try:
-                NFCSTotal += ScoresSeason.objects.get(Season=int(os.environ['PREDICTSEASON']), User=fan).SeasonScore
+                NFCSTotal += ScoresSeason.objects.get(Season=PigskinConfig.objects.get(Name="live").PredictSeason, User=fan).SeasonScore
             except ScoresSeason.DoesNotExist:
                 pass
         try:
@@ -1075,7 +1079,7 @@ def DivisionTableView(request):
         
         for fan in NFCEfans:
             try:
-                NFCETotal += ScoresSeason.objects.get(Season=int(os.environ['PREDICTSEASON']), User=fan).SeasonScore
+                NFCETotal += ScoresSeason.objects.get(Season=PigskinConfig.objects.get(Name="live").PredictSeason, User=fan).SeasonScore
             except ScoresSeason.DoesNotExist:
                 pass
         try:
@@ -1085,7 +1089,7 @@ def DivisionTableView(request):
 
         for fan in NFCWfans:
             try:
-                NFCWTotal += ScoresSeason.objects.get(Season=int(os.environ['PREDICTSEASON']), User=fan).SeasonScore
+                NFCWTotal += ScoresSeason.objects.get(Season=PigskinConfig.objects.get(Name="live").PredictSeason, User=fan).SeasonScore
             except ScoresSeason.DoesNotExist:
                 pass
         try:
@@ -1095,7 +1099,7 @@ def DivisionTableView(request):
         
         for fan in AFCNfans:
             try:
-                AFCNTotal += ScoresSeason.objects.get(Season=int(os.environ['PREDICTSEASON']), User=fan).SeasonScore
+                AFCNTotal += ScoresSeason.objects.get(Season=PigskinConfig.objects.get(Name="live").PredictSeason, User=fan).SeasonScore
             except ScoresSeason.DoesNotExist:
                 pass
         try:
@@ -1105,7 +1109,7 @@ def DivisionTableView(request):
         
         for fan in AFCSfans:
             try:
-                AFCSTotal += ScoresSeason.objects.get(Season=int(os.environ['PREDICTSEASON']), User=fan).SeasonScore
+                AFCSTotal += ScoresSeason.objects.get(Season=PigskinConfig.objects.get(Name="live").PredictSeason, User=fan).SeasonScore
             except ScoresSeason.DoesNotExist:
                 pass
         try:
@@ -1115,7 +1119,7 @@ def DivisionTableView(request):
 
         for fan in AFCWfans:
             try:
-                AFCWTotal += ScoresSeason.objects.get(Season=int(os.environ['PREDICTSEASON']), User=fan).SeasonScore
+                AFCWTotal += ScoresSeason.objects.get(Season=PigskinConfig.objects.get(Name="live").PredictSeason, User=fan).SeasonScore
             except ScoresSeason.DoesNotExist:
                 pass
         try:
@@ -1125,7 +1129,7 @@ def DivisionTableView(request):
 
         for fan in AFCEfans:
             try:
-                AFCETotal += ScoresSeason.objects.get(Season=int(os.environ['PREDICTSEASON']), User=fan).SeasonScore
+                AFCETotal += ScoresSeason.objects.get(Season=PigskinConfig.objects.get(Name="live").PredictSeason, User=fan).SeasonScore
             except ScoresSeason.DoesNotExist:
                 pass
         try:
@@ -1146,7 +1150,7 @@ def DivisionTableView(request):
     context = {
         'scores': SortedList,
         'week':scoreweek,
-        'season':os.environ['PREDICTSEASON'],
+        'season':PigskinConfig.objects.get(Name="live").PredictSeason,
         'userdivision': userdivision,
     }
 
@@ -1203,18 +1207,18 @@ class RecordDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 ### View to display live scores
 @require_GET
 def LiveScoresView(request):
-    if os.environ['SUNDAYLIVE'] == "FALSE":
+    if PigskinConfig.objects.get(Name="live").SundayLive == False:
         return redirect('home')
     else:
         # Below sets score week to 1 below current results week
         # IE - to pull scores from last completed week 
-        liveseason = int(os.environ['PREDICTSEASON'])
-        basescoreweek = int(os.environ['RESULTSWEEK'])
+        liveseason = PigskinConfig.objects.get(Name="live").PredictSeason
+        basescoreweek = PigskinConfig.objects.get(Name="live").ResultsWeek
         if basescoreweek > 18:
             latest = Post.objects.all().first().pk
             return redirect('post-latest', latest)
         else:
-            scoreweek = int(os.environ['PREDICTSEASON']+os.environ['RESULTSWEEK'])
+            scoreweek = int(str(PigskinConfig.objects.get(Name="live").PredictSeason)+str(PigskinConfig.objects.get(Name="live").ResultsWeek))
 
         jsonpredsforlive = cache.get('jsonpredsforlive')
 
@@ -1279,7 +1283,7 @@ def LiveScoresView(request):
             'jsonpreds': jsonpredsforlive,
             'jsonuser': jsonuser,
             'week':scoreweek,
-            'titleweek':os.environ['RESULTSWEEK'],
+            'titleweek':PigskinConfig.objects.get(Name="live").ResultsWeek,
             'title':'Live Scores'
         }
 
@@ -1288,18 +1292,18 @@ def LiveScoresView(request):
 ### View to display live scores
 @require_GET
 def LiveScoresTestView(request):
-    if os.environ['SUNDAYLIVE'] == "FALSE":
+    if PigskinConfig.objects.get(Name="live").SundayLive == False:
         return redirect('home')
     else:
         # Below sets score week to 1 below current results week
         # IE - to pull scores from last completed week 
-        liveseason = int(os.environ['PREDICTSEASON'])
-        basescoreweek = int(os.environ['RESULTSWEEK'])
+        liveseason = PigskinConfig.objects.get(Name="live").PredictSeason
+        basescoreweek = PigskinConfig.objects.get(Name="live").ResultsWeek
         if basescoreweek > 18:
             latest = Post.objects.all().first().pk
             return redirect('post-latest', latest)
         else:
-            scoreweek = int(os.environ['PREDICTSEASON']+os.environ['RESULTSWEEK'])
+            scoreweek = int(PigskinConfig.objects.get(Name="live").PredictSeason+PigskinConfig.objects.get(Name="live").ResultsWeek)
 
         jsonpredsforlive = cache.get('jsonpredsforlive')
 
@@ -1364,7 +1368,7 @@ def LiveScoresTestView(request):
             'jsonpreds': jsonpredsforlive,
             'jsonuser': jsonuser,
             'week':scoreweek,
-            'titleweek':os.environ['RESULTSWEEK'],
+            'titleweek':PigskinConfig.objects.get(Name="live").ResultsWeek,
             'title':'Live Scores'
         }
 

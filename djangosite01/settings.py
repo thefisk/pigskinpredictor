@@ -1,33 +1,47 @@
-import os, django_heroku, sentry_sdk
+import os, sentry_sdk, environ
 from celery.schedules import crontab
 from sentry_sdk.integrations.django import DjangoIntegration
 
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = env("SECRET_KEY", default="change_me")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = (os.environ.get('DEBUG_VALUE') == ('True'))
+DEBUG = env("DEBUG", default=False)
 
-ALLOWED_HOSTS = ['pigskinpredictor.herokuapp.com','pigskin-dev.herokuapp.com','pigskinpredictor.com', 'pigskin-2021.herokuapp.com', 'pigskin-2022.herokuapp.com']
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*"])
 
+# Check if we're in a local dev environment (which might not always have debug)
+try:
+    myenv = os.environ.get('ENVIRONMENT').lower()
+except:
+    myenv = 'environmentmissing'
+    
+IS_LOCALDEV = myenv == ('localdev')
+IS_HEROKU = myenv == ('heroku')
+IS_APPLIKU = myenv == ('appliku')
 
 # Application definition
 
 INSTALLED_APPS = [
+    "whitenoise.runserver_nostatic",
     'debug_toolbar',
     'api',
     'blog',
-    'material',
     'predictor.apps.PredictorConfig',
     'accounts.apps.AccountsConfig',
     'crispy_forms',
+    'crispy_bootstrap5',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,6 +64,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -57,6 +72,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'redirect_to_non_www.middleware.RedirectToNonWww',
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = 'djangosite01.urls'
@@ -79,16 +95,36 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'djangosite01.wsgi.application'
 
+INITIAL_DB = env.db(default="sqlite:///db.sqlite3")
+
+# if DEBUG:
+#     DATABASE = INITIAL_DB | { 'OPTIONS': {
+#         'sslmode' : 'allow'
+#         }
+#     }
+# else:
+#     DATABASE = INITIAL_DB
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('LOCALDBNAME'),
-        'USER': os.environ.get('LOCALDBUSER'),
-        'PASSWORD': os.environ.get('LOCALDBPASS'),
-        'HOST': 'localhost',
-        'PORT': '',
-    }
+    "default": env.db(default="sqlite:///db.sqlite3")
 }
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": "default",
+#         "USER": "postgres",
+#         "PASSWORD": "PG_password",
+#         "HOST": "pigskinpredictor-database-1234567",
+#         "PORT": "5432",
+#         "OPTIONS": {"sslmode": "allow"}
+#     }
+# }
+
+# if DEBUG:
+    # env.db seems to disregard query param and set sslmode to required, even in debug mode
+    # this tweak should allow local environment to connect to PostGres without SSL
+# DATABASES["default"]["OPTIONS"]["sslmode"] = "allow"
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -115,14 +151,18 @@ USE_L10N = True
 
 USE_TZ = True
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
 LOGIN_URL= '/accounts/login'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'predictor/static')
+# Static Root is the path where static files are stored after deployment
+# and is where collected static files are placed by collectstatic
+STATIC_ROOT = os.path.join(BASE_DIR, '/static')
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
@@ -189,15 +229,26 @@ ACCOUNT_FORMS = {
 }
 
 # staticfiles=False added so Heroku will use S3.  Without, it uses local!
-django_heroku.settings(locals(), staticfiles=False)
+# django_heroku.settings(locals(), staticfiles=False, databases=False)
 
-INTERNAL_IPS = ['127.0.0.1']
+INTERNAL_IPS = [
+    '127.0.0.1',
+    '172.18.0.5'
+    ]
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES' : ('rest_framework.permissions.IsAuthenticated',)
 }
 
-CELERY_BROKER_URL = os.environ.get('REDIS_URL')+"?ssl_cert_reqs=CERT_NONE"
+# Check if in Local Dev - Heroku now needs extra arg in URL
+if IS_LOCALDEV:
+    CELERY_BROKER_URL = os.environ['REDIS_URL']
+else: 
+    try:
+        CELERY_BROKER_URL = os.environ['REDIS_URL']+"?ssl_cert_reqs=CERT_NONE"
+    except:
+        CELERY_BROKER_URL = "redis://127.0.0.1:6379"
+
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Europe/London'
@@ -251,22 +302,74 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'predictor.tasks.save_results',
         # 12:00 on Monday 29th Feb - i.e. a date that won't occur until 2044
         'schedule': crontab(minute=00, hour=12, day_of_week=1, day_of_month=29, month_of_year=2,),
-    }
+    },
+    'Update Predict Week': {
+        'task': 'predictor.tasks.update_week',
+        'schedule': crontab(minute=00, hour=21, day_of_week=4),
+        'args': [ 'predict' ]
+    },
+    'Update Results Week': {
+        'task': 'predictor.tasks.update_week',
+        'schedule': crontab(minute=00, hour=8, day_of_week=3),
+        'args': [ 'results' ]
+    },
+    'Enable Sunday Live': {
+        'task': 'predictor.tasks.enable_sunday_live',
+        'schedule': crontab(minute=30, hour=17, day_of_week=0)
+    },
+    'Disable Sunday Live': {
+        'task': 'predictor.tasks.disable_sunday_live',
+        'schedule': crontab(minute=00, hour=2, day_of_week=1)
+    },
+    'Populate Live for Preseason Testing': {
+        'task': 'predictor.tasks.populate_live_preseason_for_testing',
+        # 12:00 on Monday 29th Feb - i.e. a date that won't occur until 2044
+        'schedule': crontab(minute=00, hour=12, day_of_week=1, day_of_month=29, month_of_year=2,),
+    },
 }
+
+# This setting is used by Django-Redis
+if IS_HEROKU:
+    CONNECTION_POOL_KWARGS = {"ssl_cert_reqs": None}
+else:
+    CONNECTION_POOL_KWARGS = {}
 
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": os.environ.get('REDIS_URL')+"/1",
         "OPTIONS": {
-            "CONNECTION_POOL_KWARGS": {"ssl_cert_reqs": None},
+            "CONNECTION_POOL_KWARGS": CONNECTION_POOL_KWARGS,
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
         "KEY_PREFIX": "pigskindjango",
     }
 }
 
-sentry_sdk.init(
-    dsn=os.environ['SENTRY_DSN'],
-    integrations=[DjangoIntegration()]
-)
+# Assume Sentry DSN is present
+SentryAbsent = False
+
+# Only initialise Sentry if Env Var present - omitted for local testing
+# Check and flip SentryAbsent if missing
+try:
+    SentryPresent = os.environ['SENTRY_DSN']
+except KeyError:
+    SentryAbsent = True
+    
+if SentryAbsent == False:
+    sentry_sdk.init(
+        dsn=os.environ['SENTRY_DSN'],
+        integrations=[DjangoIntegration()]
+    )
+
+# Setting Required for Models from Django 3.2 onwards
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {"console": {"class": "logging.StreamHandler"}},
+    "loggers": {"": {"handlers": ["console"], "level": "DEBUG"}},
+}
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

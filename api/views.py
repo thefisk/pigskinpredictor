@@ -5,7 +5,7 @@ from accounts.models import User
 from .permissions import IsSuperUser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from predictor.models import Prediction, Banker, LiveGame
+from predictor.models import Prediction, Banker, LiveGame, PigskinConfig
 from .serializers import (
 BankerSerializer,
 UserSerializer,
@@ -42,8 +42,9 @@ class NoPredsAPIView(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsSuperUser]
     serializer_class = UserSerializer
     def get_queryset(self):
-        week = os.environ['PREDICTWEEK']
-        season = os.environ['PREDICTSEASON']
+        # week = os.environ['PREDICTWEEK']
+        week = PigskinConfig.objects.get(Name="live").PredictWeek
+        season = PigskinConfig.objects.get(Name="live").PredictSeason
         predweek = int(season+week)
         haspicked = []
         for pred in Prediction.objects.filter(PredWeek=predweek):
@@ -77,8 +78,9 @@ class ThisWeekCSVView(mixins.ListModelMixin,viewsets.GenericViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['User', 'PredWeek', 'PredSeason']
     def get_queryset(self):
-        week = os.environ['PREDICTWEEK']
-        season = os.environ['PREDICTSEASON']
+        # week = os.environ['PREDICTWEEK']
+        week = PigskinConfig.objects.get(Name="live").PredictWeek
+        season = PigskinConfig.objects.get(Name="live").PredictSeason
         predweek = int(season+week)
         return Prediction.objects.filter(PredWeek=predweek)
 
@@ -89,8 +91,9 @@ class LastWeekCSVView(mixins.ListModelMixin,viewsets.GenericViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['User', 'PredWeek', 'PredSeason']
     def get_queryset(self):
-        week = os.environ['PREDICTWEEK']
-        season = os.environ['PREDICTSEASON']
+        week = PigskinConfig.objects.get(Name="live").PredictWeek
+        # week = os.environ['PREDICTWEEK']
+        season = PigskinConfig.objects.get(Name="live").PredictSeason
         predweek = int(season+(str(int(week)-1)))
         return Prediction.objects.filter(PredWeek=predweek)
 
@@ -101,5 +104,5 @@ class BankersCSVView(mixins.ListModelMixin,viewsets.GenericViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['User', 'BankWeek', 'BankSeason']
     def get_queryset(self):
-        season = int(os.environ['PREDICTSEASON'])
+        season = PigskinConfig.objects.get(Name="live").PredictSeason
         return Banker.objects.filter(BankSeason=season)

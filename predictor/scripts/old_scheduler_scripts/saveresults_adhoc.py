@@ -121,7 +121,7 @@ def run():
    # Add latest AvgScores
    totalscores = 0
    count = 0
-   for i in ScoresWeek.objects.filter(Season=int(os.environ['PREDICTSEASON']), Week=int(os.environ['RESULTSWEEK'])):
+   for i in ScoresWeek.objects.filter(Season=int(os.environ['PREDICTSEASON']), Week=PigskinConfig.objects.get(Name="live").ResultsWeek):
       totalscores += i.WeekScore
       count +=1
    latestavg = int(totalscores/count)

@@ -1,5 +1,5 @@
 {% extends "predictor/base.html" %}
-{% load material_form %}
+{% load crispy_forms_tags %}
 {% block content %}
 <script>
         $('#login').each(function(){
@@ -14,10 +14,7 @@
             <h5>Login</h5>
             <form method="post">
             {% csrf_token %}
-            {% form form=form %}
-            {% part form.login prefix %}<i class="material-icons prefix">email</i>{% endpart %}
-            {% part form.password prefix %}<i class="material-icons prefix">lock_open</i>{% endpart %}
-            {% endform %}
+            {{ form | crispy }}
             <button class="btn waves-effect waves-light" type="submit" name="action">Login
             <i class="material-icons right">send</i>
             </button>
