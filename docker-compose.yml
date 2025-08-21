@@ -9,6 +9,7 @@ services:
        - celery
      volumes:
        - $PWD:/app
+       - ./temp_data:/temp_data
      env_file:
        - app.env
      ports:                                                 
