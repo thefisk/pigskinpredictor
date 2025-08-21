@@ -117,7 +117,7 @@ def ProfileView(request):
             else:
                 profileseason = PigskinConfig.objects.get(Name="live").PredictSeason
             if PigskinConfig.objects.get(Name="live").ResultsWeek < 19:
-                predweek = int(PigskinConfig.objects.get(Name="live").PredictSeason+PigskinConfig.objects.get(Name="live").ResultsWeek)
+                predweek = int(str(PigskinConfig.objects.get(Name="live").PredictSeason)+str(PigskinConfig.objects.get(Name="live").ResultsWeek))
                 try:
                     mypreds = Prediction.objects.filter(User=request.user, PredWeek=predweek)
                     if mypreds.count() > 0:
@@ -216,7 +216,7 @@ def ProfileNewPlayerView(request):
     else:    
         form = CustomUserChangeForm(instance=request.user)
         if PigskinConfig.objects.get(Name="live").ResultsWeek < 19:
-            predweek = int(PigskinConfig.objects.get(Name="live").PredictSeason+PigskinConfig.objects.get(Name="live").ResultsWeek)
+            predweek = int(str(PigskinConfig.objects.get(Name="live").PredictSeason)+str(PigskinConfig.objects.get(Name="live").ResultsWeek))
             try:
                 mypreds = Prediction.objects.filter(User=request.user, PredWeek=predweek)
                 if mypreds.count() > 0:
@@ -1303,7 +1303,7 @@ def LiveScoresTestView(request):
             latest = Post.objects.all().first().pk
             return redirect('post-latest', latest)
         else:
-            scoreweek = int(PigskinConfig.objects.get(Name="live").PredictSeason+PigskinConfig.objects.get(Name="live").ResultsWeek)
+            scoreweek = int(str(PigskinConfig.objects.get(Name="live").PredictSeason)+str(PigskinConfig.objects.get(Name="live").ResultsWeek))
 
         jsonpredsforlive = cache.get('jsonpredsforlive')
 
