@@ -65,7 +65,7 @@ cronjobs:
     command: python manage.py fetchschedules
   import_schedules:
     schedule: "0 3 10 7 *"
-    command: python manage.py loaddata ./temp_data/schedule.json
+    command: python manage.py loaddata /temp_data/schedule.json
   tidyup_schedule_json:
     schedule: "0 4 10 7 *"
     command: rm schedule.json
