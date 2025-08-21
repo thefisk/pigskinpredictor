@@ -15,7 +15,7 @@ class Command(BaseCommand):
 
         schedule=[]
 
-        filename = "schedule.json"
+        filename = "./temp_data/schedule.json"
         outfile = open(filename, "w")
 
         # Range extended by 1 in 2021 for 17 game season (over 18 weeks)
