@@ -590,7 +590,7 @@ def AjaxAddBankerView(request):
             response_data['winner'] = str(bankerentry.BankerTeam)
 
             # Call Email Confirmation Script after banker because banker AJAX occurs once, after Preds have been added
-            if request.user in CustomUser.objects.filter(PickConfirmation = True):
+            if request.user in CustomUser.objects.filter(PickConfirmation = True) and False:
                 email_confirmation.delay(user=request.user.pk, week=int(str(bankseason)+str(bankweek)), type='New')
 
             return JsonResponse(response_data)
@@ -960,7 +960,7 @@ def AjaxAmendBankerView(request):
             response_data['winner'] = str(bankerentry.BankerTeam)
 
             # Call Email Confirmation Script after banker because banker AJAX occurs once, after Preds have been added
-            if request.user in CustomUser.objects.filter(PickConfirmation = True):
+            if request.user in CustomUser.objects.filter(PickConfirmation = True) and False:
                 email_confirmation.delay(user=request.user.pk, week=int(str(bankseason)+str(bankweek)), type='Amended')
 
             return JsonResponse(response_data)
