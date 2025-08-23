@@ -240,14 +240,11 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES' : ('rest_framework.permissions.IsAuthenticated',)
 }
 
-# Check if in Local Dev - Heroku now needs extra arg in URL
-if IS_LOCALDEV:
+# Heroku now needs extra arg in URL
+if IS_HEROKU:
+    CELERY_BROKER_URL = os.environ['REDIS_URL']+"?ssl_cert_reqs=CERT_NONE"
+else:
     CELERY_BROKER_URL = os.environ['REDIS_URL']
-else: 
-    try:
-        CELERY_BROKER_URL = os.environ['REDIS_URL']+"?ssl_cert_reqs=CERT_NONE"
-    except:
-        CELERY_BROKER_URL = "redis://127.0.0.1:6379"
 
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
