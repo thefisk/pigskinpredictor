@@ -292,11 +292,10 @@ def populate_live_preseason_for_testing():
     for livegame in LiveGame.objects.all():
         livegame.delete()
     gamecount=0
-    for game in Match.objects.filter(Season=PigskinConfig.objects.get(Name="live").PredictSeason):
-        if game.DateTime.hour < 23:
-            newlive = LiveGame(Game=game.GameID, HomeTeam=game.HomeTeam.ShortName, AwayTeam=game.AwayTeam.ShortName, KickOff=game.DateTime.strftime("%H%M"), TeamIndex=teamdict[game.AwayTeam.ShortName], State=3)
-            newlive.save()
-            gamecount += 1
+    for game in Match.objects.filter(Season=PigskinConfig.objects.get(Name="live").PredictSeason, Week=PigskinConfig.objects.get(Name="live").PredictWeek):
+        newlive = LiveGame(Game=game.GameID, HomeTeam=game.HomeTeam.ShortName, AwayTeam=game.AwayTeam.ShortName, KickOff=game.DateTime.strftime("%H%M"), TeamIndex=teamdict[game.AwayTeam.ShortName], State=3)
+        newlive.save()
+        gamecount += 1
     print(str(gamecount)+" live games imported")
 
 @shared_task

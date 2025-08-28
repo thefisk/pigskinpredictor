@@ -5,6 +5,7 @@ from django.views.decorators.cache import cache_page
 from .helpers import get_json_week_score
 from django.shortcuts import render, get_object_or_404, redirect
 from accounts.forms import CustomUserChangeForm
+from django.conf import settings as djangosettings
 from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponse, JsonResponse
@@ -1284,15 +1285,15 @@ def LiveScoresView(request):
             'jsonuser': jsonuser,
             'week':scoreweek,
             'titleweek':PigskinConfig.objects.get(Name="live").ResultsWeek,
-            'title':'Live Scores'
+            'title':'Sunday Live'
         }
 
-        return render(request, 'predictor/live-scores.html', context, {'title':'Sunday Live'})
+        return render(request, 'predictor/live-scores.html', context)
     
 ### View to display live scores
 @require_GET
 def LiveScoresTestView(request):
-    if PigskinConfig.objects.get(Name="live").SundayLive == False:
+    if djangosettings.DEBUG == False:
         return redirect('home')
     else:
         # Below sets score week to 1 below current results week
@@ -1329,17 +1330,14 @@ def LiveScoresTestView(request):
             for i in userlist:
                 jsonpredsforlive[i.Full_Name]=[]
                 for a in Prediction.objects.filter(PredWeek=scoreweek, User=i).select_related('Game'):
-                    # Only add Sunday games to list
-                    if a.Game.DateTime.date() == datetime.date.today():
-                    # Test 'if' for Sunday week 1
-                    # if a.Game.DateTime.date() == datetime.datetime.fromisoformat('2021-09-12').date():   
-                        jsonpredsforlive[i.Full_Name].append({
-                        'game': a.Game.GameID,
-                        'winner': a.Winner,
-                        'banker': a.Banker,
-                        'joker': a.Joker,
-                        'pts': 0
-                        })
+                    # Remove today validation for test view
+                    jsonpredsforlive[i.Full_Name].append({
+                    'game': a.Game.GameID,
+                    'winner': a.Winner,
+                    'banker': a.Banker,
+                    'joker': a.Joker,
+                    'pts': 0
+                    })
             cache.set('jsonpredsforlive', jsonpredsforlive, CacheTTL_3Days)
 
         try:
@@ -1369,7 +1367,7 @@ def LiveScoresTestView(request):
             'jsonuser': jsonuser,
             'week':scoreweek,
             'titleweek':PigskinConfig.objects.get(Name="live").ResultsWeek,
-            'title':'Live Scores'
+            'title':'Sunday Live'
         }
 
-        return render(request, 'predictor/live-scores-test.html', context, {'title':'Sunday Live'})
+        return render(request, 'predictor/live-scores-test.html', context)
