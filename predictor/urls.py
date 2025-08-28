@@ -68,9 +68,3 @@ urlpatterns = [
     path('live-scores-test/', LiveScoresTestView, name='live-scores-test'),
     re_path(r'^favicon', RedirectView.as_view(url='https://pigskinpredictor.s3.eu-west-2.amazonaws.com/static/favicon.ico')) #Favicon Redirect
 ]
-
-if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns = [
-        path('__debug__/', include(debug_toolbar.urls)),
-    ] + urlpatterns
