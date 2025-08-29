@@ -74,7 +74,7 @@
             <tbody name ="livegames-score-table" is="transition-group">
                 <tr v-for="game in liveScores" :key="game.Game" v-bind:class="[game.Updated ? updatedClass : stdClass]">
                     <!-- Away Team Name -->
-                    <td v-bind:class="[tableLeftClass, game.State === 2 ? gameCompleteClass : '']"><span v-bind:class = "[predictedWinner(game.Game) == 'Away' ? selectedWinnerTextClass : notSelectedWinnerTextClass]">[[game.AwayTeam]]</span></td>
+                    <td v-bind:class="[tableLeftClass, game.State === 2 ? gameCompleteClass : '']"><span v-bind:class = "[isBanker(game.Game) == true ? bankerClass : predictedWinner(game.Game) == 'Away' ? selectedWinnerTextClass : notSelectedWinnerTextClass]">[[game.AwayTeam]]</span></td>
                     <!-- Away Team Logo -->
                     <td v-bind:class="[tableLogoClass, game.State === 2 ? gameCompleteClass : '', predictedWinner(game.Game) == 'Away' ? selectedWinnerLogoClass : notSelectedWinnerLogoClass]"><img v-bind:src="game.AwayTeam | imgurl" :alt="game.AwayTeam" style="vertical-align:middle" class="team_small"></td>
                     <!-- Score -->
@@ -118,6 +118,7 @@ var app = new Vue({
         tableRightClass: "table-right",
         tableLogoClass: "table-logo",
         gameCompleteClass: "livegame-complete",
+        bankerClass: "bankerlivetext",
         selectedWinnerLogoClass: "chosenlivelogo",
         notSelectedWinnerLogoClass: "notchosenlivelogo",
         selectedWinnerTextClass: "chosenlivetext",
@@ -193,6 +194,9 @@ var app = new Vue({
         },
         predictedWinner(gameid) { 
             return this.preds[currentUser].find(obj => obj.game === gameid).winner
+        },
+        isBanker(gameid) { 
+            return this.preds[currentUser].find(obj => obj.game === gameid).banker
         },
         updateTotals() {
             // Below will iterate through each user's pred pts and amend their total points for the live table
