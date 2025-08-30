@@ -17,5 +17,5 @@ jobs:
         AWS_S3_BUCKET: ${{ secrets.S3_BUCKET_DEV }}
         AWS_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_DEV }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_KEY_DEV }}
-        SOURCE_DIR: 'predictor/static/predictor'
+        SOURCE_DIR: 'predictor/static'
         DEST_DIR: 'static/predictor'
