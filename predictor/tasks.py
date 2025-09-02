@@ -42,7 +42,6 @@ def email_confirmation(user, week, type):
 @shared_task
 def email_reminder(hours):
     week = PigskinConfig.objects.get(Name="live").PredictWeek
-    # week = os.environ['PREDICTWEEK']
     if int(week) > 18 or os.environ['REMINDERS_ON'].upper() != "TRUE":
         pass
     else:
@@ -80,7 +79,7 @@ def email_reminder(hours):
         html_message = render_to_string(templatefile)
         
         subject = "Pigskin Predictor: " + hours + " hour reminder"
-        plaintextmessage = "This is your " + hours + " reminder to submit your predictions for week " + week
+        plaintextmessage = "This is your " + hours + " reminder to submit your predictions for week " + str(week)
         
         msg = EmailMultiAlternatives(subject = subject, body = plaintextmessage, from_email = "'Pigskin Predictor' <hello@pigskinpredictor.com>", to = ["'Pigskin Predictor Users' <hello@pigskinpredictor.com>"], bcc = email_list)
         msg.attach_alternative(html_message, "text/html")
