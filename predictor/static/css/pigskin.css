@@ -820,6 +820,8 @@ h5 {
   margin-top: 0;
   font-size: clamp(0.8rem, 0.8vw, 0.9rem);
   font-weight: 300;
+  opacity: 60%;
+  filter: drop-shadow(0 0 0.25rem rgba(130, 130, 130, 0.25));
 }
 
 .no-wrap {
