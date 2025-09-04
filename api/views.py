@@ -42,10 +42,9 @@ class NoPredsAPIView(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsSuperUser]
     serializer_class = UserSerializer
     def get_queryset(self):
-        # week = os.environ['PREDICTWEEK']
         week = PigskinConfig.objects.get(Name="live").PredictWeek
         season = PigskinConfig.objects.get(Name="live").PredictSeason
-        predweek = int(season+week)
+        predweek = int(str(season)+str(week))
         haspicked = []
         for pred in Prediction.objects.filter(PredWeek=predweek):
             if pred.User.id not in haspicked:
@@ -78,10 +77,9 @@ class ThisWeekCSVView(mixins.ListModelMixin,viewsets.GenericViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['User', 'PredWeek', 'PredSeason']
     def get_queryset(self):
-        # week = os.environ['PREDICTWEEK']
         week = PigskinConfig.objects.get(Name="live").PredictWeek
         season = PigskinConfig.objects.get(Name="live").PredictSeason
-        predweek = int(season+week)
+        predweek = int(str(season)+str(week))
         return Prediction.objects.filter(PredWeek=predweek)
 
 class LastWeekCSVView(mixins.ListModelMixin,viewsets.GenericViewSet):
@@ -92,9 +90,8 @@ class LastWeekCSVView(mixins.ListModelMixin,viewsets.GenericViewSet):
     filterset_fields = ['User', 'PredWeek', 'PredSeason']
     def get_queryset(self):
         week = PigskinConfig.objects.get(Name="live").PredictWeek
-        # week = os.environ['PREDICTWEEK']
         season = PigskinConfig.objects.get(Name="live").PredictSeason
-        predweek = int(season+(str(int(week)-1)))
+        predweek = int(str(season)+(str((week)-1)))
         return Prediction.objects.filter(PredWeek=predweek)
 
 class BankersCSVView(mixins.ListModelMixin,viewsets.GenericViewSet):
