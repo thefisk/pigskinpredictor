@@ -11,7 +11,7 @@ django-dbbackup==4.0.1 # Util to enable easy backups from the CLI - Used by Cele
 django-debug-toolbar==4.4.6 # Debug Toolbar
 django-environ==0.12.0 # Easy config of things like DB from Env Vars
 django-extensions==3.2.3 # Extra admin CLI tools
-django-filter==2.4.0 # Filter QuerySets with URL Query Params
+django-filter==25.1 # Filter QuerySets with URL Query Params
 django-heroku==0.3.1 # Archived - Consider removing
 django-inlinecss-redux==0.4.0 # Fork of original Inline CSS - Used for Email Generation
 django-redirect-to-non-www==0.1.1 # Might Not Be Needed?
