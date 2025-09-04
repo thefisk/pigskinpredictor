@@ -46,7 +46,7 @@ def email_reminder(hours):
         pass
     else:
         season = PigskinConfig.objects.get(Name="live").PredictSeason
-        predweek = int(season+week)
+        predweek = int(str(season)+str(week))
         haspicked = []
         for pred in Prediction.objects.filter(PredWeek=predweek):
             if pred.User.id not in haspicked:
