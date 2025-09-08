@@ -12,6 +12,9 @@ class PigskinConfig(models.Model):
     PredictSeason    = models.IntegerField(default=2025)
     SundayLive       = models.BooleanField(default=False)
     RegistrationOpen = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name_plural = "Config"
     
 
 class Team(models.Model):
