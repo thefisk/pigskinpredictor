@@ -13,6 +13,9 @@ class PigskinConfig(models.Model):
     SundayLive       = models.BooleanField(default=False)
     RegistrationOpen = models.BooleanField(default=False)
 
+    def __str__(self):
+        return('{} {}'.format("Config - ", self.Name))
+
     class Meta:
         verbose_name_plural = "Config"
     
