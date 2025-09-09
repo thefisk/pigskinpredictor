@@ -92,9 +92,9 @@ def save_results():
         pass
     else:
         if int(resultsweek) < 10:
-            fileweek = '0'+resultsweek
+            fileweek = '0'+str(resultsweek)
         else:
-            fileweek = resultsweek
+            fileweek = str(resultsweek)
         fileseason = PigskinConfig.objects.get(Name="live").PredictSeason
         filename = 'data/resultsimport_'+fileseason+'_'+fileweek+'.json'
         bucket = os.environ.get('AWS_STORAGE_BUCKET_NAME')
@@ -300,10 +300,12 @@ def populate_live_preseason_for_testing():
 @shared_task
 def fetch_results(fetchonly):
     week = PigskinConfig.objects.get(Name="live").ResultsWeek
+    strweek = str(week)
     if int(week) > 18:
         pass
     else:
         season = PigskinConfig.objects.get(Name="live").PredictSeason
+        strseason = str(season)
 
         if int(week) < 10:
             filename = "resultsimport_"+season+"_0"+week+".json"
@@ -313,7 +315,7 @@ def fetch_results(fetchonly):
         outfile = open(filename, "w")
 
         # Removed Thurs-Tues logic as below will produce a gameweek, no matter when it's requested
-        source = f"http://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates={season}&week={week}"
+        source = f"http://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates={strseason}&week={strweek}"
 
         rawjson = requests.get(source).json()
 
@@ -516,11 +518,11 @@ def update_week_with_utc_check(weektype, utctime):
 @shared_task
 def disable_sunday_live():
     config = PigskinConfig.objects.get(Name="live")
-    config.SundayLive = False
+    config.SundayLive == False
     config.save()
 
 @shared_task
 def enable_sunday_live():
     config = PigskinConfig.objects.get(Name="live")
-    config.SundayLive = True
+    config.SundayLive == True
     config.save()
