@@ -306,7 +306,7 @@ def fetch_results(fetchonly):
     else:
         season = PigskinConfig.objects.get(Name="live").PredictSeason
         strseason = str(season)
-        path = "/temp_data"
+        path = "/temp_data/"
 
         if int(week) < 10:
             filename = "resultsimport_"+str(season)+"_0"+str(week)+".json"
