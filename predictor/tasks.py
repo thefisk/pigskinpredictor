@@ -306,13 +306,16 @@ def fetch_results(fetchonly):
     else:
         season = PigskinConfig.objects.get(Name="live").PredictSeason
         strseason = str(season)
+        path = "/temp_data"
 
         if int(week) < 10:
             filename = "resultsimport_"+str(season)+"_0"+str(week)+".json"
         else:
             filename = "resultsimport_"+str(season)+"_"+str(week)+".json"
+        
+        pathandfile = path+file
 
-        outfile = open(filename, "w")
+        outfile = open(pathandfile, "w")
 
         # Removed Thurs-Tues logic as below will produce a gameweek, no matter when it's requested
         source = f"http://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates={strseason}&week={strweek}"
@@ -376,7 +379,7 @@ def fetch_results(fetchonly):
         bucket = os.environ.get('AWS_STORAGE_BUCKET_NAME')
         s3 = boto3.resource('s3')
         s3path = 'data/'+filename
-        s3.Object(bucket, s3path).upload_file(Filename=filename)
+        s3.Object(bucket, s3path).upload_file(Filename=pathandfile)
         
         if int(fetchonly) == 1:
             pass
