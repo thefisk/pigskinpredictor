@@ -313,7 +313,7 @@ def fetch_results(fetchonly):
         else:
             filename = "resultsimport_"+str(season)+"_"+str(week)+".json"
         
-        pathandfile = path+file
+        pathandfile = path+filename
 
         outfile = open(pathandfile, "w")
 
