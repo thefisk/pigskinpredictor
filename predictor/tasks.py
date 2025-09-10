@@ -95,7 +95,7 @@ def save_results():
             fileweek = '0'+str(resultsweek)
         else:
             fileweek = str(resultsweek)
-        fileseason = PigskinConfig.objects.get(Name="live").PredictSeason
+        fileseason = str(PigskinConfig.objects.get(Name="live").PredictSeason)
         filename = 'data/resultsimport_'+fileseason+'_'+fileweek+'.json'
         bucket = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 
@@ -308,9 +308,9 @@ def fetch_results(fetchonly):
         strseason = str(season)
 
         if int(week) < 10:
-            filename = "resultsimport_"+season+"_0"+week+".json"
+            filename = "resultsimport_"+str(season)+"_0"+str(week)+".json"
         else:
-            filename = "resultsimport_"+season+"_"+week+".json"
+            filename = "resultsimport_"+str(season)+"_"+str(week)+".json"
 
         outfile = open(filename, "w")
 
