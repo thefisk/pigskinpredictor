@@ -521,11 +521,11 @@ def update_week_with_utc_check(weektype, utctime):
 @shared_task
 def disable_sunday_live():
     config = PigskinConfig.objects.get(Name="live")
-    config.SundayLive == False
+    config.SundayLive = False
     config.save()
 
 @shared_task
 def enable_sunday_live():
     config = PigskinConfig.objects.get(Name="live")
-    config.SundayLive == True
+    config.SundayLive = True
     config.save()
