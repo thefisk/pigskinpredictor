@@ -1,6 +1,8 @@
 import datetime, sys, logging
 from celery import shared_task
 from .models import Prediction
+from predictor.cacheflushlist import cachestoflush
+from django.core.cache import cache
 from accounts.models import User
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
@@ -444,6 +446,14 @@ def update_week(weektype):
         case "results":
             config.ResultsWeek += 1
             config.save()
+    
+    # We set various caches for Scoretables to speed-up loading performance
+    # These have a TTL of 1 week so can sometimes persist past the Resultsweek increment
+    # Clearing them down each week will ensure correct scoretable data is loaded
+    if weektype == "results":
+        for c in cachestoflush:
+            cache.delete(c)
+        print('Caches flushed')
 
 # Task to Update Predict/Results Week
 # UTC Check Version not currently in use
