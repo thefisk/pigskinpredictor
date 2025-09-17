@@ -1,4 +1,4 @@
-import datetime, sys
+import datetime, sys, logging
 from celery import shared_task
 from .models import Prediction
 from accounts.models import User
@@ -7,7 +7,7 @@ from django.template.loader import get_template
 import os, requests, json, boto3, time, sys
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from predictor.models import Team, Results, ScoresSeason, ScoresAllTime, ScoresWeek, Prediction, AvgScores, LiveGame, Match, PigskinConfig
+from predictor.models import Team, Results, ScoresSeason, ScoresAllTime, ScoresWeek, Prediction, AvgScores, LiveGame, Match, PigskinConfig, Banker
 
 @shared_task
 def email_confirmation(user, week, type):
@@ -529,3 +529,32 @@ def enable_sunday_live():
     config = PigskinConfig.objects.get(Name="live")
     config.SundayLive = True
     config.save()
+    
+@shared_task
+# Workaround for GitHub issue 243
+def banker_flag_confirmation():
+    config = PigskinConfig.objects.get(Name="live")
+    week_to_check = config.PredictWeek - 1
+    if week_to_check > 18:
+        return
+    season = config.PredictSeason
+    bankers = Banker.objects.filter(BankWeek = week_to_check, BankSeason = season)
+    countall = 0
+    countchanged = 0
+    badlist = []
+    for banker in bankers:
+        pred = Prediction.objects.get(User=banker.User, Game=banker.BankGame)
+        if pred.Banker == False:
+            pred.Banker = True
+            pred.save()
+            countchanged += 1
+            badlist += str(pred)
+        countall += 1
+    print(f"Banker Flag Confirmation job complete. {countall} bankers checked, {countchanged} updated")
+    if countchanged == 0:
+        print("0 updated represents an error free week :)")
+    else:
+        logging.error("One or more banker Predictions were found without the banker flag")
+        print("A repeat of GitHub issue 243 occured. See below offenders: -")
+        for badpred in badlist:
+            print(badpred)

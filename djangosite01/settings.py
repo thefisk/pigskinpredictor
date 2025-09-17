@@ -305,6 +305,10 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': crontab(minute=00, hour=21, day_of_week=4),
         'args': [ 'predict' ]
     },
+    'Check Banker Flags': {
+      'task': 'predictor.tasks.banker_flag_confirmation',
+      'schedule': crontab(minute=05, hour=21, day_of_week=4)
+    },
     'Update Results Week': {
         'task': 'predictor.tasks.update_week',
         'schedule': crontab(minute=00, hour=8, day_of_week=3),
