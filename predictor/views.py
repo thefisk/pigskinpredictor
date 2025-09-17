@@ -635,7 +635,7 @@ def ScoreTableView(request):
     previousweek = str(scoreweek - 1)
 
     if not jsonpositions:
-        season = PigskinConfig.objects.get(Name="live").PredictSeason
+        season = str(PigskinConfig.objects.get(Name="live").PredictSeason)
         lastweek = str(scoreweek)
         previousweek = str(scoreweek - 1)
         jsonpositions = {}
