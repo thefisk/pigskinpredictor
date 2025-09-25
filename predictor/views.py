@@ -163,6 +163,36 @@ def ProfileView(request):
             except ScoresWeek.DoesNotExist:
                 mypoints = None
             
+            # Active Streak
+            config = PigskinConfig.objects.get(Name="live")
+            season = config.PredictSeason
+            lastweek = config.ResultsWeek
+            if lastweek == 1:
+                lastweek = 18
+                season = season-1
+            if lastweek >= 19:
+                lastweek = 18
+            correctpreds = Prediction.objects.filter(User=request.user, Banker=True).exclude(Points__lte=0).exclude(Points__isnull=True).order_by("-Game")
+            i = 0
+            if correctpreds[i].Game.Week == lastweek and correctpreds[i].Game.Season == season:
+                streak = 1
+            else:
+                streak = 0
+            if streak == 1:
+                i = 1
+                lastweek -= 1
+                if lastweek == 0:
+                    lastweek = 18
+                    season -= 1
+                while correctpreds[i].Game.Week == lastweek and correctpreds[i].Game.Season == season:
+                    streak += 1
+                    lastweek -=1
+                    if lastweek == 0:
+                        lastweek = 18
+                        season -= 1
+                    i += 1
+            
+
             # Avg Points for Season Score Chart
             avgpoints = cache.get('AvgPointsCache')
             if not avgpoints:
@@ -203,6 +233,7 @@ def ProfileView(request):
                 'alltimehigh': alltimehigh,
                 'alltimelow': alltimelow,
                 'alltimepct': alltimepct,
+                'streak': streak,
                 'title': 'My Profile'
                 }
             return render(request, template, context)
