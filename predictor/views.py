@@ -191,7 +191,13 @@ def ProfileView(request):
                         lastweek = 18
                         season -= 1
                     i += 1
-            
+
+            # Last Failed Banker
+            try:
+                wrongpreds = Prediction.objects.filter(User=request.user, Banker=True).exclude(Points__gte=0).exclude(Points__isnull=True).order_by("-Game")
+                failedbanker = wrongpreds[0]
+            except:
+                failedbanker = "none"
 
             # Avg Points for Season Score Chart
             avgpoints = cache.get('AvgPointsCache')
@@ -234,6 +240,7 @@ def ProfileView(request):
                 'alltimelow': alltimelow,
                 'alltimepct': alltimepct,
                 'streak': streak,
+                'failedbanker': failedbanker,
                 'title': 'My Profile'
                 }
             return render(request, template, context)

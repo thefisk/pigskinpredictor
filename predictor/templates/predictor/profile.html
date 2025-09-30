@@ -115,6 +115,56 @@
                 </tbody>
             </table>
         </div>
+        <div class = "row"></div>
+        <div class="col s12 m6">
+            <table id="stats-table" class="striped" aria-describedby="Current Banker Streak">
+                <thead>
+                   <tr class = "table-highlight">
+                        <td class = "stats-table-header col-100-l">Current Banker Streak</td>
+                    </tr>
+                </thead>
+            </table>
+            <table id="stats-table" class="striped" aria-describedby="Season Results Data">
+                <thead>
+                    <tr class = "table-secondary">
+                        <th class="stats-header table-secondary-header pad-l">Are you hot right now?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="stat-value pad-l">{{ streak }}<span class = "lowlight"> weeks</span></td>
+                    </tr>             
+                    </tbody>
+            </table>
+        </div>
+        {% if failedbanker == "none" %}
+        <!-- Omit Banker Tables -->
+        {% else %}
+        <div class="col s12 m6">
+            <table id="stats-table" class="striped" aria-describedby="Last Failed Banker">
+                <thead>
+                   <tr class = "table-highlight">
+                        <td class = "stats-table-header col-100-l">Last Failed Banker</td>
+                    </tr>
+                </thead>
+            </table>
+            <table id="stats-table" class="striped" aria-describedby="Season Results Data">
+                <thead>
+                    <tr class = "table-secondary">
+                        <th class="stats-header table-secondary-header pad-l">Team</th>
+                        <th class="stats-header table-secondary-header">Week</th>
+                        <th class="stats-header table-secondary-header">Damage</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="stat-value pad-l">{{ failedbanker.Game.AwayTeam.ShortName }}</span><span class="lowlight"> @{{ failedbanker.Game.HomeTeam.ShortName }}</span></td>
+                        <td class="stat-value">{{ failedbanker.Game.Week }}</span><span class = "lowlight"> {{ failedbanker.Game.Season }}</span></td> 
+                        <td class="stat-value">{{ failedbanker.Points }}</span><span class = "lowlight"> pts</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
     </div>
 
         <div class="row">
