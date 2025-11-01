@@ -1,4 +1,5 @@
 import datetime, sys, logging
+from datetime import datetime as dt
 from celery import shared_task
 from .models import Prediction
 from predictor.cacheflushlist import cachestoflush
@@ -239,6 +240,12 @@ def save_results():
 
 @shared_task
 def get_livescores():
+    # Will run at 5pm every week but only needs to run at 5pm one week of the year
+    # when the UK clock changes go back in the last week of October (US goers back first Sunday of November)
+    if dt.now().hour == 17:
+        if dt.now().month == 10 and dt.now().day > 24:
+            
+
     for livegame in LiveGame.objects.all():
         try:
             url = f"http://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event={livegame.Game}"
