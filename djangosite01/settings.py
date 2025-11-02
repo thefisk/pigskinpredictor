@@ -316,7 +316,7 @@ CELERY_BEAT_SCHEDULE = {
     },
     'Enable Sunday Live': {
         'task': 'predictor.tasks.enable_sunday_live',
-        'schedule': crontab(minute=30, hour=17, day_of_week=0)
+        'schedule': crontab(minute=00, hour=17, day_of_week=0)
     },
     'Disable Sunday Live': {
         'task': 'predictor.tasks.disable_sunday_live',
