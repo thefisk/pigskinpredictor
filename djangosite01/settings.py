@@ -209,7 +209,7 @@ AUTHENTICATION_BACKENDS = (
 SITE_ID = 2
 
 # Amazon SES Settings
-DEFAULT_FROM_EMAIL = "'Pigskin Predictor' <hello@pigskinpredictor.com>"
+DEFAULT_FROM_EMAIL = "Pigskin Predictor <hello@pigskinpredictor.com>"
 EMAIL_BACKEND = 'django_ses.SESBackend'
 AWS_SES_REGION_NAME = 'eu-west-2'
 AWS_SES_REGION_ENDPOINT = 'email.eu-west-2.amazonaws.com'
