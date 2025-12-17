@@ -300,10 +300,15 @@ CELERY_BEAT_SCHEDULE = {
         # 12:00 on Monday 29th Feb - i.e. a date that won't occur until 2044
         'schedule': crontab(minute=00, hour=12, day_of_week=1, day_of_month=29, month_of_year=2,),
     },
-    'Update Predict Week': {
+    'Update Predict Week - Standard': {
         'task': 'predictor.tasks.update_week',
         'schedule': crontab(minute=00, hour=21, day_of_week=4),
-        'args': [ 'predict' ]
+        'kwargs': { 'weektype': 'predict', 'jobtime': 21 }
+    },
+    'Update Predict Week - Thanksgiving': {
+        'task': 'predictor.tasks.update_week',
+        'schedule': crontab(minute=00, hour=17, day_of_week=4),
+        'kwargs': { 'weektype': 'predict', 'jobtime': 17 }
     },
     'Check Banker Flags': {
       'task': 'predictor.tasks.banker_flag_confirmation',

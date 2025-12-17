@@ -427,7 +427,7 @@ def kickoff_time_checker_current_week():
 
 # Task to Update Predict/Results Week
 @shared_task
-def update_week(weektype):
+def update_week(weektype, jobtime):
     weektype = weektype.lower()
 
     match weektype:
@@ -440,6 +440,16 @@ def update_week(weektype):
     
     print(f"Type was declared as {weektype}")
     
+    if weektype == "predict":
+        if dt.now().month == 11 and (dt.now().day >= 22 and dt.now().day <= 28):
+            thanksgiving = True
+        else:
+            thanksgiving = False
+        if (jobtime == 21) and (thanksgiving == True):
+            sys.exit("Skipping 21:00 PredictWeek Increment as it's Thanksgiving")
+        if (jobtime == 17) and (thanksgiving == False):
+            sys.exit("Skipping 17:00 PredictWeek Increment as it's not Thanksgiving")
+
     print("Current week is "+str(currentweek))
     newweek = currentweek + 1
     print("Updating to " +str(newweek))
