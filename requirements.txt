@@ -22,7 +22,7 @@ django-timezone-field==5.0.0 # Timezone Model Field
 djangorestframework==3.15.2 # DRF
 djangorestframework-csv==3.0.2 #CSV Output for DRF
 gunicorn==23.0.0 # Webserver
-Markdown==3.3.4 # Markdown Support - Used by Blog
+Markdown==3.8.1 # Markdown Support - Used by Blog
 Pillow==10.3.0 # Needed for ImageField Support on Models
 psycopg[binary]==3.2.3 # Python PostGres support, used by Django ORM
 pytz==2019.3 # Timezones <- Depracated, Switch to zoneinfo for Django 5 onwards
