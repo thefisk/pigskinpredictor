@@ -11,6 +11,6 @@ class Command(BaseCommand):
         # Use datetime module to get current year
         season = dt.now().year
 
-        matches = Match.objects.get(Season=season)
+        matches = Match.objects.filter(Season=season)
         for match in matches:
             match.save()
